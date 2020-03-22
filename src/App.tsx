@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import {
   IonApp,
@@ -14,6 +14,7 @@ import { ellipse, square, triangle } from 'ionicons/icons';
 import PWAS from './pages/PWAs';
 import SignUp from './pages/SignUp';
 import Tab2 from './pages/Tab2';
+import Profile from './pages/Profile';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -33,15 +34,59 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import LogIn from './pages/LogIn';
+import { setIsLoggedIn, setToken, loadUserData } from './data/user/user.actions';
+import { connect } from './data/connect';
+import { AppContextProvider } from './data/AppContext';
 
-const App: React.FC = () => (
-  <IonApp>
+const App: React.FC = () => {
+  return (
+    <AppContextProvider>
+      <IonicAppConnected />
+    </AppContextProvider>
+  );
+};
+
+interface StateProps {
+  token?: string,
+  isLoggedIn: boolean,
+}
+
+interface DispatchProps {
+  loadUserData: typeof loadUserData;
+  setIsLoggedIn: typeof setIsLoggedIn;
+  setToken: typeof setToken;
+}
+
+interface IonicAppProps extends StateProps, DispatchProps { }
+
+const IonicApp: React.FC<IonicAppProps> = ({
+  token,
+  isLoggedIn,
+  loadUserData,
+  setToken,
+  setIsLoggedIn
+}) => {
+
+  useEffect(() => {
+    loadUserData();
+  }, [])
+
+  return (
+    <IonApp>
     <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet>
           <Route path="/pwas" component={PWAS} exact={true} />
           <Route path="/explore" component={Tab2} exact={true} />
           <Route path="/signup" component={SignUp} />
+          <Route path="/login" component={LogIn} />
+          <Route path="/logout" render={() => {
+              setIsLoggedIn(false);
+              setToken(undefined);
+              return <Redirect to="/pwas" />
+          }} />
+          <Route path="/profile" component={Profile} />
           <Route path="/" render={() => <Redirect to="/pwas" />} exact={true} />
         </IonRouterOutlet>
         <IonTabBar slot="bottom">
@@ -53,14 +98,34 @@ const App: React.FC = () => (
             <IonIcon icon={ellipse} />
             <IonLabel>Explore</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="signup" href="/signup">
+          <IonTabButton tab="login" href="/login" disabled={isLoggedIn} hidden={isLoggedIn}>
             <IonIcon icon={square} />
             <IonLabel>Log In</IonLabel>
+          </IonTabButton>
+          <IonTabButton tab="profile" href="/profile" disabled={!isLoggedIn} hidden={!isLoggedIn}>
+            <IonIcon icon={square} />
+            <IonLabel>Profile</IonLabel>
           </IonTabButton>
         </IonTabBar>
       </IonTabs>
     </IonReactRouter>
   </IonApp>
-);
+  );
+};
+
+
 
 export default App;
+
+const IonicAppConnected = connect<{}, StateProps, DispatchProps>({
+  mapStateToProps: (state) => ({
+    token: state.user.token,
+    isLoggedIn: state.user.isLoggedIn
+  }),
+  mapDispatchToProps: { 
+    setIsLoggedIn, 
+    setToken, 
+    loadUserData,
+  },
+  component: IonicApp
+});

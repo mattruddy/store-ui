@@ -1,4 +1,5 @@
 export interface UserState {
-    isLoggedin: boolean;
+    isLoggedIn: boolean;
     token?: string;
+    loading: boolean;
 };

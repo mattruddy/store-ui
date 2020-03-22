@@ -3,7 +3,8 @@ import { userReducer } from './user/user.reducer';
 
 export const initialState: AppState = {
   user: {
-    isLoggedin: false,
+    isLoggedIn: false,
+    loading: false
   }
 };
 

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { RouteComponentProps } from 'react-router';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem, IonGrid, IonRow, IonLabel, IonInput, IonCol, IonButton, IonText } from '@ionic/react';
+import { IonPage, IonList, IonItem, IonRow, IonLabel, IonInput, IonCol, IonButton, IonText } from '@ionic/react';
 import { setToken, setIsLoggedIn } from '../data/user/user.actions';
-import { postSignup } from '../data/dataApi';
+import { postLogin } from '../data/dataApi';
 import { connect } from '../data/connect';
 
 interface OwnProps extends RouteComponentProps {}
@@ -14,9 +14,9 @@ interface DispatchProps {
 
 interface StateProps {}
 
-interface SignIn extends OwnProps,  DispatchProps, StateProps {}
+interface LoginProps extends OwnProps,  DispatchProps, StateProps {}
 
-const SignUp: React.FC<SignIn> = ({
+const LogIn: React.FC<LoginProps> = ({
   setToken: setTokenAction,
   history,
   setIsLoggedIn: setIsLoggedInAction
@@ -24,11 +24,10 @@ const SignUp: React.FC<SignIn> = ({
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [email, setEmail] = useState('');
     const [formSubmitted, setFormSubmitted] = useState(false);
     const [usernameError, setUsernameError] = useState(false);
-    const [emailError, setEmailError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
+    const [validationError, setValidationError] = useState(false);
 
     const signup = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -39,25 +38,25 @@ const SignUp: React.FC<SignIn> = ({
         if(!password) {
           setPasswordError(true);
         }
-        if (!email) {
-            setEmailError(true);
-        }
     
-        if(username && password && email) {
+        if(username && password) {
           try {
-            const data = await postSignup(
+            const data = await postLogin(
               username,
               password,
-              email
             );
+            console.log(data);
             if (!data.token) {
               throw "No Token data!";
             }
             setTokenAction(data.token);
             setIsLoggedInAction(true);
+            setValidationError(false);
             history.push('/pwas', {direction: 'none'});
           } catch (e) {
-            console.log(`Error signing up: ${e}`);
+            if (e.message === "Invalid Credentials") {
+                setValidationError(true);
+            }
           }
         }
       };
@@ -67,6 +66,11 @@ const SignUp: React.FC<SignIn> = ({
         <form noValidate onSubmit={signup}>
             <IonList>
                 <IonItem>
+                    {formSubmitted && validationError && <IonText color="danger">
+                        <p className="ion-padding-start">
+                        Username or Password incorrect
+                        </p>
+                    </IonText>}
                     <IonLabel position="stacked">Username</IonLabel>
                     <IonInput
                         name="username"
@@ -84,26 +88,6 @@ const SignUp: React.FC<SignIn> = ({
                 <IonText color="danger">
                     <p className="ion-padding-start">
                         Username is required
-                    </p>
-                </IonText>}
-                <IonItem>
-                    <IonLabel position="stacked">Email</IonLabel>
-                    <IonInput
-                        name="email"
-                        type="text"
-                        spellCheck={false}
-                        value={email}
-                        onIonChange={e => {
-                            setEmail(e.detail.value!);
-                            setEmailError(false)
-                        }}
-                        required
-                    />
-                </IonItem>
-                {formSubmitted && emailError && 
-                <IonText color="danger">
-                    <p className="ion-padding-start">
-                        Email is required
                     </p>
                 </IonText>}
                 <IonItem>
@@ -129,7 +113,10 @@ const SignUp: React.FC<SignIn> = ({
             </IonList>
             <IonRow>
             <IonCol>
-              <IonButton type="submit" expand="block">Create</IonButton>
+              <IonButton type="submit" expand="block">Log In</IonButton>
+            </IonCol>
+            <IonCol>
+              <IonButton routerLink="/signup" color="light" expand="block">Signup</IonButton>
             </IonCol>
           </IonRow>
         </form>
@@ -140,7 +127,7 @@ const SignUp: React.FC<SignIn> = ({
 export default connect<OwnProps, StateProps, DispatchProps>({
     mapDispatchToProps: {
       setToken,
-      setIsLoggedIn,
+      setIsLoggedIn
     },
-    component: SignUp
+    component: LogIn
   })
