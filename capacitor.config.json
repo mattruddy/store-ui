@@ -1,0 +1,8 @@
+{
+  "appId": "io.ionic.starter",
+  "appName": "store-ui",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "build",
+  "cordova": {}
+}
