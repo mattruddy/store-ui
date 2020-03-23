@@ -2,7 +2,7 @@ import { Plugins } from '@capacitor/core';
 import Axios from 'axios';
 import { vars } from './env';
 import { returnDownBack } from 'ionicons/icons';
-import { PWA, UserProfile } from '../util/types';
+import { PWA, UserProfile, Search } from '../util/types';
 
 const { Storage } = Plugins;
 
@@ -21,6 +21,22 @@ export const getUserData = async () => {
     token,
   }
   return data;
+}
+
+export const getSearchApp = async (appName: string) => {
+  try {
+    const response = await Axios.request({
+      url: `${vars().env.API_URL}/public/search/${appName}`,
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    });
+    return response.data as Search[];
+  } catch (error) {
+    return error.data;
+  }
 }
 
 export const getPWAs = async () => {

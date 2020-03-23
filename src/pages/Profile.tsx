@@ -38,7 +38,6 @@ const Profile: React.FC<ProfileProps> = ({
   const [nameTakenError, setNameTakenError] = useState<boolean>(false);
 
   useIonViewDidEnter(() => {
-    console.log('hey');
     loadProfile();
   })
 

@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonGrid, IonRow, IonSearchbar } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonGrid, IonRow, IonSearchbar, IonPopover, IonButton, IonList, IonItem } from '@ionic/react';
 import PWACard from '../components/PWACard';
 import CategoryOptions from '../components/CategoryOptions';
-import { getPWAs } from '../data/dataApi';
-import { PWA } from '../util/types';
+import { getPWAs, getSearchApp } from '../data/dataApi';
+import { PWA, Search } from '../util/types';
 
 const PWAs: React.FC = () => {
 
   const [cat, setCat] = useState<string>('');
   const [pwas, setPwas] = useState<PWA[]>([]);
+  const [searchResults, setSearchResults] = useState<Search[]>([]);
 
   useEffect(() => {
     loadPWAs();
@@ -23,6 +24,16 @@ const PWAs: React.FC = () => {
     setCat(option);
   }
 
+  const onSearchChange = async (e: CustomEvent) => {
+    const appName = e.detail.value.replace(/\s/g, '');
+    if (appName) {
+      const results = await getSearchApp(appName);
+      setSearchResults(results);
+    } else {
+      setSearchResults([]);
+    }
+  }
+
   return (
     <IonPage>
       <IonHeader>
@@ -31,7 +42,14 @@ const PWAs: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        <IonSearchbar />
+        <IonSearchbar onIonChange={onSearchChange} />
+        <IonList>
+            { searchResults && searchResults.map((result, idx) => 
+              <IonItem button href={`/pwa/${result.appId}`} key={idx}>
+                {result.name}
+              </IonItem>
+            ) }
+        </IonList>
         <CategoryOptions onPress={onPress} />
           <IonGrid >
             <IonRow>

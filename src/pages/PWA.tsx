@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem, IonGrid, IonRow, IonSearchbar, IonSelectOption, IonSelect, IonCard, IonCardHeader, IonCardContent, IonButton, IonImg, IonSlides, IonSlide, IonLabel } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem, IonGrid, IonRow, IonSearchbar, IonSelectOption, IonSelect, IonCard, IonCardHeader, IonCardContent, IonButton, IonImg, IonSlides, IonSlide, IonLabel, useIonViewDidEnter } from '@ionic/react';
 import { getPWA } from '../data/dataApi';
 import { RouteComponentProps } from 'react-router';
 import { PWA as PWAType } from '../util/types';
+import { pawSharp } from 'ionicons/icons';
 
 interface MatchParams {
   id: string | undefined;
@@ -25,7 +26,7 @@ const PWA: React.FC<PWAProps> = ({
 
   const [pwa, setPwa] = useState<PWAType | undefined>(undefined);
 
-  useEffect(() => {
+  useIonViewDidEnter(() => {
     loadPWA();
   }, [])
 
@@ -36,9 +37,8 @@ const PWA: React.FC<PWAProps> = ({
 
   return (
     <IonPage>
-      <IonContent>
-        <IonCardHeader>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+      <IonHeader>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
             <div style={{ display: 'flex', alignItems: 'center'}}>
               { pwa && 
                 <IonImg style={{height: '70px', width: '70px'}} src={pwa.icon} /> }
@@ -50,22 +50,20 @@ const PWA: React.FC<PWAProps> = ({
             </div>
             {pwa && <IonButton>Install</IonButton>}
           </div>
-        </IonCardHeader>
-        <IonCardContent>
-          <IonLabel>About</IonLabel>
-          <div style={{height: '200px'}}>
-          {pwa && pwa.description}
-          </div> 
-          <IonLabel>Screenshots</IonLabel>
-          <IonSlides scrollbar={true}>
-            <IonSlide>
-              { pwa && <IonImg src={pwa!.screenshots[0].url} /> }
+      </IonHeader>
+      <IonContent>
+        <IonTitle style={{paddingTop: '10px'}}>About</IonTitle>
+        <div style={{height: '200px', padding: '15px'}}>
+        {pwa && pwa.description}
+        </div> 
+        <IonTitle>Screenshots</IonTitle>
+        <IonSlides scrollbar={true}>
+          {pwa && pwa.screenshots && pwa.screenshots.map((shot, idx) => (
+            <IonSlide key={idx}>
+              <IonImg style={{height: '400px', width: '200px'}} src={shot.url} /> 
             </IonSlide>
-            <IonSlide>
-              { pwa && <IonImg src={pwa!.screenshots[0].url} /> }
-            </IonSlide>
-          </IonSlides>
-        </IonCardContent>
+          ))}
+        </IonSlides>
       </IonContent>
     </IonPage>
   );

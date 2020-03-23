@@ -35,7 +35,7 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 import LogIn from './pages/LogIn';
-import { setIsLoggedIn, setToken, loadUserData } from './data/user/user.actions';
+import { loadUserData } from './data/user/user.actions';
 import { connect } from './data/connect';
 import { AppContextProvider } from './data/AppContext';
 import PWA from './pages/PWA';
@@ -55,8 +55,6 @@ interface StateProps {
 
 interface DispatchProps {
   loadUserData: typeof loadUserData;
-  setIsLoggedIn: typeof setIsLoggedIn;
-  setToken: typeof setToken;
 }
 
 interface IonicAppProps extends StateProps, DispatchProps { }
@@ -64,18 +62,12 @@ interface IonicAppProps extends StateProps, DispatchProps { }
 const IonicApp: React.FC<IonicAppProps> = ({
   token,
   isLoggedIn,
-  loadUserData,
-  setToken,
-  setIsLoggedIn
+  loadUserData
 }) => {
 
   useEffect(() => {
     loadUserData();
   }, [])
-
-  useEffect(() => {
-    console.log(isLoggedIn);
-  }, [isLoggedIn, token])
 
   return (
     <IonApp>
@@ -122,8 +114,6 @@ const IonicAppConnected = connect<{}, StateProps, DispatchProps>({
     isLoggedIn: state.user.isLoggedIn
   }),
   mapDispatchToProps: { 
-    setIsLoggedIn, 
-    setToken, 
     loadUserData,
   },
   component: IonicApp
