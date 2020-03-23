@@ -1,23 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonItem, IonLabel, IonModal, IonList, IonInput, IonTextarea, IonText, IonImg, IonGrid, IonRow, IonIcon, IonButtons } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonItem, IonLabel, IonModal, IonList, IonInput, IonTextarea, IonText, IonImg, IonGrid, IonRow, IonIcon, IonButtons, IonFab, IonFabButton, IonFabList, IonAlert } from '@ionic/react';
 import { getProfile, postApp } from '../data/dataApi';
-import { RouteComponentProps, withRouter } from 'react-router';
+import { RouteComponentProps, withRouter, Redirect } from 'react-router';
 import ImageUploader from 'react-images-upload';
 import { connect } from '../data/connect';
 import CategoryOptions from '../components/CategoryOptions';
 import { UserProfile, PWA } from '../util/types';
 import PWACard from '../components/PWACard';
-import { add } from 'ionicons/icons';
+import { add, menu, logOut } from 'ionicons/icons';
+import { setToken, setIsLoggedIn } from '../data/user/user.actions';
 
 interface OwnProps extends RouteComponentProps {}
 
-interface DispatchProps {}
+interface DispatchProps {
+  setToken: typeof setToken
+  setIsLoggedIn: typeof setIsLoggedIn
+}
 
 interface StateProps {}
 
 interface ProfileProps extends OwnProps,  DispatchProps, StateProps {}
 
 const Profile: React.FC<ProfileProps> = ({
+  history,
+  setToken,
+  setIsLoggedIn
 }) => {
   const [profile, setProfile] = useState<UserProfile | undefined>(undefined);
   const [url, setUrl] = useState<string>('');
@@ -27,6 +34,7 @@ const Profile: React.FC<ProfileProps> = ({
   const [icon, setIcon] = useState<File | undefined>(undefined);
   const [screenshots, setScreenshots] = useState<File[] | undefined>(undefined);
   const [showModal, setShowModal] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
   const [nameTakenError, setNameTakenError] = useState<boolean>(false);
 
   useEffect(() => {
@@ -78,6 +86,14 @@ const Profile: React.FC<ProfileProps> = ({
           swipeToClose={true}
           onDidDismiss={() => setShowModal(false)}
         >
+        <IonHeader>
+          <IonToolbar>
+            <IonButtons slot="end">
+              <IonButton onClick={() => setShowModal(false)}>Close</IonButton>
+            </IonButtons>
+            <IonTitle>PWA</IonTitle>
+          </IonToolbar>
+        </IonHeader>
         <IonContent scrollEvents={true}>
         <form>
           <IonList>
@@ -163,36 +179,63 @@ const Profile: React.FC<ProfileProps> = ({
           </IonList>
         </form>
         </IonContent>
-        <IonButton expand='block' onClick={onAddPWA}>Add</IonButton>
-        <IonButton onClick={() => setShowModal(false)}>Close</IonButton>
+        <IonButton expand='block' onClick={onAddPWA}>Submit</IonButton>
       </IonModal>
       <IonHeader>
-        <IonToolbar style={{
-          display: 'flex',
-
-        }}>
-            <IonTitle>{profile?.username}</IonTitle>
-            <IonButton slot="end" href="/logout">Log Out</IonButton>
-            <IonButton slot="end" onClick={() => setShowModal(true)}>
-              <IonIcon icon={add} />
-            </IonButton>
+        <IonToolbar>  
+          <IonTitle>{profile?.username}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>
+        <IonFab vertical="top" horizontal="end">
+          <IonFabButton><IonIcon icon={menu} /></IonFabButton>
+          <IonFabList side="bottom">
+            <IonFabButton type="button" onClick={() => setShowAlert(true)}>
+              <IonIcon icon={logOut} />
+            </IonFabButton>
+            <IonFabButton type="button" onClick={() => setShowModal(true)}>
+              <IonIcon icon={add} />
+            </IonFabButton>
+          </IonFabList>
+        </IonFab>
         <p style={{
           paddingLeft: '20px',
           fontSize: '20px'
-        }}>My PWA's</p>
+        }}>My PWAs</p>
         <IonGrid>
           <IonRow>
-            { profile && profile.pwas && profile.pwas.map(pwa => <PWACard name={pwa.name} appId={pwa.appId} category={pwa.category} icon={pwa.icon} />)}
+            { profile && profile.pwas && profile.pwas.map((pwa, idx) => <PWACard key={idx} name={pwa.name} appId={pwa.appId} category={pwa.category} icon={pwa.icon} />)}
           </IonRow>
         </IonGrid>
+        <IonAlert
+          isOpen={showAlert}
+          onDidDismiss={() => setShowAlert(false)}
+          header='Logout'
+          message='Are you sure you want to log out?'
+          buttons={[
+            {
+              text: 'Cancel',
+              handler: () => setShowAlert(false)
+            },
+            {
+              text: 'Logout',
+              handler: () => {
+                setToken(undefined);
+                setIsLoggedIn(false);
+                history.push('/login')
+              }
+            }
+          ]}
+        />
       </IonContent>
     </IonPage>
   );
 };
 
 export default connect<OwnProps, StateProps, DispatchProps>({
+  mapDispatchToProps: {
+    setToken,
+    setIsLoggedIn
+  },
   component: withRouter(Profile)
 })

@@ -87,11 +87,6 @@ const IonicApp: React.FC<IonicAppProps> = ({
           <Route path="/explore" component={Tab2} exact={true} />
           <Route path="/signup" component={SignUp} />
           <Route path="/login" component={LogIn} />
-          <Route path="/logout" render={() => {
-              setIsLoggedIn(false);
-              setToken(undefined);
-              return <Redirect to="/login" />
-          }} />
           <Route path="/profile" component={Profile} />
           <Route path="/" render={() => <Redirect to="/pwas" />} exact={true} />
         </IonRouterOutlet>

@@ -31,8 +31,8 @@ const PWAs: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        <CategoryOptions onPress={onPress} />
         <IonSearchbar />
+        <CategoryOptions onPress={onPress} />
           <IonGrid >
             <IonRow>
               {
