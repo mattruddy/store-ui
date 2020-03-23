@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem, IonGrid, IonRow, IonSearchbar, IonSelectOption, IonSelect } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonGrid, IonRow, IonSearchbar } from '@ionic/react';
 import PWACard from '../components/PWACard';
 import CategoryOptions from '../components/CategoryOptions';
 import { getPWAs } from '../data/dataApi';
@@ -27,31 +27,23 @@ const PWAs: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <div style={{ display: 'flex', justifyContent: 'space-between'}}>
             <IonTitle>PWA's</IonTitle>
-            <CategoryOptions onPress={onPress} />
-          </div>
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">PWA's</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent>
+        <CategoryOptions onPress={onPress} />
+        <IonSearchbar />
           <IonGrid >
             <IonRow>
               {
-                pwas.map((pwa) => {
+                pwas.map((pwa, idx) => {
                   if (pwa) {
-                    return <PWACard category={pwa.category} name={pwa.name} icon={pwa.icon} appId={pwa.appId} />
+                    return <PWACard key={idx} category={pwa.category} name={pwa.name} icon={pwa.icon} appId={pwa.appId} />
                   }
                 } )
               }
             </IonRow>
           </IonGrid>
-        </IonContent>
       </IonContent>
     </IonPage>
   );

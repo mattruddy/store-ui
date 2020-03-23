@@ -167,16 +167,15 @@ const Profile: React.FC<ProfileProps> = ({
         <IonButton onClick={() => setShowModal(false)}>Close</IonButton>
       </IonModal>
       <IonHeader>
-        <IonToolbar>
-          <div slot="start">
+        <IonToolbar style={{
+          display: 'flex',
+
+        }}>
             <IonTitle>{profile?.username}</IonTitle>
-          </div>
-          <div slot="end">
-            <IonButton href="/logout">Log Out</IonButton>
-            <IonButton onClick={() => setShowModal(true)}>
+            <IonButton slot="end" href="/logout">Log Out</IonButton>
+            <IonButton slot="end" onClick={() => setShowModal(true)}>
               <IonIcon icon={add} />
             </IonButton>
-          </div>
         </IonToolbar>
       </IonHeader>
       <IonContent>

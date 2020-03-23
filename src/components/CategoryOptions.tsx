@@ -1,6 +1,5 @@
 import React from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonItem, IonIcon, IonLabel, IonButton, IonGrid, IonRow, IonImg, IonSelect, IonSelectOption } from '@ionic/react';
-import './PWACard.css';
+import { IonSelect, IonSelectOption } from '@ionic/react';
 
 const categories = [
     'GAME',
