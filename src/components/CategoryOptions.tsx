@@ -2,6 +2,7 @@ import React from 'react';
 import { IonSelect, IonSelectOption } from '@ionic/react';
 
 const categories = [
+    "ALL",
     'GAME',
     'EDUCATION',
     'FITNESS',

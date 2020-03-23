@@ -39,10 +39,10 @@ export const getSearchApp = async (appName: string) => {
   }
 }
 
-export const getPWAs = async () => {
+export const getPWAs = async (page?: number) => {
   try {
     const response = await Axios.request({
-      url: `${vars().env.API_URL}/public/pwas`,
+      url: `${vars().env.API_URL}/public/pwas/${page}`,
       method: 'GET',
       headers: {
         'Accept': 'application/json',

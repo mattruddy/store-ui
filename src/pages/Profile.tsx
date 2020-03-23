@@ -187,7 +187,7 @@ const Profile: React.FC<ProfileProps> = ({
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        <IonFab vertical="top" horizontal="end">
+        <IonFab vertical="top" horizontal="end" slot="fixed">
           <IonFabButton><IonIcon icon={menu} /></IonFabButton>
           <IonFabList side="bottom">
             <IonFabButton type="button" onClick={() => setShowAlert(true)}>
