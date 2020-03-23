@@ -10,7 +10,7 @@ import {
   IonTabs
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { ellipse, square, triangle } from 'ionicons/icons';
+import { ellipse, square, triangle, person, home, logIn } from 'ionicons/icons';
 import PWAS from './pages/PWAs';
 import SignUp from './pages/SignUp';
 import Tab2 from './pages/Tab2';
@@ -92,7 +92,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
         </IonRouterOutlet>
         <IonTabBar slot="bottom">
           <IonTabButton tab="pwas" href="/pwas">
-            <IonIcon icon={triangle} />
+            <IonIcon icon={home} />
             <IonLabel>PWAs</IonLabel>
           </IonTabButton>
           <IonTabButton tab="explore" href="/explore" hidden={true}>
@@ -100,11 +100,11 @@ const IonicApp: React.FC<IonicAppProps> = ({
             <IonLabel>Explore</IonLabel>
           </IonTabButton>
           <IonTabButton tab="login" href="/login" disabled={isLoggedIn} hidden={isLoggedIn}>
-            <IonIcon icon={square} />
+            <IonIcon icon={logIn} />
             <IonLabel>Log In</IonLabel>
           </IonTabButton>
           <IonTabButton tab="profile" href="/profile" disabled={!isLoggedIn} hidden={!isLoggedIn}>
-            <IonIcon icon={square} />
+            <IonIcon icon={person} />
             <IonLabel>Profile</IonLabel>
           </IonTabButton>
         </IonTabBar>
