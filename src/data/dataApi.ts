@@ -1,6 +1,7 @@
 import { Plugins } from '@capacitor/core';
 import Axios from 'axios';
 import { vars } from './env';
+import { returnDownBack } from 'ionicons/icons';
 
 const { Storage } = Plugins;
 
@@ -19,6 +20,101 @@ export const getUserData = async () => {
     token,
   }
   return data;
+}
+
+export const getPWAs = async () => {
+  try {
+    const response = await Axios.request({
+      url: `${vars().env.API_URL}/public/pwas`,
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    });
+    const { data } = response;
+    return data;
+  } catch (error) {
+    return error.response;
+  }
+}
+
+export const getPWA = async (id: number) => {
+  try {
+    const response = await Axios.request({
+      url: `${vars().env.API_URL}/public/pwa/${id}`,
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    });
+    const { data } = response;
+    return data;
+  } catch (error) {
+    return error.response;
+  }
+}
+
+export const getProfile = async () => {
+  const token = await Storage.get({ key: TOKEN });
+  if (!token) return;
+  try {
+    const response = await Axios.request({
+      url: `${vars().env.API_URL}/secure/profile`,
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token.value}`,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    })
+    const {data} = response;
+    return data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const postApp = async (
+  name: string,
+  desc: string,
+  url: string,
+  category: string,
+  icon: File,
+  screenshots: File[]
+) => {
+  const token = await Storage.get({ key: TOKEN });
+  if (!token) return;
+  try {
+
+    const info = {
+      name: name,
+      description: desc,
+      link: url,
+      category: category
+    }
+
+    const fd = new FormData();
+    fd.append("icon", icon);
+    screenshots.forEach(screenshot => fd.append("screenshots", screenshot));
+    fd.append("info", JSON.stringify(info));
+
+    const response = await Axios.request({
+      url: `${vars().env.API_URL}/secure/pwas`,
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token.value}`,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      data: fd
+    })
+    const {data} = response;
+    return data;
+  } catch (error) {
+    return error.response;
+  }
 }
 
 export const postSignup = async (

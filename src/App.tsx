@@ -38,6 +38,7 @@ import LogIn from './pages/LogIn';
 import { setIsLoggedIn, setToken, loadUserData } from './data/user/user.actions';
 import { connect } from './data/connect';
 import { AppContextProvider } from './data/AppContext';
+import PWA from './pages/PWA';
 
 const App: React.FC = () => {
   return (
@@ -78,6 +79,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
       <IonTabs>
         <IonRouterOutlet>
           <Route path="/pwas" component={PWAS} exact={true} />
+          <Route path="/pwa/:id" component={PWA} />
           <Route path="/explore" component={Tab2} exact={true} />
           <Route path="/signup" component={SignUp} />
           <Route path="/login" component={LogIn} />
@@ -94,7 +96,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
             <IonIcon icon={triangle} />
             <IonLabel>PWAs</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="explore" href="/explore">
+          <IonTabButton tab="explore" href="/explore" hidden={true}>
             <IonIcon icon={ellipse} />
             <IonLabel>Explore</IonLabel>
           </IonTabButton>
@@ -112,8 +114,6 @@ const IonicApp: React.FC<IonicAppProps> = ({
   </IonApp>
   );
 };
-
-
 
 export default App;
 

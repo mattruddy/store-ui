@@ -3,6 +3,20 @@ export interface DispatchObject {
     type: string
 }
 
+export interface Image {
+    id: number,
+    url: string
+}
+
+export interface PWA {
+    name: string,
+    description: string,
+    link: string,
+    icon: string,
+    category: string,
+    screenshots: Image[]
+}
+
 type PromiseResolveValue<T> = T extends Promise<infer R> ? R : T;
 type EffectType<T extends (...args: any) => any> = ReturnType<ReturnType<T>>;
 type EffectReturnValue<T extends (...args: any) => any> = PromiseResolveValue<EffectType<T>>;
