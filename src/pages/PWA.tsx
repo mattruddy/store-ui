@@ -3,7 +3,6 @@ import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem,
 import { getPWA } from '../data/dataApi';
 import { RouteComponentProps } from 'react-router';
 import { PWA as PWAType } from '../util/types';
-import { pawSharp } from 'ionicons/icons';
 
 interface MatchParams {
   id: string | undefined;
@@ -38,7 +37,8 @@ const PWA: React.FC<PWAProps> = ({
   return (
     <IonPage>
       <IonHeader>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+        <IonToolbar>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
             <div style={{ display: 'flex', alignItems: 'center'}}>
               { pwa && 
                 <IonImg style={{height: '70px', width: '70px'}} src={pwa.icon} /> }
@@ -50,17 +50,18 @@ const PWA: React.FC<PWAProps> = ({
             </div>
             {pwa && <IonButton>Install</IonButton>}
           </div>
+        </IonToolbar>
       </IonHeader>
       <IonContent>
-        <IonTitle style={{paddingTop: '10px'}}>About</IonTitle>
+        <h2 style={{paddingTop: '10px', paddingLeft: '10px'}}>About</h2>
         <div style={{height: '200px', padding: '15px'}}>
         {pwa && pwa.description}
         </div> 
-        <IonTitle>Screenshots</IonTitle>
-        <IonSlides scrollbar={true}>
+        <h2 style={{ paddingLeft: '10px' }}>Screenshots</h2>
+        <IonSlides pager={true} options={{ initialSlide: 0, speed: 400}}>
           {pwa && pwa.screenshots && pwa.screenshots.map((shot, idx) => (
             <IonSlide key={idx}>
-              <IonImg style={{height: '400px', width: '200px'}} src={shot.url} /> 
+              <img style={{height: '400px', width: '200px'}} src={shot.url} /> 
             </IonSlide>
           ))}
         </IonSlides>

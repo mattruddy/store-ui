@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonGrid, IonRow, IonSearchbar, IonPopover, IonButton, IonList, IonItem, useIonViewDidEnter, IonInfiniteScroll, IonInfiniteScrollContent, useIonViewDidLeave } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonGrid, IonRow, IonSearchbar, IonPopover, IonButton, IonList, IonItem, useIonViewDidEnter, IonInfiniteScroll, IonInfiniteScrollContent, useIonViewDidLeave, IonLoading, IonProgressBar } from '@ionic/react';
 import PWACard from '../components/PWACard';
 import CategoryOptions from '../components/CategoryOptions';
 import { getPWAs, getSearchApp } from '../data/dataApi';
@@ -11,6 +11,7 @@ const PWAs: React.FC = () => {
   const [page, setPage] = useState<number>(0);
   const [cat, setCat] = useState<string>('');
   const [pwas, setPwas] = useState<PWA[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [searchResults, setSearchResults] = useState<Search[]>([]);
   const scrollEl = useRef<any>(undefined);
 
@@ -24,10 +25,12 @@ const PWAs: React.FC = () => {
   })
 
   const loadPWAs = async () => {
+    setIsLoading(true);
     const resp = await getPWAs(page);
     if (resp.length > 0) {
       setPwas(prev => prev.concat(resp));
     }
+    setIsLoading(false);
   }
 
   const pwaList = () => {
@@ -37,7 +40,7 @@ const PWAs: React.FC = () => {
         resultPwas = pwas.filter(pwa => pwa.category === cat);
       }
       if (resultPwas.length > 0) {
-        return resultPwas.map((pwa, idx) => <PWACard key={idx} category={pwa.category} name={pwa.name} icon={pwa.icon} appId={pwa.appId} />)
+        return resultPwas.map((pwa, idx) => <PWACard key={idx} url="/pwa" category={pwa.category} name={pwa.name} icon={pwa.icon} appId={pwa.appId} />)
       } else {
         return <div></div>
       }
@@ -48,7 +51,6 @@ const PWAs: React.FC = () => {
 
   const loadMorePwas = async () => {
     const nextPage = page + 1;
-    console.log(nextPage);
     const nextPwas = await getPWAs(nextPage);
     setPwas(prev => prev.concat(nextPwas));
     setPage(nextPage);
@@ -81,6 +83,7 @@ const PWAs: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
+      { isLoading && <IonProgressBar type="indeterminate" /> }
       <IonSearchbar onIonChange={onSearchChange} />
           <IonList>
               { searchResults && searchResults.map((result, idx) => 

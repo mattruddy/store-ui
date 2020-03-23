@@ -137,6 +137,29 @@ export const postApp = async (
   }
 }
 
+export const postAddScreenshots = async (screenshots: File[], appId: number) => {
+  const token = await Storage.get({ key: TOKEN });
+  if (!token) return;
+  try {
+    const fd = new FormData();
+    screenshots.forEach(shot => fd.append("screenshots", shot));
+    const response = await Axios.request({
+      url: `${vars().env.API_URL}/secure/screenshot/${appId}`,
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token.value}`,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      data: fd
+    })
+    const {data} = response;
+    return data;
+  } catch (error) {
+    return error.response;
+  }
+}
+
 export const postSignup = async (
     username: string,
     password: string,
@@ -186,6 +209,55 @@ export const postLogin = async (
       const {data} = e.response;
       throw data
     }
+}
+
+export const putApp = async (
+  name: string,
+  description: string,
+  category: string,
+  appId: number
+) => {
+  const token = await Storage.get({ key: TOKEN });
+  if (!token) return;
+  try {
+    const response = await Axios.request({
+      url: `${vars().env.API_URL}/secure/pwas/${appId}`,
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token.value}`,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      data: {
+        name: name,
+        description: description,
+        category: category
+      }
+    })
+
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const deleteScreenshot = async (imageId: number) => {
+  const token = await Storage.get({ key: TOKEN });
+  if (!token) return;
+  try {
+    const response = await Axios.request({
+      url: `${vars().env.API_URL}/secure/screenshot/${imageId}`,
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token.value}`,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    })
+    return response;
+  } catch (error) {
+    throw error;
+  }
 }
 
 export const setIsLoggedInData = async (isLoggedIn: boolean) => {

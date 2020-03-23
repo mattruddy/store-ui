@@ -5,12 +5,13 @@ interface ContainerProps {
     name?: string,
     category?: string
     icon?: string
-    appId?: number
+    appId?: number,
+    url: string,
 }
 
-const PWACard: React.FC<ContainerProps> = ({ name, icon, category, appId }) => {
+const PWACard: React.FC<ContainerProps> = ({ name, icon, category, appId, url }) => {
   return (
-    <IonCard button style={{ height: '330px', width: '330px'}} href={`/pwa/${appId}`}>
+    <IonCard button style={{ height: '330px', width: '330px'}} href={`${url}/${appId}`}>
         <IonCardContent>
             <div style={{display: 'flex', justifyContent: 'center'}}>
                 <IonImg style={{ height: '200px', width: '200px'}} src={icon} />

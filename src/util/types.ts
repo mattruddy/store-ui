@@ -4,7 +4,7 @@ export interface DispatchObject {
 }
 
 export interface Image {
-    id: number,
+    imageId: number,
     url: string
 }
 

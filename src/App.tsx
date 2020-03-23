@@ -39,6 +39,7 @@ import { loadUserData } from './data/user/user.actions';
 import { connect } from './data/connect';
 import { AppContextProvider } from './data/AppContext';
 import PWA from './pages/PWA';
+import MyPWA from './pages/MyPWA';
 
 const App: React.FC = () => {
   return (
@@ -80,6 +81,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
           <Route path="/signup" component={SignUp} />
           <Route path="/login" component={LogIn} />
           <Route path="/profile" component={Profile} />
+          <Route path="/mypwa/:id" component={MyPWA} />
           <Route path="/" render={() => <Redirect to="/pwas" />} exact={true} />
         </IonRouterOutlet>
         <IonTabBar slot="bottom">
