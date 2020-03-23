@@ -73,6 +73,10 @@ const IonicApp: React.FC<IonicAppProps> = ({
     loadUserData();
   }, [])
 
+  useEffect(() => {
+    console.log(isLoggedIn);
+  }, [isLoggedIn, token])
+
   return (
     <IonApp>
     <IonReactRouter>
@@ -86,7 +90,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
           <Route path="/logout" render={() => {
               setIsLoggedIn(false);
               setToken(undefined);
-              return <Redirect to="/pwas" />
+              return <Redirect to="/login" />
           }} />
           <Route path="/profile" component={Profile} />
           <Route path="/" render={() => <Redirect to="/pwas" />} exact={true} />

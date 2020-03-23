@@ -2,6 +2,7 @@ import { Plugins } from '@capacitor/core';
 import Axios from 'axios';
 import { vars } from './env';
 import { returnDownBack } from 'ionicons/icons';
+import { PWA, UserProfile } from '../util/types';
 
 const { Storage } = Plugins;
 
@@ -70,7 +71,10 @@ export const getProfile = async () => {
       }
     })
     const {data} = response;
-    return data;
+    return {
+      username: data.username,
+      pwas: data.pageResponses as PWA[]
+    } as UserProfile
   } catch (error) {
     throw error;
   }

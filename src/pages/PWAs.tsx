@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem, IonGrid, IonRow, IonSearchbar, IonSelectOption, IonSelect } from '@ionic/react';
 import PWACard from '../components/PWACard';
-import './PWAs.css';
 import CategoryOptions from '../components/CategoryOptions';
 import { getPWAs } from '../data/dataApi';
+import { PWA } from '../util/types';
 
 const PWAs: React.FC = () => {
 
   const [cat, setCat] = useState<string>('');
-  const [pwas, setPwas] = useState([]);
+  const [pwas, setPwas] = useState<PWA[]>([]);
 
   useEffect(() => {
     loadPWAs();
@@ -43,7 +43,11 @@ const PWAs: React.FC = () => {
           <IonGrid >
             <IonRow>
               {
-                pwas && pwas.map(({name, category, appId, icon}) => <PWACard category={category} name={name} icon={icon} appId={appId} />)
+                pwas.map((pwa) => {
+                  if (pwa) {
+                    return <PWACard category={pwa.category} name={pwa.name} icon={pwa.icon} appId={pwa.appId} />
+                  }
+                } )
               }
             </IonRow>
           </IonGrid>

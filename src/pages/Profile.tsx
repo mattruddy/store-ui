@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonItem, IonLabel, IonModal, IonList, IonInput, IonTextarea, IonText, IonImg } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonItem, IonLabel, IonModal, IonList, IonInput, IonTextarea, IonText, IonImg, IonGrid, IonRow, IonIcon, IonButtons } from '@ionic/react';
 import { getProfile, postApp } from '../data/dataApi';
 import { RouteComponentProps, withRouter } from 'react-router';
 import ImageUploader from 'react-images-upload';
 import { connect } from '../data/connect';
 import CategoryOptions from '../components/CategoryOptions';
+import { UserProfile, PWA } from '../util/types';
+import PWACard from '../components/PWACard';
+import { add } from 'ionicons/icons';
 
 interface OwnProps extends RouteComponentProps {}
 
@@ -16,7 +19,7 @@ interface ProfileProps extends OwnProps,  DispatchProps, StateProps {}
 
 const Profile: React.FC<ProfileProps> = ({
 }) => {
-
+  const [profile, setProfile] = useState<UserProfile | undefined>(undefined);
   const [url, setUrl] = useState<string>('');
   const [name, setName] = useState<string>('');
   const [desc, setDesc] = useState<string>('');
@@ -27,8 +30,15 @@ const Profile: React.FC<ProfileProps> = ({
   const [nameTakenError, setNameTakenError] = useState<boolean>(false);
 
   useEffect(() => {
-    getProfile();
+    loadProfile();
   }, [])
+
+  const loadProfile = async () => {
+    const resp = await getProfile();
+    if (resp) {
+      setProfile(resp);
+    }
+  }
 
   const onPress = (option: string) => {
     setCat(option);
@@ -49,6 +59,7 @@ const Profile: React.FC<ProfileProps> = ({
         if (resp && resp.data && resp.data.message === 'Name is taken') {
           setNameTakenError(true);
         } else if (resp && resp.appId) {
+          profile?.pwas.push(resp as PWA);
           setName('');
           setDesc('');
           setCat('');
@@ -155,13 +166,30 @@ const Profile: React.FC<ProfileProps> = ({
         <IonButton expand='block' onClick={onAddPWA}>Add</IonButton>
         <IonButton onClick={() => setShowModal(false)}>Close</IonButton>
       </IonModal>
-      <IonItem button routerLink="/logout" routerDirection="none">
-        <IonLabel>Logout</IonLabel>
-      </IonItem>
-      <IonItem>
-        {}
-      </IonItem>
-      <IonButton onClick={() => setShowModal(true)}>Add PWA</IonButton>
+      <IonHeader>
+        <IonToolbar>
+          <div slot="start">
+            <IonTitle>{profile?.username}</IonTitle>
+          </div>
+          <div slot="end">
+            <IonButton href="/logout">Log Out</IonButton>
+            <IonButton onClick={() => setShowModal(true)}>
+              <IonIcon icon={add} />
+            </IonButton>
+          </div>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent>
+        <p style={{
+          paddingLeft: '20px',
+          fontSize: '20px'
+        }}>My PWA's</p>
+        <IonGrid>
+          <IonRow>
+            { profile && profile.pwas && profile.pwas.map(pwa => <PWACard name={pwa.name} appId={pwa.appId} category={pwa.category} icon={pwa.icon} />)}
+          </IonRow>
+        </IonGrid>
+      </IonContent>
     </IonPage>
   );
 };

@@ -9,12 +9,18 @@ export interface Image {
 }
 
 export interface PWA {
+    appId: number
     name: string,
     description: string,
     link: string,
     icon: string,
     category: string,
     screenshots: Image[]
+}
+
+export interface UserProfile {
+    username: string,
+    pwas: PWA[]
 }
 
 type PromiseResolveValue<T> = T extends Promise<infer R> ? R : T;
