@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonItem, IonLabel, IonModal, IonList, IonInput, IonTextarea, IonText, IonImg, IonGrid, IonRow, IonIcon, IonButtons, IonFab, IonFabButton, IonFabList, IonAlert } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonItem, IonLabel, IonModal, IonList, IonInput, IonTextarea, IonText, IonImg, IonGrid, IonRow, IonIcon, IonButtons, IonFab, IonFabButton, IonFabList, IonAlert, useIonViewDidEnter } from '@ionic/react';
 import { getProfile, postApp } from '../data/dataApi';
 import { RouteComponentProps, withRouter, Redirect } from 'react-router';
 import ImageUploader from 'react-images-upload';
@@ -37,9 +37,10 @@ const Profile: React.FC<ProfileProps> = ({
   const [showAlert, setShowAlert] = useState(false);
   const [nameTakenError, setNameTakenError] = useState<boolean>(false);
 
-  useEffect(() => {
+  useIonViewDidEnter(() => {
+    console.log('hey');
     loadProfile();
-  }, [])
+  })
 
   const loadProfile = async () => {
     const resp = await getProfile();
@@ -222,6 +223,14 @@ const Profile: React.FC<ProfileProps> = ({
               handler: () => {
                 setToken(undefined);
                 setIsLoggedIn(false);
+                setProfile(undefined);
+                setName('');
+                setDesc('');
+                setCat('');
+                setUrl('');
+                setIcon(undefined);
+                setScreenshots(undefined);
+                setShowModal(false);
                 history.push('/login')
               }
             }
