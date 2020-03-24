@@ -36,6 +36,7 @@ const Profile: React.FC<ProfileProps> = ({
   const [showModal, setShowModal] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [nameTakenError, setNameTakenError] = useState<boolean>(false);
+  const [isValidLink, setIsValidLink] = useState<boolean>(true);
 
   useIonViewDidEnter(() => {
     loadProfile();
@@ -153,10 +154,23 @@ const Profile: React.FC<ProfileProps> = ({
                         spellCheck={false}
                         value={url}
                         onIonChange={e => {
+                            const urlVal = e.detail.value!;
+                            if (urlVal === '') {
+                              setIsValidLink(true);
+                            } else {
+                              const isValid = /^((https):\/\/)([A-z]+)\.([A-z]{2,})/.test(urlVal);
+                              setIsValidLink(isValid);
+                            }
                             setUrl(e.detail.value!)
                         }}
                         required
                     />
+                    {
+                      !isValidLink &&
+                      <IonText color="danger">
+                          <p className="ion-padding-start">Invald link (https required)</p>
+                      </IonText>
+                    }
             </IonItem>
             <IonItem>
             <IonLabel position="stacked">Description</IonLabel>
@@ -216,22 +230,22 @@ const Profile: React.FC<ProfileProps> = ({
         <p style={{
           paddingLeft: '20px',
           fontSize: '20px'
-        }}>My PWAs</p>
+        }}>PWAs</p>
         <IonGrid>
           <IonCol>
-            <IonTitle>APPROVED</IonTitle>
+            <h2>APPROVED</h2>
             <IonRow>
               {loadPwas('APPROVED')}
             </IonRow>
           </IonCol>
           <IonCol>
-            <IonTitle>PENDING</IonTitle>
+            <h2>PENDING</h2>
             <IonRow>
               {loadPwas('PENDING')}
             </IonRow>
           </IonCol>
           <IonCol>
-            <IonTitle>DENIED</IonTitle>
+            <h2>DENIED</h2>
             <IonRow>
               {loadPwas('DENIED')}
             </IonRow>

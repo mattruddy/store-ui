@@ -4,7 +4,7 @@ import ImageUploader from 'react-images-upload';
 import { getPWA, putApp, deleteScreenshot, postAddScreenshots, deleteApp } from '../data/dataApi';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { PWA as PWAType, Image } from '../util/types';
-import { square, stop, remove, pencil, checkbox, removeCircle, removeSharp, earth } from 'ionicons/icons';
+import { pencil, checkbox, options, trash, close, checkmark } from 'ionicons/icons';
 
 interface MatchParams {
   id: string | undefined;
@@ -99,7 +99,7 @@ const addImages = async () => {
                   {
                       isEdit
                       ?
-                        <IonInput value={name} onIonChange={e => setName(e.detail.value!)} />
+                        <IonInput style={{ padding: '0', boxShadow: '0 0 3px #ccc'}} value={name} onIonChange={e => setName(e.detail.value!)} />
                       :
                         <p style={{ margin: '0', fontSize: '20px'}}>{pwa.name}</p>
                   }
@@ -114,17 +114,17 @@ const addImages = async () => {
       <IonContent>
       <IonFab activated={isEdit} style={{paddingTop: '10px'}} horizontal="end" slot="fixed">
               <IonFabButton>
-                  <IonIcon icon={square} />
+                  <IonIcon icon={options} />
               </IonFabButton>
                 {
                     isEdit
                     ?
                     <IonFabList>
                         <IonFabButton type="button" onClick={() => setIsEdit(false)}>
-                            <IonIcon icon={stop} />
+                            <IonIcon icon={close} />
                         </IonFabButton>
                         <IonFabButton type="button" onClick={editApp}>
-                            <IonIcon icon={checkbox} />
+                            <IonIcon icon={checkmark} />
                         </IonFabButton>                    
                     </IonFabList>
                     :
@@ -133,7 +133,7 @@ const addImages = async () => {
                             <IonIcon icon={pencil} />
                         </IonFabButton>
                         <IonFabButton type="button" onClick={() => setShowDeleteAlter(true)}>
-                            <IonIcon icon={removeSharp} />
+                            <IonIcon icon={trash} />
                         </IonFabButton>
                     </IonFabList>
                 }
@@ -142,7 +142,7 @@ const addImages = async () => {
         {
             isEdit 
             ?
-            <IonTextarea value={desc}  onIonChange={(e => setDesc(e.detail.value!) )}/>
+            <IonTextarea style={{height: '200px', margin: '10px', boxShadow: '0 0 3px #ccc'}} value={desc}  onIonChange={(e => setDesc(e.detail.value!) )}/>
             :
             <div style={{height: '200px', padding: '15px'}}>
             {pwa && pwa.description}
@@ -153,16 +153,17 @@ const addImages = async () => {
           screenshots && 
           <IonSlides ref={slides} key={screenshots.map((shot) => shot.imageId).join("_")} pager={true} options={{ initialSlide: 0, speed: 400}}>
           {screenshots.map((shot, idx) => (
-                <IonSlide key={idx}>
-                  {isEdit && 
-                      <IonButton style={{
-                        position: 'absolute',
-                        bottom: '68%',
-                        left: '60%',
-                      }} color="danger" onClick={() => removeImage(shot.imageId)}><IonIcon icon={remove} />
-                      </IonButton>
-                    }
-                    <img style={{height: '400px', width: '200px'}} src={shot.url} /> 
+                <IonSlide key={idx} style={{ position: 'relative'}}>
+                    {isEdit && 
+                        <IonButton shape="round" size="small" style={{
+                          position: 'absolute',
+                          bottom: '93%',
+                          left: '60%',
+                          zIndex: '100'
+                        }} color="danger" onClick={() => removeImage(shot.imageId)}><IonIcon icon={trash} />
+                        </IonButton>
+                      }
+                      <img style={{height: '400px', width: '200px'}} src={shot.url} /> 
                 </IonSlide>
             ))}
           </IonSlides>

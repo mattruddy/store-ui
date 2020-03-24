@@ -17,14 +17,13 @@ const PWAs: React.FC<RouteComponentProps> = ({
   const [searchResults, setSearchResults] = useState<Search[]>([]);
   const scrollEl = useRef<any>(undefined);
 
-  useIonViewDidEnter(() => {
+  useEffect(() => {
     loadPWAs();
+    return () => {
+      setPwas([]);
+      setPage(0);
+    }
   }, [])
-
-  useIonViewDidLeave(() => {
-    setPwas([]);
-    setPage(0);
-  })
 
   const loadPWAs = async () => {
     setIsLoading(true);
