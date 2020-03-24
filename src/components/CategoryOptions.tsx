@@ -2,12 +2,15 @@ import React from 'react';
 import { IonSelect, IonSelectOption } from '@ionic/react';
 
 const categories = [
-    "ALL",
     'GAME',
-    'EDUCATION',
-    'FITNESS',
+    'EDUCATIONAL',
+    'FOOD',
+    'BUSINESS',
+    'NEWS',
     'DATING',
-    'SOCIAL'
+    'SOCAIL',
+    'SHOPPING',
+    'TOOL'
 ]
 interface ContainerProps {
     onPress: (option: string) => void

@@ -96,6 +96,23 @@ export const getProfile = async () => {
   }
 }
 
+export const postScore = async (appId: number) => {
+  try {
+    const response = await Axios.request({
+      url: `${vars().env.API_URL}/public/pwa/${appId}`,
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    });
+    const { data } = response;
+    return data;
+  } catch (error) {
+    return error.response;
+  }
+}
+
 export const postApp = async (
   name: string,
   desc: string,
@@ -247,6 +264,25 @@ export const deleteScreenshot = async (imageId: number) => {
   try {
     const response = await Axios.request({
       url: `${vars().env.API_URL}/secure/screenshot/${imageId}`,
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token.value}`,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    })
+    return response;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export const deleteApp = async (appId: number) => {
+  const token = await Storage.get({ key: TOKEN });
+  if (!token) return;
+  try {
+    const response = await Axios.request({
+      url: `${vars().env.API_URL}/secure/pwas/${appId}`,
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${token.value}`,

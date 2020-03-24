@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem, IonGrid, IonRow, IonSearchbar, IonSelectOption, IonSelect, IonCard, IonCardHeader, IonCardContent, IonButton, IonImg, IonSlides, IonSlide, IonLabel, useIonViewDidEnter, IonFab, IonFabButton, IonIcon, IonFabList, IonTextarea, IonInput } from '@ionic/react';
+import React, { useState, useEffect, useRef, MutableRefObject } from 'react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem, IonGrid, IonRow, IonSearchbar, IonSelectOption, IonSelect, IonCard, IonCardHeader, IonCardContent, IonButton, IonImg, IonSlides, IonSlide, IonLabel, useIonViewDidEnter, IonFab, IonFabButton, IonIcon, IonFabList, IonTextarea, IonInput, IonAlert } from '@ionic/react';
 import ImageUploader from 'react-images-upload';
-import { getPWA, putApp, deleteScreenshot, postAddScreenshots } from '../data/dataApi';
+import { getPWA, putApp, deleteScreenshot, postAddScreenshots, deleteApp } from '../data/dataApi';
 import { RouteComponentProps } from 'react-router';
 import { PWA as PWAType, Image } from '../util/types';
-import { square, stop, remove, pencil, checkbox } from 'ionicons/icons';
+import { square, stop, remove, pencil, checkbox, removeCircle, removeSharp, earth } from 'ionicons/icons';
 
 interface MatchParams {
   id: string | undefined;
@@ -22,7 +22,8 @@ interface DispatchProps {
 type PWAProps = OwnProps & StateProps & DispatchProps;
 
 const MyPWA: React.FC<PWAProps> = ({
-  match
+  match,
+  history
 }) => {
 
   const [pwa, setPwa] = useState<PWAType>();
@@ -33,6 +34,8 @@ const MyPWA: React.FC<PWAProps> = ({
   const [cat, setCat] = useState<string | undefined>(undefined);
   const [link, setLink] = useState<string | undefined>(undefined);
   const [images, setImages] = useState<File[] | undefined>(undefined);
+  const [showDeleteAlert, setShowDeleteAlter] = useState<boolean>(false);
+  const slides = useRef<any>();
 
   useIonViewDidEnter(() => {
     loadPWA();
@@ -54,7 +57,6 @@ const editApp = async () => {
         return;
     }
     const resp = await putApp(name!, desc!, cat!, Number(match.params.id));
-    console.log(resp);
     if (resp?.status === 200) {
         setPwa(resp.data);
         setScreenshots(resp.data.screenshots);
@@ -64,7 +66,7 @@ const editApp = async () => {
 
 const removeImage = async (imageId: number) => {
     const resp = await deleteScreenshot(imageId);
-    console.log(resp);
+    console.log(slides);
     if (screenshots) {
         //setScreenshots(screenshots.filter(shot => shot.imageId !== imageId));
     }
@@ -74,7 +76,8 @@ const addImages = async () => {
     const resp = await postAddScreenshots(images!, Number(match.params.id!));
     if (resp.length > 0) {
         setScreenshots(prev => prev?.concat(resp));
-        setImages([]);
+        //slides.current.update();
+        setImages(undefined);
     }
 }
 
@@ -85,7 +88,7 @@ const addImages = async () => {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
             <div style={{ display: 'flex', alignItems: 'center'}}>
               { pwa && 
-                <IonImg style={{height: '70px', width: '70px'}} src={pwa.icon} /> }
+                <img style={{height: '70px', width: '70px', borderRadius: '5px'}} src={pwa.icon} /> }
               { pwa && 
                 <div style={{ paddingLeft: '10px', display: 'flex', flexDirection: 'column', justifyContent: 'space-around', height: '70px'}}>
                   
@@ -105,7 +108,7 @@ const addImages = async () => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
-      <IonFab style={{paddingTop: '10px'}} horizontal="end" slot="fixed">
+      <IonFab activated={isEdit} style={{paddingTop: '10px'}} horizontal="end" slot="fixed">
               <IonFabButton>
                   <IonIcon icon={square} />
               </IonFabButton>
@@ -125,6 +128,9 @@ const addImages = async () => {
                         <IonFabButton type="button" onClick={() => setIsEdit(true)}>
                             <IonIcon icon={pencil} />
                         </IonFabButton>
+                        <IonFabButton type="button" onClick={() => setShowDeleteAlter(true)}>
+                            <IonIcon icon={removeSharp} />
+                        </IonFabButton>
                     </IonFabList>
                 }
           </IonFab>
@@ -139,10 +145,17 @@ const addImages = async () => {
             </div> 
         }
         <h2 style={{ paddingLeft: '10px' }}>Screenshots</h2>
-        <IonSlides pager={true} options={{ initialSlide: 0, speed: 400}}>
-          {screenshots && screenshots.map((shot, idx) => (
+        <IonSlides ref={slides} pager={true} options={{ initialSlide: 0, speed: 400}}>
+          {screenshots && screenshots.length > 0 && screenshots.map((shot, idx) => (
                 <IonSlide key={idx}>
-                    {isEdit && <IonButton color="danger" onClick={() => removeImage(shot.imageId)}><IonIcon icon={remove} /></IonButton>}
+                  {isEdit && 
+                      <IonButton style={{
+                        position: 'absolute',
+                        bottom: '68%',
+                        left: '60%',
+                      }} color="danger" onClick={() => removeImage(shot.imageId)}><IonIcon icon={remove} />
+                      </IonButton>
+                    }
                     <img style={{height: '400px', width: '200px'}} src={shot.url} /> 
                 </IonSlide>
           ))}
@@ -163,12 +176,31 @@ const addImages = async () => {
                     imgExtension={['.jpg', '.png']}
                     maxFileSize={5242880}
                 />
-                <IonButton onClick={addImages}>Add</IonButton>
+                { images && images.length > 0 && <IonButton expand='full' onClick={addImages}>Add {images.length > 1 ? 'Screenshots' : 'Screenshot'}</IonButton> }
             </form>
 
         }
 
       </IonContent>
+      <IonAlert
+        isOpen={showDeleteAlert}
+        onDidDismiss={() => setShowDeleteAlter(false)}
+        header={`Delete ${pwa?.name}`}
+        message='Are you sure you want to delete this app?'
+        buttons={[
+          {
+            text: 'Cancel',
+            handler: () => setShowDeleteAlter(false)
+          },
+          {
+            text: 'Delete',
+            handler: async () => {
+              const resp = await deleteApp(pwa?.appId!);
+              history.push('/profile');
+            }
+          }
+        ]}
+      />
     </IonPage>
   );
 };

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem, IonGrid, IonRow, IonSearchbar, IonSelectOption, IonSelect, IonCard, IonCardHeader, IonCardContent, IonButton, IonImg, IonSlides, IonSlide, IonLabel, useIonViewDidEnter } from '@ionic/react';
-import { getPWA } from '../data/dataApi';
+import { getPWA, postScore } from '../data/dataApi';
 import { RouteComponentProps } from 'react-router';
 import { PWA as PWAType } from '../util/types';
+import { Link } from 'react-router-dom';
 
 interface MatchParams {
   id: string | undefined;
@@ -41,14 +42,17 @@ const PWA: React.FC<PWAProps> = ({
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
             <div style={{ display: 'flex', alignItems: 'center'}}>
               { pwa && 
-                <IonImg style={{height: '70px', width: '70px'}} src={pwa.icon} /> }
+                <img style={{height: '70px', width: '70px', borderRadius: '5px'}} src={pwa.icon} /> }
               { pwa && 
                 <div style={{ paddingLeft: '10px', display: 'flex', flexDirection: 'column', justifyContent: 'space-around', height: '70px'}}>
                   <p style={{ margin: '0', fontSize: '20px'}}>{pwa.name}</p>
                   <small>{pwa.category}</small>
                 </div>}
             </div>
-            {pwa && <IonButton>Install</IonButton>}
+            {pwa && <IonButton onClick={() => {
+              postScore(Number(match.params.id!));
+              window.open(pwa.link, "_blank");
+            }}>Install</IonButton>}
           </div>
         </IonToolbar>
       </IonHeader>

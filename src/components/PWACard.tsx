@@ -14,7 +14,7 @@ const PWACard: React.FC<ContainerProps> = ({ name, icon, category, appId, url })
     <IonCard button style={{ height: '330px', width: '330px'}} href={`${url}/${appId}`}>
         <IonCardContent>
             <div style={{display: 'flex', justifyContent: 'center'}}>
-                <IonImg style={{ height: '200px', width: '200px'}} src={icon} />
+                <img style={{ height: '200px', width: '200px', borderRadius: '5px'}} src={icon} />
             </div>
         </IonCardContent>
         <div style={{paddingLeft: '10px'}}>

@@ -4,7 +4,6 @@ import PWACard from '../components/PWACard';
 import CategoryOptions from '../components/CategoryOptions';
 import { getPWAs, getSearchApp } from '../data/dataApi';
 import { PWA, Search } from '../util/types';
-import { resolveAny } from 'dns';
 
 const PWAs: React.FC = () => {
 
@@ -27,7 +26,7 @@ const PWAs: React.FC = () => {
   const loadPWAs = async () => {
     setIsLoading(true);
     const resp = await getPWAs(page);
-    if (resp.length > 0) {
+    if (resp && resp.length > 0) {
       setPwas(prev => prev.concat(resp));
     }
     setIsLoading(false);
@@ -79,7 +78,7 @@ const PWAs: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-            <IonTitle>PWA's</IonTitle>
+            <IonTitle>PWA Store</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent>
