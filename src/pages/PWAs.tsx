@@ -97,7 +97,7 @@ const PWAs: React.FC<RouteComponentProps> = ({
                 </IonItem>
               ) }
             </IonList>
-        <CategoryOptions onPress={onPress} />
+        <CategoryOptions onPress={onPress} haveClear={true} />
         <IonInfiniteScroll ref={scrollEl} onIonInfinite={loadMorePwas}>
           <IonInfiniteScrollContent>
               <IonGrid >

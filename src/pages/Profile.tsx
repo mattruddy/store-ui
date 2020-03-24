@@ -188,7 +188,7 @@ const Profile: React.FC<ProfileProps> = ({
                     />
             </IonItem>
             <IonItem>
-              <CategoryOptions onPress={onPress}/>
+              <CategoryOptions onPress={onPress} haveClear={false} />
             </IonItem>
             <IonItem>
               <ImageUploader 
