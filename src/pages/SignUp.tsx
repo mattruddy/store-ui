@@ -64,6 +64,10 @@ const SignUp: React.FC<SignIn> = ({
 
     return (
     <IonPage>
+        <IonContent style={{ overflow: 'hidden'}}>
+        <div style={{ display: 'flex', justifyContent: 'center'}}>
+          <img style={{height: '100px', width: '100px'}} src='/assets/icon/logo.png' />
+        </div>
         <form noValidate onSubmit={signup}>
             <IonList>
                 <IonItem>
@@ -133,6 +137,7 @@ const SignUp: React.FC<SignIn> = ({
             </IonCol>
           </IonRow>
         </form>
+        </IonContent>
     </IonPage>
   );
 };

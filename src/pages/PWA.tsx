@@ -66,7 +66,7 @@ const PWA: React.FC<PWAProps> = ({
           </div>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
+      <IonContent style={{ overflow: 'hidden'}}>
         { !isLoading && <h2 style={{paddingTop: '10px', paddingLeft: '10px'}}>About</h2> }
         <div style={{height: '200px', padding: '15px'}}>
         {pwa && pwa.description}

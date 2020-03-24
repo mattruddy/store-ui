@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef, MutableRefObject } from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem, IonGrid, IonRow, IonSearchbar, IonSelectOption, IonSelect, IonCard, IonCardHeader, IonCardContent, IonButton, IonImg, IonSlides, IonSlide, IonLabel, useIonViewDidEnter, IonFab, IonFabButton, IonIcon, IonFabList, IonTextarea, IonInput, IonAlert, useIonViewDidLeave } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem, IonGrid, IonRow, IonSearchbar, IonSelectOption, IonSelect, IonCard, IonCardHeader, IonCardContent, IonButton, IonImg, IonSlides, IonSlide, IonLabel, useIonViewDidEnter, IonFab, IonFabButton, IonIcon, IonFabList, IonTextarea, IonInput, IonAlert, useIonViewDidLeave, useIonViewWillLeave } from '@ionic/react';
 import ImageUploader from 'react-images-upload';
 import { getPWA, putApp, deleteScreenshot, postAddScreenshots, deleteApp } from '../data/dataApi';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { PWA as PWAType, Image } from '../util/types';
-import { pencil, checkbox, options, trash, close, checkmark } from 'ionicons/icons';
+import { pencil, options, trash, close, checkmark } from 'ionicons/icons';
 
 interface MatchParams {
   id: string | undefined;
@@ -34,16 +34,22 @@ const MyPWA: React.FC<PWAProps> = ({
   const [link, setLink] = useState<string | undefined>(undefined);
   const [images, setImages] = useState<File[] | undefined>(undefined);
   const [showDeleteAlert, setShowDeleteAlter] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const slides = useRef<any>();
 
   useIonViewDidEnter(() => {
     loadPWA();
+    setIsLoading(false);
   }, [])
 
   useIonViewDidLeave(() => {
     setPwa(undefined);
     setScreenshots(undefined);
   }, [])
+
+  useIonViewWillLeave(() => {
+    setIsLoading(true);
+  })
 
   const loadPWA = async () => {
     const resp = await getPWA(Number(history.location.pathname.split('/')[2])) as PWAType;
@@ -111,7 +117,7 @@ const addImages = async () => {
           </div>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
+      <IonContent style={{ overflow: 'hidden'}}>
       <IonFab activated={isEdit} style={{paddingTop: '10px'}} horizontal="end" slot="fixed">
               <IonFabButton>
                   <IonIcon icon={options} />
@@ -138,7 +144,7 @@ const addImages = async () => {
                     </IonFabList>
                 }
           </IonFab>
-        <h2 style={{paddingTop: '10px', paddingLeft: '10px'}}>About</h2>
+        { !isLoading && <h2 style={{paddingTop: '10px', paddingLeft: '10px'}}>About</h2>}
         {
             isEdit 
             ?
@@ -148,7 +154,7 @@ const addImages = async () => {
             {pwa && pwa.description}
             </div> 
         }
-        <h2 style={{ paddingLeft: '10px' }}>Screenshots</h2>
+        { !isLoading &&<h2 style={{ paddingLeft: '10px' }}>Screenshots</h2>}
         {
           screenshots && 
           <IonSlides ref={slides} key={screenshots.map((shot) => shot.imageId).join("_")} pager={true} options={{ initialSlide: 0, speed: 400}}>

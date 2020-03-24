@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonItem, IonLabel, IonModal, IonList, IonInput, IonTextarea, IonText, IonImg, IonGrid, IonRow, IonIcon, IonButtons, IonFab, IonFabButton, IonFabList, IonAlert, useIonViewDidEnter, IonCol } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonItem, IonLabel, IonModal, IonList, IonInput, IonTextarea, IonText, IonImg, IonGrid, IonRow, IonIcon, IonButtons, IonFab, IonFabButton, IonFabList, IonAlert, useIonViewDidEnter, IonCol, useIonViewWillLeave } from '@ionic/react';
 import { getProfile, postApp } from '../data/dataApi';
 import { RouteComponentProps, withRouter, Redirect } from 'react-router';
 import ImageUploader from 'react-images-upload';
@@ -37,9 +37,15 @@ const Profile: React.FC<ProfileProps> = ({
   const [showAlert, setShowAlert] = useState(false);
   const [nameTakenError, setNameTakenError] = useState<boolean>(false);
   const [isValidLink, setIsValidLink] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useIonViewDidEnter(() => {
     loadProfile();
+    setIsLoading(false);
+  })
+
+  useIonViewWillLeave(() => {
+    setIsLoading(true);
   })
 
   const loadProfile = async () => {
@@ -110,7 +116,7 @@ const Profile: React.FC<ProfileProps> = ({
             <IonTitle>PWA</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IonContent scrollEvents={true}>
+        <IonContent style={{overflow: 'hidden'}}>
         <form>
           <IonList>
             <IonItem>
@@ -233,19 +239,19 @@ const Profile: React.FC<ProfileProps> = ({
         }}>PWAs</p>
         <IonGrid>
           <IonCol>
-            <h2>APPROVED</h2>
+            { !isLoading && <h2>APPROVED</h2> }
             <IonRow>
               {loadPwas('APPROVED')}
             </IonRow>
           </IonCol>
           <IonCol>
-            <h2>PENDING</h2>
+          { !isLoading && <h2>PENDING</h2> }
             <IonRow>
               {loadPwas('PENDING')}
             </IonRow>
           </IonCol>
           <IonCol>
-            <h2>DENIED</h2>
+            { !isLoading && <h2>DENIED</h2>}
             <IonRow>
               {loadPwas('DENIED')}
             </IonRow>

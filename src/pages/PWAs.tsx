@@ -87,7 +87,7 @@ const PWAs: React.FC<RouteComponentProps> = ({
           </div>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
+      <IonContent style={{overflow: 'hidden'}}>
       { isLoading && <IonProgressBar type="indeterminate" /> }
       <IonSearchbar onIonChange={onSearchChange} />
           <IonList>

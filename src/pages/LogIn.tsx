@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { RouteComponentProps } from 'react-router';
-import { IonPage, IonList, IonItem, IonRow, IonLabel, IonInput, IonCol, IonButton, IonText } from '@ionic/react';
+import { IonPage, IonList, IonItem, IonRow, IonLabel, IonInput, IonCol, IonButton, IonText, IonContent } from '@ionic/react';
 import { setToken, setIsLoggedIn } from '../data/user/user.actions';
 import { postLogin } from '../data/dataApi';
 import { connect } from '../data/connect';
@@ -63,6 +63,10 @@ const LogIn: React.FC<LoginProps> = ({
 
     return (
     <IonPage>
+        <IonContent style={{ overflow: 'hidden'}}>
+        <div style={{ display: 'flex', justifyContent: 'center'}}>
+          <img style={{height: '100px', width: '100px'}} src='/assets/icon/logo.png' />
+        </div>
         <form noValidate onSubmit={signup}>
             <IonList>
                 <IonItem>
@@ -120,6 +124,7 @@ const LogIn: React.FC<LoginProps> = ({
             </IonCol>
           </IonRow>
         </form>
+        </IonContent>
     </IonPage>
   );
 };
