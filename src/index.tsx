@@ -3,6 +3,11 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
+import {setupConfig} from '@ionic/core';
+
+setupConfig({
+    swipeBackEnabled: false
+});
 
 ReactDOM.render(<App />, document.getElementById('root'));
 

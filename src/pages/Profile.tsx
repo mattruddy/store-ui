@@ -204,7 +204,7 @@ const Profile: React.FC<ProfileProps> = ({
         }}>My PWAs</p>
         <IonGrid>
           <IonRow>
-            { profile && profile.pwas && profile.pwas.map((pwa, idx) => <PWACard key={idx} url="/mypwa" name={pwa.name} appId={pwa.appId} category={pwa.category} icon={pwa.icon} />)}
+            { profile && profile.pwas && profile.pwas.map((pwa, idx) => <PWACard key={idx} url="/mypwa" history={history} name={pwa.name} appId={pwa.appId} category={pwa.category} icon={pwa.icon} />)}
           </IonRow>
         </IonGrid>
         <IonAlert

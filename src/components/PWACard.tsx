@@ -1,5 +1,5 @@
 import React from 'react';
-import { IonCard, IonCardContent, IonImg } from '@ionic/react';
+import { IonCard, IonCardContent } from '@ionic/react';
 
 interface ContainerProps {
     name?: string,
@@ -7,11 +7,12 @@ interface ContainerProps {
     icon?: string
     appId?: number,
     url: string,
+    history: any,
 }
 
-const PWACard: React.FC<ContainerProps> = ({ name, icon, category, appId, url }) => {
+const PWACard: React.FC<ContainerProps> = ({ name, icon, category, appId, url, history }) => {
   return (
-    <IonCard button style={{ height: '330px', width: '330px'}} href={`${url}/${appId}`}>
+    <IonCard button style={{ height: '330px', width: '330px'}} onClick={() => history.push(`${url}/${appId}`)}>
         <IonCardContent>
             <div style={{display: 'flex', justifyContent: 'center'}}>
                 <img style={{ height: '200px', width: '200px', borderRadius: '5px'}} src={icon} />

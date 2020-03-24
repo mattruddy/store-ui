@@ -4,8 +4,11 @@ import PWACard from '../components/PWACard';
 import CategoryOptions from '../components/CategoryOptions';
 import { getPWAs, getSearchApp } from '../data/dataApi';
 import { PWA, Search } from '../util/types';
+import { RouteComponentProps } from 'react-router';
 
-const PWAs: React.FC = () => {
+const PWAs: React.FC<RouteComponentProps> = ({
+    history
+}) => {
 
   const [page, setPage] = useState<number>(0);
   const [cat, setCat] = useState<string>('');
@@ -39,7 +42,7 @@ const PWAs: React.FC = () => {
         resultPwas = pwas.filter(pwa => pwa.category === cat);
       }
       if (resultPwas.length > 0) {
-        return resultPwas.map((pwa, idx) => <PWACard key={idx} url="/pwa" category={pwa.category} name={pwa.name} icon={pwa.icon} appId={pwa.appId} />)
+        return resultPwas.map((pwa, idx) => <PWACard key={idx} url="/pwa" history={history} category={pwa.category} name={pwa.name} icon={pwa.icon} appId={pwa.appId} />)
       } else {
         return <div></div>
       }
@@ -88,7 +91,7 @@ const PWAs: React.FC = () => {
       <IonSearchbar onIonChange={onSearchChange} />
           <IonList>
               { searchResults && searchResults.map((result, idx) => 
-                <IonItem button href={`/pwa/${result.appId}`} key={idx}>
+                <IonItem button onClick={() => history.push(`/pwa/${result.appId}`)} key={idx}>
                   {result.name}
                 </IonItem>
               ) }

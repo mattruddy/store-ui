@@ -52,7 +52,7 @@ const LogIn: React.FC<LoginProps> = ({
             setTokenAction(data.token);
             setIsLoggedInAction(true);
             setValidationError(false);
-            history.push('/pwas', {direction: 'none'});
+            history.push('/profile');
           } catch (e) {
             if (e.message === "Invalid Credentials") {
                 setValidationError(true);

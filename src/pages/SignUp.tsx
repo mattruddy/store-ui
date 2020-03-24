@@ -55,7 +55,7 @@ const SignUp: React.FC<SignIn> = ({
             }
             setTokenAction(data.token);
             setIsLoggedInAction(true);
-            history.push('/pwas', {direction: 'none'});
+            history.push('/profile');
           } catch (e) {
             console.log(`Error signing up: ${e}`);
           }

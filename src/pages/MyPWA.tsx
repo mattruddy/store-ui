@@ -103,7 +103,7 @@ const addImages = async () => {
                   <small>{pwa.category}</small>
                 </div>}
             </div>
-            {pwa && <IonButton>Install</IonButton>}
+            {pwa && <IonButton disabled={true}>Install</IonButton>}
           </div>
         </IonToolbar>
       </IonHeader>
