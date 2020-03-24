@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem, IonGrid, IonRow, IonSearchbar, IonSelectOption, IonSelect, IonCard, IonCardHeader, IonCardContent, IonButton, IonImg, IonSlides, IonSlide, IonLabel, useIonViewDidEnter, useIonViewWillEnter, IonProgressBar, useIonViewDidLeave } from '@ionic/react';
 import { getPWA, postScore } from '../data/dataApi';
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps, withRouter } from 'react-router';
 import { PWA as PWAType } from '../util/types';
 
 interface MatchParams {
@@ -20,7 +20,8 @@ interface DispatchProps {
 type PWAProps = OwnProps & StateProps & DispatchProps;
 
 const PWA: React.FC<PWAProps> = ({
-  match
+  match,
+  history
 }) => {
 
   const [pwa, setPwa] = useState<PWAType | undefined>(undefined);
@@ -31,10 +32,7 @@ const PWA: React.FC<PWAProps> = ({
   }, [])
 
   useIonViewDidEnter(() => {
-    const path = window.location.pathname;
-    const parts = path.split('/');
-    console.log(parts[2]);
-    loadPWA(parts[2]);
+    loadPWA(history.location.pathname.split('/')[2]);
     setIsLoading(false);
   }, [])
 
@@ -89,4 +87,4 @@ const PWA: React.FC<PWAProps> = ({
   );
 };
 
-export default PWA;
+export default withRouter(PWA);

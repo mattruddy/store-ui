@@ -4,7 +4,7 @@ import PWACard from '../components/PWACard';
 import CategoryOptions from '../components/CategoryOptions';
 import { getPWAs, getSearchApp } from '../data/dataApi';
 import { PWA, Search } from '../util/types';
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps, withRouter } from 'react-router';
 
 const PWAs: React.FC<RouteComponentProps> = ({
     history
@@ -113,4 +113,4 @@ const PWAs: React.FC<RouteComponentProps> = ({
   );
 };
 
-export default PWAs;
+export default withRouter(PWAs);

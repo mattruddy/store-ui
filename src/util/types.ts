@@ -15,6 +15,7 @@ export interface PWA {
     link: string,
     icon: string,
     category: string,
+    status: string,
     screenshots: Image[]
 }
 

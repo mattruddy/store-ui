@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonItem, IonLabel, IonModal, IonList, IonInput, IonTextarea, IonText, IonImg, IonGrid, IonRow, IonIcon, IonButtons, IonFab, IonFabButton, IonFabList, IonAlert, useIonViewDidEnter } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonItem, IonLabel, IonModal, IonList, IonInput, IonTextarea, IonText, IonImg, IonGrid, IonRow, IonIcon, IonButtons, IonFab, IonFabButton, IonFabList, IonAlert, useIonViewDidEnter, IonCol } from '@ionic/react';
 import { getProfile, postApp } from '../data/dataApi';
 import { RouteComponentProps, withRouter, Redirect } from 'react-router';
 import ImageUploader from 'react-images-upload';
@@ -75,6 +75,21 @@ const Profile: React.FC<ProfileProps> = ({
           setIcon(undefined);
           setScreenshots(undefined);
           setShowModal(false);
+        }
+    }
+  }
+
+  const loadPwas = (filter: string) => {
+    if (profile && profile.pwas) {
+        const filteredPwas = profile.pwas.filter(pwa => pwa.status === filter);
+        if (filteredPwas.length > 0) {
+          return filteredPwas.map((pwa, idx) => <PWACard key={idx} url="/mypwa" history={history} name={pwa.name} appId={pwa.appId} category={pwa.category} icon={pwa.icon} />);
+        } else {
+         return (
+           <div style={{ width: '100%', margin: '20px'}}>
+              <small>{`No ${filter} apps yet`}</small>
+           </div>
+         )
         }
     }
   }
@@ -203,9 +218,24 @@ const Profile: React.FC<ProfileProps> = ({
           fontSize: '20px'
         }}>My PWAs</p>
         <IonGrid>
-          <IonRow>
-            { profile && profile.pwas && profile.pwas.map((pwa, idx) => <PWACard key={idx} url="/mypwa" history={history} name={pwa.name} appId={pwa.appId} category={pwa.category} icon={pwa.icon} />)}
-          </IonRow>
+          <IonCol>
+            <IonTitle>APPROVED</IonTitle>
+            <IonRow>
+              {loadPwas('APPROVED')}
+            </IonRow>
+          </IonCol>
+          <IonCol>
+            <IonTitle>PENDING</IonTitle>
+            <IonRow>
+              {loadPwas('PENDING')}
+            </IonRow>
+          </IonCol>
+          <IonCol>
+            <IonTitle>DENIED</IonTitle>
+            <IonRow>
+              {loadPwas('DENIED')}
+            </IonRow>
+          </IonCol>
         </IonGrid>
         <IonAlert
           isOpen={showAlert}

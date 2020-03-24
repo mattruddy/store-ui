@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, MutableRefObject } from 'react';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem, IonGrid, IonRow, IonSearchbar, IonSelectOption, IonSelect, IonCard, IonCardHeader, IonCardContent, IonButton, IonImg, IonSlides, IonSlide, IonLabel, useIonViewDidEnter, IonFab, IonFabButton, IonIcon, IonFabList, IonTextarea, IonInput, IonAlert, useIonViewDidLeave } from '@ionic/react';
 import ImageUploader from 'react-images-upload';
 import { getPWA, putApp, deleteScreenshot, postAddScreenshots, deleteApp } from '../data/dataApi';
-import { RouteComponentProps } from 'react-router';
+import { RouteComponentProps, withRouter } from 'react-router';
 import { PWA as PWAType, Image } from '../util/types';
 import { square, stop, remove, pencil, checkbox, removeCircle, removeSharp, earth } from 'ionicons/icons';
 
@@ -22,7 +22,6 @@ interface DispatchProps {
 type PWAProps = OwnProps & StateProps & DispatchProps;
 
 const MyPWA: React.FC<PWAProps> = ({
-  match,
   history
 }) => {
 
@@ -47,7 +46,7 @@ const MyPWA: React.FC<PWAProps> = ({
   }, [])
 
   const loadPWA = async () => {
-    const resp = await getPWA(Number(match.params.id)) as PWAType;
+    const resp = await getPWA(Number(history.location.pathname.split('/')[2])) as PWAType;
     setPwa(resp);
     setScreenshots(resp.screenshots);
     setName(resp.name);
@@ -61,7 +60,7 @@ const editApp = async () => {
         setIsEdit(false);
         return;
     }
-    const resp = await putApp(name!, desc!, cat!, Number(match.params.id));
+    const resp = await putApp(name!, desc!, cat!, Number(history.location.pathname.split('/')[2]));
     if (resp?.status === 200) {
         setPwa(resp.data);
         setScreenshots(resp.data.screenshots);
@@ -78,16 +77,16 @@ const removeImage = async (imageId: number) => {
 }
 
 const addImages = async () => {
-    const resp = await postAddScreenshots(images!, Number(match.params.id!));
+    const resp = await postAddScreenshots(images!, Number(history.location.pathname.split('/')[2]));
     if (resp.length > 0) {
         setScreenshots(prev => prev?.concat(resp));
-        //slides.current.update();
+        slides.current.update();
         setImages(undefined);
     }
 }
 
   return (
-    <IonPage>
+    <IonPage style={{fontFamily: 'cursive'}}>
       <IonHeader>
         <IonToolbar>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
@@ -213,4 +212,4 @@ const addImages = async () => {
   );
 };
 
-export default MyPWA;
+export default withRouter(MyPWA);
