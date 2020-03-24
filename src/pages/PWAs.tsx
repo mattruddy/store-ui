@@ -51,8 +51,10 @@ const PWAs: React.FC = () => {
   const loadMorePwas = async () => {
     const nextPage = page + 1;
     const nextPwas = await getPWAs(nextPage);
-    setPwas(prev => prev.concat(nextPwas));
-    setPage(nextPage);
+    if (nextPwas) {
+      setPwas(prev => prev.concat(nextPwas));
+      setPage(nextPage);
+    }
     scrollEl.current.complete();
   }
 
