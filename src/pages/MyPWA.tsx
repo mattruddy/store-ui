@@ -86,7 +86,7 @@ const addImages = async () => {
 }
 
   return (
-    <IonPage style={{fontFamily: 'cursive'}}>
+    <IonPage>
       <IonHeader>
         <IonToolbar>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>

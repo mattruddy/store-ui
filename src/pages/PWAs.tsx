@@ -28,7 +28,7 @@ const PWAs: React.FC<RouteComponentProps> = ({
 
   const loadPWAs = async () => {
     setIsLoading(true);
-    const resp = await getPWAs(page);
+    const resp = await getPWAs(page, (cat && cat !== '') ? cat : undefined);
     if (resp && resp.length > 0) {
       setPwas(prev => prev.concat(resp));
     }
@@ -53,7 +53,7 @@ const PWAs: React.FC<RouteComponentProps> = ({
 
   const loadMorePwas = async () => {
     const nextPage = page + 1;
-    const nextPwas = await getPWAs(nextPage);
+    const nextPwas = await getPWAs(nextPage, (cat && cat !== '') ? cat : undefined);
     if (nextPwas) {
       setPwas(prev => prev.concat(nextPwas));
       setPage(nextPage);
