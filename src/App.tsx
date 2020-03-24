@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Redirect, Route } from 'react-router-dom';
+import { Redirect, Route, Router } from 'react-router-dom';
 import {
   IonApp,
   IonIcon,
@@ -10,7 +10,7 @@ import {
   IonTabs
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { ellipse, square, triangle, person, home, logIn } from 'ionicons/icons';
+import { ellipse, square, triangle, person, home, logIn, navigate } from 'ionicons/icons';
 import PWAS from './pages/PWAs';
 import SignUp from './pages/SignUp';
 import Tab2 from './pages/Tab2';
@@ -23,14 +23,6 @@ import '@ionic/react/css/core.css';
 import '@ionic/react/css/normalize.css';
 import '@ionic/react/css/structure.css';
 import '@ionic/react/css/typography.css';
-
-/* Optional CSS utils that can be commented out */
-import '@ionic/react/css/padding.css';
-import '@ionic/react/css/float-elements.css';
-import '@ionic/react/css/text-alignment.css';
-import '@ionic/react/css/text-transformation.css';
-import '@ionic/react/css/flex-utils.css';
-import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
@@ -75,13 +67,13 @@ const IonicApp: React.FC<IonicAppProps> = ({
     <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet>
-          <Route path="/pwas" component={PWAS} exact={true} />
           <Route path="/pwa/:id" component={PWA} />
           <Route path="/explore" component={Tab2} exact={true} />
           <Route path="/signup" component={SignUp} />
           <Route path="/login" component={LogIn} />
           <Route path="/profile" component={Profile} />
           <Route path="/mypwa/:id" component={MyPWA} />
+          <Route path="/pwas" component={PWAS} exact />
           <Route path="/" render={() => <Redirect to="/pwas" />} exact={true} />
         </IonRouterOutlet>
         <IonTabBar slot="bottom">

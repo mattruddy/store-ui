@@ -83,7 +83,9 @@ const PWAs: React.FC<RouteComponentProps> = ({
     <IonPage>
       <IonHeader>
         <IonToolbar>
-            <IonTitle>PWA Store</IonTitle>
+          <div style={{ width: '100%', display: 'flex', justifyContent: 'center'}}>
+            <img style={{ height: '40px', width: '40px'}} src="assets/icon/logo.png" />
+          </div>
         </IonToolbar>
       </IonHeader>
       <IonContent>

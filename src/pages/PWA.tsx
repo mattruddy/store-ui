@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem, IonGrid, IonRow, IonSearchbar, IonSelectOption, IonSelect, IonCard, IonCardHeader, IonCardContent, IonButton, IonImg, IonSlides, IonSlide, IonLabel, useIonViewDidEnter } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem, IonGrid, IonRow, IonSearchbar, IonSelectOption, IonSelect, IonCard, IonCardHeader, IonCardContent, IonButton, IonImg, IonSlides, IonSlide, IonLabel, useIonViewDidEnter, useIonViewWillEnter, IonProgressBar, useIonViewDidLeave } from '@ionic/react';
 import { getPWA, postScore } from '../data/dataApi';
 import { RouteComponentProps } from 'react-router';
 import { PWA as PWAType } from '../util/types';
-import { Link } from 'react-router-dom';
 
 interface MatchParams {
   id: string | undefined;
@@ -25,13 +24,26 @@ const PWA: React.FC<PWAProps> = ({
 }) => {
 
   const [pwa, setPwa] = useState<PWAType | undefined>(undefined);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  useIonViewDidEnter(() => {
-    loadPWA();
+  useIonViewWillEnter(() => {
+    setIsLoading(true);
   }, [])
 
-  const loadPWA = async () => {
-    const resp = await getPWA(Number(match.params.id)) as PWAType;
+  useIonViewDidEnter(() => {
+    const path = window.location.pathname;
+    const parts = path.split('/');
+    console.log(parts[2]);
+    loadPWA(parts[2]);
+    setIsLoading(false);
+  }, [])
+
+  useIonViewDidLeave(() => {
+    setPwa(undefined);
+  }, [])
+
+  const loadPWA = async (id: string) => {
+    const resp = await getPWA(Number(id)) as PWAType;
     setPwa(resp);
   }
 
@@ -42,14 +54,14 @@ const PWA: React.FC<PWAProps> = ({
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
             <div style={{ display: 'flex', alignItems: 'center'}}>
               { pwa && 
-                <img style={{height: '70px', width: '70px', borderRadius: '5px'}} src={pwa.icon} /> }
+                <img style={{height: '70px', width: '70px', borderRadius: '5px', margin: '10px'}} src={pwa.icon} /> }
               { pwa && 
                 <div style={{ paddingLeft: '10px', display: 'flex', flexDirection: 'column', justifyContent: 'space-around', height: '70px'}}>
                   <p style={{ margin: '0', fontSize: '20px'}}>{pwa.name}</p>
                   <small>{pwa.category}</small>
                 </div>}
             </div>
-            {pwa && <IonButton onClick={() => {
+            {pwa && <IonButton style={{ marginRight: '10px'}} onClick={() => {
               postScore(Number(match.params.id!));
               window.open(pwa.link, "_blank");
             }}>Install</IonButton>}
@@ -57,18 +69,21 @@ const PWA: React.FC<PWAProps> = ({
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        <h2 style={{paddingTop: '10px', paddingLeft: '10px'}}>About</h2>
+        { !isLoading && <h2 style={{paddingTop: '10px', paddingLeft: '10px'}}>About</h2> }
         <div style={{height: '200px', padding: '15px'}}>
         {pwa && pwa.description}
         </div> 
-        <h2 style={{ paddingLeft: '10px' }}>Screenshots</h2>
-        <IonSlides pager={true} options={{ initialSlide: 0, speed: 400}}>
-          {pwa && pwa.screenshots && pwa.screenshots.map((shot, idx) => (
+        { !isLoading && <h2 style={{ paddingLeft: '10px' }}>Screenshots</h2> }
+        {
+          pwa && pwa.screenshots &&
+          <IonSlides key={pwa.screenshots.map((shot) => shot.imageId).join('_')} pager={true} options={{ initialSlide: 0, speed: 400}}>
+          {pwa.screenshots.map((shot, idx) => (
             <IonSlide key={idx}>
               <img style={{height: '400px', width: '200px'}} src={shot.url} /> 
             </IonSlide>
           ))}
         </IonSlides>
+        }
       </IonContent>
     </IonPage>
   );

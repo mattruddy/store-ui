@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, MutableRefObject } from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem, IonGrid, IonRow, IonSearchbar, IonSelectOption, IonSelect, IonCard, IonCardHeader, IonCardContent, IonButton, IonImg, IonSlides, IonSlide, IonLabel, useIonViewDidEnter, IonFab, IonFabButton, IonIcon, IonFabList, IonTextarea, IonInput, IonAlert } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem, IonGrid, IonRow, IonSearchbar, IonSelectOption, IonSelect, IonCard, IonCardHeader, IonCardContent, IonButton, IonImg, IonSlides, IonSlide, IonLabel, useIonViewDidEnter, IonFab, IonFabButton, IonIcon, IonFabList, IonTextarea, IonInput, IonAlert, useIonViewDidLeave } from '@ionic/react';
 import ImageUploader from 'react-images-upload';
 import { getPWA, putApp, deleteScreenshot, postAddScreenshots, deleteApp } from '../data/dataApi';
 import { RouteComponentProps } from 'react-router';
@@ -41,6 +41,11 @@ const MyPWA: React.FC<PWAProps> = ({
     loadPWA();
   }, [])
 
+  useIonViewDidLeave(() => {
+    setPwa(undefined);
+    setScreenshots(undefined);
+  }, [])
+
   const loadPWA = async () => {
     const resp = await getPWA(Number(match.params.id)) as PWAType;
     setPwa(resp);
@@ -66,9 +71,9 @@ const editApp = async () => {
 
 const removeImage = async (imageId: number) => {
     const resp = await deleteScreenshot(imageId);
-    console.log(slides);
-    if (screenshots) {
-        //setScreenshots(screenshots.filter(shot => shot.imageId !== imageId));
+    if (resp && screenshots) {
+        setScreenshots(screenshots.filter(shot => shot.imageId !== imageId));
+        slides.current.update();
     }
 }
 
@@ -88,7 +93,7 @@ const addImages = async () => {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
             <div style={{ display: 'flex', alignItems: 'center'}}>
               { pwa && 
-                <img style={{height: '70px', width: '70px', borderRadius: '5px'}} src={pwa.icon} /> }
+                <img style={{height: '70px', width: '70px', borderRadius: '5px', margin: '10px'}} src={pwa.icon} /> }
               { pwa && 
                 <div style={{ paddingLeft: '10px', display: 'flex', flexDirection: 'column', justifyContent: 'space-around', height: '70px'}}>
                   
@@ -103,7 +108,7 @@ const addImages = async () => {
                   <small>{pwa.category}</small>
                 </div>}
             </div>
-            {pwa && <IonButton disabled={true}>Install</IonButton>}
+            {pwa && <IonButton style={{ marginRight: '10px'}} disabled={true}>Install</IonButton>}
           </div>
         </IonToolbar>
       </IonHeader>
@@ -145,8 +150,10 @@ const addImages = async () => {
             </div> 
         }
         <h2 style={{ paddingLeft: '10px' }}>Screenshots</h2>
-        <IonSlides ref={slides} pager={true} options={{ initialSlide: 0, speed: 400}}>
-          {screenshots && screenshots.length > 0 && screenshots.map((shot, idx) => (
+        {
+          screenshots && 
+          <IonSlides ref={slides} key={screenshots.map((shot) => shot.imageId).join("_")} pager={true} options={{ initialSlide: 0, speed: 400}}>
+          {screenshots.map((shot, idx) => (
                 <IonSlide key={idx}>
                   {isEdit && 
                       <IonButton style={{
@@ -158,8 +165,9 @@ const addImages = async () => {
                     }
                     <img style={{height: '400px', width: '200px'}} src={shot.url} /> 
                 </IonSlide>
-          ))}
-        </IonSlides>
+            ))}
+          </IonSlides>
+        }
         {
             isEdit &&
             <form>
