@@ -93,8 +93,8 @@ const Profile: React.FC<ProfileProps> = ({
           return filteredPwas.map((pwa, idx) => <PWACard key={idx} url="/mypwa" history={history} name={pwa.name} appId={pwa.appId} category={pwa.category} icon={pwa.icon} />);
         } else {
          return (
-           <div style={{ width: '100%', margin: '20px'}}>
-              <small>{`No ${filter} apps yet`}</small>
+           <div style={{ width: '100%', margin: '20px', height: '50px', display: 'flex', alignItems: 'center', boxShadow: '0 0 3px #ccc'}}>
+              <small style={{paddingLeft: '15px', color: 'rgb(115, 115, 115)'}}>{`No ${filter.toLowerCase()} apps yet`}</small>
            </div>
          )
         }
@@ -235,23 +235,24 @@ const Profile: React.FC<ProfileProps> = ({
         </IonFab>
         <p style={{
           paddingLeft: '20px',
-          fontSize: '20px'
+          fontSize: '50px',
+          marginBottom: '0'
         }}>PWAs</p>
         <IonGrid>
           <IonCol>
-            { !isLoading && <h2>APPROVED</h2> }
+            { !isLoading && <h2 style={{marginLeft: '20px'}}>Approved</h2> }
             <IonRow>
               {loadPwas('APPROVED')}
             </IonRow>
           </IonCol>
           <IonCol>
-          { !isLoading && <h2>PENDING</h2> }
+          { !isLoading && <h2 style={{marginLeft: '20px'}}>Pending</h2> }
             <IonRow>
               {loadPwas('PENDING')}
             </IonRow>
           </IonCol>
           <IonCol>
-            { !isLoading && <h2>DENIED</h2>}
+            { !isLoading && <h2 style={{marginLeft: '20px'}}>Denied</h2>}
             <IonRow>
               {loadPwas('DENIED')}
             </IonRow>
