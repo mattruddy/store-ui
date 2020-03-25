@@ -5,6 +5,7 @@ import { getPWA, putApp, deleteScreenshot, postAddScreenshots, deleteApp } from 
 import { RouteComponentProps, withRouter } from 'react-router';
 import { PWA as PWAType, Image } from '../util/types';
 import { pencil, options, trash, close, checkmark } from 'ionicons/icons';
+let fixRotation = require('fix-image-rotation')
 
 interface MatchParams {
   id: string | undefined;
@@ -83,7 +84,8 @@ const removeImage = async (imageId: number) => {
 }
 
 const addImages = async () => {
-    const resp = await postAddScreenshots(images!, Number(history.location.pathname.split('/')[2]));
+    const blobs = await fixRotation.fixRotation(images) as Blob[];
+    const resp = await postAddScreenshots(blobs, Number(history.location.pathname.split('/')[2]));
     if (resp.length > 0) {
         setScreenshots(prev => prev?.concat(resp));
         slides.current.update();
@@ -163,8 +165,8 @@ const addImages = async () => {
                     {isEdit && 
                         <IonButton shape="round" size="small" style={{
                           position: 'absolute',
-                          bottom: '93%',
-                          left: '60%',
+                          bottom: '90%',
+                          left: '80%',
                           zIndex: '100'
                         }} color="danger" onClick={() => removeImage(shot.imageId)}><IonIcon icon={trash} />
                         </IonButton>
@@ -187,7 +189,7 @@ const addImages = async () => {
                     withIcon={false}
                     onChange={(files: File[]) => setImages(files)}
                     buttonText='Add screenshots'
-                    imgExtension={['.jpg', '.png']}
+                    imgExtension={['.jpg', '.png', '.jpeg']}
                     maxFileSize={5242880}
                 />
                 { images && images.length > 0 && <IonButton expand='full' onClick={addImages}>Add {images.length > 1 ? 'Screenshots' : 'Screenshot'}</IonButton> }

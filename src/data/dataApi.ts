@@ -118,8 +118,8 @@ export const postApp = async (
   desc: string,
   url: string,
   category: string,
-  icon: File,
-  screenshots: File[]
+  icon: Blob,
+  screenshots: Blob[]
 ) => {
   const token = await Storage.get({ key: TOKEN });
   if (!token) return;
@@ -154,7 +154,7 @@ export const postApp = async (
   }
 }
 
-export const postAddScreenshots = async (screenshots: File[], appId: number) => {
+export const postAddScreenshots = async (screenshots: Blob[], appId: number) => {
   const token = await Storage.get({ key: TOKEN });
   if (!token) return;
   try {

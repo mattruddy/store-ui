@@ -9,6 +9,7 @@ import { UserProfile, PWA } from '../util/types';
 import PWACard from '../components/PWACard';
 import { add, menu, logOut } from 'ionicons/icons';
 import { setToken, setIsLoggedIn } from '../data/user/user.actions';
+let fixRotation = require('fix-image-rotation')
 
 interface OwnProps extends RouteComponentProps {}
 
@@ -70,7 +71,9 @@ const Profile: React.FC<ProfileProps> = ({
   const onAddPWA = async (e: React.FormEvent) => {
     e.preventDefault();
     if (name && url && desc && cat && icon && screenshots) {
-        const resp = await postApp(name, desc, url, cat, icon, screenshots);
+        const blobsScreenshots = await fixRotation.fixRotation(screenshots) as Blob[];
+        const blobsIcon = await fixRotation.fixRotation([icon]) as Blob[];
+        const resp = await postApp(name, desc, url, cat, blobsIcon[0], blobsScreenshots);
         if (resp && resp.data && resp.data.message === 'Name is taken') {
           setNameTakenError(true);
         } else if (resp && resp.appId) {
