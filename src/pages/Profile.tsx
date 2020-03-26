@@ -3,12 +3,14 @@ import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonIte
 import { getProfile, postApp } from '../data/dataApi';
 import { RouteComponentProps, withRouter, Redirect } from 'react-router';
 import ImageUploader from 'react-images-upload';
+import ReactCrop, { Crop } from 'react-image-crop';
 import { connect } from '../data/connect';
 import CategoryOptions from '../components/CategoryOptions';
 import { UserProfile, PWA } from '../util/types';
 import PWACard from '../components/PWACard';
 import { add, menu, logOut } from 'ionicons/icons';
 import { setToken, setIsLoggedIn } from '../data/user/user.actions';
+import { blobToFile } from '../util/utils';
 let fixRotation = require('fix-image-rotation')
 
 interface OwnProps extends RouteComponentProps {}
@@ -33,12 +35,21 @@ const Profile: React.FC<ProfileProps> = ({
   const [desc, setDesc] = useState<string>('');
   const [cat, setCat] = useState<string>('');
   const [icon, setIcon] = useState<File | undefined>(undefined);
+  const [iconFileName, setIconFileName] = useState<string>();
   const [screenshots, setScreenshots] = useState<File[] | undefined>(undefined);
   const [showModal, setShowModal] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [nameTakenError, setNameTakenError] = useState<boolean>(false);
   const [isValidLink, setIsValidLink] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [src, setSrc] = useState<string | undefined>(undefined);
+  const [crop, setCrop] = useState<Crop>({
+    unit: '%',
+    aspect: 1,
+    width: 30
+  });
+  const [image, setImage] = useState<HTMLImageElement | undefined>(undefined);
+  const [croppedImageUrl, setCroppedImageUrl] = useState<string | undefined>(undefined);
 
   useIonViewDidEnter(() => {
     loadProfile();
@@ -66,6 +77,74 @@ const Profile: React.FC<ProfileProps> = ({
 
   const onScreenshotsChange = (files: File[]) => {
     setScreenshots(files);
+  }
+
+  const handeChange = (files: File[]) => {
+    const file = files[0];
+    setIconFileName(file.name);
+    const reader = new FileReader();
+    reader.addEventListener('load', () => setSrc(reader.result as string))
+    reader.readAsDataURL(file);
+  }
+
+  const handleCropChange = (crop: Crop) => {
+    setCrop(crop);
+  }
+
+  const onImageLoaded = (image: HTMLImageElement) => {
+    setImage(image);
+  };
+
+  const onCropComplete = (crop: Crop) => {
+    makeClientCrop(crop);
+  };
+
+  const makeClientCrop = (crop: Crop) => {
+    if (image && crop.width && crop.height) {
+      getCroppedImg(
+        image,
+        crop,
+        `${iconFileName}.png`
+      );
+    }
+  }
+
+  const getCroppedImg = (image: HTMLImageElement , crop: Crop, fileName: string) => {
+    const canvas = document.createElement('canvas');
+    const scaleX = image.naturalWidth / image.width;
+    const scaleY = image.naturalHeight / image.height;
+    canvas.width = crop.width as number * devicePixelRatio;
+    canvas.height = crop.height as number * devicePixelRatio;
+    const ctx = canvas.getContext('2d');
+
+    if (ctx) {
+      ctx.drawImage(
+        image,
+        crop.x as number * scaleX,
+        crop.y  as number* scaleY,
+        crop.width as number * scaleX,
+        crop.height as number * scaleY,
+        0,
+        0,
+        crop.width as number * devicePixelRatio,
+        crop.height as number * devicePixelRatio
+      );
+    }
+
+    canvas.toBlob(async (blob) => {
+        if (!blob) {
+          //reject(new Error('Canvas is empty'));
+          console.error('Canvas is empty');
+          return '';
+        }
+
+        const orientedImage = await fixRotation.fixRotation(blob) as Blob;
+        console.log(orientedImage);
+        setIcon(blobToFile(orientedImage, fileName));
+        window.URL.revokeObjectURL(croppedImageUrl as string);
+        const fileUrl = window.URL.createObjectURL(orientedImage);
+        setCroppedImageUrl(fileUrl);
+      }, 'image/png');
   }
 
   const onAddPWA = async (e: React.FormEvent) => {
@@ -151,9 +230,21 @@ const Profile: React.FC<ProfileProps> = ({
                 withIcon={false}
                 buttonText='Choose icon'
                 onChange={onIconChange}
-                imgExtension={['.jpg', '.png']}
+                imgExtension={['.jpg', '.png', '.jpeg']}
                 maxFileSize={5242880}
               />
+              {
+                src && 
+                  <ReactCrop
+                    src={src}
+                    crop={crop}
+                    ruleOfThirds
+                    onImageLoaded={onImageLoaded}
+                    onComplete={onCropComplete}
+                    onChange={handleCropChange}
+                    keepSelection={true}
+                  />
+              }
             </IonItem>
             <IonItem>
             <IonLabel position="stacked">Link</IonLabel>
