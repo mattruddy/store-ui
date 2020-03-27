@@ -26,7 +26,7 @@ export const getUserData = async () => {
 export const getSearchApp = async (appName: string) => {
   try {
     const response = await Axios.request({
-      url: `${vars().env.API_URL}/public/search/${appName}`,
+      url: `/api/public/search/${appName}`,
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -42,7 +42,7 @@ export const getSearchApp = async (appName: string) => {
 export const getPWAs = async (page: number, category?: string) => {
   try {
     const response = await Axios.request({
-      url: category ? `${vars().env.API_URL}/public/pwas/${page}/${category}` : `${vars().env.API_URL}/public/pwas/${page}`,
+      url: category ? `/api/public/pwas/${page}/${category}` : `/api/public/pwas/${page}`,
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -59,7 +59,7 @@ export const getPWAs = async (page: number, category?: string) => {
 export const getPWA = async (id: number) => {
   try {
     const response = await Axios.request({
-      url: `${vars().env.API_URL}/public/pwa/${id}`,
+      url: `/api/public/pwa/${id}`,
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -78,7 +78,7 @@ export const getProfile = async () => {
   if (!token) return;
   try {
     const response = await Axios.request({
-      url: `${vars().env.API_URL}/secure/profile`,
+      url: `/api/secure/profile`,
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token.value}`,
@@ -99,7 +99,7 @@ export const getProfile = async () => {
 export const postScore = async (appId: number) => {
   try {
     const response = await Axios.request({
-      url: `${vars().env.API_URL}/public/pwa/${appId}`,
+      url: `/api/public/pwa/${appId}`,
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -138,7 +138,7 @@ export const postApp = async (
     fd.append("info", JSON.stringify(info));
 
     const response = await Axios.request({
-      url: `${vars().env.API_URL}/secure/pwas`,
+      url: `/api/secure/pwas`,
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token.value}`,
@@ -161,7 +161,7 @@ export const postAddScreenshots = async (screenshots: Blob[], appId: number) => 
     const fd = new FormData();
     screenshots.forEach(shot => fd.append("screenshots", shot));
     const response = await Axios.request({
-      url: `${vars().env.API_URL}/secure/screenshot/${appId}`,
+      url: `/api/secure/screenshot/${appId}`,
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token.value}`,
@@ -184,7 +184,7 @@ export const postSignup = async (
 ) => {
     try {
         const response = await Axios.request({
-            url: `${vars().env.API_URL}/public/signup`,
+            url: `/api/public/signup`,
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -209,7 +209,7 @@ export const postLogin = async (
 ) => {
     try {
       const response = await Axios.request({
-        url: `${vars().env.API_URL}/public/login`,
+        url: `/api/public/login`,
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -238,7 +238,7 @@ export const putApp = async (
   if (!token) return;
   try {
     const response = await Axios.request({
-      url: `${vars().env.API_URL}/secure/pwas/${appId}`,
+      url: `/api/secure/pwas/${appId}`,
       method: 'PUT',
       headers: {
         'Authorization': `Bearer ${token.value}`,
@@ -263,7 +263,7 @@ export const deleteScreenshot = async (imageId: number) => {
   if (!token) return;
   try {
     const response = await Axios.request({
-      url: `${vars().env.API_URL}/secure/screenshot/${imageId}`,
+      url: `/api/secure/screenshot/${imageId}`,
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${token.value}`,
@@ -282,7 +282,7 @@ export const deleteApp = async (appId: number) => {
   if (!token) return;
   try {
     const response = await Axios.request({
-      url: `${vars().env.API_URL}/secure/pwas/${appId}`,
+      url: `/api/secure/pwas/${appId}`,
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${token.value}`,
