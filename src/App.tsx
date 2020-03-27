@@ -66,7 +66,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
     <IonApp>
     <IonReactRouter>
       <IonTabs>
-        <IonRouterOutlet>
+        <IonRouterOutlet style={{overflow: 'hidden'}}>
           <Route path="/pwa/:id" component={PWA} exact={false} />
           <Route path="/explore" component={Tab2} exact={true} />
           <Route path="/signup" component={SignUp} />

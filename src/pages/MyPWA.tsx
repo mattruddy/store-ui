@@ -5,7 +5,7 @@ import { getPWA, putApp, deleteScreenshot, postAddScreenshots, deleteApp } from 
 import { RouteComponentProps, withRouter } from 'react-router';
 import { PWA as PWAType, Image } from '../util/types';
 import { pencil, options, trash, close, checkmark } from 'ionicons/icons';
-let fixRotation = require('fix-image-rotation')
+import { fixFilesRotation } from '../util/utils';
 
 interface MatchParams {
   id: string | undefined;
@@ -84,8 +84,8 @@ const removeImage = async (imageId: number) => {
 }
 
 const addImages = async () => {
-    const blobs = await fixRotation.fixRotation(images) as Blob[];
-    const resp = await postAddScreenshots(blobs, Number(history.location.pathname.split('/')[2]));
+    //const files = await fixFilesRotation(images as File[]);
+    const resp = await postAddScreenshots(images as File[], Number(history.location.pathname.split('/')[2]));
     if (resp.length > 0) {
         setScreenshots(prev => prev?.concat(resp));
         slides.current.update();
