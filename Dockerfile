@@ -15,5 +15,5 @@ RUN npm run build
 FROM nginx:1.14-alpine
 COPY --from=build /app/build /usr/share/nginx/html
 RUN chmod -R 755 /usr/share/nginx/html
-COPY nginx.conf /data/conf/nginx.conf
-CMD ["nginx", "-c", "/data/conf/nginx.conf", "-g", "daemon off;"]
+RUN rm /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d
