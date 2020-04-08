@@ -66,7 +66,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
     <IonApp>
     <IonReactRouter>
       <IonTabs>
-        <IonRouterOutlet style={{overflow: 'hidden'}}>
+        <IonRouterOutlet style={{overflow: 'hidden'}} animated={false} >
           <Route path="/pwa/:id" component={PWA} exact={false} />
           <Route path="/support" component={Support} exact={true} />
           <Route path="/signup" component={SignUp} />
@@ -76,22 +76,22 @@ const IonicApp: React.FC<IonicAppProps> = ({
           <Route path="/pwas" component={PWAS} exact />
           <Route path="/" render={() => <Redirect to="/pwas" />} exact={true} />
         </IonRouterOutlet>
-        <IonTabBar slot="bottom">
+        <IonTabBar slot="bottom" color='primary'>
           <IonTabButton tab="pwas" href="/pwas">
-            <IonIcon icon={home} />
-            <IonLabel>PWAs</IonLabel>
+            <IonIcon color='medium' class='tab' icon={home} />
+            <IonLabel color='medium'>PWAs</IonLabel>
           </IonTabButton>
           <IonTabButton tab="support" href="/support">
-            <IonIcon icon={bandage} />
-            <IonLabel>Support</IonLabel>
+            <IonIcon color='medium' icon={bandage} />
+            <IonLabel color='medium'>Support</IonLabel>
           </IonTabButton>
           <IonTabButton tab="login" href="/login" disabled={isLoggedIn} hidden={isLoggedIn}>
-            <IonIcon icon={logIn} />
-            <IonLabel>Log In</IonLabel>
+            <IonIcon color='medium' icon={logIn} />
+            <IonLabel color='medium'>Log In</IonLabel>
           </IonTabButton>
           <IonTabButton tab="profile" href="/profile" disabled={!isLoggedIn} hidden={!isLoggedIn}>
-            <IonIcon icon={person} />
-            <IonLabel>Profile</IonLabel>
+            <IonIcon color='medium' icon={person} />
+            <IonLabel color='medium'>Profile</IonLabel>
           </IonTabButton>
         </IonTabBar>
       </IonTabs>

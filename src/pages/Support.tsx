@@ -38,7 +38,7 @@ const Support: React.FC = () => {
               setText(e.detail.value!);
             }}
           />
-          <IonButton style={{width: '95%'}} type="button" expand='full' onClick={async() => {
+          <IonButton style={{width: '95%', marginTop: '15px', borderRadius: '5px'}} type="button" expand='full' onClick={async() => {
             if (!name || !text || name === '' || text === '') return;
             await postEmail(name!, text!);
             setName('');
