@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonTextarea, IonButton, IonInput, IonLabel, IonToast } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonTextarea, IonButton, IonInput, IonLabel, IonToast, IonItem } from '@ionic/react';
 import { postEmail } from '../data/dataApi';
 
 const Support: React.FC = () => {
@@ -17,15 +17,19 @@ const Support: React.FC = () => {
       </IonHeader>
       <IonContent>
         <div style={{width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-          <IonLabel>Name</IonLabel>
-          <IonInput
-            style={{boxShadow: '0 0 3px #ccc', width: '95%'}}
-            value={name}
-            onIonChange={(e) => {
-              setName(e.detail.value!);
-            }}
+            <div style={{ width: '100%', display: 'flex', alignItems: 'flex-end', height: '30px', marginBottom: '7px'}}>
+              <IonLabel style={{marginLeft: '30px'}}>Name</IonLabel>
+            </div>          
+            <IonInput
+              style={{boxShadow: '0 0 3px #ccc', width: '95%'}}
+              value={name}
+              onIonChange={(e) => {
+                setName(e.detail.value!);
+              }}
           />
-          <IonLabel>Information</IonLabel>
+          <div style={{ width: '100%', display: 'flex', alignItems: 'flex-end', height: '30px'}}>
+            <IonLabel style={{marginLeft: '30px'}}>Information</IonLabel>
+          </div>
           <IonTextarea
             style={{boxShadow: '0 0 3px #ccc', width: '95%'}}
             value={text}
@@ -35,6 +39,7 @@ const Support: React.FC = () => {
             }}
           />
           <IonButton style={{width: '95%'}} type="button" expand='full' onClick={async() => {
+            if (!name || !text || name === '' || text === '') return;
             await postEmail(name!, text!);
             setName('');
             setText('');
