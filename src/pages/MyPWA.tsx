@@ -5,7 +5,7 @@ import { getPWA, putApp, deleteScreenshot, postAddScreenshots, deleteApp } from 
 import { RouteComponentProps, withRouter } from 'react-router';
 import { PWA as PWAType, Image } from '../util/types';
 import { pencil, options, trash, close, checkmark } from 'ionicons/icons';
-import { fixFilesRotation } from '../util/utils';
+import { fixFilesRotation, fixRoation } from '../util/utils';
 
 interface MatchParams {
   id: string | undefined;
@@ -52,6 +52,11 @@ const MyPWA: React.FC<PWAProps> = ({
     setIsLoading(true);
   })
 
+  const onFileChange = async (files: File[]) => {
+    const fixedFiles = await fixFilesRotation(files) as File[];
+    setImages(fixedFiles);
+  }
+
   const loadPWA = async () => {
     const resp = await getPWA(Number(history.location.pathname.split('/')[2])) as PWAType;
     setPwa(resp);
@@ -84,7 +89,6 @@ const removeImage = async (imageId: number) => {
 }
 
 const addImages = async () => {
-    //const files = await fixFilesRotation(images as File[]);
     const resp = await postAddScreenshots(images as File[], Number(history.location.pathname.split('/')[2]));
     if (resp.length > 0) {
         setScreenshots(prev => prev?.concat(resp));
@@ -189,7 +193,7 @@ const addImages = async () => {
                     withLabel={false}
                     singleImage={false}
                     withIcon={false}
-                    onChange={(files: File[]) => setImages(files)}
+                    onChange={onFileChange}
                     buttonText='Add screenshots'
                     imgExtension={['.jpg', '.png', '.jpeg']}
                     maxFileSize={5242880}

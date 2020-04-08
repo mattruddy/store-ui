@@ -16,7 +16,11 @@ export const fixFilesRotation = async (files: File[]) => {
 
 function fixRotation(file: File) {
     return new Promise((resolve) => {
-        loadImage(file, (img) => {
+        loadImage(file, (img, data) => {
+            if (data && data.exif) {
+                //@ts-ignorets
+                console.log(data.exif.get('Orientation'));
+            }
             (img as HTMLCanvasElement).toBlob(
                 (blob) => {
                     resolve(blob)
@@ -25,4 +29,16 @@ function fixRotation(file: File) {
             )
         }, {orientation: true})
     })
+}
+
+export const fixRoation = (src: string): string | undefined => {
+    let fixSrc;
+    loadImage(
+        src,
+        (canvas) => {
+            fixSrc = (canvas as HTMLCanvasElement).toDataURL();
+        },
+        {orientation: true}
+    );
+    return fixSrc;
 }
