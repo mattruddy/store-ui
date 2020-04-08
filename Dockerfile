@@ -7,7 +7,6 @@ ENV NPM_CONFIG_LOGLEVEL warn
 COPY package*.json /app/
 RUN npm config set unsafe-perm true
 RUN npm install --silent
-RUN npm install react-scripts -g --silent
 COPY . /app
 RUN npm run build
 
