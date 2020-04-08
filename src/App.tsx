@@ -10,10 +10,10 @@ import {
   IonTabs
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { ellipse, square, triangle, person, home, logIn, navigate } from 'ionicons/icons';
+import { ellipse, square, triangle, person, home, logIn, navigate, bandage } from 'ionicons/icons';
 import PWAS from './pages/PWAs';
 import SignUp from './pages/SignUp';
-import Tab2 from './pages/Tab2';
+import Support from './pages/Support';
 import Profile from './pages/Profile';
 
 /* Core CSS required for Ionic components to work properly */
@@ -68,7 +68,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
       <IonTabs>
         <IonRouterOutlet style={{overflow: 'hidden'}}>
           <Route path="/pwa/:id" component={PWA} exact={false} />
-          <Route path="/explore" component={Tab2} exact={true} />
+          <Route path="/support" component={Support} exact={true} />
           <Route path="/signup" component={SignUp} />
           <Route path="/login" component={LogIn} />
           <Route path="/profile" component={Profile} />
@@ -81,9 +81,9 @@ const IonicApp: React.FC<IonicAppProps> = ({
             <IonIcon icon={home} />
             <IonLabel>PWAs</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="explore" href="/explore" hidden={true}>
-            <IonIcon icon={ellipse} />
-            <IonLabel>Explore</IonLabel>
+          <IonTabButton tab="support" href="/support">
+            <IonIcon icon={bandage} />
+            <IonLabel>Support</IonLabel>
           </IonTabButton>
           <IonTabButton tab="login" href="/login" disabled={isLoggedIn} hidden={isLoggedIn}>
             <IonIcon icon={logIn} />

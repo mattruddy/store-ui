@@ -72,6 +72,27 @@ export const getPWA = async (id: number) => {
   }
 }
 
+export const postEmail = async (name: string, text: string) => {
+  try {
+    const response = await Axios.request({
+      url: `${vars().env.API_URL}/public/support`,
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      data: {
+        name: name,
+        text: text
+      }
+    });
+    const {data} = response;
+    return data;
+  } catch (error) {
+    return error.response;
+  }
+}
+
 export const getProfile = async () => {
   const token = await Storage.get({ key: TOKEN });
   if (!token) return;
