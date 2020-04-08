@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef, MutableRefObject } from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem, IonGrid, IonRow, IonSearchbar, IonSelectOption, IonSelect, IonCard, IonCardHeader, IonCardContent, IonButton, IonImg, IonSlides, IonSlide, IonLabel, useIonViewDidEnter, IonFab, IonFabButton, IonIcon, IonFabList, IonTextarea, IonInput, IonAlert, useIonViewDidLeave, useIonViewWillLeave } from '@ionic/react';
+import React, { useState, useRef } from 'react';
+import { IonContent, IonHeader, IonPage, IonToolbar, IonButton, IonSlides, IonSlide, useIonViewDidEnter, IonFab, IonFabButton, IonIcon, IonFabList, IonTextarea, IonInput, IonAlert, useIonViewDidLeave, useIonViewWillLeave } from '@ionic/react';
 import ImageUploader from 'react-images-upload';
 import { getPWA, putApp, deleteScreenshot, postAddScreenshots, deleteApp } from '../data/dataApi';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -115,13 +115,15 @@ const addImages = async () => {
                   <small>{pwa.category}</small>
                 </div>}
             </div>
-            {pwa && <IonButton style={{ marginRight: '10px'}} disabled={true}>Install</IonButton>}
+            {pwa && <IonButton style={{ marginRight: '10px'}} onClick={() => {
+              window.open(link, '_blank');
+            }}>Install</IonButton>}
           </div>
         </IonToolbar>
       </IonHeader>
-      <IonContent style={{ overflow: 'hidden'}}>
+      <IonContent className='content' style={{ overflow: 'hidden' }} >
       <IonFab activated={isEdit} style={{paddingTop: '10px'}} horizontal="end" slot="fixed">
-              <IonFabButton>
+              <IonFabButton class='fab'>
                   <IonIcon icon={options} />
               </IonFabButton>
                 {
@@ -150,7 +152,7 @@ const addImages = async () => {
         {
             isEdit 
             ?
-            <IonTextarea style={{height: '200px', margin: '10px', boxShadow: '0 0 3px #ccc'}} value={desc}  onIonChange={(e => setDesc(e.detail.value!) )}/>
+            <IonTextarea style={{margin: '10px', boxShadow: '0 0 3px #ccc'}} rows={10} value={desc}  onIonChange={(e => setDesc(e.detail.value!) )}/>
             :
             <div style={{height: '200px', padding: '15px'}}>
             {pwa && pwa.description}
@@ -159,7 +161,7 @@ const addImages = async () => {
         { !isLoading &&<h2 style={{ paddingLeft: '10px' }}>Screenshots</h2>}
         {
           screenshots && 
-          <IonSlides ref={slides} key={screenshots.map((shot) => shot.imageId).join("_")} pager={true} options={{ initialSlide: 0, speed: 400}}>
+          <IonSlides style={{marginBottom: '45px'}} ref={slides} key={screenshots.map((shot) => shot.imageId).join("_")} pager={true} options={{ initialSlide: 0, speed: 400}}>
           {screenshots.map((shot, idx) => (
                 <IonSlide key={idx} style={{ position: 'relative'}}>
                     {isEdit && 

@@ -5,6 +5,7 @@ import CategoryOptions from '../components/CategoryOptions';
 import { getPWAs, getSearchApp } from '../data/dataApi';
 import { PWA, Search } from '../util/types';
 import { RouteComponentProps, withRouter } from 'react-router';
+import './main.css';
 
 const PWAs: React.FC<RouteComponentProps> = ({
     history
@@ -81,16 +82,16 @@ const PWAs: React.FC<RouteComponentProps> = ({
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar class='header'>
           <div style={{ width: '100%', display: 'flex', justifyContent: 'center'}}>
             <img style={{ height: '40px', width: '40px'}} src="assets/icon/logo.png" />
           </div>
         </IonToolbar>
       </IonHeader>
-      <IonContent style={{overflow: 'hidden'}}>
+      <IonContent class='content' style={{overflow: 'hidden'}}>
       { isLoading && <IonProgressBar type="indeterminate" /> }
       <IonSearchbar onIonChange={onSearchChange} />
-          <IonList>
+          <IonList style={{ background: 'none'}}>
               { searchResults && searchResults.map((result, idx) => 
                 <IonItem button onClick={() => history.push(`/pwa/${result.appId}`)} key={idx}>
                   {result.name}

@@ -59,14 +59,14 @@ const PWA: React.FC<PWAProps> = ({
                   <small>{pwa.category}</small>
                 </div>}
             </div>
-            {pwa && <IonButton style={{ marginRight: '10px'}} onClick={() => {
+            {pwa && <IonButton class='button' style={{ marginRight: '10px'}} onClick={() => {
               postScore(Number(match.params.id!));
               window.open(pwa.link, "_blank");
             }}>Install</IonButton>}
           </div>
         </IonToolbar>
       </IonHeader>
-      <IonContent style={{ overflow: 'hidden'}}>
+      <IonContent class='content'>
         { !isLoading && <h2 style={{paddingTop: '10px', paddingLeft: '10px'}}>About</h2> }
         <div style={{height: '200px', padding: '15px'}}>
         {pwa && pwa.description}
@@ -74,7 +74,7 @@ const PWA: React.FC<PWAProps> = ({
         { !isLoading && <h2 style={{ paddingLeft: '10px' }}>Screenshots</h2> }
         {
           pwa && pwa.screenshots &&
-          <IonSlides key={pwa.screenshots.map((shot) => shot.imageId).join('_')} pager={true} options={{ initialSlide: 0, speed: 400}}>
+          <IonSlides style={{ marginBottom: '45px'}} key={pwa.screenshots.map((shot) => shot.imageId).join('_')} pager={true} options={{ initialSlide: 0, speed: 400}}>
           {pwa.screenshots.map((shot, idx) => (
             <IonSlide key={idx}>
               <img style={{height: '400px', width: '200px'}} src={shot.url} /> 

@@ -224,9 +224,9 @@ const Profile: React.FC<ProfileProps> = ({
           <IonTitle>{profile?.username}</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
+      <IonContent class='content'>
         <IonFab vertical="top" horizontal="end" slot="fixed">
-          <IonFabButton><IonIcon icon={menu} /></IonFabButton>
+          <IonFabButton class='fab'><IonIcon icon={menu} /></IonFabButton>
           <IonFabList side="bottom">
             <IonFabButton type="button" onClick={() => setShowAlert(true)}>
               <IonIcon icon={logOut} />
