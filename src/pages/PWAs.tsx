@@ -43,7 +43,6 @@ const PWAs: React.FC<RouteComponentProps> = ({
         resultPwas = pwas.filter(pwa => pwa.category === cat);
       }
       if (resultPwas.length > 0) {
-        console.log(grid);
         return (
           <>
             {resultPwas.map((pwa, idx) => <PWACard key={idx} url="/pwa" history={history} category={pwa.category} name={pwa.name} icon={pwa.icon} appId={pwa.appId} />)}
@@ -72,11 +71,7 @@ const PWAs: React.FC<RouteComponentProps> = ({
   }
 
   const onPress = (option: string) => {
-    if (option === 'ALL') {
-      setCat('');
-    } else {
-      setCat(option);
-    }
+    setCat(option);
   }
 
   const onSearchChange = async (e: CustomEvent) => {
@@ -108,7 +103,9 @@ const PWAs: React.FC<RouteComponentProps> = ({
                 </IonItem>
               ) }
             </IonList>
-        <CategoryOptions onPress={onPress} haveClear={true} />
+            <div style={{boxShadow: '0 0 3px #ccc', margin: '10px'}}>
+              <CategoryOptions onPress={onPress} haveClear={true} initValue={cat} />
+            </div>
         <IonInfiniteScroll ref={scrollEl} onIonInfinite={loadMorePwas}>
           <IonInfiniteScrollContent>
               <IonGrid ref={grid} >

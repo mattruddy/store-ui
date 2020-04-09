@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem, IonGrid, IonRow, IonSearchbar, IonSelectOption, IonSelect, IonCard, IonCardHeader, IonCardContent, IonButton, IonImg, IonSlides, IonSlide, IonLabel, useIonViewDidEnter, useIonViewWillEnter, IonProgressBar, useIonViewDidLeave } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem, IonGrid, IonRow, IonSearchbar, IonSelectOption, IonSelect, IonCard, IonCardHeader, IonCardContent, IonButton, IonImg, IonSlides, IonSlide, IonLabel, useIonViewDidEnter, useIonViewWillEnter, IonProgressBar, useIonViewDidLeave, IonBackButton, IonButtons } from '@ionic/react';
 import { getPWA, postScore } from '../data/dataApi';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { PWA as PWAType } from '../util/types';
@@ -49,6 +49,9 @@ const PWA: React.FC<PWAProps> = ({
     <IonPage>
       <IonHeader>
         <IonToolbar>
+        <IonButtons slot='start'>
+          <IonBackButton defaultHref='/pwas' />
+        </IonButtons>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
             <div style={{ display: 'flex', alignItems: 'center'}}>
               { pwa && 

@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { IonContent, IonHeader, IonPage, IonToolbar, IonButton, IonSlides, IonSlide, useIonViewDidEnter, IonFab, IonFabButton, IonIcon, IonFabList, IonTextarea, IonInput, IonAlert, useIonViewDidLeave, useIonViewWillLeave } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonToolbar, IonButton, IonSlides, IonSlide, useIonViewDidEnter, IonFab, IonFabButton, IonIcon, IonFabList, IonTextarea, IonInput, IonAlert, useIonViewDidLeave, useIonViewWillLeave, IonButtons, IonBackButton } from '@ionic/react';
 import ImageUploader from 'react-images-upload';
 import { getPWA, putApp, deleteScreenshot, postAddScreenshots, deleteApp } from '../data/dataApi';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -106,6 +106,9 @@ const addImages = async () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
+          <IonButtons slot="start" >
+            <IonBackButton defaultHref="/profile" />
+          </IonButtons>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
             <div style={{ display: 'flex', alignItems: 'center'}}>
               { pwa && 

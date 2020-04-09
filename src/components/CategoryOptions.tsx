@@ -15,7 +15,8 @@ const categories = [
     'MUSIC',
     'LIFESTYLE',
     'TRAVEL',
-    'SPORTS'
+    'SPORTS',
+    'ENTERTAINMENT'
 ]
 interface ContainerProps {
     onPress: (option: string) => void;
@@ -29,8 +30,6 @@ const CategoryOptions: React.FC<ContainerProps> = ({
     initValue,
 }) => {
 
-    console.log(initValue);
-
     const getOptions = () => {
         return (
         categories.map((cat, idx) => <IonSelectOption key={idx} value={cat}>{`${cat.charAt(0)}${cat.slice(1).toLowerCase()}`}</IonSelectOption>)
@@ -38,8 +37,8 @@ const CategoryOptions: React.FC<ContainerProps> = ({
     }
 
   return (
-      <IonSelect value={initValue ? initValue : undefined} placeholder='Category' onIonChange={e => onPress(e.detail.value!)} >
-          { haveClear && <IonSelectOption key={32432432} value="">Top</IonSelectOption> }
+      <IonSelect value={initValue !== undefined ? initValue : undefined} placeholder='Category' onIonChange={e => onPress(e.detail.value!)} >
+          { haveClear && <IonSelectOption key={32432432} value="">Trending</IonSelectOption> }
           {getOptions()}
       </IonSelect>
   );

@@ -7,7 +7,7 @@ import { connect } from '../data/connect';
 import CategoryOptions from '../components/CategoryOptions';
 import { UserProfile, PWA } from '../util/types';
 import PWACard from '../components/PWACard';
-import { add, menu, logOut } from 'ionicons/icons';
+import { add, menu, logOut, contractSharp } from 'ionicons/icons';
 import { setToken, setIsLoggedIn } from '../data/user/user.actions';
 import { fixFilesRotation } from '../util/utils';
 
@@ -57,6 +57,7 @@ const Profile: React.FC<ProfileProps> = ({
   }
 
   const onPress = (option: string) => {
+    console.log(option);
     setCat(option);
   }
 
@@ -197,7 +198,7 @@ const Profile: React.FC<ProfileProps> = ({
                     />
             </IonItem>
             <IonItem>
-              <CategoryOptions onPress={onPress} haveClear={false} />
+              <CategoryOptions onPress={onPress} haveClear={false} initValue={cat} />
             </IonItem>
             <IonItem>
               <ImageUploader 

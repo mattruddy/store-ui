@@ -10,7 +10,7 @@ import {
   IonTabs
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { ellipse, square, triangle, person, home, logIn, navigate, bandage } from 'ionicons/icons';
+import { ellipse, square, triangle, person, home, logIn, navigate, bandage, information, infiniteOutline, informationCircle } from 'ionicons/icons';
 import PWAS from './pages/PWAs';
 import SignUp from './pages/SignUp';
 import Support from './pages/Support';
@@ -32,6 +32,8 @@ import { connect } from './data/connect';
 import { AppContextProvider } from './data/AppContext';
 import PWA from './pages/PWA';
 import MyPWA from './pages/MyPWA';
+import About from './pages/About';
+import './App.css';
 
 const App: React.FC = () => {
   return (
@@ -74,24 +76,29 @@ const IonicApp: React.FC<IonicAppProps> = ({
           <Route path="/profile" component={Profile} />
           <Route path="/mypwa/:id" component={MyPWA} />
           <Route path="/pwas" component={PWAS} exact />
+          <Route path="/about" component={About} />
           <Route path="/" render={() => <Redirect to="/pwas" />} exact={true} />
         </IonRouterOutlet>
         <IonTabBar slot="bottom" color='primary'>
-          <IonTabButton tab="pwas" href="/pwas">
-            <IonIcon color='medium' class='tab' icon={home} />
-            <IonLabel color='medium'>PWAs</IonLabel>
+          <IonTabButton class='tab' tab="pwas" href="/pwas">
+            <IonIcon icon={home} />
+            <IonLabel >PWAs</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="support" href="/support">
-            <IonIcon color='medium' icon={bandage} />
-            <IonLabel color='medium'>Support</IonLabel>
+          <IonTabButton class='tab' tab="about" href="/about">
+            <IonIcon icon={informationCircle} />
+            <IonLabel >About</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="login" href="/login" disabled={isLoggedIn} hidden={isLoggedIn}>
-            <IonIcon color='medium' icon={logIn} />
-            <IonLabel color='medium'>Log In</IonLabel>
+          <IonTabButton class='tab' tab="support" href="/support">
+            <IonIcon  icon={bandage} />
+            <IonLabel >Support</IonLabel>
           </IonTabButton>
-          <IonTabButton tab="profile" href="/profile" disabled={!isLoggedIn} hidden={!isLoggedIn}>
-            <IonIcon color='medium' icon={person} />
-            <IonLabel color='medium'>Profile</IonLabel>
+          <IonTabButton class='tab' tab="login" href="/login" disabled={isLoggedIn} hidden={isLoggedIn}>
+            <IonIcon icon={logIn} />
+            <IonLabel >Log In</IonLabel>
+          </IonTabButton>
+          <IonTabButton class='tab' tab="profile" href="/profile" disabled={!isLoggedIn} hidden={!isLoggedIn}>
+            <IonIcon icon={person} />
+            <IonLabel >Profile</IonLabel>
           </IonTabButton>
         </IonTabBar>
       </IonTabs>
