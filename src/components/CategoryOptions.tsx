@@ -3,24 +3,33 @@ import { IonSelect, IonSelectOption } from '@ionic/react';
 
 const categories = [
     'GAME',
-    'EDUCATIONAL',
+    'EDUCATION',
     'FOOD',
     'BUSINESS',
     'NEWS',
     'DATING',
-    'SOCAIL',
+    'SOCIAL',
     'SHOPPING',
-    'TOOL'
+    'TOOL',
+    'TECH',
+    'MUSIC',
+    'LIFESTYLE',
+    'TRAVEL',
+    'SPORTS'
 ]
 interface ContainerProps {
     onPress: (option: string) => void;
     haveClear: boolean;
+    initValue?: string;
 }
 
 const CategoryOptions: React.FC<ContainerProps> = ({
     onPress,
     haveClear,
+    initValue,
 }) => {
+
+    console.log(initValue);
 
     const getOptions = () => {
         return (
@@ -29,7 +38,7 @@ const CategoryOptions: React.FC<ContainerProps> = ({
     }
 
   return (
-      <IonSelect placeholder='Category' onIonChange={e => onPress(e.detail.value!)} >
+      <IonSelect value={initValue ? initValue : undefined} placeholder='Category' onIonChange={e => onPress(e.detail.value!)} >
           { haveClear && <IonSelectOption key={32432432} value="">Top</IonSelectOption> }
           {getOptions()}
       </IonSelect>

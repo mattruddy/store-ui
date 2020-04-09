@@ -17,6 +17,7 @@ const PWAs: React.FC<RouteComponentProps> = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [searchResults, setSearchResults] = useState<Search[]>([]);
   const scrollEl = useRef<any>(undefined);
+  const grid = useRef<any>();
 
   useEffect(() => {
     loadPWAs();
@@ -42,7 +43,16 @@ const PWAs: React.FC<RouteComponentProps> = ({
         resultPwas = pwas.filter(pwa => pwa.category === cat);
       }
       if (resultPwas.length > 0) {
-        return resultPwas.map((pwa, idx) => <PWACard key={idx} url="/pwa" history={history} category={pwa.category} name={pwa.name} icon={pwa.icon} appId={pwa.appId} />)
+        console.log(grid);
+        return (
+          <>
+            {resultPwas.map((pwa, idx) => <PWACard key={idx} url="/pwa" history={history} category={pwa.category} name={pwa.name} icon={pwa.icon} appId={pwa.appId} />)}
+            <div style={{height: '330px', width: '330px', margin: '10px'}}></div>
+            <div style={{height: '330px', width: '330px', margin: '10px'}}></div>
+            <div style={{height: '330px', width: '330px', margin: '10px'}}></div>
+
+          </>
+        )
       } else {
         return <div></div>
       }
@@ -101,8 +111,8 @@ const PWAs: React.FC<RouteComponentProps> = ({
         <CategoryOptions onPress={onPress} haveClear={true} />
         <IonInfiniteScroll ref={scrollEl} onIonInfinite={loadMorePwas}>
           <IonInfiniteScrollContent>
-              <IonGrid >
-                <IonRow>
+              <IonGrid ref={grid} >
+                <IonRow style={{display: 'flex', justifyContent: 'center'}}>
                   {pwaList()}
                 </IonRow>
               </IonGrid>

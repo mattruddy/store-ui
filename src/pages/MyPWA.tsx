@@ -6,6 +6,7 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { PWA as PWAType, Image } from '../util/types';
 import { pencil, options, trash, close, checkmark } from 'ionicons/icons';
 import { fixFilesRotation, fixRoation } from '../util/utils';
+import CategoryOptions from '../components/CategoryOptions';
 
 interface MatchParams {
   id: string | undefined;
@@ -67,6 +68,10 @@ const MyPWA: React.FC<PWAProps> = ({
     setLink(resp.link);
 }
 
+const onCatChange = (cat: string) => {
+  setCat(cat);
+}
+
 const editApp = async () => {
     if (name === pwa?.name && desc === pwa?.description && cat === pwa?.category) {
         setIsEdit(false);
@@ -115,8 +120,13 @@ const addImages = async () => {
                       :
                         <p style={{ margin: '0', fontSize: '20px'}}>{pwa.name}</p>
                   }
-
-                  <small>{pwa.category}</small>
+                  {
+                    isEdit
+                    ?
+                      <CategoryOptions onPress={onCatChange} haveClear={false} initValue={cat} />
+                    :
+                      <small>{pwa.category}</small>
+                  }
                 </div>}
             </div>
             {pwa && <IonButton style={{ marginRight: '10px'}} onClick={() => {
