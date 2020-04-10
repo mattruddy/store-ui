@@ -103,7 +103,7 @@ export const postEmail = async (name: string, text: string) => {
 
 export const getProfile = async () => {
   const token = await Storage.get({ key: TOKEN });
-  if (!token) return;
+  if (!token || !token.value) return;
   try {
     const response = await Axios.request({
       url: `${vars().env.API_URL}/secure/profile`,
@@ -341,5 +341,57 @@ export const setHasReadInstallData = async (hasRead?: string) => {
     await Storage.set({key: HAS_READ, value: 'false'});
   } else {
     await Storage.set(({key: HAS_READ, value: hasRead}));
+  }
+}
+
+//ADMIN
+
+export const getAllPending = async () => {
+  const token = await Storage.get({key: TOKEN});
+  if (!token) return;
+  try {
+    const response = await Axios.request({
+      url: `${vars().env.API_URL}/secure/admin/pwas`,
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token.value}`,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    })
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+}
+
+export const postStatus = async (code: string, appId: number, reason?: string,) => {
+  const token = await Storage.get({ key: TOKEN});
+  if (!token) return;
+  try {
+    let json;
+    if (reason) {
+      json = {
+        code: code,
+        reason: reason
+      };
+    } else {
+      json ={
+        code: code
+      };
+    }
+    const response = await Axios.request({
+      url: `${vars().env.API_URL}/secure/admin/pwa/${appId}`,
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token.value}`,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      data: json
+    })
+    return response;
+  } catch (error) {
+    return error.response;
   }
 }

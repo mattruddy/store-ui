@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { RouteComponentProps } from 'react-router';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem, IonGrid, IonRow, IonLabel, IonInput, IonCol, IonButton, IonText } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem, IonGrid, IonRow, IonLabel, IonInput, IonCol, IonButton, IonText, IonToast } from '@ionic/react';
 import { setToken, setIsLoggedIn } from '../data/user/user.actions';
 import { postSignup } from '../data/dataApi';
 import { connect } from '../data/connect';
@@ -29,6 +29,8 @@ const SignUp: React.FC<SignIn> = ({
     const [usernameError, setUsernameError] = useState(false);
     const [emailError, setEmailError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
+    const [toastMessage, setToastMessage] = useState<string>();
+    const [showToast, setShowToast] = useState<boolean>(false);
 
     const signup = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -51,10 +53,16 @@ const SignUp: React.FC<SignIn> = ({
               email
             );
             if (!data.token) {
-              throw "No Token data!";
+              if (data.data && data.data.message) {
+                setToastMessage(data.data.message);
+                setShowToast(true);
+              }
+              return;
             }
             setTokenAction(data.token);
             setIsLoggedInAction(true);
+            setToastMessage('Success');
+            setShowToast(true);
             history.push('/profile');
           } catch (e) {
             console.log(`Error signing up: ${e}`);
@@ -76,6 +84,7 @@ const SignUp: React.FC<SignIn> = ({
                         name="username"
                         type="text"
                         spellCheck={false}
+                        maxlength={30}
                         value={username}
                         onIonChange={e => {
                             setUsername(e.detail.value!)
@@ -96,6 +105,7 @@ const SignUp: React.FC<SignIn> = ({
                         name="email"
                         type="text"
                         spellCheck={false}
+                        maxlength={50}
                         value={email}
                         onIonChange={e => {
                             setEmail(e.detail.value!);
@@ -117,6 +127,7 @@ const SignUp: React.FC<SignIn> = ({
                         type="password"
                         spellCheck={false}
                         value={password}
+                        maxlength={80}
                         onIonChange={e => {
                             setPassword(e.detail.value!)
                             setPasswordError(false)
@@ -138,6 +149,12 @@ const SignUp: React.FC<SignIn> = ({
           </IonRow>
         </form>
         </IonContent>
+        <IonToast
+          isOpen={showToast}
+          message={toastMessage}
+          duration={3000}
+          onDidDismiss={() => { setShowToast(false); setToastMessage('');}}
+        />
     </IonPage>
   );
 };

@@ -16,7 +16,8 @@ export interface PWA {
     icon: string,
     category: string,
     status: string,
-    screenshots: Image[]
+    screenshots: Image[],
+    reason: string,
 }
 
 export interface UserProfile {

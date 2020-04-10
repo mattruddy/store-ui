@@ -46,6 +46,7 @@ const Profile: React.FC<ProfileProps> = ({
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [toastMessage, setToastMessage] = useState<string>();
   const [showToast, setShowToast] = useState<boolean>(false);
+  const [isSubmit, setIsSubmit] = useState<boolean>(false);
 
   useIonViewDidEnter(() => {
     loadProfile();
@@ -80,69 +81,84 @@ const Profile: React.FC<ProfileProps> = ({
 
   const onAddPWA = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    setIsSubmit(true);
+    let check = 0;
     if (!name) {
       setNameError('Name is required');
-      return;
+      check++;
     }
 
     if (!icon) {
       setIconError('Icon is required');
-      return;
+      check++;
     }
 
     if (!url) {
       setUrlError('Link is required');
-      return;
+      check++;
     }
 
     if (!(/^((https))/.test(url))) {
       setIsValidLink(false);
-      return;
+      check++;
     }
 
     if (!desc) {
       setDescError('Description is required');
-      return;
+      check++;
     }
 
     if (!cat) {
       setCatError('Category is required');
-      return;
+      check++;
     }
 
     if (!screenshots) {
       setScreenshotError('Atleast 1 screenshot is required');
-      return;
+      check++;
     }
 
-    if (screenshots.length > 6) {
+    if (screenshots && screenshots.length > 6) {
       setScreenshotError('Max of 6 screenshots');
-      return;
+      check++;
     }
-    const resp = await postApp(name, desc, url, cat, icon, screenshots);
-    if (resp && resp.data && resp.data.message) {
-      setToastMessage(resp.data.message);
-      setShowToast(true);
-    } else if (resp && resp.appId) {
-      profile?.pwas.push(resp as PWA);
-      setName('');
-      setDesc('');
-      setCat('');
-      setUrl('');
-      setIcon(undefined);
-      setScreenshots(undefined);
-      setShowModal(false);
-      setToastMessage('Success');
-      setShowToast(true);
+
+    if (check === 0) {
+      const resp = await postApp(name, desc, url, cat, icon as File, screenshots as File[]);
+      if (resp && resp.data && resp.data.message) {
+        setToastMessage(resp.data.message);
+        setShowToast(true);
+      } else if (resp && resp.appId) {
+        profile?.pwas.push(resp as PWA);
+        setName('');
+        setDesc('');
+        setCat('');
+        setUrl('');
+        setIcon(undefined);
+        setScreenshots(undefined);
+        setShowModal(false);
+        setToastMessage('Success');
+        setShowToast(true);
+      }
     }
+    setIsSubmit(false);
   }
 
   const loadPwas = (filter: string) => {
     if (profile && profile.pwas) {
         const filteredPwas = profile.pwas.filter(pwa => pwa.status === filter);
         if (filteredPwas.length > 0) {
-          return filteredPwas.map((pwa, idx) => <PWACard key={idx} url="/mypwa" history={history} name={pwa.name} appId={pwa.appId} category={pwa.category} icon={pwa.icon} />);
+          return filteredPwas.map((pwa, idx) => (
+            <div key={idx}>
+              <PWACard url="/mypwa" history={history} name={pwa.name} appId={pwa.appId} category={pwa.category} icon={pwa.icon} />
+              {filter === 'DENIED' && 
+                <>
+                  <span style={{paddingLeft: '15px'}}><strong>Reason</strong></span>
+                  <p style={{padding: '15px'}}>{pwa.reason}</p>
+                </>
+              }
+            </div>
+          ));
         } else {
          return (
            <div style={{ width: '100%', margin: '20px', height: '50px', display: 'flex', alignItems: 'center', boxShadow: '0 0 3px #ccc'}}>
@@ -304,7 +320,7 @@ const Profile: React.FC<ProfileProps> = ({
           </IonList>
         </form>
         </IonContent>
-        <IonButton expand='block' onClick={onAddPWA}>Submit</IonButton>
+        <IonButton expand='block' onClick={onAddPWA} disabled={isSubmit}>Submit</IonButton>
       </IonModal>
       <IonHeader>
         <IonToolbar>  

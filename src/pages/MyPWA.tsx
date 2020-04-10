@@ -74,38 +74,42 @@ const MyPWA: React.FC<PWAProps> = ({
 }
 
 const onCatChange = (cat: string) => {
+  setCatError(undefined);
   setCat(cat);
 }
 
 const editApp = async () => {
-
+    let count = 0;
     if (!name) {
       setNameError('Name is required');
-      return;
+      count++;
     }
 
     if (!desc) {
       setDescError('Description is required');
-      return;
+      count++;
     }
 
     if (!cat) {
       setCatError('Category is required');
-      return;
+      count++;
     }
 
     if (name === pwa?.name && desc === pwa?.description && cat === pwa?.category) {
         setIsEdit(false);
         return;
     }
-    const resp = await putApp(name!, desc!, cat!, Number(history.location.pathname.split('/')[2]));
-    if (resp?.status === 200) {
-        setPwa(resp.data);
-        setScreenshots(resp.data.screenshots);
-        setToastText('Success');
-        setShowToast(true);
+
+    if (count === 0) {
+      const resp = await putApp(name!, desc!, cat!, Number(history.location.pathname.split('/')[2]));
+      if (resp?.status === 200) {
+          setPwa(resp.data);
+          setScreenshots(resp.data.screenshots);
+          setToastText('Success');
+          setShowToast(true);
+      }
+      setIsEdit(false);
     }
-    setIsEdit(false);
 }
 
 const removeImage = async (imageId: number) => {
@@ -143,7 +147,11 @@ const addImages = async () => {
                       isEdit
                       ?
                       <>
-                        <IonInput style={{ padding: '0', boxShadow: '0 0 3px #ccc'}} value={name} onIonChange={e => setName(e.detail.value!)} />
+                        <IonInput style={{ padding: '0', boxShadow: '0 0 3px #ccc'}} value={name} onIonChange={e => {
+                          setNameError(undefined);
+                          setName(e.detail.value!);
+                        }}
+                        />
                         {nameError &&
                           <IonText color="danger">
                             <p>{nameError}</p>
@@ -209,7 +217,12 @@ const addImages = async () => {
             isEdit 
             ?
             <>
-              <IonTextarea style={{margin: '10px', boxShadow: '0 0 3px #ccc'}} rows={10} value={desc}  onIonChange={(e => setDesc(e.detail.value!) )}/>
+              <IonTextarea style={{margin: '10px', boxShadow: '0 0 3px #ccc'}} rows={10} value={desc}  
+                onIonChange={(e => {
+                  setDescError(undefined);
+                  setDesc(e.detail.value!); 
+                })}
+              />
               {descError &&
                 <IonText color="danger">
                   <p>{descError}</p>

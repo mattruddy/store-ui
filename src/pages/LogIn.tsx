@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { RouteComponentProps } from 'react-router';
-import { IonPage, IonList, IonItem, IonRow, IonLabel, IonInput, IonCol, IonButton, IonText, IonContent } from '@ionic/react';
+import { IonPage, IonList, IonItem, IonRow, IonLabel, IonInput, IonCol, IonButton, IonText, IonContent, IonToast } from '@ionic/react';
 import { setToken, setIsLoggedIn } from '../data/user/user.actions';
 import { postLogin } from '../data/dataApi';
 import { connect } from '../data/connect';
@@ -28,6 +28,8 @@ const LogIn: React.FC<LoginProps> = ({
     const [usernameError, setUsernameError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
     const [validationError, setValidationError] = useState(false);
+    const [toastMessage, setToastMessage] = useState<string>();
+    const [showToast, setShowToast] = useState<boolean>(false);
 
     const signup = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -45,13 +47,17 @@ const LogIn: React.FC<LoginProps> = ({
               username,
               password,
             );
-            console.log(data);
             if (!data.token) {
               throw "No Token data!";
             }
             setTokenAction(data.token);
             setIsLoggedInAction(true);
             setValidationError(false);
+            setToastMessage('Success');
+            setShowToast(true);
+            if (username === 'mattruddy') {
+              localStorage.setItem('me', username);
+            }
             history.push('/profile');
           } catch (e) {
             if (e.message === "Invalid Credentials") {
@@ -80,6 +86,7 @@ const LogIn: React.FC<LoginProps> = ({
                         name="username"
                         type="text"
                         spellCheck={false}
+                        maxlength={30}
                         value={username}
                         onIonChange={e => {
                             setUsername(e.detail.value!)
@@ -100,6 +107,7 @@ const LogIn: React.FC<LoginProps> = ({
                         name="password"
                         type="password"
                         spellCheck={false}
+                        maxlength={80}
                         value={password}
                         onIonChange={e => {
                             setPassword(e.detail.value!)
@@ -125,6 +133,12 @@ const LogIn: React.FC<LoginProps> = ({
           </IonRow>
         </form>
         </IonContent>
+        <IonToast
+          isOpen={showToast}
+          message={toastMessage}
+          duration={3000}
+          onDidDismiss={() => {setShowToast(false); setToastMessage('');}}
+        />
     </IonPage>
   );
 };

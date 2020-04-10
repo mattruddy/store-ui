@@ -10,7 +10,7 @@ import {
   IonTabs
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { ellipse, square, triangle, person, home, logIn, navigate, bandage, information, infiniteOutline, informationCircle } from 'ionicons/icons';
+import { person, home, logIn, bandage, informationCircle } from 'ionicons/icons';
 import PWAS from './pages/PWAs';
 import SignUp from './pages/SignUp';
 import Support from './pages/Support';
@@ -34,6 +34,7 @@ import PWA from './pages/PWA';
 import MyPWA from './pages/MyPWA';
 import About from './pages/About';
 import './App.css';
+import Admin from './pages/Admin';
 
 const App: React.FC = () => {
   return (
@@ -77,6 +78,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
           <Route path="/mypwa/:id" component={MyPWA} />
           <Route path="/pwas" component={PWAS} exact />
           <Route path="/about" component={About} />
+          <Route path="/admin" component={Admin} exact />
           <Route path="/" render={() => <Redirect to="/pwas" />} exact={true} />
         </IonRouterOutlet>
         <IonTabBar slot="bottom" color='primary'>
