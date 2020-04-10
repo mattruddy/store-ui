@@ -19,9 +19,12 @@ const About: React.FC = () => {
                 <IonLabel style={{fontSize: '30px', color: 'black'}}><strong>About us</strong></IonLabel>
             </IonItemDivider>
             <IonItem style={{color: 'rgb(153, 153, 153)'}}>
-                <p>Progressive Web App's is something we really beleive is the way apps should have always been. 
-                    It gives the power back into the hands of the developer. There is no need to rely on 3rd parties,
-                    paying them rediculous membership fees and also taking a large cut for our work.
+                <p> We believe Progressive Web App's were how apps should have been all along.
+                    It gives the creators the freedom and flexability to build something that 
+                    truly belongs to them without outside forces (Apple and Google) controlling the product
+                    and taking significant cuts for their hard work. This caused app stores to turn into a 
+                    series of ads and in app purchases. PWA's are a nice fresh start to make apps enjoyable again.
+                    We really hope you enjoy using PWA's as much as we do!
                 </p>
             </IonItem>    
           </IonItemGroup> 
@@ -32,10 +35,10 @@ const About: React.FC = () => {
             <IonItem style={{color: 'rgb(153, 153, 153)'}}>
                 <ul>
                     <li>
-                        HTTPS is <strong>required</strong> meaning you data is much more secure
+                        HTTPS is <strong>required</strong> meaning you data is secure
                     </li>
                     <li>
-                        Takes up <strong>less</strong> storage on your phone. No need to pay extra for more storage
+                        Takes up <strong>less</strong> storage on your phone. No need to pay extra money for higher storage
                     </li>
                     <li>
                         <strong>No</strong> in app purchases or ads. Just a clean and simple app experience

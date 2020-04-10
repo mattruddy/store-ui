@@ -1,4 +1,4 @@
-import { setTokenData, setIsLoggedInData, getUserData } from "../dataApi";
+import { setTokenData, setIsLoggedInData, getUserData, setHasReadInstallData } from "../dataApi";
 import { ActionType } from '../../util/types';
 import { UserState } from "./user.state";
 
@@ -16,6 +16,14 @@ export const setToken = (token?: string) => async (dispatch: React.Dispatch<any>
       token
     } as const);
 };
+
+export const setHasReadInstall = (hasReadInstall?: string) => async (dispatch: React.Dispatch<any>) => {
+  await setHasReadInstallData(hasReadInstall);
+  return ({
+    type: 'set-has-read',
+    hasReadInstall
+  } as const);
+}
 
 export const setIsLoggedIn = (loggedIn: boolean) => async (dispatch: React.Dispatch<any>) => {
   await setIsLoggedInData(loggedIn);
@@ -40,3 +48,4 @@ export type UserActions =
   | ActionType<typeof setData>
   | ActionType<typeof setToken>
   | ActionType<typeof setIsLoggedIn>
+  | ActionType<typeof setHasReadInstall>

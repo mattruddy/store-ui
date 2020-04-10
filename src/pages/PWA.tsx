@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem, IonGrid, IonRow, IonSearchbar, IonSelectOption, IonSelect, IonCard, IonCardHeader, IonCardContent, IonButton, IonImg, IonSlides, IonSlide, IonLabel, useIonViewDidEnter, useIonViewWillEnter, IonProgressBar, useIonViewDidLeave, IonBackButton, IonButtons } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem, IonGrid, IonRow, IonSearchbar, IonSelectOption, IonSelect, IonCard, IonCardHeader, IonCardContent, IonButton, IonImg, IonSlides, IonSlide, IonLabel, useIonViewDidEnter, useIonViewWillEnter, IonProgressBar, useIonViewDidLeave, IonBackButton, IonButtons, IonToast } from '@ionic/react';
 import { getPWA, postScore } from '../data/dataApi';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { PWA as PWAType } from '../util/types';
+import { connect } from '../data/connect';
+import { setHasReadInstall } from '../data/user/user.actions';
 
 interface MatchParams {
   id: string | undefined;
@@ -11,17 +13,20 @@ interface MatchParams {
 interface OwnProps extends RouteComponentProps<MatchParams> { };
 
 interface StateProps {
-
+  hasRead?: string;
 };
 
 interface DispatchProps {
+  setHasReadInstall: typeof setHasReadInstall
 }
 
 type PWAProps = OwnProps & StateProps & DispatchProps;
 
 const PWA: React.FC<PWAProps> = ({
   match,
-  history
+  history,
+  hasRead,
+  setHasReadInstall,
 }) => {
 
   const [pwa, setPwa] = useState<PWAType | undefined>(undefined);
@@ -86,8 +91,34 @@ const PWA: React.FC<PWAProps> = ({
         </IonSlides>
         }
       </IonContent>
+      <IonToast
+        isOpen={(hasRead !== undefined && hasRead === 'false')}
+        position='top'
+        message='Please click to learn how to install a PWA'
+        buttons={[
+          {
+            text: 'Close',
+            handler: () => {
+              setHasReadInstall('true');
+            }
+        }, {
+            text: 'Learn',
+            handler: async () => {
+              await setHasReadInstall('true');
+              history.push('/about');
+            }
+        }]}
+      />
     </IonPage>
   );
 };
 
-export default withRouter(PWA);
+export default connect<OwnProps, StateProps, DispatchProps>({
+  mapStateToProps: (state) => ({
+    hasRead: state.user.hasRead
+  }),
+  mapDispatchToProps: {
+    setHasReadInstall
+  },
+  component: withRouter(PWA)
+})

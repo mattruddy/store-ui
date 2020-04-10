@@ -7,17 +7,25 @@ const { Storage } = Plugins;
 
 const TOKEN = 'token';
 const HAS_LOGGED_IN = 'hasLoggedIn';
+const HAS_READ = 'hasRead';
 
 export const getUserData = async () => {
   const response = await Promise.all([
     Storage.get({ key: HAS_LOGGED_IN }),
-    Storage.get({ key: TOKEN })
+    Storage.get({ key: TOKEN }),
+    Storage.get({key: HAS_READ}),
   ]);
-  const isLoggedIn = await response[0].value === 'true';
-  const token = await response[1].value || undefined;
+  const isLoggedIn = response[0].value === 'true';
+  const token = response[1].value || undefined;
+  let hasRead = response[2].value || undefined;
+  if (hasRead === undefined) {
+    await setHasReadInstallData('false');
+    hasRead = 'false';
+  }
   const data = {
     isLoggedIn,
     token,
+    hasRead,
   }
   return data;
 }
@@ -321,10 +329,17 @@ export const setIsLoggedInData = async (isLoggedIn: boolean) => {
 }
 
 export const setTokenData = async (token: string | undefined) => {
-    console.log(token);
     if (!token) {
       await Storage.remove({ key: TOKEN });
     } else {
       await Storage.set({ key: TOKEN, value: token });
     }
+}
+
+export const setHasReadInstallData = async (hasRead?: string) => {
+  if (hasRead === undefined) {
+    await Storage.set({key: HAS_READ, value: 'false'});
+  } else {
+    await Storage.set(({key: HAS_READ, value: hasRead}));
+  }
 }
