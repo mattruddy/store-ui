@@ -80,17 +80,16 @@ export const getPWA = async (id: number) => {
   }
 }
 
-export const postEmail = async (name: string, text: string) => {
+export const postEmail = async (text: string) => {
   try {
     const response = await Axios.request({
-      url: `${vars().env.API_URL}/public/support`,
+      url: `${vars().env.API_URL}/secure/support`,
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
       data: {
-        name: name,
         text: text
       }
     });

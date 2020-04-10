@@ -69,7 +69,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
     <IonApp>
     <IonReactRouter>
       <IonTabs>
-        <IonRouterOutlet style={{overflow: 'hidden'}} animated={false} >
+        <IonRouterOutlet animated={false} >
           <Route path="/pwa/:id" component={PWA} exact={false} />
           <Route path="/support" component={Support} exact={true} />
           <Route path="/signup" component={SignUp} />
@@ -90,7 +90,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
             <IonIcon icon={informationCircle} />
             <IonLabel >About</IonLabel>
           </IonTabButton>
-          <IonTabButton class='tab' tab="support" href="/support">
+          <IonTabButton class='tab' tab="support" href="/support" hidden={!isLoggedIn}>
             <IonIcon  icon={bandage} />
             <IonLabel >Support</IonLabel>
           </IonTabButton>

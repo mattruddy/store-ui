@@ -3,7 +3,6 @@ import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonTextarea, IonB
 import { postEmail } from '../data/dataApi';
 
 const Support: React.FC = () => {
-  const [name, setName] = useState<string>();
   const [text, setText] = useState<string>();
   const [toastText, setToastText] = useState<string>();
   const [showToast, setShowToast] = useState<boolean>(false);
@@ -17,31 +16,21 @@ const Support: React.FC = () => {
       </IonHeader>
       <IonContent>
         <div style={{width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-            <div style={{ width: '100%', display: 'flex', alignItems: 'flex-end', height: '30px', marginBottom: '7px'}}>
-              <IonLabel style={{marginLeft: '30px'}}>Name</IonLabel>
-            </div>          
-            <IonInput
-              style={{boxShadow: '0 0 3px #ccc', width: '95%'}}
-              value={name}
-              onIonChange={(e) => {
-                setName(e.detail.value!);
-              }}
-          />
-          <div style={{ width: '100%', display: 'flex', alignItems: 'flex-end', height: '30px'}}>
-            <IonLabel style={{marginLeft: '30px'}}>Information</IonLabel>
+          <div style={{width: '100%', padding: '15px'}}>
+            <IonLabel style={{marginLeft: '30px'}}>Support Request</IonLabel>
           </div>
           <IonTextarea
             style={{boxShadow: '0 0 3px #ccc', width: '95%'}}
             value={text}
             rows={10}
+            placeholder='Please add a message'
             onIonChange={(e) => {
               setText(e.detail.value!);
             }}
           />
           <IonButton style={{width: '95%', marginTop: '15px', borderRadius: '5px'}} type="button" expand='full' onClick={async() => {
-            if (!name || !text || name === '' || text === '') return;
-            await postEmail(name!, text!);
-            setName('');
+            if (!text || text === '') return;
+            await postEmail(text!);
             setText('');
             setToastText('Sent. You will hear from us shortly');
             setShowToast(true);
