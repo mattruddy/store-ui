@@ -34,7 +34,7 @@ const LogIn: React.FC<LoginProps> = ({
     const signup = async (e: React.FormEvent) => {
         e.preventDefault();
         setFormSubmitted(true);
-        if(!username) {
+        if(!username || username.length < 6) {
           setUsernameError(true);
         }
         if(!password) {
@@ -98,7 +98,7 @@ const LogIn: React.FC<LoginProps> = ({
                 {formSubmitted && usernameError && 
                 <IonText color="danger">
                     <p className="ion-padding-start">
-                        Username is required
+                        Atleast 6 characters required
                     </p>
                 </IonText>}
                 <IonItem>
