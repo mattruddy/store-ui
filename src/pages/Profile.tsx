@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonItem, IonLabel, IonModal, IonList, IonInput, IonTextarea, IonText, IonImg, IonGrid, IonRow, IonIcon, IonButtons, IonFab, IonFabButton, IonFabList, IonAlert, useIonViewDidEnter, IonCol, useIonViewWillLeave } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonItem, IonLabel, IonModal, IonList, IonInput, IonTextarea, IonText, IonImg, IonGrid, IonRow, IonIcon, IonButtons, IonFab, IonFabButton, IonFabList, IonAlert, useIonViewDidEnter, IonCol, useIonViewWillLeave, IonToast } from '@ionic/react';
 import { getProfile, postApp } from '../data/dataApi';
 import { RouteComponentProps, withRouter } from 'react-router';
 import ImageUploader from 'react-images-upload';
@@ -9,7 +9,6 @@ import { UserProfile, PWA } from '../util/types';
 import PWACard from '../components/PWACard';
 import { add, menu, logOut, contractSharp } from 'ionicons/icons';
 import { setToken, setIsLoggedIn } from '../data/user/user.actions';
-import { fixFilesRotation } from '../util/utils';
 
 interface OwnProps extends RouteComponentProps {}
 
@@ -29,16 +28,24 @@ const Profile: React.FC<ProfileProps> = ({
 }) => {
   const [profile, setProfile] = useState<UserProfile | undefined>(undefined);
   const [url, setUrl] = useState<string>('');
+  const [urlError, setUrlError] = useState<string | undefined>(undefined);
   const [name, setName] = useState<string>('');
+  const [nameError, setNameError] = useState<string | undefined>(undefined);
   const [desc, setDesc] = useState<string>('');
+  const [descError, setDescError] = useState<string | undefined>(undefined);
   const [cat, setCat] = useState<string>('');
+  const [catError, setCatError] = useState<string | undefined>(undefined);
   const [icon, setIcon] = useState<File | undefined>(undefined);
+  const [iconError, setIconError] = useState<string | undefined>(undefined);
   const [screenshots, setScreenshots] = useState<File[] | undefined>(undefined);
+  const [screenshotError, setScreenshotError] = useState<string | undefined>(undefined);
   const [showModal, setShowModal] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [nameTakenError, setNameTakenError] = useState<boolean>(false);
   const [isValidLink, setIsValidLink] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [toastMessage, setToastMessage] = useState<string>();
+  const [showToast, setShowToast] = useState<boolean>(false);
 
   useIonViewDidEnter(() => {
     loadProfile();
@@ -57,36 +64,77 @@ const Profile: React.FC<ProfileProps> = ({
   }
 
   const onPress = (option: string) => {
-    console.log(option);
+    setCatError(undefined);
     setCat(option);
   }
 
   const onIconChange = (files: File[]) => {
+    setIconError(undefined);
     setIcon(files[0]);
   }
 
   const onScreenshotsChange = (files: File[]) => {
+    setScreenshotError(undefined);
     setScreenshots(files);
   }
 
   const onAddPWA = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (name && url && desc && cat && icon && screenshots) {
-        //const blobsScreenshots = await fixFilesRotation(screenshots);
-        //const blobsIcon = await fixFilesRotation([icon]);
-        const resp = await postApp(name, desc, url, cat, icon, screenshots);
-        if (resp && resp.data && resp.data.message === 'Name is taken') {
-          setNameTakenError(true);
-        } else if (resp && resp.appId) {
-          profile?.pwas.push(resp as PWA);
-          setName('');
-          setDesc('');
-          setCat('');
-          setUrl('');
-          setIcon(undefined);
-          setScreenshots(undefined);
-          setShowModal(false);
-        }
+
+    if (!name) {
+      setNameError('Name is required');
+      return;
+    }
+
+    if (!icon) {
+      setIconError('Icon is required');
+      return;
+    }
+
+    if (!url) {
+      setUrlError('Link is required');
+      return;
+    }
+
+    if (!(/^((https))/.test(url))) {
+      setIsValidLink(false);
+      return;
+    }
+
+    if (!desc) {
+      setDescError('Description is required');
+      return;
+    }
+
+    if (!cat) {
+      setCatError('Category is required');
+      return;
+    }
+
+    if (!screenshots) {
+      setScreenshotError('Atleast 1 screenshot is required');
+      return;
+    }
+
+    if (screenshots.length > 6) {
+      setScreenshotError('Max of 6 screenshots');
+      return;
+    }
+    const resp = await postApp(name, desc, url, cat, icon, screenshots);
+    if (resp && resp.data && resp.data.message) {
+      setToastMessage(resp.data.message);
+      setShowToast(true);
+    } else if (resp && resp.appId) {
+      profile?.pwas.push(resp as PWA);
+      setName('');
+      setDesc('');
+      setCat('');
+      setUrl('');
+      setIcon(undefined);
+      setScreenshots(undefined);
+      setShowModal(false);
+      setToastMessage('Success');
+      setShowToast(true);
     }
   }
 
@@ -110,7 +158,15 @@ const Profile: React.FC<ProfileProps> = ({
         <IonModal 
           isOpen={showModal} 
           swipeToClose={true}
-          onDidDismiss={() => setShowModal(false)}
+          onDidDismiss={() => {
+            setShowModal(false);
+            setName('');
+            setDesc('');
+            setCat('');
+            setUrl('');
+            setIcon(undefined);
+            setScreenshots(undefined);
+          }}
         >
         <IonHeader>
           <IonToolbar>
@@ -130,16 +186,18 @@ const Profile: React.FC<ProfileProps> = ({
                         type="text"
                         spellCheck={false}
                         value={name}
+                        maxlength={30}
                         onIonChange={e => {
                             setName(e.detail.value!)
-                            setNameTakenError(false)
+                            setNameError(undefined);
                         }}
                         required
                     />
-                    {nameTakenError &&
+                    {nameError &&
                     <IonText color="danger">
-                      <p>Name is taken</p>
-                    </IonText>}
+                      <p>{nameError}</p>
+                    </IonText>
+                    }
             </IonItem>
             <IonItem>
               <ImageUploader 
@@ -155,20 +213,27 @@ const Profile: React.FC<ProfileProps> = ({
                 imgExtension={['.jpg', '.png', '.jpeg']}
                 maxFileSize={5242880}
               />
+                {iconError &&
+                  <IonText color="danger">
+                    <p>{iconError}</p>
+                  </IonText>
+                }
             </IonItem>
             <IonItem>
             <IonLabel position="stacked">Link</IonLabel>
                     <IonInput
                         name="link"
                         type="text"
+                        maxlength={80}
                         spellCheck={false}
                         value={url}
                         onIonChange={e => {
+                          setUrlError(undefined);
                             const urlVal = e.detail.value!;
                             if (urlVal === '') {
                               setIsValidLink(true);
                             } else {
-                              const isValid = /^((https):\/\/)([A-z]+)\.([A-z]{2,})/.test(urlVal);
+                              const isValid = /^((https))/.test(urlVal);
                               setIsValidLink(isValid);
                             }
                             setUrl(e.detail.value!)
@@ -179,6 +244,11 @@ const Profile: React.FC<ProfileProps> = ({
                       !isValidLink &&
                       <IonText color="danger">
                           <p className="ion-padding-start">Invald link (https required)</p>
+                      </IonText>
+                    }
+                    {urlError &&
+                      <IonText color="danger">
+                        <p>{urlError}</p>
                       </IonText>
                     }
             </IonItem>
@@ -192,13 +262,24 @@ const Profile: React.FC<ProfileProps> = ({
                         value={desc}
                         maxlength={1500}
                         onIonChange={e => {
+                            setDescError(undefined);
                             setDesc(e.detail.value!)
                         }}
                         required
                     />
+                    {descError &&
+                      <IonText color="danger">
+                        <p>{descError}</p>
+                      </IonText>
+                    }
             </IonItem>
             <IonItem>
               <CategoryOptions onPress={onPress} haveClear={false} initValue={cat} />
+                {catError &&
+                  <IonText color="danger">
+                    <p>{catError}</p>
+                  </IonText>
+                }
             </IonItem>
             <IonItem>
               <ImageUploader 
@@ -214,6 +295,11 @@ const Profile: React.FC<ProfileProps> = ({
                 imgExtension={['.jpg', '.png', '.jpeg']}
                 maxFileSize={5242880}
               />
+              {screenshotError &&
+                <IonText color="danger">
+                  <p>{screenshotError}</p>
+                </IonText>
+              }
             </IonItem>
           </IonList>
         </form>
@@ -291,6 +377,13 @@ const Profile: React.FC<ProfileProps> = ({
           ]}
         />
       </IonContent>
+      <IonToast
+        isOpen={showToast}
+        onDidDismiss={() => setShowToast(false)}
+        duration={3000}
+        message={toastMessage}
+        position='bottom'
+      />
     </IonPage>
   );
 };

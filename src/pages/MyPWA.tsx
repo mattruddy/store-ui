@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { IonContent, IonHeader, IonPage, IonToolbar, IonButton, IonSlides, IonSlide, useIonViewDidEnter, IonFab, IonFabButton, IonIcon, IonFabList, IonTextarea, IonInput, IonAlert, useIonViewDidLeave, useIonViewWillLeave, IonButtons, IonBackButton } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonToolbar, IonButton, IonSlides, IonSlide, useIonViewDidEnter, IonFab, IonFabButton, IonIcon, IonFabList, IonTextarea, IonInput, IonAlert, useIonViewDidLeave, useIonViewWillLeave, IonButtons, IonBackButton, IonText, IonToast } from '@ionic/react';
 import ImageUploader from 'react-images-upload';
 import { getPWA, putApp, deleteScreenshot, postAddScreenshots, deleteApp } from '../data/dataApi';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -31,12 +31,17 @@ const MyPWA: React.FC<PWAProps> = ({
   const [screenshots, setScreenshots] = useState<Image[]>();
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [name, setName] = useState<string | undefined>(undefined);
+  const [nameError, setNameError] = useState<string | undefined>(undefined);
   const [desc, setDesc] = useState<string | undefined>(undefined);
+  const [descError, setDescError] = useState<string | undefined>(undefined);
   const [cat, setCat] = useState<string | undefined>(undefined);
+  const [catError, setCatError] = useState<string | undefined>(undefined);
   const [link, setLink] = useState<string | undefined>(undefined);
   const [images, setImages] = useState<File[] | undefined>(undefined);
   const [showDeleteAlert, setShowDeleteAlter] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [toastText, setToastText] = useState<string>();
+  const [showToast, setShowToast] = useState<boolean>(false);
   const slides = useRef<any>();
 
   useIonViewDidEnter(() => {
@@ -73,6 +78,22 @@ const onCatChange = (cat: string) => {
 }
 
 const editApp = async () => {
+
+    if (!name) {
+      setNameError('Name is required');
+      return;
+    }
+
+    if (!desc) {
+      setDescError('Description is required');
+      return;
+    }
+
+    if (!cat) {
+      setCatError('Category is required');
+      return;
+    }
+
     if (name === pwa?.name && desc === pwa?.description && cat === pwa?.category) {
         setIsEdit(false);
         return;
@@ -81,6 +102,8 @@ const editApp = async () => {
     if (resp?.status === 200) {
         setPwa(resp.data);
         setScreenshots(resp.data.screenshots);
+        setToastText('Success');
+        setShowToast(true);
     }
     setIsEdit(false);
 }
@@ -119,14 +142,28 @@ const addImages = async () => {
                   {
                       isEdit
                       ?
+                      <>
                         <IonInput style={{ padding: '0', boxShadow: '0 0 3px #ccc'}} value={name} onIonChange={e => setName(e.detail.value!)} />
+                        {nameError &&
+                          <IonText color="danger">
+                            <p>{nameError}</p>
+                          </IonText>
+                        }
+                      </>
                       :
                         <p style={{ margin: '0', fontSize: '20px'}}>{pwa.name}</p>
                   }
                   {
                     isEdit
                     ?
-                      <CategoryOptions onPress={onCatChange} haveClear={false} initValue={cat} />
+                      <>
+                        <CategoryOptions onPress={onCatChange} haveClear={false} initValue={cat} />
+                        {catError &&
+                          <IonText color="danger">
+                            <p>{catError}</p>
+                          </IonText>
+                        }
+                      </>
                     :
                       <small>{pwa.category}</small>
                   }
@@ -147,7 +184,9 @@ const addImages = async () => {
                     isEdit
                     ?
                     <IonFabList>
-                        <IonFabButton type="button" onClick={() => setIsEdit(false)}>
+                        <IonFabButton type="button" onClick={() => {
+                          setIsEdit(false);
+                        }}>
                             <IonIcon icon={close} />
                         </IonFabButton>
                         <IonFabButton type="button" onClick={editApp}>
@@ -169,7 +208,14 @@ const addImages = async () => {
         {
             isEdit 
             ?
-            <IonTextarea style={{margin: '10px', boxShadow: '0 0 3px #ccc'}} rows={10} value={desc}  onIonChange={(e => setDesc(e.detail.value!) )}/>
+            <>
+              <IonTextarea style={{margin: '10px', boxShadow: '0 0 3px #ccc'}} rows={10} value={desc}  onIonChange={(e => setDesc(e.detail.value!) )}/>
+              {descError &&
+                <IonText color="danger">
+                  <p>{descError}</p>
+                </IonText>
+              }
+            </>
             :
             <div style={{height: '200px', padding: '15px'}}>
             {pwa && pwa.description}
@@ -235,6 +281,12 @@ const addImages = async () => {
             }
           }
         ]}
+      />
+      <IonToast
+        isOpen={showToast}
+        message={toastText}
+        onDidDismiss={() => {setShowToast(false); setToastText('')}}
+        duration={3000}
       />
     </IonPage>
   );
