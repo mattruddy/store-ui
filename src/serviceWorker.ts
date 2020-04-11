@@ -1,6 +1,9 @@
 // This optional code is used to register a service worker.
 // register() is not called by default.
 
+import { vars } from "./data/env";
+import { postDevice } from "./data/dataApi";
+
 // This lets the app load faster on subsequent visits in production, and gives
 // it offline capabilities. However, it also means that developers (and users)
 // will only see deployed updates on subsequent visits to a page, after all the
@@ -100,6 +103,18 @@ function registerValidSW(swUrl: string, config?: Config) {
           }
         };
       };
+
+      if ('PushManager' in window) {
+        registration.pushManager.getSubscription()
+          .then((subscription) => {
+            const isSubscribed = !(subscription === null);
+            if (isSubscribed) {
+              console.log('user is subbed to push notifications');
+            } else {
+              subscribeUser(registration);
+            }
+          })
+      }
     })
     .catch(error => {
       console.error('Error during service worker registration:', error);
@@ -135,6 +150,46 @@ function checkValidServiceWorker(swUrl: string, config?: Config) {
       );
     });
 }
+
+function subscribeUser(registration: ServiceWorkerRegistration) {
+  const applicationServerKey = urlB64ToUint8Array(vars().env.APP_SERVER_KEY);
+  registration.pushManager.subscribe({
+    userVisibleOnly: true,
+    applicationServerKey: applicationServerKey
+  })
+  .then(function(subscription: PushSubscription) {
+    const subJson = subscription.toJSON();
+    const key = subJson.keys!.p256dh as string;
+    const auth = subJson.keys!.auth as string;
+    const endpoint = subJson.endpoint as string;
+    const token = localStorage.getItem("_cap_token");
+    // Get public key, user auth and push endpoint from the subscription object.
+    // If the user is logged in, add the device. 
+    // Otherwise store in local storage and add after login.
+    if (token) {
+      postDevice(key, auth, endpoint);
+    }
+    localStorage.setItem("push_key", key);
+    localStorage.setItem("push_auth", auth);
+    localStorage.setItem("push_endpoint", endpoint);
+  })
+  .catch(function(err: Error) {
+    console.log('Failed to subscribe the user: ', err);
+  });
+}
+
+function urlB64ToUint8Array(base64String: string) {
+  const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding)
+    .replace(/\-/g, "+")
+    .replace(/_/g, "/");
+  const rawData = atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+};
 
 export function unregister() {
   if ('serviceWorker' in navigator) {

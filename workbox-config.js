@@ -3,5 +3,6 @@ module.exports = {
   "globPatterns": [
     "**/*.{tsx,ts,css}"
   ],
-  "swDest": "public/sw.js"
+  "swDest": "public/sw.js",
+  "swSrc": "src/sw.js"
 };

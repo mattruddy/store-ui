@@ -100,6 +100,31 @@ export const postEmail = async (text: string) => {
   }
 }
 
+export const postDevice = async (key: string, auth: string, endpoint: string) => {
+  const token = await Storage.get({ key: TOKEN });
+  if (!token || !token.value) return;
+  try {
+    const response = await Axios.request({
+      url: `${vars().env.API_URL}/secure/device/add`,
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token.value}`,
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      data: {
+        auth: auth,
+        key: key,
+        endPoint: endpoint,
+        deviceType: 'DESKTOP'
+      }
+    })
+    return response.data;
+  } catch (error) {
+
+  }
+}
+
 export const getProfile = async () => {
   const token = await Storage.get({ key: TOKEN });
   if (!token || !token.value) return;
