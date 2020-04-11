@@ -9,11 +9,10 @@ workbox.routing.registerRoute(
 );
 
 self.addEventListener('push', (event) => {
-    console.log(event.data.text());
     const push = JSON.parse(event.data.text());
     const title = `Your PWA was ${push.code}`;
     const options = {
-        body: push.message === null ? 'Congrats!' : push.message,
+        body: push.message == 'null' ? 'Congrats!' : push.message,
         icon: 'assets/icon/logo-180.png',
         badge: 'assets/icon/logo-180.png',
         image: 'assets/icon/logo-180.png',
