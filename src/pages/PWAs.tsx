@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonGrid, IonRow, IonSearchbar, IonPopover, IonButton, IonList, IonItem, useIonViewDidEnter, IonInfiniteScroll, IonInfiniteScrollContent, useIonViewDidLeave, IonLoading, IonProgressBar } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonGrid, IonRow, IonSearchbar, IonPopover, IonButton, IonList, IonItem, useIonViewDidEnter, IonInfiniteScroll, IonInfiniteScrollContent, useIonViewDidLeave, IonLoading, IonProgressBar, IonRefresher, IonRefresherContent } from '@ionic/react';
 import PWACard from '../components/PWACard';
 import CategoryOptions from '../components/CategoryOptions';
 import { getPWAs, getSearchApp } from '../data/dataApi';
 import { PWA, Search } from '../util/types';
 import { RouteComponentProps, withRouter } from 'react-router';
 import './main.css';
+import { setLoading } from '../data/user/user.actions';
 
 const PWAs: React.FC<RouteComponentProps> = ({
     history
@@ -17,7 +18,7 @@ const PWAs: React.FC<RouteComponentProps> = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [searchResults, setSearchResults] = useState<Search[]>([]);
   const scrollEl = useRef<any>(undefined);
-  const grid = useRef<any>();
+  const content = useRef<any>();
 
   useEffect(() => {
     loadPWAs();
@@ -72,6 +73,16 @@ const PWAs: React.FC<RouteComponentProps> = ({
 
   const onPress = (option: string) => {
     setCat(option);
+    reloadPwas(option);
+  }
+
+  const reloadPwas = async (option?: string) => {
+    setLoading(true);
+    setPwas([]);
+    setPage(0);
+    const resp = await getPWAs(0, (option || option === '') ? option : ((cat && cat !== '') ? cat : undefined));
+    setPwas(resp);
+    setLoading(false);
   }
 
   const onSearchChange = async (e: CustomEvent) => {
@@ -88,12 +99,23 @@ const PWAs: React.FC<RouteComponentProps> = ({
     <IonPage>
       <IonHeader>
         <IonToolbar class='header'>
-          <div style={{ width: '100%', display: 'flex', justifyContent: 'center'}}>
+          <div style={{ width: '100%', display: 'flex', justifyContent: 'center'}} onClick={() => {
+            content.current.scrollToTop();
+          }}>
             <img style={{ height: '40px', width: '40px'}} src="assets/icon/logo.png" />
           </div>
         </IonToolbar>
       </IonHeader>
-      <IonContent class='content' style={{overflow: 'hidden'}}>
+      <IonContent class='content' ref={content}>
+        <IonRefresher 
+          slot='fixed'
+          onIonRefresh={async(event: any) => {
+            await reloadPwas();
+            event.detail.complete();
+          }}
+        >
+          <IonRefresherContent></IonRefresherContent>
+        </IonRefresher>
       { isLoading && <IonProgressBar type="indeterminate" /> }
       <IonSearchbar onIonChange={onSearchChange} />
           <IonList style={{ background: 'none'}}>
@@ -106,15 +128,15 @@ const PWAs: React.FC<RouteComponentProps> = ({
             <div style={{boxShadow: '0 0 3px #ccc', margin: '10px'}}>
               <CategoryOptions onPress={onPress} haveClear={true} initValue={cat} />
             </div>
-        <IonInfiniteScroll ref={scrollEl} onIonInfinite={loadMorePwas}>
-          <IonInfiniteScrollContent>
-              <IonGrid ref={grid} >
-                <IonRow style={{display: 'flex', justifyContent: 'center'}}>
-                  {pwaList()}
-                </IonRow>
-              </IonGrid>
-          </IonInfiniteScrollContent>
-        </IonInfiniteScroll>
+            <IonGrid>
+              <IonRow style={{display: 'flex', justifyContent: 'center'}}>
+                {pwaList()}
+              </IonRow>
+            </IonGrid>
+          <IonInfiniteScroll ref={scrollEl} threshold='1000px' onIonInfinite={loadMorePwas}>
+            <IonInfiniteScrollContent>
+            </IonInfiniteScrollContent>
+          </IonInfiniteScroll>
       </IonContent>
     </IonPage>
   );

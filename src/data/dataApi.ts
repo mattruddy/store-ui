@@ -2,6 +2,7 @@ import { Plugins } from '@capacitor/core';
 import Axios from 'axios';
 import { vars } from './env';
 import { PWA, UserProfile, Search } from '../util/types';
+import { getPlatforms } from '@ionic/react';
 
 const { Storage } = Plugins;
 
@@ -81,11 +82,14 @@ export const getPWA = async (id: number) => {
 }
 
 export const postEmail = async (text: string) => {
+  const token = await Storage.get({ key: TOKEN });
+  if (!token || !token.value) return;
   try {
     const response = await Axios.request({
       url: `${vars().env.API_URL}/secure/support`,
       method: 'POST',
       headers: {
+        'Authorization': `Bearer ${token.value}`,
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
@@ -103,6 +107,16 @@ export const postEmail = async (text: string) => {
 export const postDevice = async (key: string, auth: string, endpoint: string) => {
   const token = await Storage.get({ key: TOKEN });
   if (!token || !token.value) return;
+
+  let deviceType;
+  const platforms = getPlatforms();
+  if (platforms.includes("ios")) {
+    deviceType = "IOS";
+  } else if (platforms.includes("android")) {
+    deviceType = "ANDROID";
+  } else {
+    deviceType = "DESKTOP";
+  }
   try {
     const response = await Axios.request({
       url: `${vars().env.API_URL}/secure/device/add`,
@@ -116,7 +130,7 @@ export const postDevice = async (key: string, auth: string, endpoint: string) =>
         auth: auth,
         key: key,
         endPoint: endpoint,
-        deviceType: 'DESKTOP'
+        deviceType: deviceType
       }
     })
     return response.data;
