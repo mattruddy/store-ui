@@ -339,11 +339,6 @@ const Profile: React.FC<ProfileProps> = ({
             </IonFabButton>
           </IonFabList>
         </IonFab>
-        <p style={{
-          paddingLeft: '20px',
-          fontSize: '50px',
-          marginBottom: '0'
-        }}>PWAs</p>
         <IonGrid>
           <IonCol>
             { !isLoading && <h2 style={{marginLeft: '20px'}}>Approved</h2> }

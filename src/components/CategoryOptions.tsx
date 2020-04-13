@@ -37,7 +37,14 @@ const CategoryOptions: React.FC<ContainerProps> = ({
     }
 
   return (
-      <IonSelect value={initValue !== undefined ? initValue : undefined} placeholder='Category' onIonChange={e => onPress(e.detail.value!)} >
+      <IonSelect 
+        interfaceOptions={{
+            header: 'Categories'
+        }} 
+        value={initValue !== undefined ? initValue : undefined} 
+        placeholder='Category' 
+        onIonChange={e => onPress(e.detail.value!)} 
+       >
           { haveClear && <IonSelectOption key={32432432} value="">Trending</IonSelectOption> }
           {getOptions()}
       </IonSelect>
