@@ -1,5 +1,5 @@
 import React from 'react';
-import { IonCard, IonCardContent } from '@ionic/react';
+import { IonCard, IonCardContent, IonRippleEffect } from '@ionic/react';
 
 interface ContainerProps {
     name?: string,
@@ -22,6 +22,7 @@ const PWACard: React.FC<ContainerProps> = ({ name, icon, category, appId, url, h
             <small>{category}</small>
         </div>
         </IonCardContent>
+        <IonRippleEffect />
     </IonCard>
   );
 };

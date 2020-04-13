@@ -62,13 +62,16 @@ const PWAs: React.FC<RouteComponentProps> = ({
   }
 
   const loadMorePwas = async () => {
-    const nextPage = page + 1;
-    const nextPwas = await getPWAs(nextPage, (cat && cat !== '') ? cat : undefined);
-    if (nextPwas) {
-      setPwas(prev => prev.concat(nextPwas));
-      setPage(nextPage);
+    try {
+      const nextPage = page + 1;
+      const nextPwas = await getPWAs(nextPage, (cat && cat !== '') ? cat : undefined);
+      if (nextPwas) {
+        setPwas(prev => prev.concat(nextPwas));
+        setPage(nextPage);
+      }
+    } finally {
+      scrollEl.current.complete();
     }
-    scrollEl.current.complete();
   }
 
   const onPress = (option: string) => {
@@ -77,12 +80,15 @@ const PWAs: React.FC<RouteComponentProps> = ({
   }
 
   const reloadPwas = async (option?: string) => {
-    setLoading(true);
-    setPwas([]);
-    setPage(0);
-    const resp = await getPWAs(0, (option || option === '') ? option : ((cat && cat !== '') ? cat : undefined));
-    setPwas(resp);
-    setLoading(false);
+    try {
+      setLoading(true);
+      setPwas([]);
+      setPage(0);
+      const resp = await getPWAs(0, (option || option === '') ? option : ((cat && cat !== '') ? cat : undefined));
+      setPwas(resp);
+    } finally {
+      setLoading(false);
+    }
   }
 
   const onSearchChange = async (e: CustomEvent) => {
@@ -110,8 +116,11 @@ const PWAs: React.FC<RouteComponentProps> = ({
         <IonRefresher 
           slot='fixed'
           onIonRefresh={async(event: any) => {
-            await reloadPwas();
-            event.detail.complete();
+            try {
+              await reloadPwas();
+            } finally {
+              event.detail.complete();
+            }
           }}
         >
           <IonRefresherContent></IonRefresherContent>

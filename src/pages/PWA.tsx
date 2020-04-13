@@ -57,10 +57,14 @@ const PWA: React.FC<PWAProps> = ({
         <IonButtons slot='start'>
           <IonBackButton defaultHref='/pwas' />
         </IonButtons>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+        { pwa && <IonTitle>{pwa.name}</IonTitle> }
+        </IonToolbar>
+      </IonHeader>
+      <IonContent class='content'>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
             <div style={{ display: 'flex', alignItems: 'center'}}>
               { pwa && 
-                <img style={{height: '70px', width: '70px', borderRadius: '5px', margin: '10px'}} src={pwa.icon} /> }
+                <img style={{height: '80px', width: '80px', borderRadius: '5px', margin: '10px'}} src={pwa.icon} /> }
               { pwa && 
                 <div style={{ paddingLeft: '10px', display: 'flex', flexDirection: 'column', justifyContent: 'space-around', height: '70px'}}>
                   <p style={{ margin: '0', fontSize: '20px'}}>{pwa.name}</p>
@@ -72,9 +76,6 @@ const PWA: React.FC<PWAProps> = ({
               window.open(pwa.link, "_blank");
             }}>Install</IonButton>}
           </div>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent class='content'>
         { !isLoading && <h2 style={{paddingTop: '10px', paddingLeft: '10px'}}>About</h2> }
         <div style={{height: '200px', padding: '15px'}}>
         {pwa && pwa.description}

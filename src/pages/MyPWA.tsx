@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { IonContent, IonHeader, IonPage, IonToolbar, IonButton, IonSlides, IonSlide, useIonViewDidEnter, IonFab, IonFabButton, IonIcon, IonFabList, IonTextarea, IonInput, IonAlert, useIonViewDidLeave, useIonViewWillLeave, IonButtons, IonBackButton, IonText, IonToast } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonToolbar, IonButton, IonSlides, IonSlide, useIonViewDidEnter, IonFab, IonFabButton, IonIcon, IonFabList, IonTextarea, IonInput, IonAlert, useIonViewDidLeave, useIonViewWillLeave, IonButtons, IonBackButton, IonText, IonToast, IonTitle } from '@ionic/react';
 import ImageUploader from 'react-images-upload';
 import { getPWA, putApp, deleteScreenshot, postAddScreenshots, deleteApp } from '../data/dataApi';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -136,10 +136,14 @@ const addImages = async () => {
           <IonButtons slot="start" >
             <IonBackButton defaultHref="/profile" />
           </IonButtons>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+          {pwa &&<IonTitle>{pwa.name}</IonTitle>}
+        </IonToolbar>
+      </IonHeader>
+      <IonContent className='content' style={{ overflow: 'hidden' }} >
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
             <div style={{ display: 'flex', alignItems: 'center'}}>
               { pwa && 
-                <img style={{height: '70px', width: '70px', borderRadius: '5px', margin: '10px'}} src={pwa.icon} /> }
+                <img style={{height: '80px', width: '80px', borderRadius: '5px', margin: '10px'}} src={pwa.icon} /> }
               { pwa && 
                 <div style={{ paddingLeft: '10px', display: 'flex', flexDirection: 'column', justifyContent: 'space-around', height: '70px'}}>
                   
@@ -181,17 +185,14 @@ const addImages = async () => {
               window.open(link, '_blank');
             }}>Install</IonButton>}
           </div>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent className='content' style={{ overflow: 'hidden' }} >
-      <IonFab activated={isEdit} style={{paddingTop: '10px'}} horizontal="end" slot="fixed">
+      <IonFab activated={isEdit} style={{paddingTop: '10px'}} vertical="bottom" horizontal="end" slot="fixed">
               <IonFabButton class='fab'>
                   <IonIcon icon={options} />
               </IonFabButton>
                 {
                     isEdit
                     ?
-                    <IonFabList>
+                    <IonFabList side="top">
                         <IonFabButton type="button" onClick={() => {
                           setIsEdit(false);
                         }}>
@@ -202,7 +203,7 @@ const addImages = async () => {
                         </IonFabButton>                    
                     </IonFabList>
                     :
-                    <IonFabList>
+                    <IonFabList side="top">
                         <IonFabButton type="button" onClick={() => setIsEdit(true)}>
                             <IonIcon icon={pencil} />
                         </IonFabButton>
@@ -246,7 +247,7 @@ const addImages = async () => {
                           bottom: '90%',
                           left: '80%',
                           zIndex: '100'
-                        }} color="danger" onClick={() => removeImage(shot.imageId)}><IonIcon icon={trash} />
+                        }} color="inherit" onClick={() => removeImage(shot.imageId)}><IonIcon color="danger" icon={trash} />
                         </IonButton>
                       }
                       <img style={{height: '400px', width: '200px'}} src={shot.url} /> 
