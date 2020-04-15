@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonList, IonItem, IonGrid, IonRow, IonSearchbar, IonSelectOption, IonSelect, IonCard, IonCardHeader, IonCardContent, IonButton, IonImg, IonSlides, IonSlide, IonLabel, useIonViewDidEnter, useIonViewWillEnter, IonProgressBar, useIonViewDidLeave, IonBackButton, IonButtons, IonToast } from '@ionic/react';
-import { getPWA, postScore } from '../data/dataApi';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, useIonViewDidEnter, useIonViewWillEnter, useIonViewDidLeave, IonBackButton, IonButtons, IonToast, IonList } from '@ionic/react';
+import { getPWA } from '../data/dataApi';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { PWA as PWAType } from '../util/types';
 import { connect } from '../data/connect';
@@ -8,6 +8,7 @@ import { setHasReadInstall } from '../data/user/user.actions';
 import ScreenshotSlider from '../components/ScreenshotSlider';
 import Rating from '../components/Rating';
 import PWAInfo from '../components/PWAInfo';
+import RatingList from '../components/RatingList';
 
 interface MatchParams {
   id: string | undefined;
@@ -33,15 +34,9 @@ const PWA: React.FC<PWAProps> = ({
 }) => {
 
   const [pwa, setPwa] = useState<PWAType | undefined>(undefined);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  useIonViewWillEnter(() => {
-    setIsLoading(true);
-  }, [])
 
   useIonViewDidEnter(() => {
     loadPWA(history.location.pathname.split('/')[2]);
-    setIsLoading(false);
   }, [])
 
   useIonViewDidLeave(() => {
@@ -55,39 +50,49 @@ const PWA: React.FC<PWAProps> = ({
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-        <IonButtons slot='start'>
-          <IonBackButton defaultHref='/pwas' />
-        </IonButtons>
-        { pwa && <IonTitle>{pwa.name}</IonTitle> }
-        </IonToolbar>
-      </IonHeader>
-      <IonContent class='content'>
-        {pwa && <PWAInfo pwa={pwa} isLoading={isLoading} appId={Number(match.params.id!)} />}
-        { !isLoading && <h2 style={{ paddingLeft: '10px' }}>Screenshots</h2> }
-        {pwa && pwa.screenshots && <ScreenshotSlider screenshots={pwa.screenshots}></ScreenshotSlider>}
-        { !isLoading && <h2 style={{ paddingLeft: '10px' }}>Ratings</h2> }
-        {<Rating appId={Number(match.params.id!)} />}
-      </IonContent>
-      <IonToast
-        isOpen={(hasRead !== undefined && hasRead === 'false')}
-        position='top'
-        message='Please click to learn how to install a PWA'
-        buttons={[
-          {
-            text: 'Close',
-            handler: () => {
-              setHasReadInstall('true');
-            }
-        }, {
-            text: 'Learn',
-            handler: () => {
-              setHasReadInstall('true');
-              history.push('/about');
-            }
-        }]}
-      />
+      {
+        pwa &&
+        <>
+        <IonHeader>
+          <IonToolbar>
+          <IonButtons slot='start'>
+            <IonBackButton defaultHref='/pwas' />
+          </IonButtons>
+          {<IonTitle>{pwa.name}</IonTitle> }
+          </IonToolbar>
+        </IonHeader>
+        <IonContent class='content'>
+          {<PWAInfo pwa={pwa} appId={Number(match.params.id!)} />}
+          {<h2 style={{ paddingLeft: '10px' }}>Screenshots</h2> }
+          {pwa.screenshots && <ScreenshotSlider screenshots={pwa.screenshots}></ScreenshotSlider>}
+          {<h2 style={{ paddingLeft: '10px' }}>Ratings</h2> }
+          {<Rating appId={Number(match.params.id!)} />}
+          <IonList>
+            {pwa.ratings && pwa.ratings.map((rating, idx) =>
+                <RatingList key={idx} rating={rating} /> 
+            )}
+          </IonList>
+        </IonContent>
+        <IonToast
+          isOpen={(hasRead !== undefined && hasRead === 'false')}
+          position='top'
+          message='Please click to learn how to install a PWA'
+          buttons={[
+            {
+              text: 'Close',
+              handler: () => {
+                setHasReadInstall('true');
+              }
+          }, {
+              text: 'Learn',
+              handler: () => {
+                setHasReadInstall('true');
+                history.push('/about');
+              }
+          }]}
+        />
+      </>
+    }
     </IonPage>
   );
 };

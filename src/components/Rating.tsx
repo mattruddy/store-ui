@@ -21,10 +21,16 @@ const Rating: React.FC<ContainerProps> = ({ appId }) => {
     const [star, setStar] = useState<number>(0);
     const [starError, setStarError] = useState<string | undefined>();
     const [comment, setComment] = useState<string>();
+    const [commentError, setCommentError] = useState<string | undefined>();
 
     const onRatingSubmit = async () => {
         if (star < 1 || star > 5) {
             setStarError('Must be between 1 and 5 stars');
+            return;
+        }
+
+        if (!comment) {
+            setCommentError('Comment is required');
             return;
         }
         const starVal = stars[star - 1];
@@ -36,6 +42,7 @@ const Rating: React.FC<ContainerProps> = ({ appId }) => {
         <StarRatings 
             rating={star}
             changeRating={(newRating: number) => {
+                setStarError(undefined);
                 setStar(newRating);
             }}
             stars={5} 
@@ -47,10 +54,14 @@ const Rating: React.FC<ContainerProps> = ({ appId }) => {
         <IonTextarea
             placeholder="Add a comment"
             value={comment}
-            onIonChange={(e) => setComment(e.detail.value!)}
+            onIonChange={(e) => {
+                setCommentError(undefined);
+                setComment(e.detail.value!)
+            }}
             rows={7}
-            maxlength={800}
+            maxlength={1500}
         />
+        {commentError && <IonText color="danger"><p>{commentError}</p></IonText>}
         <IonButton onClick={onRatingSubmit}>Add</IonButton>
       </Collapsible>
   );

@@ -104,7 +104,7 @@ export const postEmail = async (text: string) => {
   }
 }
 
-export const postRating = async (rating: string, appId: number, comment?: string) => {
+export const postRating = async (rating: string, appId: number, comment: string) => {
   const token = await Storage.get({key: TOKEN});
   let header;
   let isAuth;

@@ -1,4 +1,5 @@
 import loadImage from 'blueimp-load-image';
+import { Rating } from './types';
 
 export const blobToFile = (blob: Blob, fileName: string): File => {
     const b: any = blob;
@@ -41,4 +42,11 @@ export const fixRoation = (src: string): string | undefined => {
         {orientation: true}
     );
     return fixSrc;
+}
+
+export const getAverageRating = (ratings?: Rating[]): number => {
+    if (!ratings) return 0;
+    let total = 0;
+    ratings.forEach(rating => total += rating.star);
+    return total / ratings.length;
 }

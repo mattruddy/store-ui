@@ -8,6 +8,12 @@ export interface Image {
     url: string
 }
 
+export interface Rating {
+    from: string,
+    star: number,
+    comment?: string
+}
+
 export interface PWA {
     appId: number
     name: string,
@@ -18,6 +24,7 @@ export interface PWA {
     status: string,
     screenshots: Image[],
     reason: string,
+    ratings: Rating[],
 }
 
 export interface UserProfile {
