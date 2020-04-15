@@ -5,6 +5,9 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { PWA as PWAType } from '../util/types';
 import { connect } from '../data/connect';
 import { setHasReadInstall } from '../data/user/user.actions';
+import ScreenshotSlider from '../components/ScreenshotSlider';
+import Rating from '../components/Rating';
+import PWAInfo from '../components/PWAInfo';
 
 interface MatchParams {
   id: string | undefined;
@@ -61,36 +64,11 @@ const PWA: React.FC<PWAProps> = ({
         </IonToolbar>
       </IonHeader>
       <IonContent class='content'>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-            <div style={{ display: 'flex', alignItems: 'center'}}>
-              { pwa && 
-                <img style={{height: '80px', width: '80px', borderRadius: '5px', margin: '10px'}} src={pwa.icon} /> }
-              { pwa && 
-                <div style={{ paddingLeft: '10px', display: 'flex', flexDirection: 'column', justifyContent: 'space-around', height: '70px'}}>
-                  <p style={{ margin: '0', fontSize: '20px'}}>{pwa.name}</p>
-                  <small>{pwa.category}</small>
-                </div>}
-            </div>
-            {pwa && <IonButton class='button' style={{ marginRight: '10px'}} onClick={() => {
-              postScore(Number(match.params.id!));
-              window.open(pwa.link, "_blank");
-            }}>Install</IonButton>}
-          </div>
-        { !isLoading && <h2 style={{paddingTop: '10px', paddingLeft: '10px'}}>About</h2> }
-        <div style={{height: '200px', padding: '15px'}}>
-        {pwa && pwa.description}
-        </div> 
+        {pwa && <PWAInfo pwa={pwa} isLoading={isLoading} appId={Number(match.params.id!)} />}
         { !isLoading && <h2 style={{ paddingLeft: '10px' }}>Screenshots</h2> }
-        {
-          pwa && pwa.screenshots &&
-          <IonSlides style={{ marginBottom: '45px'}} key={pwa.screenshots.map((shot) => shot.imageId).join('_')} pager={true} options={{ initialSlide: 0, speed: 400}}>
-          {pwa.screenshots.map((shot, idx) => (
-            <IonSlide key={idx}>
-              <img style={{height: '400px', width: '200px'}} src={shot.url} /> 
-            </IonSlide>
-          ))}
-        </IonSlides>
-        }
+        {pwa && pwa.screenshots && <ScreenshotSlider screenshots={pwa.screenshots}></ScreenshotSlider>}
+        { !isLoading && <h2 style={{ paddingLeft: '10px' }}>Ratings</h2> }
+        {<Rating appId={Number(match.params.id!)} />}
       </IonContent>
       <IonToast
         isOpen={(hasRead !== undefined && hasRead === 'false')}
@@ -104,8 +82,8 @@ const PWA: React.FC<PWAProps> = ({
             }
         }, {
             text: 'Learn',
-            handler: async () => {
-              await setHasReadInstall('true');
+            handler: () => {
+              setHasReadInstall('true');
               history.push('/about');
             }
         }]}

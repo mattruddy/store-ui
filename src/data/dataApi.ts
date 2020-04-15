@@ -104,6 +104,43 @@ export const postEmail = async (text: string) => {
   }
 }
 
+export const postRating = async (rating: string, appId: number, comment?: string) => {
+  const token = await Storage.get({key: TOKEN});
+  let header;
+  let isAuth;
+  if (token && token.value) {
+    // logged in user
+    header = {
+      'Authorization': `Bearer ${token.value}`,
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
+    isAuth = true;
+  } else {
+    // anonymous
+    header = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
+    isAuth = false;
+  }
+
+  try {
+    const response = await Axios.request({
+      url: `${vars().env.API_URL}/${isAuth ? 'secure' : 'public'}/pwa/rating/${appId}`,
+      method: 'POST',
+      headers: header,
+      data: {
+        star: rating,
+        comment: comment,
+      }
+    });
+    return response.data;
+  } catch (error) {
+    return error.response;
+  }
+}
+
 export const postDevice = async (key: string, auth: string, endpoint: string) => {
   const token = await Storage.get({ key: TOKEN });
   if (!token || !token.value) return;
