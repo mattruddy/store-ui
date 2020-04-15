@@ -1,12 +1,15 @@
 import React, { useState, useRef } from 'react';
-import { IonContent, IonHeader, IonPage, IonToolbar, IonButton, IonSlides, IonSlide, useIonViewDidEnter, IonFab, IonFabButton, IonIcon, IonFabList, IonTextarea, IonInput, IonAlert, useIonViewDidLeave, useIonViewWillLeave, IonButtons, IonBackButton, IonText, IonToast, IonTitle } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonToolbar, IonButton, IonSlides, IonSlide, useIonViewDidEnter, IonFab, IonFabButton, IonIcon, IonFabList, IonTextarea, IonInput, IonAlert, useIonViewDidLeave, useIonViewWillLeave, IonButtons, IonBackButton, IonText, IonToast, IonTitle, IonList } from '@ionic/react';
 import ImageUploader from 'react-images-upload';
 import { getPWA, putApp, deleteScreenshot, postAddScreenshots, deleteApp } from '../data/dataApi';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { PWA as PWAType, Image } from '../util/types';
 import { pencil, options, trash, close, checkmark } from 'ionicons/icons';
-import { fixFilesRotation, fixRoation } from '../util/utils';
+import { fixFilesRotation, fixRoation, getAverageRating } from '../util/utils';
 import CategoryOptions from '../components/CategoryOptions';
+import RatingList from '../components/RatingItem';
+//@ts-ignore
+import StarRatings from 'react-star-ratings';
 
 interface MatchParams {
   id: string | undefined;
@@ -213,6 +216,15 @@ const addImages = async () => {
                     </IonFabList>
                 }
           </IonFab>
+          { pwa && 
+            <div style={{marginLeft: '10px'}}>
+              <StarRatings 
+                  rating={getAverageRating(pwa.ratings)} 
+                  starDimension="20px"
+                  starSpacing="2px"
+              />
+              <span style={{marginLeft: '5px'}}>({pwa.ratings.length})</span>
+            </div>}
         { !isLoading && <h2 style={{paddingTop: '10px', paddingLeft: '10px'}}>About</h2>}
         {
             isEdit 
@@ -275,7 +287,12 @@ const addImages = async () => {
             </form>
 
         }
-
+      {<h2 style={{ paddingLeft: '10px' }}>Reviews</h2> }
+      {pwa && pwa.ratings && 
+        <IonList>
+          {pwa.ratings.map((rating, idx) => <RatingList key={idx} rating={rating} />)}
+        </IonList>
+      }
       </IonContent>
       <IonAlert
         isOpen={showDeleteAlert}

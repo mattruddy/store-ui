@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 //@ts-ignore
 import StarRatings from 'react-star-ratings';
 import Collapsible from 'react-collapsible';
-import { IonTextarea, IonButton, IonText } from '@ionic/react';
+import { IonTextarea, IonButton, IonText, IonToast } from '@ionic/react';
 
 interface ContainerProps {
     onSubmit: (star: number, comment: string) => {}
@@ -13,23 +13,34 @@ const Rating: React.FC<ContainerProps> = ({ onSubmit }) => {
     const [starError, setStarError] = useState<string | undefined>();
     const [comment, setComment] = useState<string>();
     const [commentError, setCommentError] = useState<string | undefined>();
+    const [isSubmit, setIsSubmit] = useState<boolean>(false);
+    const [showToast, setShowToast] = useState<boolean>(false);
+    const [toastMessage, setToastMessage] = useState<string | undefined>();
 
     const handleSubmit = () => {
-        if (star < 1 || star > 5) {
-            setStarError('Must be between 1 and 5 stars');
-            return;
+        try {
+            setIsSubmit(true);
+            if (star < 1 || star > 5) {
+                setStarError('Must be between 1 and 5 stars');
+                return;
+            }
+        
+            if (!comment) {
+                setCommentError('Comment is required');
+                return;
+            }
+            onSubmit(star, comment);
+            setToastMessage('Success');
+            setShowToast(true);
+            setComment('');
+            setStar(0);
+        } finally {
+            setIsSubmit(false);
         }
-    
-        if (!comment) {
-            setCommentError('Comment is required');
-            return;
-        }
-        onSubmit(star, comment);
-        setComment('');
-        setStar(0);
     }
 
   return (
+      <>
       <Collapsible
         trigger="Click to Add a Review"
         triggerStyle={{
@@ -41,31 +52,45 @@ const Rating: React.FC<ContainerProps> = ({ onSubmit }) => {
         triggerWhenOpen="Close"
         transitionTime={200}
       >
-        <StarRatings 
-            rating={star}
-            changeRating={(newRating: number) => {
-                setStarError(undefined);
-                setStar(newRating);
-            }}
-            stars={5} 
-            starRatedColor="rgb(109, 122, 130)"
-            starHoverColor="rgb(109, 122, 130)"
-            name="rating"
-        />
-        {starError && <IonText color="danger"><p>{starError}</p></IonText>}
-        <IonTextarea
-            placeholder="Add a comment"
-            value={comment}
-            onIonChange={(e) => {
-                setCommentError(undefined);
-                setComment(e.detail.value!)
-            }}
-            rows={7}
-            maxlength={1500}
-        />
-        {commentError && <IonText color="danger"><p>{commentError}</p></IonText>}
-        <IonButton expand="block" onClick={handleSubmit}>Add</IonButton>
+          <div style={{ padding: '15px'}}>
+            <StarRatings 
+                rating={star}
+                changeRating={(newRating: number) => {
+                    setStarError(undefined);
+                    setStar(newRating);
+                }}
+                stars={5} 
+                starRatedColor="rgb(109, 122, 130)"
+                starHoverColor="rgb(109, 122, 130)"
+                name="rating"
+                starDimension="30px"
+                starSpacing="4px"
+            />
+            {starError && <IonText color="danger"><p>{starError}</p></IonText>}
+            <IonTextarea
+                placeholder="Add a comment"
+                value={comment}
+                onIonChange={(e) => {
+                    setCommentError(undefined);
+                    setComment(e.detail.value!)
+                }}
+                rows={7}
+                maxlength={1500}
+            />
+            {commentError && <IonText color="danger"><p>{commentError}</p></IonText>}
+            <IonButton expand="block" disabled={isSubmit} onClick={handleSubmit}>Submit Review</IonButton>
+          </div>
       </Collapsible>
+      <IonToast
+        isOpen={showToast}
+        message={toastMessage}
+        duration={2000}
+        onDidDismiss={() => {
+            setShowToast(false);
+            setToastMessage(undefined);
+        }}
+      />
+      </>
   );
 };
 
