@@ -1,14 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, useIonViewDidEnter, useIonViewWillEnter, useIonViewDidLeave, IonBackButton, IonButtons, IonToast, IonList } from '@ionic/react';
-import { getPWA } from '../data/dataApi';
+import { getPWA, postRating } from '../data/dataApi';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { PWA as PWAType } from '../util/types';
+import { PWA as PWAType, Rating as RatingType } from '../util/types';
 import { connect } from '../data/connect';
 import { setHasReadInstall } from '../data/user/user.actions';
 import ScreenshotSlider from '../components/ScreenshotSlider';
 import Rating from '../components/Rating';
 import PWAInfo from '../components/PWAInfo';
-import RatingList from '../components/RatingList';
+import RatingList from '../components/RatingItem';
+
+const stars = [
+  "ONE",
+  "TWO",
+  "THREE",
+  "FOUR",
+  "FIVE"
+]
 
 interface MatchParams {
   id: string | undefined;
@@ -34,6 +42,7 @@ const PWA: React.FC<PWAProps> = ({
 }) => {
 
   const [pwa, setPwa] = useState<PWAType | undefined>(undefined);
+  const [ratings, setRatings] = useState<RatingType[]>([]);
 
   useIonViewDidEnter(() => {
     loadPWA(history.location.pathname.split('/')[2]);
@@ -41,11 +50,19 @@ const PWA: React.FC<PWAProps> = ({
 
   useIonViewDidLeave(() => {
     setPwa(undefined);
+    setRatings([]);
   }, [])
 
   const loadPWA = async (id: string) => {
     const resp = await getPWA(Number(id)) as PWAType;
     setPwa(resp);
+    setRatings(resp.ratings);
+  }
+
+  const onRatingSubmit = async (star: number, comment: string) => {
+    const starVal = stars[star - 1];
+    const response = await postRating(starVal, Number(match.params.id!), comment);
+    setRatings([response, ...ratings]);
   }
 
   return (
@@ -62,15 +79,22 @@ const PWA: React.FC<PWAProps> = ({
           </IonToolbar>
         </IonHeader>
         <IonContent class='content'>
-          {<PWAInfo pwa={pwa} appId={Number(match.params.id!)} />}
+          {<PWAInfo pwa={pwa} appId={Number(match.params.id!)} ratings={ratings} />}
           {<h2 style={{ paddingLeft: '10px' }}>Screenshots</h2> }
           {pwa.screenshots && <ScreenshotSlider screenshots={pwa.screenshots}></ScreenshotSlider>}
-          {<h2 style={{ paddingLeft: '10px' }}>Ratings</h2> }
-          {<Rating appId={Number(match.params.id!)} />}
+          {<h2 style={{ paddingLeft: '10px' }}>Reviews</h2> }
+          <Rating onSubmit={onRatingSubmit} />
           <IonList>
-            {pwa.ratings && pwa.ratings.map((rating, idx) =>
-                <RatingList key={idx} rating={rating} /> 
-            )}
+            {(ratings && ratings.length > 0) 
+              ? ratings.map((rating, idx) => <RatingList key={idx} rating={rating} />) 
+              : 
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'center'
+                }}>
+                  <p><i>No Reviews Yet</i></p>
+                </div>
+            }
           </IonList>
         </IonContent>
         <IonToast

@@ -11,7 +11,8 @@ export interface Image {
 export interface Rating {
     from: string,
     star: number,
-    comment?: string
+    comment: string,
+    createdAt: Date,
 }
 
 export interface PWA {

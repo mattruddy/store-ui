@@ -3,42 +3,44 @@ import React, { useState } from 'react';
 import StarRatings from 'react-star-ratings';
 import Collapsible from 'react-collapsible';
 import { IonTextarea, IonButton, IonText } from '@ionic/react';
-import { postRating } from '../data/dataApi';
-
-const stars = [
-    "ONE",
-    "TWO",
-    "THREE",
-    "FOUR",
-    "FIVE"
-]
 
 interface ContainerProps {
-    appId: number;
+    onSubmit: (star: number, comment: string) => {}
 }
 
-const Rating: React.FC<ContainerProps> = ({ appId }) => {
+const Rating: React.FC<ContainerProps> = ({ onSubmit }) => {
     const [star, setStar] = useState<number>(0);
     const [starError, setStarError] = useState<string | undefined>();
     const [comment, setComment] = useState<string>();
     const [commentError, setCommentError] = useState<string | undefined>();
 
-    const onRatingSubmit = async () => {
+    const handleSubmit = () => {
         if (star < 1 || star > 5) {
             setStarError('Must be between 1 and 5 stars');
             return;
         }
-
+    
         if (!comment) {
             setCommentError('Comment is required');
             return;
         }
-        const starVal = stars[star - 1];
-        const response = await postRating(starVal, appId, comment);
-        console.log(response);
+        onSubmit(star, comment);
+        setComment('');
+        setStar(0);
     }
+
   return (
-      <Collapsible trigger="Add a Rating">
+      <Collapsible
+        trigger="Click to Add a Review"
+        triggerStyle={{
+            display: 'flex',
+            justifyContent: 'center',
+            height: '30px',
+            cursor: 'pointer',
+        }}
+        triggerWhenOpen="Close"
+        transitionTime={200}
+      >
         <StarRatings 
             rating={star}
             changeRating={(newRating: number) => {
@@ -46,8 +48,8 @@ const Rating: React.FC<ContainerProps> = ({ appId }) => {
                 setStar(newRating);
             }}
             stars={5} 
-            starRatedColor="blue"
-            starHoverColor="blue"
+            starRatedColor="rgb(109, 122, 130)"
+            starHoverColor="rgb(109, 122, 130)"
             name="rating"
         />
         {starError && <IonText color="danger"><p>{starError}</p></IonText>}
@@ -62,7 +64,7 @@ const Rating: React.FC<ContainerProps> = ({ appId }) => {
             maxlength={1500}
         />
         {commentError && <IonText color="danger"><p>{commentError}</p></IonText>}
-        <IonButton onClick={onRatingSubmit}>Add</IonButton>
+        <IonButton expand="block" onClick={handleSubmit}>Add</IonButton>
       </Collapsible>
   );
 };

@@ -45,8 +45,12 @@ export const fixRoation = (src: string): string | undefined => {
 }
 
 export const getAverageRating = (ratings?: Rating[]): number => {
-    if (!ratings) return 0;
+    if (!ratings || ratings.length < 1) return 0;
     let total = 0;
     ratings.forEach(rating => total += rating.star);
     return total / ratings.length;
+}
+
+export const dateFormatter = (date: Date) => {
+    return new Date(date).toLocaleDateString();
 }

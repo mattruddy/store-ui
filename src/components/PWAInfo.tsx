@@ -1,6 +1,6 @@
 import React from 'react';
 import { IonButton } from '@ionic/react';
-import { PWA } from '../util/types';
+import { PWA, Rating } from '../util/types';
 import { postScore } from '../data/dataApi';
 //@ts-ignore
 import StarRatings from 'react-star-ratings';
@@ -9,9 +9,10 @@ import { getAverageRating } from '../util/utils';
 interface ContainerProps {
     pwa: PWA,
     appId: number,
+    ratings: Rating[]
 }
 
-const PWAInfo: React.FC<ContainerProps> = ({ pwa, appId, }) => {
+const PWAInfo: React.FC<ContainerProps> = ({ pwa, appId, ratings }) => {
   return (
       <>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '10px'}}>
@@ -30,10 +31,11 @@ const PWAInfo: React.FC<ContainerProps> = ({ pwa, appId, }) => {
         </div>
         <div style={{marginLeft: '10px'}}>
             <StarRatings 
-                rating={getAverageRating(pwa.ratings)} 
+                rating={getAverageRating(ratings)} 
                 starDimension="20px"
                 starSpacing="2px"
             />
+            <span style={{marginLeft: '5px'}}>({ratings.length})</span>
         </div>
         <h2 style={{paddingTop: '10px', paddingLeft: '10px'}}>About</h2> 
         <div style={{height: '200px', padding: '15px'}}>
