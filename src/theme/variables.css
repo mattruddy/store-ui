@@ -11,6 +11,8 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-primary-shade: #99ffcc;
   --ion-color-primary-tint: #99ffcc;
 
+  --ion-color-github: #24292e;
+
   /** secondary **/
   --ion-color-secondary: #3dc2ff;
   --ion-color-secondary-rgb: 61, 194, 255;

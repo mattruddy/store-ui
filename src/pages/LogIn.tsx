@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
-import { RouteComponentProps } from 'react-router';
-import { IonPage, IonList, IonItem, IonRow, IonLabel, IonInput, IonCol, IonButton, IonText, IonContent, IonToast } from '@ionic/react';
+import React, { useState, useEffect } from 'react';
+import { RouteComponentProps, useLocation } from 'react-router';
+import { IonPage, IonList, IonItem, IonRow, IonLabel, IonInput, IonCol, IonButton, IonText, IonContent, IonToast, IonIcon } from '@ionic/react';
 import { setToken, setIsLoggedIn } from '../data/user/user.actions';
-import { postLogin } from '../data/dataApi';
+import { postLogin, postDevice } from '../data/dataApi';
 import { connect } from '../data/connect';
+import queryString from 'query-string';
+import { logoGithub } from 'ionicons/icons';
 
 interface OwnProps extends RouteComponentProps {}
 
@@ -30,6 +32,24 @@ const LogIn: React.FC<LoginProps> = ({
     const [validationError, setValidationError] = useState(false);
     const [toastMessage, setToastMessage] = useState<string>();
     const [showToast, setShowToast] = useState<boolean>(false);
+    const location = useLocation();
+
+    useEffect(() => {
+      if (location && queryString.parse(location.search).token) {
+        const thirdPartyLogin = async () => {
+          setTokenAction(queryString.parse(location.search).token as string);
+          setIsLoggedInAction(true);
+          const key = localStorage.getItem("push_key");
+          const auth = localStorage.getItem("push_auth");
+          const endpoint = localStorage.getItem("push_endpoint");
+          if (key && auth && endpoint) {
+            await postDevice(key, auth, endpoint);
+          }
+          history.push("/profile", { direction: 'back'});
+        }
+        thirdPartyLogin();
+      }
+    }, [location])
 
     const signup = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -131,6 +151,9 @@ const LogIn: React.FC<LoginProps> = ({
               <IonButton routerLink="/signup" color="light" expand="block">Signup</IonButton>
             </IonCol>
           </IonRow>
+        </form>
+        <form action="http://localhost:8080/signin/github" method="POST">
+          <IonButton color="github" expand="full" type="submit">Sign In with GitHub <IonIcon icon={logoGithub} /></IonButton>
         </form>
         </IonContent>
         <IonToast
