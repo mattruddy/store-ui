@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonGrid, IonRow, IonSearchbar, IonPopover, IonButton, IonList, IonItem, useIonViewDidEnter, IonInfiniteScroll, IonInfiniteScrollContent, useIonViewDidLeave, IonLoading, IonProgressBar, IonRefresher, IonRefresherContent } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonGrid, IonRow, IonSearchbar, IonPopover, IonButton, IonList, IonItem, useIonViewDidEnter, IonInfiniteScroll, IonInfiniteScrollContent, useIonViewDidLeave, IonLoading, IonProgressBar, IonRefresher, IonRefresherContent, IonSegment, IonSegmentButton, IonButtons, IonIcon } from '@ionic/react';
 import PWACard from '../components/PWACard';
 import CategoryOptions from '../components/CategoryOptions';
 import { getPWAs, getSearchApp } from '../data/dataApi';
@@ -7,6 +7,8 @@ import { PWA, Search } from '../util/types';
 import { RouteComponentProps, withRouter } from 'react-router';
 import './main.css';
 import { setLoading } from '../data/user/user.actions';
+import { search } from 'ionicons/icons';
+import SearchBarList from '../components/SearchBarList';
 
 const PWAs: React.FC<RouteComponentProps> = ({
     history
@@ -16,6 +18,7 @@ const PWAs: React.FC<RouteComponentProps> = ({
   const [cat, setCat] = useState<string>('');
   const [pwas, setPwas] = useState<PWA[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [showPopover, setShowPopover] = useState<boolean>(false);
   const [searchResults, setSearchResults] = useState<Search[]>([]);
   const scrollEl = useRef<any>(undefined);
   const content = useRef<any>();
@@ -40,7 +43,7 @@ const PWAs: React.FC<RouteComponentProps> = ({
   const pwaList = () => {
     let resultPwas = pwas;
     if (resultPwas && resultPwas.length > 0) {
-      if (cat !== '' && cat !== 'ALL') {
+      if (cat !== '' && cat !== 'ALL' && cat !== 'NEW') {
         resultPwas = pwas.filter(pwa => pwa.category === cat);
       }
       if (resultPwas.length > 0) {
@@ -50,7 +53,6 @@ const PWAs: React.FC<RouteComponentProps> = ({
             <div style={{height: '330px', width: '330px', margin: '10px'}}></div>
             <div style={{height: '330px', width: '330px', margin: '10px'}}></div>
             <div style={{height: '330px', width: '330px', margin: '10px'}}></div>
-
           </>
         )
       } else {
@@ -79,6 +81,12 @@ const PWAs: React.FC<RouteComponentProps> = ({
     reloadPwas(option);
   }
 
+  const onSearchPress = (result: Search) => {
+    setShowPopover(false);
+    setSearchResults([]);
+    history.push(`/pwa/${result.appId}`);
+  }
+
   const reloadPwas = async (option?: string) => {
     try {
       setLoading(true);
@@ -105,11 +113,21 @@ const PWAs: React.FC<RouteComponentProps> = ({
     <IonPage>
       <IonHeader>
         <IonToolbar class='header'>
-          <div style={{ width: '100%', display: 'flex', justifyContent: 'center'}} onClick={() => {
+          <IonPopover
+            isOpen={showPopover}
+            onDidDismiss={() => setShowPopover(false)}
+            translucent={true}
+          >
+            <SearchBarList onSearchChange={onSearchChange} searchResults={searchResults} onSearchPress={onSearchPress} />
+          </IonPopover>
+          <IonButtons slot="end">
+            <IonButton onClick={() => setShowPopover(true)}><IonIcon icon={search} /></IonButton>
+          </IonButtons>
+          <IonTitle onClick={() => {
             content.current.scrollToTop();
           }}>
             <img style={{ height: '40px', width: '40px'}} src="assets/icon/logo.png" />
-          </div>
+          </IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent class='content' ref={content}>
@@ -126,17 +144,15 @@ const PWAs: React.FC<RouteComponentProps> = ({
           <IonRefresherContent></IonRefresherContent>
         </IonRefresher>
       { isLoading && <IonProgressBar type="indeterminate" /> }
-      <IonSearchbar onIonChange={onSearchChange} />
-          <IonList style={{ background: 'none'}}>
-              { searchResults && searchResults.map((result, idx) => 
-                <IonItem button onClick={() => history.push(`/pwa/${result.appId}`)} key={idx}>
-                  {result.name}
-                </IonItem>
-              ) }
-            </IonList>
             <div style={{boxShadow: '0 0 3px #ccc', margin: '10px'}}>
-              <CategoryOptions onPress={onPress} haveClear={true} initValue={cat} />
+              <CategoryOptions onPress={onPress} initValue={cat} />
             </div>
+            <IonSegment value={cat} onIonChange={(e) => {
+              setCat(e.detail.value!);
+            }}>
+              <IonSegmentButton value=''>Trending</IonSegmentButton>
+              <IonSegmentButton value='NEW'>New</IonSegmentButton>
+            </IonSegment>
             <IonGrid>
               <IonRow style={{display: 'flex', justifyContent: 'center'}}>
                 {pwaList()}

@@ -172,7 +172,7 @@ const addImages = async () => {
                     isEdit
                     ?
                       <>
-                        <CategoryOptions onPress={onCatChange} haveClear={false} initValue={cat} />
+                        <CategoryOptions onPress={onCatChange} initValue={cat} />
                         {catError &&
                           <IonText color="danger">
                             <p>{catError}</p>

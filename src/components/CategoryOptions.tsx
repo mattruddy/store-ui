@@ -1,5 +1,5 @@
 import React from 'react';
-import { IonSelect, IonSelectOption } from '@ionic/react';
+import { IonSelect, IonSelectOption, IonItem, IonItemDivider } from '@ionic/react';
 
 const categories = [
     'BUSINESS',
@@ -20,13 +20,11 @@ const categories = [
 ]
 interface ContainerProps {
     onPress: (option: string) => void;
-    haveClear: boolean;
     initValue?: string;
 }
 
 const CategoryOptions: React.FC<ContainerProps> = ({
     onPress,
-    haveClear,
     initValue,
 }) => {
 
@@ -45,7 +43,6 @@ const CategoryOptions: React.FC<ContainerProps> = ({
         placeholder='Category' 
         onIonChange={e => onPress(e.detail.value!)} 
        >
-          { haveClear && <IonSelectOption key={32432432} value="">Trending</IonSelectOption> }
           {getOptions()}
       </IonSelect>
   );
