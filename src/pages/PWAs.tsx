@@ -49,7 +49,7 @@ const PWAs: React.FC<RouteComponentProps> = ({
       if (resultPwas.length > 0) {
         return (
           <>
-            {resultPwas.map((pwa, idx) => <PWACard key={idx} url="/pwa" history={history} category={pwa.category} name={pwa.name} icon={pwa.icon} appId={pwa.appId} />)}
+            {resultPwas.map((pwa, idx) => <PWACard key={idx} url="/pwa" history={history} pwa={pwa} />)}
             <div style={{height: '330px', width: '330px', margin: '10px'}}></div>
             <div style={{height: '330px', width: '330px', margin: '10px'}}></div>
             <div style={{height: '330px', width: '330px', margin: '10px'}}></div>

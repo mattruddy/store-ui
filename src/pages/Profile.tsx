@@ -41,7 +41,6 @@ const Profile: React.FC<ProfileProps> = ({
   const [screenshotError, setScreenshotError] = useState<string | undefined>(undefined);
   const [showModal, setShowModal] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
-  const [nameTakenError, setNameTakenError] = useState<boolean>(false);
   const [isValidLink, setIsValidLink] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [toastMessage, setToastMessage] = useState<string>();
@@ -150,7 +149,7 @@ const Profile: React.FC<ProfileProps> = ({
         if (filteredPwas.length > 0) {
           return filteredPwas.map((pwa, idx) => (
             <div key={idx}>
-              <PWACard url="/mypwa" history={history} name={pwa.name} appId={pwa.appId} category={pwa.category} icon={pwa.icon} />
+              <PWACard url="/mypwa" history={history} pwa={pwa} />
               {filter === 'DENIED' && 
                 <>
                   <span style={{paddingLeft: '15px'}}><strong>Reason</strong></span>
