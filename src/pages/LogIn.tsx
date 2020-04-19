@@ -152,7 +152,7 @@ const LogIn: React.FC<LoginProps> = ({
             </IonCol>
           </IonRow>
         </form>
-        <form action="http://localhost:8080/signin/github" method="POST">
+        <form action="/api/signin/github" method="POST">
           <IonButton color="github" expand="full" type="submit">Sign In with GitHub <IonIcon icon={logoGithub} /></IonButton>
         </form>
         </IonContent>

@@ -18,9 +18,16 @@ const SearchBarList: React.FC<ContainerProps> = ({
       <>
         <IonSearchbar onIonChange={onSearchChange} />
         { searchResults && searchResults.length > 0 && 
-            <IonList style={{ background: 'none'}}>
+            <IonList style={{ 
+                height: '250px', 
+                overflow: 'scroll', 
+                position: 'absolute', 
+                zIndex: '10000',
+                width: '100%',
+                boxShadow: '0px 0px 8px 2px #000000'
+            }}>
                 {searchResults.map((result, idx) => 
-                <IonItem button onClick={() => onSearchPress(result)} key={idx}>
+                <IonItem button detail onClick={() => onSearchPress(result)} key={idx}>
                     {result.name}
                 </IonItem>
                 )}

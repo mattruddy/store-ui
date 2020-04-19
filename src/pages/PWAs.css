@@ -1,7 +1,3 @@
-.popover {
-    --width: 90%;
-}
-
-.popover-content {
-    top: 50%;
+.seg {
+    --color-checked: black;
 }

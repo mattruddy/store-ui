@@ -4,7 +4,7 @@ import ImageUploader from 'react-images-upload';
 import { getPWA, putApp, deleteScreenshot, postAddScreenshots, deleteApp } from '../data/dataApi';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { PWA as PWAType, Image } from '../util/types';
-import { pencil, options, trash, close, checkmark } from 'ionicons/icons';
+import { pencil, options, trash, close, checkmark, openOutline } from 'ionicons/icons';
 import { fixFilesRotation, fixRoation, getAverageRating } from '../util/utils';
 import CategoryOptions from '../components/CategoryOptions';
 import RatingList from '../components/RatingItem';
@@ -186,7 +186,7 @@ const addImages = async () => {
             </div>
             {pwa && <IonButton style={{ marginRight: '10px'}} onClick={() => {
               window.open(link, '_blank');
-            }}>Install</IonButton>}
+            }}>FREE <IonIcon style={{marginLeft: '10px'}} icon={openOutline} /></IonButton>}
           </div>
       <IonFab activated={isEdit} style={{paddingTop: '10px'}} vertical="bottom" horizontal="end" slot="fixed">
               <IonFabButton class='fab'>

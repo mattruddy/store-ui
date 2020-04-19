@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonGrid, IonRow, IonSearchbar, IonPopover, IonButton, IonList, IonItem, useIonViewDidEnter, IonInfiniteScroll, IonInfiniteScrollContent, useIonViewDidLeave, IonLoading, IonProgressBar, IonRefresher, IonRefresherContent, IonSegment, IonSegmentButton, IonButtons, IonIcon } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonGrid, IonRow, IonSearchbar, IonPopover, IonButton, IonList, IonItem, useIonViewDidEnter, IonInfiniteScroll, IonInfiniteScrollContent, IonProgressBar, IonRefresher, IonRefresherContent, IonSegment, IonSegmentButton, IonButtons } from '@ionic/react';
 import PWACard from '../components/PWACard';
 import CategoryOptions from '../components/CategoryOptions';
 import { getPWAs, getSearchApp } from '../data/dataApi';
@@ -7,8 +7,8 @@ import { PWA, Search } from '../util/types';
 import { RouteComponentProps, withRouter } from 'react-router';
 import './main.css';
 import { setLoading } from '../data/user/user.actions';
-import { search } from 'ionicons/icons';
 import SearchBarList from '../components/SearchBarList';
+import './PWAs.css';
 
 const PWAs: React.FC<RouteComponentProps> = ({
     history
@@ -113,21 +113,14 @@ const PWAs: React.FC<RouteComponentProps> = ({
     <IonPage>
       <IonHeader>
         <IonToolbar class='header'>
-          <IonPopover
-            isOpen={showPopover}
-            onDidDismiss={() => setShowPopover(false)}
-            translucent={true}
-          >
-            <SearchBarList onSearchChange={onSearchChange} searchResults={searchResults} onSearchPress={onSearchPress} />
-          </IonPopover>
-          <IonButtons slot="end">
-            <IonButton onClick={() => setShowPopover(true)}><IonIcon icon={search} /></IonButton>
-          </IonButtons>
           <IonTitle onClick={() => {
             content.current.scrollToTop();
           }}>
             <img style={{ height: '40px', width: '40px'}} src="assets/icon/logo.png" />
           </IonTitle>
+          <IonButtons style={{paddingRight: '10px'}} slot="end">
+              <CategoryOptions onPress={onPress} initValue={cat} />
+          </IonButtons>
         </IonToolbar>
       </IonHeader>
       <IonContent class='content' ref={content}>
@@ -144,14 +137,12 @@ const PWAs: React.FC<RouteComponentProps> = ({
           <IonRefresherContent></IonRefresherContent>
         </IonRefresher>
       { isLoading && <IonProgressBar type="indeterminate" /> }
-            <div style={{boxShadow: '0 0 3px #ccc', margin: '10px'}}>
-              <CategoryOptions onPress={onPress} initValue={cat} />
-            </div>
+            <SearchBarList onSearchChange={onSearchChange} searchResults={searchResults} onSearchPress={onSearchPress} />
             <IonSegment value={cat} onIonChange={(e) => {
               setCat(e.detail.value!);
             }}>
-              <IonSegmentButton value=''>Trending</IonSegmentButton>
-              <IonSegmentButton value='NEW'>New</IonSegmentButton>
+              <IonSegmentButton class='seg' value=''>Trending</IonSegmentButton>
+              <IonSegmentButton class='seg' value='NEW'>New</IonSegmentButton>
             </IonSegment>
             <IonGrid>
               <IonRow style={{display: 'flex', justifyContent: 'center'}}>

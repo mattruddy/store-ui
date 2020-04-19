@@ -36,9 +36,11 @@ const CategoryOptions: React.FC<ContainerProps> = ({
 
   return (
       <IonSelect 
+        interface='popover'
         interfaceOptions={{
             header: 'Categories'
         }} 
+        color='dark'
         value={initValue !== undefined ? initValue : undefined} 
         placeholder='Category' 
         onIonChange={e => onPress(e.detail.value!)} 

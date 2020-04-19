@@ -45,6 +45,7 @@ const About: React.FC = () => {
                 </IonItemDivider>
                 <IonItem style={{color: 'rgb(153, 153, 153)'}}>
                     <ul>
+                        <li><strong>FREE</strong> to install</li>
                         <li>
                             HTTPS is <strong>required</strong> meaning you data is secure
                         </li>

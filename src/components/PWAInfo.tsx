@@ -1,10 +1,11 @@
 import React from 'react';
-import { IonButton } from '@ionic/react';
+import { IonButton, IonIcon } from '@ionic/react';
 import { PWA, Rating } from '../util/types';
 import { postScore } from '../data/dataApi';
 //@ts-ignore
 import StarRatings from 'react-star-ratings';
 import { getAverageRating } from '../util/utils';
+import { openOutline } from 'ionicons/icons';
 
 interface ContainerProps {
     pwa: PWA,
@@ -27,7 +28,7 @@ const PWAInfo: React.FC<ContainerProps> = ({ pwa, appId, ratings }) => {
                 postScore(appId);
                 window.open(pwa.link, "_blank");
                 }}
-            >Install</IonButton>
+            >FREE <IonIcon style={{marginLeft: '10px'}} icon={openOutline} /></IonButton>
         </div>
         <div style={{marginLeft: '10px'}}>
             <StarRatings 
