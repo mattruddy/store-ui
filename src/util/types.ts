@@ -26,6 +26,8 @@ export interface PWA {
     screenshots: Image[],
     reason: string,
     ratings: Rating[],
+    averageRating: number,
+    ratingsCount: number
 }
 
 export interface UserProfile {

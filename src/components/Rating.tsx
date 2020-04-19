@@ -5,13 +5,13 @@ import Collapsible from 'react-collapsible';
 import { IonTextarea, IonButton, IonText, IonToast } from '@ionic/react';
 
 interface ContainerProps {
-    onSubmit: (star: number, comment: string) => {}
+    onSubmit: (star: number, comment?: string) => {}
 }
 
 const Rating: React.FC<ContainerProps> = ({ onSubmit }) => {
     const [star, setStar] = useState<number>(0);
     const [starError, setStarError] = useState<string | undefined>();
-    const [comment, setComment] = useState<string>();
+    const [comment, setComment] = useState<string | undefined>();
     const [commentError, setCommentError] = useState<string | undefined>();
     const [isSubmit, setIsSubmit] = useState<boolean>(false);
     const [showToast, setShowToast] = useState<boolean>(false);
@@ -24,11 +24,7 @@ const Rating: React.FC<ContainerProps> = ({ onSubmit }) => {
                 setStarError('Must be between 1 and 5 stars');
                 return;
             }
-        
-            if (!comment) {
-                setCommentError('Comment is required');
-                return;
-            }
+    
             onSubmit(star, comment);
             setToastMessage('Success');
             setShowToast(true);
@@ -68,7 +64,7 @@ const Rating: React.FC<ContainerProps> = ({ onSubmit }) => {
             />
             {starError && <IonText color="danger"><p>{starError}</p></IonText>}
             <IonTextarea
-                placeholder="Add a comment"
+                placeholder="Add a comment (Optional)"
                 value={comment}
                 onIonChange={(e) => {
                     setCommentError(undefined);

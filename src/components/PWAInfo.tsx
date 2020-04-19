@@ -4,7 +4,6 @@ import { PWA, Rating } from '../util/types';
 import { postScore } from '../data/dataApi';
 //@ts-ignore
 import StarRatings from 'react-star-ratings';
-import { getAverageRating } from '../util/utils';
 import { openOutline } from 'ionicons/icons';
 
 interface ContainerProps {
@@ -32,11 +31,11 @@ const PWAInfo: React.FC<ContainerProps> = ({ pwa, appId, ratings }) => {
         </div>
         <div style={{marginLeft: '10px'}}>
             <StarRatings 
-                rating={getAverageRating(ratings)} 
+                rating={pwa.averageRating} 
                 starDimension="20px"
                 starSpacing="2px"
             />
-            <span style={{marginLeft: '5px'}}>({ratings.length})</span>
+            <span style={{marginLeft: '5px'}}>({pwa.ratingsCount})</span>
         </div>
         <h2 style={{paddingTop: '10px', paddingLeft: '10px'}}>About</h2> 
         <div style={{height: '200px', padding: '15px'}}>

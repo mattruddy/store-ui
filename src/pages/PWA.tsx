@@ -59,7 +59,7 @@ const PWA: React.FC<PWAProps> = ({
     setRatings(resp.ratings);
   }
 
-  const onRatingSubmit = async (star: number, comment: string) => {
+  const onRatingSubmit = async (star: number, comment?: string) => {
     const starVal = stars[star - 1];
     const response = await postRating(starVal, Number(match.params.id!), comment);
     setRatings([response, ...ratings]);

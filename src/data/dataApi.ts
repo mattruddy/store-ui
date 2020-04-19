@@ -104,10 +104,11 @@ export const postEmail = async (text: string) => {
   }
 }
 
-export const postRating = async (rating: string, appId: number, comment: string) => {
+export const postRating = async (rating: string, appId: number, comment?: string) => {
   const token = await Storage.get({key: TOKEN});
   let header;
   let isAuth;
+  let body;
   if (token && token.value) {
     // logged in user
     header = {
@@ -125,15 +126,23 @@ export const postRating = async (rating: string, appId: number, comment: string)
     isAuth = false;
   }
 
+  if (comment) {
+    body = {
+      star: rating,
+      comment: comment
+    };
+  } else {
+    body = {
+      star: rating
+    }
+  }
+
   try {
     const response = await Axios.request({
       url: `${vars().env.API_URL}/${isAuth ? 'secure' : 'public'}/pwa/rating/${appId}`,
       method: 'POST',
       headers: header,
-      data: {
-        star: rating,
-        comment: comment,
-      }
+      data: body
     });
     return response.data;
   } catch (error) {

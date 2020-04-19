@@ -5,7 +5,7 @@ import { getPWA, putApp, deleteScreenshot, postAddScreenshots, deleteApp } from 
 import { RouteComponentProps, withRouter } from 'react-router';
 import { PWA as PWAType, Image } from '../util/types';
 import { pencil, options, trash, close, checkmark, openOutline } from 'ionicons/icons';
-import { fixFilesRotation, fixRoation, getAverageRating } from '../util/utils';
+import { fixFilesRotation } from '../util/utils';
 import CategoryOptions from '../components/CategoryOptions';
 import RatingList from '../components/RatingItem';
 //@ts-ignore
@@ -219,11 +219,11 @@ const addImages = async () => {
           { pwa && 
             <div style={{marginLeft: '10px'}}>
               <StarRatings 
-                  rating={getAverageRating(pwa.ratings)} 
+                  rating={pwa.averageRating} 
                   starDimension="20px"
                   starSpacing="2px"
               />
-              <span style={{marginLeft: '5px'}}>({pwa.ratings.length})</span>
+              <span style={{marginLeft: '5px'}}>({pwa.ratingsCount})</span>
             </div>}
         { !isLoading && <h2 style={{paddingTop: '10px', paddingLeft: '10px'}}>About</h2>}
         {
