@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, useIonViewDidEnter, useIonViewWillEnter, useIonViewDidLeave, IonBackButton, IonButtons, IonToast, IonList } from '@ionic/react';
 import { getPWA, postRating } from '../data/dataApi';
 import { RouteComponentProps, withRouter } from 'react-router';
-import { PWA as PWAType, Rating as RatingType } from '../util/types';
+import { PWA as PWAType, Rating as RatingType, NewRating } from '../util/types';
 import { connect } from '../data/connect';
 import { setHasReadInstall } from '../data/user/user.actions';
 import ScreenshotSlider from '../components/ScreenshotSlider';
@@ -43,6 +43,8 @@ const PWA: React.FC<PWAProps> = ({
 
   const [pwa, setPwa] = useState<PWAType | undefined>(undefined);
   const [ratings, setRatings] = useState<RatingType[]>([]);
+  const [currentStar, setCurrentStar] = useState<number>();
+  const [starCount, setStarCount] = useState<number>();
 
   useIonViewDidEnter(() => {
     loadPWA(history.location.pathname.split('/')[2]);
@@ -51,18 +53,28 @@ const PWA: React.FC<PWAProps> = ({
   useIonViewDidLeave(() => {
     setPwa(undefined);
     setRatings([]);
+    setCurrentStar(undefined);
+    setStarCount(undefined);
   }, [])
 
   const loadPWA = async (id: string) => {
     const resp = await getPWA(Number(id)) as PWAType;
     setPwa(resp);
     setRatings(resp.ratings);
+    setCurrentStar(resp.averageRating);
+    setStarCount(resp.ratingsCount);
   }
 
   const onRatingSubmit = async (star: number, comment?: string) => {
     const starVal = stars[star - 1];
-    const response = await postRating(starVal, Number(match.params.id!), comment);
-    setRatings([response, ...ratings]);
+    const response = await postRating(starVal, Number(match.params.id!), comment) as NewRating;
+    if (response && response.rating) {
+      if (response.rating.comment) {
+        setRatings([response.rating, ...ratings]);
+      }
+      setCurrentStar(response.averageStar);
+      setStarCount(response.ratingCount);
+    }
   }
 
   return (
@@ -79,7 +91,7 @@ const PWA: React.FC<PWAProps> = ({
           </IonToolbar>
         </IonHeader>
         <IonContent class='content'>
-          {<PWAInfo pwa={pwa} appId={Number(match.params.id!)} ratings={ratings} />}
+          {<PWAInfo pwa={pwa} appId={Number(match.params.id!)} currentStar={currentStar as number} starCount={starCount as number}  />}
           {<h2 style={{ paddingLeft: '10px' }}>Screenshots</h2> }
           {pwa.screenshots && <ScreenshotSlider screenshots={pwa.screenshots}></ScreenshotSlider>}
           {<h2 style={{ paddingLeft: '10px' }}>Reviews</h2> }

@@ -8,6 +8,12 @@ export interface Image {
     url: string
 }
 
+export interface NewRating {
+    averageStar: number,
+    ratingCount: number,
+    rating: Rating
+}
+
 export interface Rating {
     from: string,
     star: number,

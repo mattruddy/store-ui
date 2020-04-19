@@ -9,10 +9,11 @@ import { openOutline } from 'ionicons/icons';
 interface ContainerProps {
     pwa: PWA,
     appId: number,
-    ratings: Rating[]
+    currentStar: number,
+    starCount: number
 }
 
-const PWAInfo: React.FC<ContainerProps> = ({ pwa, appId, ratings }) => {
+const PWAInfo: React.FC<ContainerProps> = ({ pwa, appId, currentStar, starCount }) => {
   return (
       <>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '10px'}}>
@@ -31,11 +32,11 @@ const PWAInfo: React.FC<ContainerProps> = ({ pwa, appId, ratings }) => {
         </div>
         <div style={{marginLeft: '10px'}}>
             <StarRatings 
-                rating={pwa.averageRating} 
+                rating={currentStar} 
                 starDimension="20px"
                 starSpacing="2px"
             />
-            <span style={{marginLeft: '5px'}}>({pwa.ratingsCount})</span>
+            <span style={{marginLeft: '5px'}}>({starCount})</span>
         </div>
         <h2 style={{paddingTop: '10px', paddingLeft: '10px'}}>About</h2> 
         <div style={{height: '200px', padding: '15px'}}>
