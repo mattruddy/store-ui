@@ -39,7 +39,7 @@ const PWAInfo: React.FC<ContainerProps> = ({ pwa, appId, currentStar, starCount 
             <span style={{marginLeft: '5px'}}>({starCount})</span>
         </div>
         <h2 style={{paddingTop: '10px', paddingLeft: '10px'}}>About</h2> 
-        <div style={{height: '200px', padding: '15px'}}>
+        <div style={{height: '200px', padding: '15px', overflowY: 'scroll'}}>
             {pwa.description}
         </div> 
     </>

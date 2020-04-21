@@ -243,7 +243,7 @@ const addImages = async () => {
               }
             </>
             :
-            <div style={{height: '200px', padding: '15px'}}>
+            <div style={{height: '200px', padding: '15px', overflowY: 'scroll'}}>
             {pwa && pwa.description}
             </div> 
         }
