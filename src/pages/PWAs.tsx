@@ -100,7 +100,7 @@ const PWAs: React.FC<RouteComponentProps> = ({
   }
 
   const onSearchChange = async (e: CustomEvent) => {
-    const appName = e.detail.value.replace(/\s/g, '');
+    const appName = e.detail.value;
     if (appName) {
       const results = await getSearchApp(appName);
       setSearchResults(results);
