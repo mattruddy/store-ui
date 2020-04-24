@@ -78,7 +78,7 @@ const About: React.FC = () => {
                   <IonLabel style={{fontSize: '30px', color: 'black'}}><strong>Contact Us</strong></IonLabel>
               </IonItemDivider>
               <IonItem style={{color: 'rgb(153, 153, 153)'}}>
-                  email: progressiveappstore@gmail.com
+                  email: matt@progressiveapp.store
               </IonItem>
           </IonItemGroup>             
       </IonContent>
