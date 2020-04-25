@@ -84,7 +84,7 @@ const onCatChange = (cat: string) => {
 const editApp = async () => {
     let count = 0;
     if (!name) {
-      setNameError('Name is required');
+      setNameError('Name is required, max length is 25 charaters');
       count++;
     }
 
@@ -161,7 +161,7 @@ const addImages = async () => {
                       isEdit
                       ?
                       <>
-                        <IonInput style={{ padding: '0', boxShadow: '0 0 3px #ccc'}} value={name} onIonChange={e => {
+                        <IonInput style={{ padding: '0', boxShadow: '0 0 3px #ccc'}} maxlength={25} value={name} onIonChange={e => {
                           setNameError(undefined);
                           setName(e.detail.value!);
                         }}
@@ -269,7 +269,7 @@ const addImages = async () => {
                         }} color="inherit" onClick={() => removeImage(shot.imageId)}><IonIcon color="danger" icon={trash} />
                         </IonButton>
                       }
-                      <img style={{height: '400px'}} src={shot.url} /> 
+                      <img style={{height: '400px', maxWidth:'93%'}} src={shot.url} /> 
                 </IonSlide>
             ))}
           </IonSlides>

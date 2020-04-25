@@ -18,7 +18,7 @@ const PWACard: React.FC<ContainerProps> = ({ pwa, url, history }) => {
                 <img style={{ height: '200px', width: '200px', borderRadius: '5px'}} src={pwa.icon} />
             </div>
         <div style={{paddingLeft: '10px'}}>
-            <p style={{margin: '0', fontSize: '20px'}}>{pwa.name}</p>
+            <p style={{margin: '0', fontSize: '19px'}}>{pwa.name}</p>
             <small>{pwa.category}</small>
         </div>
         <div style={{

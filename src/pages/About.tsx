@@ -16,7 +16,7 @@ const About: React.FC = () => {
       <IonContent>
             <IonItemGroup>
                 <IonItemDivider>
-                    <IonLabel style={{fontSize: '30px', color: 'black'}}><strong>How Do I Install a PWA?</strong></IonLabel>
+                    <IonLabel style={{fontSize: '30px', color: 'black'}}><strong>How Do I Install?</strong></IonLabel>
                 </IonItemDivider>
                 <IonItem style={{color: 'rgb(153, 153, 153)'}}>
                     <div style={{display: 'flex', flexDirection: 'column'}}>

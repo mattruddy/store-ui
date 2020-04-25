@@ -197,7 +197,7 @@ const Profile: React.FC<ProfileProps> = ({
                         type="text"
                         spellCheck={false}
                         value={name}
-                        maxlength={30}
+                        maxlength={25}
                         onIonChange={e => {
                             setName(e.detail.value!)
                             setNameError(undefined);
