@@ -11,11 +11,10 @@ const ScreenshotSlider: React.FC<ContainerProps> = ({ screenshots }) => {
     <IonSlides 
       style={{ marginBottom: '45px'}} 
       key={screenshots.map((shot) => shot.imageId).join('_')} 
-      scrollbar={true}
+      pager={true}
       options={{ 
         initialSlide: 0, 
         speed: 400,
-        slidesPerView: 3
       }}
     >
         {screenshots.map((shot, idx) => (
