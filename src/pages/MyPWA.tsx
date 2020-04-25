@@ -257,9 +257,9 @@ const addImages = async () => {
         { !isLoading &&<h2 style={{ paddingLeft: '10px' }}>Screenshots</h2>}
         {
           screenshots && 
-          <IonSlides style={{marginBottom: '45px'}} ref={slides} key={screenshots.map((shot) => shot.imageId).join("_")} pager={true} options={{ initialSlide: 0, speed: 400}}>
+          <IonSlides className="slider" ref={slides} key={screenshots.map((shot) => shot.imageId).join("_")} pager={true} options={{ initialSlide: 0, speed: 400}}>
           {screenshots.map((shot, idx) => (
-                <IonSlide key={idx} style={{ position: 'relative'}}>
+                <IonSlide key={idx} style={{ position: 'relative', height: '500px'}}>
                     {isEdit && 
                         <IonButton shape="round" size="small" style={{
                           position: 'absolute',

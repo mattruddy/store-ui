@@ -1,6 +1,7 @@
 import React from 'react';
 import { IonSlides, IonSlide } from '@ionic/react';
 import { Image } from '../util/types';
+import './ScreenshotSlider.css';
 
 interface ContainerProps {
     screenshots: Image[]
@@ -9,7 +10,7 @@ interface ContainerProps {
 const ScreenshotSlider: React.FC<ContainerProps> = ({ screenshots }) => {
   return (
     <IonSlides 
-      style={{ marginBottom: '45px'}} 
+      className="slider"
       key={screenshots.map((shot) => shot.imageId).join('_')} 
       pager={true}
       options={{ 
@@ -18,7 +19,7 @@ const ScreenshotSlider: React.FC<ContainerProps> = ({ screenshots }) => {
       }}
     >
         {screenshots.map((shot, idx) => (
-        <IonSlide key={idx}>
+        <IonSlide style={{height: '500px'}} key={idx}>
             <img style={{height: '400px'}} src={shot.url} /> 
         </IonSlide>
         ))}
