@@ -37,7 +37,7 @@ const RatingList: React.FC<ContainerProps> = ({rating}) => {
               justifyContent: 'flex-end',
               padding: '10px'
             }}>
-              <i>{rating.from !== 'ananymous' && <IonIcon style={{color: 'blue'}} icon={checkmarkCircleOutline} />} {rating.from} on {dateFormatter(rating.createdAt)}</i>
+              <i>{rating.from !== 'anonymous' && <IonIcon style={{color: 'blue'}} icon={checkmarkCircleOutline} />} {rating.from} <small>{dateFormatter(rating.createdAt)}</small></i>
             </div>
           </div>
       </IonItem>
