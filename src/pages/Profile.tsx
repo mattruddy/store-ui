@@ -175,10 +175,6 @@ const Profile: React.FC<ProfileProps> = ({
           swipeToClose={true}
           onDidDismiss={() => {
             setShowModal(false);
-            setName('');
-            setDesc('');
-            setCat('');
-            setUrl('');
             setIcon(undefined);
             setScreenshots(undefined);
           }}
