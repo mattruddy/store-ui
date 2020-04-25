@@ -144,7 +144,7 @@ const PWAs: React.FC<RouteComponentProps> = ({
               <IonSegmentButton class='seg' value=''>Trending</IonSegmentButton>
               <IonSegmentButton class='seg' value='NEW'>New</IonSegmentButton>
             </IonSegment>
-            <IonList>
+            <IonList style={{background: 'inherit'}}>
               <IonGrid>
                 <IonRow style={{display: 'flex', justifyContent: 'center'}}>
                   {pwaList()}
