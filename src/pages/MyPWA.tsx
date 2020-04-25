@@ -98,13 +98,20 @@ const editApp = async () => {
       count++;
     }
 
+    if (images && images.length > 0) {
+      addImages();
+    }
+
     if (name === pwa?.name && desc === pwa?.description && cat === pwa?.category) {
         setIsEdit(false);
         return;
     }
 
     if (count === 0) {
-      const resp = await putApp(name!, desc!, cat!, Number(history.location.pathname.split('/')[2]));
+      if (images && images.length > 0) {
+        await postAddScreenshots(images as File[], Number(history.location.pathname.split('/')[2]))
+      }
+      const resp = await putApp(name!, desc!, cat!, Number(history.location.pathname.split('/')[2]));      
       if (resp?.status === 200) {
           setPwa(resp.data);
           setScreenshots(resp.data.screenshots);
@@ -283,12 +290,12 @@ const addImages = async () => {
                     imgExtension={['.jpg', '.png', '.jpeg']}
                     maxFileSize={5242880}
                 />
-                { images && images.length > 0 && <IonButton expand='full' onClick={addImages}>Add {images.length > 1 ? 'Screenshots' : 'Screenshot'}</IonButton> }
             </form>
 
         }
-      {<h2 style={{ paddingLeft: '10px' }}>Reviews</h2> }
-      {pwa && pwa.ratings && 
+
+      {!isEdit && <h2 style={{ paddingLeft: '10px' }}>Reviews</h2> }
+      {!isEdit && pwa && pwa.ratings && 
         <IonList>
           {pwa.ratings.map((rating, idx) => <RatingList key={idx} rating={rating} />)}
         </IonList>
