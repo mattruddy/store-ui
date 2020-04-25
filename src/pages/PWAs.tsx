@@ -144,11 +144,13 @@ const PWAs: React.FC<RouteComponentProps> = ({
               <IonSegmentButton class='seg' value=''>Trending</IonSegmentButton>
               <IonSegmentButton class='seg' value='NEW'>New</IonSegmentButton>
             </IonSegment>
-            <IonGrid>
-              <IonRow style={{display: 'flex', justifyContent: 'center'}}>
-                {pwaList()}
-              </IonRow>
-            </IonGrid>
+            <IonList>
+              <IonGrid>
+                <IonRow style={{display: 'flex', justifyContent: 'center'}}>
+                  {pwaList()}
+                </IonRow>
+              </IonGrid>
+            </IonList>
           <IonInfiniteScroll ref={scrollEl} threshold='1000px' onIonInfinite={loadMorePwas}>
             <IonInfiniteScrollContent>
             </IonInfiniteScrollContent>

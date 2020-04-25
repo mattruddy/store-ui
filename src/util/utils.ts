@@ -1,5 +1,5 @@
 import loadImage from 'blueimp-load-image';
-import { Rating } from './types';
+import moment from 'moment';
 
 export const blobToFile = (blob: Blob, fileName: string): File => {
     const b: any = blob;
@@ -45,5 +45,6 @@ export const fixRoation = (src: string): string | undefined => {
 }
 
 export const dateFormatter = (date: Date) => {
-    return new Date(date).toLocaleDateString();
+    const momentDate = moment(date.toString());
+    return momentDate.format("MM/DD/YY h:mm a")
 }

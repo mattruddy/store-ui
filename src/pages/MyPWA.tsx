@@ -98,13 +98,20 @@ const editApp = async () => {
       count++;
     }
 
+    if (images && images.length > 0) {
+      addImages();
+    }
+
     if (name === pwa?.name && desc === pwa?.description && cat === pwa?.category) {
         setIsEdit(false);
         return;
     }
 
     if (count === 0) {
-      const resp = await putApp(name!, desc!, cat!, Number(history.location.pathname.split('/')[2]));
+      if (images && images.length > 0) {
+        await postAddScreenshots(images as File[], Number(history.location.pathname.split('/')[2]))
+      }
+      const resp = await putApp(name!, desc!, cat!, Number(history.location.pathname.split('/')[2]));      
       if (resp?.status === 200) {
           setPwa(resp.data);
           setScreenshots(resp.data.screenshots);
@@ -250,9 +257,9 @@ const addImages = async () => {
         { !isLoading &&<h2 style={{ paddingLeft: '10px' }}>Screenshots</h2>}
         {
           screenshots && 
-          <IonSlides style={{marginBottom: '45px'}} ref={slides} key={screenshots.map((shot) => shot.imageId).join("_")} pager={true} options={{ initialSlide: 0, speed: 400}}>
+          <IonSlides className="slider" ref={slides} key={screenshots.map((shot) => shot.imageId).join("_")} pager={true} options={{ initialSlide: 0, speed: 400}}>
           {screenshots.map((shot, idx) => (
-                <IonSlide key={idx} style={{ position: 'relative'}}>
+                <IonSlide key={idx} style={{ position: 'relative', height: '500px'}}>
                     {isEdit && 
                         <IonButton shape="round" size="small" style={{
                           position: 'absolute',
@@ -262,7 +269,7 @@ const addImages = async () => {
                         }} color="inherit" onClick={() => removeImage(shot.imageId)}><IonIcon color="danger" icon={trash} />
                         </IonButton>
                       }
-                      <img style={{height: '400px', width: '200px'}} src={shot.url} /> 
+                      <img style={{height: '400px'}} src={shot.url} /> 
                 </IonSlide>
             ))}
           </IonSlides>
@@ -283,12 +290,12 @@ const addImages = async () => {
                     imgExtension={['.jpg', '.png', '.jpeg']}
                     maxFileSize={5242880}
                 />
-                { images && images.length > 0 && <IonButton expand='full' onClick={addImages}>Add {images.length > 1 ? 'Screenshots' : 'Screenshot'}</IonButton> }
             </form>
 
         }
-      {<h2 style={{ paddingLeft: '10px' }}>Reviews</h2> }
-      {pwa && pwa.ratings && 
+
+      {!isEdit && <h2 style={{ paddingLeft: '10px' }}>Reviews</h2> }
+      {!isEdit && pwa && pwa.ratings && 
         <IonList>
           {pwa.ratings.map((rating, idx) => <RatingList key={idx} rating={rating} />)}
         </IonList>
