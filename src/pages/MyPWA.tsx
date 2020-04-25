@@ -269,7 +269,7 @@ const addImages = async () => {
                         }} color="inherit" onClick={() => removeImage(shot.imageId)}><IonIcon color="danger" icon={trash} />
                         </IonButton>
                       }
-                      <img style={{height: '400px', width: '200px'}} src={shot.url} /> 
+                      <img style={{height: '400px'}} src={shot.url} /> 
                 </IonSlide>
             ))}
           </IonSlides>
