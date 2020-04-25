@@ -8,7 +8,16 @@ interface ContainerProps {
 
 const ScreenshotSlider: React.FC<ContainerProps> = ({ screenshots }) => {
   return (
-    <IonSlides style={{ marginBottom: '45px'}} key={screenshots.map((shot) => shot.imageId).join('_')} pager={true} options={{ initialSlide: 0, speed: 400}}>
+    <IonSlides 
+      style={{ marginBottom: '45px'}} 
+      key={screenshots.map((shot) => shot.imageId).join('_')} 
+      scrollbar={true}
+      options={{ 
+        initialSlide: 0, 
+        speed: 400,
+        slidesPerView: 3
+      }}
+    >
         {screenshots.map((shot, idx) => (
         <IonSlide key={idx}>
             <img style={{height: '400px', width: '200px'}} src={shot.url} /> 
