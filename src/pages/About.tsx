@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonTextarea, IonButton, IonInput, IonLabel, IonToast, IonItem, IonText, IonItemGroup, IonItemDivider, IonIcon } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonTextarea, IonButton, IonInput, IonLabel, IonToast, IonItem, IonText, IonItemGroup, IonItemDivider, IonIcon, IonRouterLink } from '@ionic/react';
 import { Icon, InlineIcon } from '@iconify/react';
 import appleSafari from '@iconify/icons-mdi/apple-safari';
-import { add, addCircle, addCircleOutline, ellipse, ellipseSharp, ellipsisVertical } from 'ionicons/icons';
+import { add, addCircle, addCircleOutline, ellipse, ellipseSharp, ellipsisVertical, menu } from 'ionicons/icons';
 
 const About: React.FC = () => {
 
@@ -58,6 +58,19 @@ const About: React.FC = () => {
                         <li>Has an <strong>offline</strong> mode. Apps can be used in areas where this is no internet connection</li>
                     </ul>
                 </IonItem>    
+          </IonItemGroup>
+          <IonItemGroup>
+              <IonItemDivider>
+                  <IonLabel style={{fontSize: '30px', color: 'black'}}><strong>Want to Upload?</strong></IonLabel>
+              </IonItemDivider>
+              <IonItem style={{color: 'rgb(153, 153, 153)'}}>
+                  <ul>
+                      <li>Go to <IonRouterLink style={{textDecoration: 'underline'}} color='rgb(153, 153, 153)' href='/login'>login</IonRouterLink></li>
+                      <li>In the profile section click the <IonIcon icon={menu} /> button</li>
+                      <li>A list will drop down, click <IonIcon icon={add} /> to present a submittion form</li>
+                      <li>Ensure the PWA passes <a style={{color: 'rgb(153, 153, 153)'}} href="https://developers.google.com/web/tools/lighthouse" target='_blank'>Lighthouse Report</a> report beforehand, otherwise it will be denied</li>
+                  </ul>
+              </IonItem>
           </IonItemGroup>
             <IonItemGroup>
             <IonItemDivider>
