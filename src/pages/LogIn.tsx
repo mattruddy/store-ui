@@ -91,7 +91,7 @@ const LogIn: React.FC<LoginProps> = ({
     <IonPage>
         <IonContent style={{ overflow: 'hidden'}}>
         <div style={{ display: 'flex', justifyContent: 'center'}}>
-          <img style={{height: '100px', width: '100px'}} src='/assets/icon/logo.png' />
+          <img alt="logo" style={{height: '100px', width: '100px'}} src='/assets/icon/logo.png' />
         </div>
         <form noValidate onSubmit={signup}>
             <IonList>

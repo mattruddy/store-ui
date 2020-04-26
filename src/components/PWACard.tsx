@@ -15,7 +15,7 @@ const PWACard: React.FC<ContainerProps> = ({ pwa, url, history }) => {
     <IonCard button style={{ height: '330px', width: '330px'}} onClick={() => history.push(`${url}/${pwa.appId}`)}>
         <IonCardContent style={{overflow: 'hidden'}}>
             <div style={{display: 'flex', justifyContent: 'center'}}>
-                <img style={{ height: '200px', width: '200px', borderRadius: '5px'}} src={pwa.icon} />
+                <img alt="icon" style={{ height: '200px', width: '200px', borderRadius: '5px'}} src={pwa.icon} />
             </div>
         <div style={{paddingLeft: '10px'}}>
             <p style={{margin: '0', fontSize: '19px'}}>{pwa.name}</p>

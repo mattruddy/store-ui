@@ -18,7 +18,7 @@ const PWAInfo: React.FC<ContainerProps> = ({ pwa, appId, currentStar, starCount 
       <>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBottom: '10px'}}>
             <div style={{ display: 'flex', alignItems: 'center'}}>
-                <img style={{height: '80px', width: '80px', borderRadius: '5px', margin: '10px'}} src={pwa.icon} />
+                <img alt="icon" style={{height: '80px', width: '80px', borderRadius: '5px', margin: '10px'}} src={pwa.icon} />
                 <div style={{ paddingLeft: '10px', display: 'flex', flexDirection: 'column', justifyContent: 'space-around', height: '70px'}}>
                     <p style={{ margin: '0', fontSize: '20px'}}>{pwa.name}</p>
                     <small>{pwa.category}</small>

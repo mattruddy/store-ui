@@ -20,7 +20,7 @@ const ScreenshotSlider: React.FC<ContainerProps> = ({ screenshots }) => {
     >
         {screenshots.map((shot, idx) => (
         <IonSlide style={{height: '500px'}} key={idx}>
-            <img style={{height: '400px', maxWidth: '93%'}} src={shot.url} /> 
+            <img alt="screenshot" style={{height: '400px', maxWidth: '93%'}} src={shot.url} /> 
         </IonSlide>
         ))}
     </IonSlides>  

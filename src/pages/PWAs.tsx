@@ -116,7 +116,7 @@ const PWAs: React.FC<RouteComponentProps> = ({
           <IonTitle onClick={() => {
             content.current.scrollToTop();
           }}>
-            <img style={{ height: '40px', width: '40px'}} src="assets/icon/logo.png" />
+            <img alt="icon" style={{ height: '40px', width: '40px'}} src="assets/icon/logo.png" />
           </IonTitle>
           <IonButtons style={{paddingRight: '10px'}} slot="end">
               <CategoryOptions onPress={onPress} initValue={cat} />

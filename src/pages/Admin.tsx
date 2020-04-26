@@ -74,13 +74,13 @@ const Admin: React.FC<AdminProps> = ({
                             </IonItem>
                             <IonLabel>Icon</IonLabel>
                             <IonItem>
-                                <img src={pwa.icon} />
+                                <img alt="icon" src={pwa.icon} />
                             </IonItem>
                             <IonLabel>Screenshots</IonLabel>
                             <IonItem>
                                 {pwa.screenshots.map((shot, idx) => (
                                     <div key={idx}>
-                                        <img src={shot.url} />
+                                        <img alt="screenshot" src={shot.url} />
                                     </div>
                                 ))}
                             </IonItem>

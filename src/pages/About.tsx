@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonTextarea, IonButton, IonInput, IonLabel, IonToast, IonItem, IonText, IonItemGroup, IonItemDivider, IonIcon, IonRouterLink } from '@ionic/react';
-import { Icon, InlineIcon } from '@iconify/react';
+import React from 'react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonLabel, IonItem, IonItemGroup, IonItemDivider, IonIcon, IonRouterLink } from '@ionic/react';
+import { Icon } from '@iconify/react';
 import appleSafari from '@iconify/icons-mdi/apple-safari';
-import { add, addCircle, addCircleOutline, ellipse, ellipseSharp, ellipsisVertical, menu } from 'ionicons/icons';
+import { add, addCircleOutline, ellipsisVertical, menu } from 'ionicons/icons';
 
 const About: React.FC = () => {
 
@@ -23,7 +23,7 @@ const About: React.FC = () => {
                         <ul>
                             <h2 style={{ color: 'black'}}>IOS</h2>
                             <li>Click the safari icon <Icon icon={appleSafari} color='grey' /> to open the browser</li>
-                            <li>Go to actions <img color='grey' height='15' width='15' src='assets/icon/action.png' /> </li>
+                            <li>Go to actions <img alt="IOS action button" color='grey' height='15' width='15' src='assets/icon/action.png' /> </li>
                             <li>Press "Add to Home Screen"</li>
                         </ul>
                         <ul>
@@ -93,7 +93,8 @@ const About: React.FC = () => {
               <IonItem style={{color: 'rgb(153, 153, 153)'}}>
                   email: matt@progressiveapp.store
               </IonItem>
-          </IonItemGroup>             
+          </IonItemGroup>
+          <p>&copy; PWA Store</p>
       </IonContent>
     </IonPage>
   );

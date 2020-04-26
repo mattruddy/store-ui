@@ -153,7 +153,7 @@ const addImages = async () => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
             <div style={{ display: 'flex', alignItems: 'center'}}>
               { pwa && 
-                <img style={{height: '80px', width: '80px', borderRadius: '5px', margin: '10px'}} src={pwa.icon} /> }
+                <img alt="icon" style={{height: '80px', width: '80px', borderRadius: '5px', margin: '10px'}} src={pwa.icon} /> }
               { pwa && 
                 <div style={{ paddingLeft: '10px', display: 'flex', flexDirection: 'column', justifyContent: 'space-around', height: '70px'}}>
                   
@@ -269,7 +269,7 @@ const addImages = async () => {
                         }} color="inherit" onClick={() => removeImage(shot.imageId)}><IonIcon color="danger" icon={trash} />
                         </IonButton>
                       }
-                      <img style={{height: '400px', maxWidth:'93%'}} src={shot.url} /> 
+                      <img alt="screenshot" style={{height: '400px', maxWidth:'93%'}} src={shot.url} /> 
                 </IonSlide>
             ))}
           </IonSlides>
