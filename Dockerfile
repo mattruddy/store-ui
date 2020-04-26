@@ -9,6 +9,8 @@ RUN npm config set unsafe-perm true
 RUN npm install --silent
 COPY . /app
 RUN npm run build
+RUN npm install workbox-cli --global --silent
+RUN workbox injectManifest workbox-config.js
 
 ### STAGE 2: Production Environment ###
 FROM nginx:1.14-alpine

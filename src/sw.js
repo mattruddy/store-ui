@@ -1,10 +1,12 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.0.0/workbox-sw.js');
 
+workbox.precaching.precacheAndRoute(self.__WB_MANIFEST);
+
 workbox.core.skipWaiting();
 workbox.core.clientsClaim();
 
 workbox.routing.registerRoute(
-  new RegExp('https://hacker-news.firebaseio.com'),
+  new RegExp('http'),
   new workbox.strategies.StaleWhileRevalidate()
 );
 
@@ -54,5 +56,3 @@ self.addEventListener('notificationclick', function(event) {
   event.waitUntil(promiseChain);
   event.notification.close();
 });
-
-workbox.precaching.precacheAndRoute(self.__WB_MANIFEST);
