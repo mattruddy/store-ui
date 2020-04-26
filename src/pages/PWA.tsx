@@ -112,6 +112,7 @@ const PWA: React.FC<PWAProps> = ({
         <IonToast
           isOpen={(hasRead !== undefined && hasRead === 'false')}
           position='top'
+          color='dark'
           message='Please click to learn how to install a PWA'
           buttons={[
             {
