@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonItem, IonLabel, IonModal, IonList, IonInput, IonTextarea, IonText, IonImg, IonGrid, IonRow, IonIcon, IonButtons, IonFab, IonFabButton, IonFabList, IonAlert, useIonViewDidEnter, IonCol, useIonViewWillLeave, IonToast } from '@ionic/react';
-import { getProfile, postApp } from '../data/dataApi';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonItem, IonLabel, IonModal, IonList, IonInput, IonTextarea, IonText, IonImg, IonGrid, IonRow, IonIcon, IonButtons, IonFab, IonFabButton, IonFabList, IonAlert, useIonViewDidEnter, IonCol, useIonViewWillLeave, IonToast, IonProgressBar, IonSpinner } from '@ionic/react';
+import { getProfile, postApp, getLighthouseReport } from '../data/dataApi';
 import { RouteComponentProps, withRouter } from 'react-router';
 import ImageUploader from 'react-images-upload';
 import { connect } from '../data/connect';
@@ -9,6 +9,8 @@ import { UserProfile, PWA } from '../util/types';
 import PWACard from '../components/PWACard';
 import { add, menu, logOut, contractSharp } from 'ionicons/icons';
 import { setToken, setIsLoggedIn } from '../data/user/user.actions';
+//@ts-ignore
+import ReportViewer from 'react-lighthouse-viewer';
 
 interface OwnProps extends RouteComponentProps {}
 
@@ -46,6 +48,9 @@ const Profile: React.FC<ProfileProps> = ({
   const [toastMessage, setToastMessage] = useState<string>();
   const [showToast, setShowToast] = useState<boolean>(false);
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
+  const [hasPassedLighthouse, setHasPassedLighthouse] = useState<boolean>(false);
+  const [lightHouseData, setLightHouseData] = useState<string | undefined>(undefined);
+  const [lightHouseLoading, setLightHouseLoading] = useState<boolean>(false);
 
   useIonViewDidEnter(() => {
     loadProfile();
@@ -165,6 +170,19 @@ const Profile: React.FC<ProfileProps> = ({
            </div>
          )
         }
+    }
+  }
+
+  const getLightHouseData = async (url: string) => {
+    try {
+      setLightHouseLoading(true);
+      const response = await getLighthouseReport(url) as string;
+      if (response) {
+        setLightHouseData(response);
+      }
+      setLightHouseLoading(false);
+    } catch (e) {
+      console.error(`Issue getting lighthouse data: ${e}`);
     }
   }
 
@@ -315,7 +333,28 @@ const Profile: React.FC<ProfileProps> = ({
           </IonList>
         </form>
         </IonContent>
-        <IonButton expand='block' onClick={onAddPWA} disabled={isSubmit}>Submit</IonButton>
+        {
+          url && !lightHouseData &&
+            <IonButton expand='block' onClick={() => {if (url) getLightHouseData(url)}} disabled={lightHouseLoading}>
+              lightHouseLoading ?
+              <IonSpinner />
+              :
+              Run Lighthouse PWA Checkout
+            </IonButton>
+        }
+        {
+          lightHouseData &&
+            <ReportViewer json={lightHouseData} />
+        }
+        {
+          lightHouseData && (
+            hasPassedLighthouse === true ? 
+            <IonButton expand='block' onClick={onAddPWA} disabled={isSubmit}>Submit</IonButton> :
+            <IonText color="danger">
+            <p>Your app has not passed the proper tests on Lighthouse.</p>
+            </IonText>
+          )
+        }
       </IonModal>
       <IonHeader>
         <IonToolbar>  

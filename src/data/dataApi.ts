@@ -480,7 +480,7 @@ export const postStatus = async (code: string, appId: number, reason?: string,) 
   }
 }
 
-export const getLighthouseReportTotalScore = async (
+export const getLighthouseReport = async (
   url: string,
 ) => {
   try {
@@ -491,18 +491,7 @@ export const getLighthouseReportTotalScore = async (
         'Accept': 'application/json',
       },
     });
-    var { data } = response;
-    if (data.lighthouseResult) {
-      console.log("Got result");
-      if (data.lighthouseResult.categories) {
-        console.log("Found category");
-        if (data.lighthouseResult.categories.pwa) {
-          console.log("Found pwa category");
-          return data.lighthouseResult.categories.pwa.score as number;
-        }
-      }
-    }
-    return undefined;
+    return response;
   } catch (error) {
     return error.response;
   }
