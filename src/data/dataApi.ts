@@ -479,3 +479,31 @@ export const postStatus = async (code: string, appId: number, reason?: string,) 
     return error.response;
   }
 }
+
+export const getLighthouseReportTotalScore = async (
+  url: string,
+) => {
+  try {
+    const response = await Axios.request({
+      url: `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${url}&category=PWA`,
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+      },
+    });
+    var { data } = response;
+    if (data.lighthouseResult) {
+      console.log("Got result");
+      if (data.lighthouseResult.categories) {
+        console.log("Found category");
+        if (data.lighthouseResult.categories.pwa) {
+          console.log("Found pwa category");
+          return data.lighthouseResult.categories.pwa.score as number;
+        }
+      }
+    }
+    return undefined;
+  } catch (error) {
+    return error.response;
+  }
+}
