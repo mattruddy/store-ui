@@ -11,6 +11,7 @@ import { add, menu, logOut, contractSharp } from 'ionicons/icons';
 import { setToken, setIsLoggedIn } from '../data/user/user.actions';
 //@ts-ignore
 import ReportViewer from 'react-lighthouse-viewer';
+import Lighthouse from '../components/Lighthouse';
 
 interface OwnProps extends RouteComponentProps {}
 
@@ -49,8 +50,10 @@ const Profile: React.FC<ProfileProps> = ({
   const [showToast, setShowToast] = useState<boolean>(false);
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
   const [hasPassedLighthouse, setHasPassedLighthouse] = useState<boolean>(false);
-  const [lightHouseData, setLightHouseData] = useState<string | undefined>(undefined);
+  const [installable, setInstallable] = useState<boolean>(false);
+  const [iosIcon, setIosIcon] = useState<boolean>(false);
   const [lightHouseLoading, setLightHouseLoading] = useState<boolean>(false);
+  const [lightHouseRan, setLightHouseRan] = useState(false);
 
   useIonViewDidEnter(() => {
     loadProfile();
@@ -176,9 +179,23 @@ const Profile: React.FC<ProfileProps> = ({
   const getLightHouseData = async (url: string) => {
     try {
       setLightHouseLoading(true);
-      const response = await getLighthouseReport(url) as string;
-      if (response) {
-        setLightHouseData(response);
+      const response = await getLighthouseReport(url);
+      console.log("HELLOOOOOO")
+      console.log(response);
+      if (response.status === 200) {
+        if (response.data) {
+          if (response.data.lighthouseResult) {
+            const data = response.data;
+            console.log(data.lighthouseResult);
+            const lightHouseData = data.lighthouseResult;
+            setIosIcon(lightHouseData.audits["apple-touch-icon"].score > 0?true:false);
+            console.log(lightHouseData.audits["apple-touch-icon"].score);
+            setInstallable(lightHouseData.audits["installable-manifest"].score > 0?true:false)
+            setLightHouseRan(true);
+          } else {
+            console.error(`No lighthouse result`);
+          }
+        }
       }
       setLightHouseLoading(false);
     } catch (e) {
@@ -334,20 +351,25 @@ const Profile: React.FC<ProfileProps> = ({
         </form>
         </IonContent>
         {
-          url && !lightHouseData &&
+          url && !lightHouseRan &&
             <IonButton expand='block' onClick={() => {if (url) getLightHouseData(url)}} disabled={lightHouseLoading}>
-              lightHouseLoading ?
-              <IonSpinner />
-              :
-              Run Lighthouse PWA Checkout
+              {
+                lightHouseLoading ?
+                  <IonSpinner />
+                  :
+                  <p>Run Lighthouse PWA Check</p>
+              }
             </IonButton>
         }
         {
-          lightHouseData &&
-            <ReportViewer json={lightHouseData} />
+          lightHouseRan &&
+            <Lighthouse 
+              installable={installable}
+              iosIcon={iosIcon}
+            />
         }
         {
-          lightHouseData && (
+          lightHouseRan && (
             hasPassedLighthouse === true ? 
             <IonButton expand='block' onClick={onAddPWA} disabled={isSubmit}>Submit</IonButton> :
             <IonText color="danger">
