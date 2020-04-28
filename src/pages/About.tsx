@@ -2,7 +2,7 @@ import React from 'react';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonLabel, IonItem, IonItemGroup, IonItemDivider, IonIcon, IonRouterLink } from '@ionic/react';
 import { Icon } from '@iconify/react';
 import appleSafari from '@iconify/icons-mdi/apple-safari';
-import { add, addCircleOutline, ellipsisVertical, menu } from 'ionicons/icons';
+import { add, addCircleOutline, ellipsisVertical, menu, logoTwitter } from 'ionicons/icons';
 
 const About: React.FC = () => {
 
@@ -14,6 +14,7 @@ const About: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
+            <p style={{marginLeft: '10px'}}>Follow us on <a href="https://twitter.com/PWAStore1" target="_blank" style={{color: '#1DA1F2'}}>Twitter <IonIcon icon={logoTwitter} /></a> for updates</p>
             <IonItemGroup>
                 <IonItemDivider>
                     <IonLabel style={{fontSize: '30px', color: 'black'}}><strong>How Do I Install?</strong></IonLabel>
