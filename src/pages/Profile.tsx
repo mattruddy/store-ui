@@ -193,11 +193,12 @@ const Profile: React.FC<ProfileProps> = ({
             const installableTest = lightHouseData.audits["installable-manifest"].score > 0?true:false;
             const worksOfflineTest = lightHouseData.audits["works-offline"].score > 0?true:false;
             setIosIcon(iosIconTest);
-            setInstallable(installable);
-            setWorksOffline(worksOffline);
-            // passed all tests.
+            setInstallable(installableTest);
+            setWorksOffline(worksOfflineTest);
+            //passed all tests.
             if (iosIconTest && installableTest && worksOfflineTest) {
-              const icon = await getIcon(url);
+              setHasPassedLighthouse(true);
+              //const icon = await getIcon(url);
             }
             setLightHouseRan(true);
           } else {
