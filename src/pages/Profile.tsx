@@ -52,6 +52,7 @@ const Profile: React.FC<ProfileProps> = ({
   const [hasPassedLighthouse, setHasPassedLighthouse] = useState<boolean>(false);
   const [installable, setInstallable] = useState<boolean>(false);
   const [iosIcon, setIosIcon] = useState<boolean>(false);
+  const [worksOffline, setWorksOffline] = useState<boolean>(false);
   const [lightHouseLoading, setLightHouseLoading] = useState<boolean>(false);
   const [lightHouseRan, setLightHouseRan] = useState(false);
 
@@ -190,7 +191,8 @@ const Profile: React.FC<ProfileProps> = ({
             const lightHouseData = data.lighthouseResult;
             setIosIcon(lightHouseData.audits["apple-touch-icon"].score > 0?true:false);
             console.log(lightHouseData.audits["apple-touch-icon"].score);
-            setInstallable(lightHouseData.audits["installable-manifest"].score > 0?true:false)
+            setInstallable(lightHouseData.audits["installable-manifest"].score > 0?true:false);
+            setWorksOffline(lightHouseData.audits["works-offline"].score > 0?true:false);
             setLightHouseRan(true);
           } else {
             console.error(`No lighthouse result`);
@@ -366,11 +368,12 @@ const Profile: React.FC<ProfileProps> = ({
             <Lighthouse 
               installable={installable}
               iosIcon={iosIcon}
+              runsOffline={worksOffline}
             />
         }
         {
           lightHouseRan && (
-            hasPassedLighthouse === true ? 
+            installable && iosIcon && worksOffline ? 
             <IonButton expand='block' onClick={onAddPWA} disabled={isSubmit}>Submit</IonButton> :
             <IonText color="danger">
             <p>Your app has not passed the proper tests on Lighthouse.</p>
