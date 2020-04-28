@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonItem, IonLabel, IonModal, IonList, IonInput, IonTextarea, IonText, IonImg, IonGrid, IonRow, IonIcon, IonButtons, IonFab, IonFabButton, IonFabList, IonAlert, useIonViewDidEnter, IonCol, useIonViewWillLeave, IonToast, IonProgressBar, IonSpinner } from '@ionic/react';
-import { getProfile, postApp, getLighthouseReport } from '../data/dataApi';
+import { getProfile, postApp, getLighthouseReport, getManifest, getImage } from '../data/dataApi';
 import { RouteComponentProps, withRouter } from 'react-router';
 import ImageUploader from 'react-images-upload';
 import { connect } from '../data/connect';
@@ -189,10 +189,16 @@ const Profile: React.FC<ProfileProps> = ({
             const data = response.data;
             console.log(data.lighthouseResult);
             const lightHouseData = data.lighthouseResult;
-            setIosIcon(lightHouseData.audits["apple-touch-icon"].score > 0?true:false);
-            console.log(lightHouseData.audits["apple-touch-icon"].score);
-            setInstallable(lightHouseData.audits["installable-manifest"].score > 0?true:false);
-            setWorksOffline(lightHouseData.audits["works-offline"].score > 0?true:false);
+            const iosIconTest = lightHouseData.audits["apple-touch-icon"].score > 0?true:false;
+            const installableTest = lightHouseData.audits["installable-manifest"].score > 0?true:false;
+            const worksOfflineTest = lightHouseData.audits["works-offline"].score > 0?true:false;
+            setIosIcon(iosIconTest);
+            setInstallable(installable);
+            setWorksOffline(worksOffline);
+            // passed all tests.
+            if (iosIconTest && installableTest && worksOfflineTest) {
+              const icon = await getIcon(url);
+            }
             setLightHouseRan(true);
           } else {
             console.error(`No lighthouse result`);
@@ -202,6 +208,26 @@ const Profile: React.FC<ProfileProps> = ({
       setLightHouseLoading(false);
     } catch (e) {
       console.error(`Issue getting lighthouse data: ${e}`);
+    }
+  }
+
+  const getIcon = async (url: string) => {
+    try {
+      const response = await getManifest(url);
+      if (response.status === 200) {
+        if (response.data.icons) {
+          const size512 = response.data.icons.find((x: { sizes: string; }) => x.sizes === "512x512");
+          const imageResponse = await getImage(`${url}/${size512?size512.src:response.data.icons[0].src}`);
+          console.log(imageResponse);
+          return imageResponse.data;
+        } else {
+          console.error(`Missing icons in manifest`);
+        }
+      } else {
+        console.error(`Error getting manifest: ${response}`)
+      }
+    } catch (e) {
+      console.error(`Could not get the icon: ${e}`);
     }
   }
 

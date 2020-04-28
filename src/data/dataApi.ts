@@ -1,5 +1,6 @@
 import { Plugins } from '@capacitor/core';
 import Axios from 'axios';
+import { AxiosCors } from './AxiosConfig'
 import { vars } from './env';
 import { PWA, UserProfile, Search } from '../util/types';
 import { getPlatforms } from '@ionic/react';
@@ -14,12 +15,14 @@ export const getUserData = async () => {
   const response = await Promise.all([
     Storage.get({ key: HAS_LOGGED_IN }),
     Storage.get({ key: TOKEN }),
-    Storage.get({key: HAS_READ}),
+    Storage.get({ key: HAS_READ }),
   ]);
   const isLoggedIn = response[0].value === 'true';
   const token = response[1].value || undefined;
   let hasRead = response[2].value || undefined;
   if (hasRead === undefined) {
+    // this is the toast that gets displayed to checkout 
+    // install instructions
     await setHasReadInstallData('false');
     hasRead = 'false';
   }
@@ -97,7 +100,7 @@ export const postEmail = async (text: string) => {
         text: text
       }
     });
-    const {data} = response;
+    const { data } = response;
     return data;
   } catch (error) {
     return error.response;
@@ -105,7 +108,7 @@ export const postEmail = async (text: string) => {
 }
 
 export const postRating = async (rating: string, appId: number, comment?: string) => {
-  const token = await Storage.get({key: TOKEN});
+  const token = await Storage.get({ key: TOKEN });
   let header;
   let isAuth;
   let body;
@@ -198,7 +201,7 @@ export const getProfile = async () => {
         'Content-Type': 'application/json'
       }
     })
-    const {data} = response;
+    const { data } = response;
     return {
       username: data.username,
       pwas: data.pageResponses as PWA[]
@@ -259,7 +262,7 @@ export const postApp = async (
       },
       data: fd
     })
-    const {data} = response;
+    const { data } = response;
     return data;
   } catch (error) {
     return error.response;
@@ -282,7 +285,7 @@ export const postAddScreenshots = async (screenshots: File[], appId: number) => 
       },
       data: fd
     })
-    const {data} = response;
+    const { data } = response;
     return data;
   } catch (error) {
     return error.response;
@@ -290,54 +293,54 @@ export const postAddScreenshots = async (screenshots: File[], appId: number) => 
 }
 
 export const postSignup = async (
-    username: string,
-    password: string,
-    email: string
+  username: string,
+  password: string,
+  email: string
 ) => {
-    try {
-        const response = await Axios.request({
-            url: `${vars().env.API_URL}/public/signup`,
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            data: {
-                username: username, 
-                password: password,
-                email: email,
-            }
-        })
-        const {data} = response;
-        return data;
-    } catch (e) {
-        return e.response;
-    }
+  try {
+    const response = await Axios.request({
+      url: `${vars().env.API_URL}/public/signup`,
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      data: {
+        username: username,
+        password: password,
+        email: email,
+      }
+    })
+    const { data } = response;
+    return data;
+  } catch (e) {
+    return e.response;
+  }
 }
 
 export const postLogin = async (
-    username: string,
-    password: string,
+  username: string,
+  password: string,
 ) => {
-    try {
-      const response = await Axios.request({
-        url: `${vars().env.API_URL}/public/login`,
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        data: {
-          username: username, 
-          password: password,
-        }
-      });
-      const { data } = response;
-      return data;
-    } catch (e) {
-      const {data} = e.response;
-      throw data
-    }
+  try {
+    const response = await Axios.request({
+      url: `${vars().env.API_URL}/public/login`,
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      data: {
+        username: username,
+        password: password,
+      }
+    });
+    const { data } = response;
+    return data;
+  } catch (e) {
+    const { data } = e.response;
+    throw data
+  }
 }
 
 export const putApp = async (
@@ -413,25 +416,25 @@ export const setIsLoggedInData = async (isLoggedIn: boolean) => {
 }
 
 export const setTokenData = async (token: string | undefined) => {
-    if (!token) {
-      await Storage.remove({ key: TOKEN });
-    } else {
-      await Storage.set({ key: TOKEN, value: token });
-    }
+  if (!token) {
+    await Storage.remove({ key: TOKEN });
+  } else {
+    await Storage.set({ key: TOKEN, value: token });
+  }
 }
 
 export const setHasReadInstallData = async (hasRead?: string) => {
   if (hasRead === undefined) {
-    await Storage.set({key: HAS_READ, value: 'false'});
+    await Storage.set({ key: HAS_READ, value: 'false' });
   } else {
-    await Storage.set(({key: HAS_READ, value: hasRead}));
+    await Storage.set(({ key: HAS_READ, value: hasRead }));
   }
 }
 
 //ADMIN
 
 export const getAllPending = async () => {
-  const token = await Storage.get({key: TOKEN});
+  const token = await Storage.get({ key: TOKEN });
   if (!token) return;
   try {
     const response = await Axios.request({
@@ -449,8 +452,8 @@ export const getAllPending = async () => {
   }
 }
 
-export const postStatus = async (code: string, appId: number, reason?: string,) => {
-  const token = await Storage.get({ key: TOKEN});
+export const postStatus = async (code: string, appId: number, reason?: string, ) => {
+  const token = await Storage.get({ key: TOKEN });
   if (!token) return;
   try {
     let json;
@@ -460,7 +463,7 @@ export const postStatus = async (code: string, appId: number, reason?: string,) 
         reason: reason
       };
     } else {
-      json ={
+      json = {
         code: code
       };
     }
@@ -493,6 +496,48 @@ export const getLighthouseReport = async (
     });
     return response;
   } catch (error) {
-    return error.response;
+    throw error.response;
+  }
+}
+
+export const getManifest = async (
+  url: string,
+) => {
+
+  try {
+    const response = await AxiosCors(url).get('/manifest.json');
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+
+
+
+  // try {
+  //   const response = await Axios.request({
+  //     url: `${url}/manifest.json`,
+  //     method: 'GET',
+  //     headers: {
+  //       'Accept': 'application/json',
+  //     },
+  //   });
+  //   return response;
+  // } catch (e) {
+  //   throw e.response;
+  // }
+}
+
+export const getImage = async (
+  url: string,
+) => {
+  try {
+    const response = await Axios.request({
+      url: url,
+      method: 'GET',
+    });
+    return response;
+  } catch (e) {
+    throw e.response;
   }
 }
