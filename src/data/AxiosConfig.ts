@@ -1,14 +1,47 @@
-import axios from 'axios'
+import axios, { AxiosRequestConfig } from "axios"
 
-const AxiosCors = (baseURL: string) =>
-    axios.create({
-        withCredentials: false,
-        baseURL,
-        // can try this for now. =D
-        //@ts-ignore
-        crossDomain: true,
-        mode: 'cors',
-        responseType: 'json'
-    })
+const base = {
+  Accept: "application/json",
+}
 
-export { AxiosCors }
+const baseHeaders = {
+  ...base,
+  "Access-Control-Allow-Origin": "*",
+  "Cache-Control": "no-cache",
+  "Content-Type": "application/json",
+  //   "Content-Type": "application/x-www-form-urlencoded",
+}
+
+type RequestType =
+  | "json"
+  | "arraybuffer"
+  | "blob"
+  | "document"
+  | "text"
+  | "stream"
+  | undefined
+
+const AxiosCors = (baseURL: string, requestType?: RequestType) =>
+  axios.create({
+    baseURL,
+    requestType,
+  } as AxiosRequestConfig)
+
+const FetchCors = (requestUrl: string) => {
+  const headers = new Headers({
+    "Content-Type": "application/json",
+    "Cache-Control": "no-cache",
+  })
+
+  const config: RequestInit = {
+    method: "GET",
+    mode: "no-cors",
+    headers,
+  }
+
+  const request = new Request(requestUrl, config)
+
+  return fetch(request)
+}
+
+export { AxiosCors, FetchCors }
