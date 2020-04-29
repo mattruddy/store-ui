@@ -69,10 +69,10 @@ export const getPWAs = async (page: number, category?: string) => {
   }
 }
 
-export const getPWA = async (id: number) => {
+export const getPWA = async (name: string) => {
   try {
     const response = await Axios.request({
-      url: `${vars().env.API_URL}/public/pwa/${id}`,
+      url: `${vars().env.API_URL}/public/pwa/${name}`,
       method: "GET",
       headers: {
         Accept: "application/json",

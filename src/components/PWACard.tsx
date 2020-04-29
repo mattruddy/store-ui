@@ -12,7 +12,7 @@ interface ContainerProps {
 
 const PWACard: React.FC<ContainerProps> = ({ pwa, url, history }) => {
   return (
-    <IonCard button style={{ height: '330px', width: '330px'}} onClick={() => history.push(`${url}/${pwa.appId}`)}>
+    <IonCard button style={{ height: '330px', width: '330px'}} onClick={() => history.push(`${url}/${pwa.name.replace(' ', '_')}`)}>
         <IonCardContent style={{overflow: 'hidden'}}>
             <div style={{display: 'flex', justifyContent: 'center'}}>
                 <img alt="icon" style={{ height: '200px', width: '200px', borderRadius: '5px'}} src={pwa.icon} />
