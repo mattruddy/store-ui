@@ -512,7 +512,7 @@ export const getLighthouseReport = async (url: string) => {
 }
 
 export const getManifest = async (url: string) => {
-  const requestUrl = `${url}/manifest.json`
+  const requestUrl = `${url}manifest.json`
   try {
     const response = await FetchCors(requestUrl)
     const json = await response.json()
