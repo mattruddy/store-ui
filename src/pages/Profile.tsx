@@ -12,7 +12,6 @@ import { setToken, setIsLoggedIn } from '../data/user/user.actions';
 //@ts-ignore
 import ReportViewer from 'react-lighthouse-viewer';
 import Lighthouse from '../components/Lighthouse';
-
 interface OwnProps extends RouteComponentProps {}
 
 interface DispatchProps {
@@ -198,7 +197,7 @@ const Profile: React.FC<ProfileProps> = ({
             //passed all tests.
             if (iosIconTest && installableTest && worksOfflineTest) {
               setHasPassedLighthouse(true);
-              //const icon = await getIcon(url);
+              const icon = await getIcon(url);
             }
             setLightHouseRan(true);
           } else {
@@ -214,11 +213,12 @@ const Profile: React.FC<ProfileProps> = ({
 
   const getIcon = async (url: string) => {
     try {
-      const response = await getManifest(url);
+      const inputURL = new URL(url);
+      const response = await getManifest(inputURL.origin);
       if (response.status === 200) {
         if (response.data.icons) {
           const size512 = response.data.icons.find((x: { sizes: string; }) => x.sizes === "512x512");
-          const imageResponse = await getImage(`${url}/${size512?size512.src:response.data.icons[0].src}`);
+          const imageResponse = await getImage(`${inputURL.origin}/${size512?size512.src:response.data.icons[0].src}`);
           console.log(imageResponse);
           return imageResponse.data;
         } else {
