@@ -216,9 +216,12 @@ const Profile: React.FC<ProfileProps> = ({
       const inputURL = new URL(url);
       const response = await getManifest(inputURL.origin);
       if (response.status === 200) {
-        if (response.data.icons) {
-          const size512 = response.data.icons.find((x: { sizes: string; }) => x.sizes === "512x512");
-          const imageResponse = await getImage(`${inputURL.origin}/${size512?size512.src:response.data.icons[0].src}`);
+        const { data } = response;
+        console.log(data);
+        const manifest = data.manifest;
+        if (manifest.icons) {
+          const size512 = manifest.icons.find((x: { sizes: string; }) => x.sizes === "512x512");
+          const imageResponse = await getImage(`${inputURL.origin}/${size512?size512.src:manifest.icons[0].src}`);
           console.log(imageResponse);
           return imageResponse.data;
         } else {

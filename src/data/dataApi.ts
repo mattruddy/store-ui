@@ -512,16 +512,27 @@ export const getLighthouseReport = async (url: string) => {
 }
 
 export const getManifest = async (url: string) => {
-  const requestUrl = `${url}manifest.json`
   try {
-    const response = await FetchCors(requestUrl)
-    const json = await response.json()
-
-    alert(json)
-
-    return json
+    const response = await Axios.request({
+      url: `https://fetch-manifest.now.sh/?url=${url}`,
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+      },
+    })
+    return response
   } catch (error) {
-    console.log(error)
+    throw error.response
+  }
+}
+
+export const getManifest1 = async (url: string) => {
+  const requestUrl = `https://fetch-manifest.now.sh/?url=${url}`
+  try {
+    const response = await FetchCors(requestUrl);
+    return response as Response;
+  } catch (error) {
+    throw error;
   }
 
   // try {
