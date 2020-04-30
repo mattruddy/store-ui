@@ -57,8 +57,8 @@ const PWA: React.FC<PWAProps> = ({
     setStarCount(undefined);
   }, [])
 
-  const loadPWA = async (id: string) => {
-    const resp = await getPWA(Number(id)) as PWAType;
+  const loadPWA = async (name: string) => {
+    const resp = await getPWA(name) as PWAType;
     setPwa(resp);
     setRatings(resp.ratings);
     setCurrentStar(resp.averageRating);
