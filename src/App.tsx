@@ -16,16 +16,6 @@ import SignUp from './pages/SignUp';
 import Support from './pages/Support';
 import Profile from './pages/Profile';
 
-/* Core CSS required for Ionic components to work properly */
-import '@ionic/react/css/core.css';
-
-/* Basic CSS for apps built with Ionic */
-import '@ionic/react/css/normalize.css';
-import '@ionic/react/css/structure.css';
-import '@ionic/react/css/typography.css';
-
-/* Theme variables */
-import './theme/variables.css';
 import LogIn from './pages/LogIn';
 import { loadUserData } from './data/user/user.actions';
 import { connect } from './data/connect';

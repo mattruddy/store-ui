@@ -1,1 +1,8 @@
 @import "./base/index.css";
+/* Core CSS required for Ionic components to work properly */
+@import "../../node_modules/@ionic/react/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "../../node_modules/@ionic/react/css/normalize.css";
+@import "../../node_modules/@ionic/react/css/structure.css";
+@import "../../node_modules/@ionic/react/css/typography.css";
