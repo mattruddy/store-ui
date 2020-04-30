@@ -113,13 +113,14 @@ const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
     () =>
       (pwaSearchValue ? pwaSearchResults : pwas).map((pwa, i) => (
         <IonCol
+          key={i}
           size="12"
           sizeMd="6"
           sizeLg="4"
           // sizeXl="3"
           className="fade-in box-shadow-hover"
         >
-          <PWACard key={i} url="/pwa" history={history} pwa={pwa} />
+          <PWACard url="/pwa" history={history} pwa={pwa} />
         </IonCol>
       )),
     [pwas, pwaSearchValue, pwaSearchResults]
