@@ -48,12 +48,13 @@ const Profile: React.FC<ProfileProps> = ({
   const [toastMessage, setToastMessage] = useState<string>();
   const [showToast, setShowToast] = useState<boolean>(false);
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
-  const [hasPassedLighthouse, setHasPassedLighthouse] = useState<boolean>(false);
   const [installable, setInstallable] = useState<boolean>(false);
   const [iosIcon, setIosIcon] = useState<boolean>(false);
   const [worksOffline, setWorksOffline] = useState<boolean>(false);
   const [lightHouseLoading, setLightHouseLoading] = useState<boolean>(false);
   const [lightHouseRan, setLightHouseRan] = useState(false);
+  const [passedUrl, setPassedUrl] = useState<string | undefined>(undefined);
+  const [lightHouseError, setLightHouseError] = useState<boolean>(false);
 
   useIonViewDidEnter(() => {
     loadProfile();
@@ -177,16 +178,14 @@ const Profile: React.FC<ProfileProps> = ({
   }
 
   const getLightHouseData = async (url: string) => {
+    setLightHouseError(false);
     try {
       setLightHouseLoading(true);
       const response = await getLighthouseReport(url);
-      console.log("HELLOOOOOO")
-      console.log(response);
       if (response.status === 200) {
         if (response.data) {
           if (response.data.lighthouseResult) {
             const data = response.data;
-            console.log(data.lighthouseResult);
             const lightHouseData = data.lighthouseResult;
             const iosIconTest = lightHouseData.audits["apple-touch-icon"].score > 0?true:false;
             const installableTest = lightHouseData.audits["installable-manifest"].score > 0?true:false;
@@ -196,8 +195,9 @@ const Profile: React.FC<ProfileProps> = ({
             setWorksOffline(worksOfflineTest);
             //passed all tests.
             if (iosIconTest && installableTest && worksOfflineTest) {
-              setHasPassedLighthouse(true);
-              const icon = await getIcon(url);
+              setPassedUrl(url);
+              // TODO: Automatically get icon and name of app from manifest.
+              //const icon = await getIcon(url);
             }
             setLightHouseRan(true);
           } else {
@@ -205,19 +205,21 @@ const Profile: React.FC<ProfileProps> = ({
           }
         }
       }
-      setLightHouseLoading(false);
     } catch (e) {
-      console.error(`Issue getting lighthouse data: ${e}`);
+      console.error(`Issue getting lighthouse data: ${JSON.stringify(e.data)}`);
+      setLightHouseError(true);
     }
+
+    setLightHouseLoading(false);
   }
 
+  // TODO: Get this working without CORS errors.
   const getIcon = async (url: string) => {
     try {
       const inputURL = new URL(url);
       const response = await getManifest(inputURL.origin);
       if (response.status === 200) {
         const { data } = response;
-        console.log(data);
         const manifest = data.manifest;
         if (manifest.icons) {
           const size512 = manifest.icons.find((x: { sizes: string; }) => x.sizes === "512x512");
@@ -315,6 +317,7 @@ const Profile: React.FC<ProfileProps> = ({
                               setIsValidLink(isValid);
                             }
                             setUrl(e.detail.value!)
+                            setLightHouseRan(urlVal === passedUrl? true : false);
                         }}
                         required
                     />
@@ -383,7 +386,7 @@ const Profile: React.FC<ProfileProps> = ({
         </form>
         </IonContent>
         {
-          url && !lightHouseRan &&
+          (isValidLink && url && !lightHouseRan) &&
             <IonButton expand='block' onClick={() => {if (url) getLightHouseData(url)}} disabled={lightHouseLoading}>
               {
                 lightHouseLoading ?
@@ -402,12 +405,26 @@ const Profile: React.FC<ProfileProps> = ({
             />
         }
         {
+          lightHouseError && 
+          <IonRow>
+            <IonCol>
+              <IonText color="danger">
+                <p>There was an error running your site through Lighthouse. Please contact support if you think this is a problem with the store.</p>
+              </IonText>
+            </IonCol>
+          </IonRow>
+        }
+        {
           lightHouseRan && (
-            installable && iosIcon && worksOffline ? 
+            passedUrl ? 
             <IonButton expand='block' onClick={onAddPWA} disabled={isSubmit}>Submit</IonButton> :
-            <IonText color="danger">
-            <p>Your app has not passed the proper tests on Lighthouse.</p>
-            </IonText>
+            <IonRow>
+            <IonCol>
+              <IonText color="danger">
+                <p>Your app has not passed the proper tests on Lighthouse.</p>
+              </IonText>
+            </IonCol>
+          </IonRow>
           )
         }
       </IonModal>

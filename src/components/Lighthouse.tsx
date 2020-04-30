@@ -20,13 +20,12 @@ const Lighthouse: React.FC<LighthouseProps> = ({
     {
       <>
         <IonList>
-            <IonListHeader>
-              <IonTitle>
+            <IonListHeader >
+              <IonLabel>
                 Lighthouse PWA Report
-              </IonTitle>
+              </IonLabel>
             </IonListHeader>
             <IonItem>
-
               <IonLabel>Installable</IonLabel>
               {
                 <IonIcon slot="end" icon={installable?checkmark:close} />
