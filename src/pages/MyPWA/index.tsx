@@ -99,7 +99,7 @@ const MyPWA: React.FC<PWAProps> = ({ history }) => {
 
   const loadPWA = async () => {
     const resp = (await getPWA(
-      Number(history.location.pathname.split("/")[2])
+      history.location.pathname.split("/")[2]
     )) as PWAType
     setPwa(resp)
     setScreenshots(resp.screenshots)
