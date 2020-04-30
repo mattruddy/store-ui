@@ -1,4 +1,19 @@
 :root {
+  --primary-background-gradient: linear-gradient(
+    to bottom,
+    #4ab4b2,
+    #4fbbb6,
+    #54c3b9,
+    #5acabc,
+    #61d1bf,
+    #67d7c1,
+    #6eddc4,
+    #75e3c6,
+    #7deac8,
+    #86f1c9,
+    #8ff8cb,
+    #99ffcc
+  );
   --primary-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2),
     0 -1px 0px rgba(0, 0, 0, 0.02);
 }

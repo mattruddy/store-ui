@@ -1,11 +1,14 @@
 .content {
-    --background: rgb(248,248,248);
+  --background: rgb(248, 248, 248);
 }
+/* #4AB4B2
+#6ADAC3
+#99FFCC */
 
 .button {
-    --color: black;
+  --color: black;
 }
 .fab {
-    --color: black;
-    --color-activated: black;
+  --color: black;
+  --color-activated: black;
 }
