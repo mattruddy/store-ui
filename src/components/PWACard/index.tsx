@@ -1,8 +1,8 @@
-import React from "react"
+import React, { memo } from "react"
 import { IonCard, IonCardContent, IonRippleEffect, IonImg } from "@ionic/react"
 //@ts-ignore
 import StarRatings from "react-star-ratings"
-import { PWA } from "../util/types"
+import { PWA } from "../../util/types"
 
 interface ContainerProps {
   pwa: PWA
@@ -49,4 +49,4 @@ const PWACard: React.FC<ContainerProps> = ({ pwa, url, history }) => {
   )
 }
 
-export default PWACard
+export default memo(PWACard)

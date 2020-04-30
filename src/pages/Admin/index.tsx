@@ -18,8 +18,8 @@ import {
   IonImg,
 } from "@ionic/react"
 import { RouteComponentProps, withRouter } from "react-router"
-import { getAllPending, postStatus } from "../data/dataApi"
-import { PWA } from "../util/types"
+import { getAllPending, postStatus } from "../../data/dataApi"
+import { PWA } from "../../util/types"
 
 interface MatchParams {
   id: string | undefined

@@ -1,7 +1,7 @@
-import React from "react"
+import React, { memo } from "react"
 import { IonSlides, IonSlide, IonImg } from "@ionic/react"
-import { Image } from "../util/types"
-import "./ScreenshotSlider.css"
+import { Image } from "../../util/types"
+import "./index.css"
 
 interface ContainerProps {
   screenshots: Image[]
@@ -31,4 +31,4 @@ const ScreenshotSlider: React.FC<ContainerProps> = ({ screenshots }) => {
   )
 }
 
-export default ScreenshotSlider
+export default memo(ScreenshotSlider)

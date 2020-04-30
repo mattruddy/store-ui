@@ -26,16 +26,14 @@ import {
   IonGrid,
   IonImg,
 } from "@ionic/react"
-import DebouncedSearch from "../components/DebouncedSearch"
-import CategoryOptions from "../components/CategoryOptions"
-import { getPWAs, getSearchApp } from "../data/dataApi"
-import { PWA } from "../util/types"
+import { CategoryOptions, DebouncedSearch } from "../../components"
+import { getPWAs, getSearchApp } from "../../data/dataApi"
+import { PWA } from "../../util/types"
 import { RouteComponentProps, withRouter } from "react-router"
-import "./main.css"
-import { setLoading } from "../data/user/user.actions"
-import "./PWAs.css"
+import { setLoading } from "../../data/user/user.actions"
+import "./styles.css"
 
-const PWACard = lazy(() => import("../components/PWACard"))
+const PWACard = lazy(() => import("../../components/PWACard/index"))
 
 const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
   const [page, setPage] = useState<number>(0)

@@ -32,9 +32,9 @@ import {
   deleteScreenshot,
   postAddScreenshots,
   deleteApp,
-} from "../data/dataApi"
+} from "../../data/dataApi"
 import { RouteComponentProps, withRouter } from "react-router"
-import { PWA as PWAType, Image } from "../util/types"
+import { PWA as PWAType, Image } from "../../util/types"
 import {
   pencil,
   options,
@@ -43,9 +43,8 @@ import {
   checkmark,
   openOutline,
 } from "ionicons/icons"
-import { fixFilesRotation } from "../util/utils"
-import CategoryOptions from "../components/CategoryOptions"
-import RatingList from "../components/RatingItem"
+import { fixFilesRotation } from "../../util/utils"
+import { CategoryOptions, RatingItem } from "../../components"
 //@ts-ignore
 import StarRatings from "react-star-ratings"
 
@@ -411,7 +410,7 @@ const MyPWA: React.FC<PWAProps> = ({ history }) => {
         {!isEdit && pwa && pwa.ratings && (
           <IonList>
             {pwa.ratings.map((rating, idx) => (
-              <RatingList key={idx} rating={rating} />
+              <RatingItem key={idx} rating={rating} />
             ))}
           </IonList>
         )}

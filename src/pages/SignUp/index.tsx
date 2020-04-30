@@ -18,9 +18,9 @@ import {
   IonToast,
   IonImg,
 } from "@ionic/react"
-import { setToken, setIsLoggedIn } from "../data/user/user.actions"
-import { postSignup } from "../data/dataApi"
-import { connect } from "../data/connect"
+import { setToken, setIsLoggedIn } from "../../data/user/user.actions"
+import { postSignup } from "../../data/dataApi"
+import { connect } from "../../data/connect"
 
 interface OwnProps extends RouteComponentProps {}
 

@@ -1,7 +1,7 @@
-import React from "react"
+import React, { memo } from "react"
 import { IonButton, IonIcon, IonImg } from "@ionic/react"
-import { PWA, Rating } from "../util/types"
-import { postScore } from "../data/dataApi"
+import { PWA, Rating } from "../../util/types"
+import { postScore } from "../../data/dataApi"
 //@ts-ignore
 import StarRatings from "react-star-ratings"
 import { openOutline } from "ionicons/icons"
@@ -80,4 +80,4 @@ const PWAInfo: React.FC<ContainerProps> = ({
   )
 }
 
-export default PWAInfo
+export default memo(PWAInfo)

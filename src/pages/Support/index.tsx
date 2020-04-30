@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonTextarea, IonButton, IonInput, IonLabel, IonToast, IonItem } from '@ionic/react';
-import { postEmail } from '../data/dataApi';
+import { postEmail } from '../../data/dataApi';
 
 const Support: React.FC = () => {
   const [text, setText] = useState<string>();
