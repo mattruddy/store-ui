@@ -116,9 +116,9 @@ const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
       (pwaSearchValue ? pwaSearchResults : pwas).map((pwa, i) => (
         <IonCol
           size="12"
-          sizeSm="6"
-          sizeMd="4"
-          sizeLg="3"
+          sizeMd="6"
+          sizeLg="4"
+          // sizeXl="3"
           className="fade-in box-shadow-hover"
         >
           <PWACard key={i} url="/pwa" history={history} pwa={pwa} />
