@@ -23,7 +23,7 @@ const styles = {
 
 const LoadingScreen: React.FC = () => (
   <IonPage style={styles.page}>
-    <IonContent style={styles.content}>
+    <IonContent color="primary" style={styles.content}>
       <IonImg
         alt="logo"
         className="fade-in"

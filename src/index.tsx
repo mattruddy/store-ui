@@ -1,7 +1,6 @@
 import "./css/index.css"
 import React, { Suspense, lazy } from "react"
 import ReactDOM from "react-dom"
-// import App from "./App"
 import LoadingScreen from "./components/LoadingScreen"
 import * as serviceWorker from "./serviceWorker"
 import { defineCustomElements } from "@ionic/pwa-elements/loader"
