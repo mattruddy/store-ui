@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, memo } from "react"
 import {
   IonContent,
   IonHeader,
@@ -170,5 +170,5 @@ export default connect<OwnProps, StateProps, DispatchProps>({
   mapDispatchToProps: {
     setHasReadInstall,
   },
-  component: withRouter(PWA),
+  component: withRouter(memo(PWA)),
 })

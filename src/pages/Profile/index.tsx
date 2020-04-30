@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, memo } from "react"
 import {
   IonContent,
   IonHeader,
@@ -446,5 +446,5 @@ export default connect<OwnProps, StateProps, DispatchProps>({
     setToken,
     setIsLoggedIn,
   },
-  component: withRouter(Profile),
+  component: withRouter(memo(Profile)),
 })

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react"
+import React, { useState, useRef, memo } from "react"
 import {
   IonContent,
   IonHeader,
@@ -447,4 +447,4 @@ const MyPWA: React.FC<PWAProps> = ({ history }) => {
   )
 }
 
-export default withRouter(MyPWA)
+export default withRouter(memo(MyPWA))

@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, memo } from "react"
 import {
   IonContent,
   IonHeader,
@@ -142,4 +142,4 @@ const Admin: React.FC<AdminProps> = ({ history }) => {
   )
 }
 
-export default withRouter(Admin)
+export default withRouter(memo(Admin))

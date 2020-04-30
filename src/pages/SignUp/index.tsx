@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, memo } from "react"
 import { RouteComponentProps } from "react-router"
 import {
   IonContent,
@@ -182,5 +182,5 @@ export default connect<OwnProps, StateProps, DispatchProps>({
     setToken,
     setIsLoggedIn,
   },
-  component: SignUp,
+  component: memo(SignUp),
 })
