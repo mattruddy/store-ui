@@ -1,0 +1,11 @@
+@import "./variables/typography.css";
+@import "./variables/colors.css";
+@import "./animations/index.css";
+
+.tab {
+  --color-selected: black;
+}
+
+box-shadow-hover:hover {
+  box-shadow: var(--primaryBoxShadow);
+}

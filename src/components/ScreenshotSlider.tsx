@@ -1,30 +1,34 @@
-import React from 'react';
-import { IonSlides, IonSlide } from '@ionic/react';
-import { Image } from '../util/types';
-import './ScreenshotSlider.css';
+import React from "react"
+import { IonSlides, IonSlide, IonImg } from "@ionic/react"
+import { Image } from "../util/types"
+import "./ScreenshotSlider.css"
 
 interface ContainerProps {
-    screenshots: Image[]
+  screenshots: Image[]
 }
 
 const ScreenshotSlider: React.FC<ContainerProps> = ({ screenshots }) => {
   return (
-    <IonSlides 
+    <IonSlides
       className="slider"
-      key={screenshots.map((shot) => shot.imageId).join('_')} 
+      key={screenshots.map((shot) => shot.imageId).join("_")}
       pager={true}
-      options={{ 
-        initialSlide: 0, 
+      options={{
+        initialSlide: 0,
         speed: 400,
       }}
     >
-        {screenshots.map((shot, idx) => (
-        <IonSlide style={{height: '500px'}} key={idx}>
-            <img alt="screenshot" style={{height: '400px', maxWidth: '93%'}} src={shot.url} /> 
+      {screenshots.map((shot, idx) => (
+        <IonSlide style={{ height: "500px" }} key={idx}>
+          <IonImg
+            alt="screenshot"
+            style={{ height: "400px", maxWidth: "93%" }}
+            src={shot.url}
+          />
         </IonSlide>
-        ))}
-    </IonSlides>  
-  );
-};
+      ))}
+    </IonSlides>
+  )
+}
 
-export default ScreenshotSlider;
+export default ScreenshotSlider

@@ -33,7 +33,6 @@ import { AppContextProvider } from './data/AppContext';
 import PWA from './pages/PWA';
 import MyPWA from './pages/MyPWA';
 import About from './pages/About';
-import './App.css';
 import Admin from './pages/Admin';
 
 const App: React.FC = () => {

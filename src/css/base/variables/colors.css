@@ -1,0 +1,17 @@
+:root {
+  --primaryColor: #29303b;
+  --primaryColorRGB: 41, 48, 59;
+  --secondaryColor: white;
+  --tertiarycolor: #bdc3c7;
+  --quaternaryColor: #34495e;
+  --quinaryColor: #1f2326;
+  --accentColor: rgba(182, 102, 214, 0.6);
+  --lightGrey: rgb(204, 204, 204);
+  --whiteSmoke: #f8f9fa;
+  --grey: #575e6a;
+  --slateGrey: #29303b;
+  --darkBorder: #1f2326;
+  --midNight: #1A2327;
+  --danger: #e74c3c;
+  --primaryBoxShadow: 0 2px 4px rgba(0, 0, 0, 0.2), 0 -1px 0px rgba(0, 0, 0, 0.02);
+}
