@@ -72,7 +72,7 @@ const About: React.FC = () => (
                 <IonImg
                   alt="IOS action button"
                   color="grey"
-                  style={{ height: 15, width: 15 }}
+                  style={{ height: 15, width: 15, display: "inline-block" }}
                   src="assets/icon/action.png"
                 />{" "}
               </li>
@@ -150,7 +150,7 @@ const About: React.FC = () => (
             </li>
             <li>
               A list will drop down, click <IonIcon icon={add} /> to present a
-              submittion form
+              submission form
             </li>
             <li>
               Ensure the PWA passes{" "}

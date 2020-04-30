@@ -1,35 +1,18 @@
 import React from "react"
-import { IonPage, IonContent, IonImg } from "@ionic/react"
-
-const styles = {
-  page: {
-    height: "100vh",
-    width: "100vw",
-  },
-  content: {
-    height: "100%",
-    width: "100%",
-  },
-  image: {
-    display: "block",
-    width: 258,
-    height: 258,
-    position: "absolute",
-    left: "50%",
-    top: "50%",
-    transform: "translate(-50%, -50%)",
-  },
-}
+import { IonPage, IonContent, IonImg, IonLabel } from "@ionic/react"
+import "./styles.css"
 
 const LoadingScreen: React.FC = () => (
-  <IonPage style={styles.page}>
-    <IonContent color="primary" style={styles.content}>
-      <IonImg
-        alt="logo"
-        className="fade-in"
-        style={styles.image}
-        src="assets/icon/logo.png"
-      />
+  <IonPage>
+    <IonContent color="primary" className="LoadingScreenContent">
+      <div className="LoadingScreenContainer fade-in">
+        <IonImg
+          alt="logo"
+          className="LoadingScreenImage"
+          src="assets/icon/logo.png"
+        />
+        <IonLabel className="LoadingScreenLabel">PWA Store</IonLabel>
+      </div>
     </IonContent>
   </IonPage>
 )
