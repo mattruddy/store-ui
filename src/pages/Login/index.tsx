@@ -119,10 +119,9 @@ const LogIn: React.FC<LoginProps> = ({
                   </IonText>
                 </IonCol>
               )}
-              <IonCol size="12">
+              <IonCol size="12" className="primary-input-container">
                 <IonLabel position="stacked">Username</IonLabel>
                 <IonInput
-                  className="border-light"
                   name="username"
                   type="text"
                   // placeholder="Username"
@@ -145,10 +144,9 @@ const LogIn: React.FC<LoginProps> = ({
               </IonText>
             )}
             <IonRow>
-              <IonCol size="12">
+              <IonCol size="12" className="primary-input-container">
                 <IonLabel position="stacked">Password</IonLabel>
                 <IonInput
-                  className="border-light"
                   name="password"
                   type="password"
                   // placeholder="Password"
@@ -170,12 +168,12 @@ const LogIn: React.FC<LoginProps> = ({
             )}
 
             <IonRow>
-              <IonCol>
+              <IonCol size="6">
                 <IonButton type="submit" expand="block">
                   Log In
                 </IonButton>
               </IonCol>
-              <IonCol>
+              <IonCol size="6">
                 <IonButton routerLink="/signup" color="light" expand="block">
                   Signup
                 </IonButton>
@@ -183,9 +181,13 @@ const LogIn: React.FC<LoginProps> = ({
             </IonRow>
           </form>
           <form action="/api/signin/github" method="POST">
-            <IonButton color="github" expand="full" type="submit">
-              Sign In with GitHub <IonIcon icon={logoGithub} />
-            </IonButton>
+            <IonRow>
+              <IonCol size="12">
+                <IonButton color="github" expand="full" type="submit">
+                  Sign In with GitHub <IonIcon icon={logoGithub} />
+                </IonButton>
+              </IonCol>
+            </IonRow>
           </form>
         </IonGrid>
       </IonContent>

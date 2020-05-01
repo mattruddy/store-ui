@@ -91,16 +91,15 @@ const SignUp: React.FC<SignIn> = ({
 
           <form noValidate onSubmit={signup}>
             <IonRow>
-              <IonCol size="12">
+              <IonCol size="12" className="primary-input-container">
                 <IonLabel position="stacked">Username</IonLabel>
                 <IonInput
-                  className="border-light"
                   name="username"
                   type="text"
                   spellCheck={false}
                   maxlength={30}
                   value={username}
-                  onIonChange={(e) => {
+                  onIonChange={e => {
                     setUsername(e.detail.value!)
                     setUsernameError(false)
                   }}
@@ -112,16 +111,15 @@ const SignUp: React.FC<SignIn> = ({
                   <p className="ion-padding-start">Username is required</p>
                 </IonText>
               )}
-              <IonCol size="12">
+              <IonCol size="12" className="primary-input-container">
                 <IonLabel position="stacked">Email</IonLabel>
                 <IonInput
-                  className="border-light"
                   name="email"
                   type="text"
                   spellCheck={false}
                   maxlength={50}
                   value={email}
-                  onIonChange={(e) => {
+                  onIonChange={e => {
                     setEmail(e.detail.value!)
                     setEmailError(false)
                   }}
@@ -133,16 +131,15 @@ const SignUp: React.FC<SignIn> = ({
                   <p className="ion-padding-start">Email is required</p>
                 </IonText>
               )}
-              <IonCol size="12">
+              <IonCol size="12" className="primary-input-container">
                 <IonLabel position="stacked">Password</IonLabel>
                 <IonInput
-                  className="border-light"
                   name="password"
                   type="password"
                   spellCheck={false}
                   value={password}
                   maxlength={80}
-                  onIonChange={(e) => {
+                  onIonChange={e => {
                     setPassword(e.detail.value!)
                     setPasswordError(false)
                   }}
@@ -158,7 +155,7 @@ const SignUp: React.FC<SignIn> = ({
             <IonRow>
               <IonCol size="12">
                 <IonButton type="submit" expand="block">
-                  Create
+                  Sign Up
                 </IonButton>
               </IonCol>
             </IonRow>

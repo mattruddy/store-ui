@@ -26,6 +26,18 @@ box-shadow-hover:hover {
   --color-activated: black;
 }
 
-.border-light {
-  border-bottom: 1px var(--ion-color-light-shade) solid;
+.primary-input-label:focus-within {
+  color: var(--ion-color-primary);
+}
+
+.primary-input-container input {
+  border-bottom: 2px var(--ion-color-light-shade) solid;
+}
+
+.primary-input-container input:focus-within {
+  border-bottom: 2px var(--ion-color-primary) solid;
+}
+
+.primary-input-container:focus-within ion-label {
+  color: var(--ion-color-primary);
 }
