@@ -19,7 +19,6 @@ import { postLogin, postDevice } from "../../data/dataApi"
 import { connect } from "../../data/connect"
 import queryString from "query-string"
 import { logoGithub } from "ionicons/icons"
-import "./styles.css"
 
 interface OwnProps extends RouteComponentProps {}
 
@@ -122,16 +121,14 @@ const LogIn: React.FC<LoginProps> = ({
               )}
               <IonCol size="12">
                 <IonLabel position="stacked">Username</IonLabel>
-              </IonCol>
-              <IonCol size="12">
                 <IonInput
-                  className="LoginInput"
+                  className="input-shadow"
                   name="username"
                   type="text"
                   spellCheck={false}
                   maxlength={30}
                   value={username}
-                  onIonChange={e => {
+                  onIonChange={(e) => {
                     setUsername(e.detail.value!)
                     setUsernameError(false)
                   }}
@@ -147,18 +144,16 @@ const LogIn: React.FC<LoginProps> = ({
               </IonText>
             )}
             <IonRow>
-              <IonCol size="12" sizeLg="12">
+              <IonCol size="12">
                 <IonLabel position="stacked">Password</IonLabel>
-              </IonCol>
-              <IonCol size="12" sizeLg="12">
                 <IonInput
-                  className="LoginInput"
+                  className="input-shadow"
                   name="password"
                   type="password"
                   spellCheck={false}
                   maxlength={80}
                   value={password}
-                  onIonChange={e => {
+                  onIonChange={(e) => {
                     setPassword(e.detail.value!)
                     setPasswordError(false)
                   }}

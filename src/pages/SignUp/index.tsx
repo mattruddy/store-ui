@@ -2,17 +2,12 @@ import React, { useState, memo } from "react"
 import { RouteComponentProps } from "react-router"
 import {
   IonContent,
-  IonHeader,
   IonPage,
-  IonTitle,
-  IonToolbar,
-  IonList,
-  IonItem,
   IonGrid,
   IonRow,
+  IonCol,
   IonLabel,
   IonInput,
-  IonCol,
   IonButton,
   IonText,
   IonToast,
@@ -85,84 +80,90 @@ const SignUp: React.FC<SignIn> = ({
   return (
     <IonPage>
       <IonContent style={{ overflow: "hidden" }}>
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <IonImg
-            alt="logo"
-            style={{ height: "100px", width: "100px" }}
-            src="/assets/icon/logo.png"
-          />
-        </div>
-        <form noValidate onSubmit={signup}>
-          <IonList>
-            <IonItem>
-              <IonLabel position="stacked">Username</IonLabel>
-              <IonInput
-                name="username"
-                type="text"
-                spellCheck={false}
-                maxlength={30}
-                value={username}
-                onIonChange={(e) => {
-                  setUsername(e.detail.value!)
-                  setUsernameError(false)
-                }}
-                required
-              />
-            </IonItem>
-            {formSubmitted && usernameError && (
-              <IonText color="danger">
-                <p className="ion-padding-start">Username is required</p>
-              </IonText>
-            )}
-            <IonItem>
-              <IonLabel position="stacked">Email</IonLabel>
-              <IonInput
-                name="email"
-                type="text"
-                spellCheck={false}
-                maxlength={50}
-                value={email}
-                onIonChange={(e) => {
-                  setEmail(e.detail.value!)
-                  setEmailError(false)
-                }}
-                required
-              />
-            </IonItem>
-            {formSubmitted && emailError && (
-              <IonText color="danger">
-                <p className="ion-padding-start">Email is required</p>
-              </IonText>
-            )}
-            <IonItem>
-              <IonLabel position="stacked">Password</IonLabel>
-              <IonInput
-                name="password"
-                type="password"
-                spellCheck={false}
-                value={password}
-                maxlength={80}
-                onIonChange={(e) => {
-                  setPassword(e.detail.value!)
-                  setPasswordError(false)
-                }}
-                required
-              />
-            </IonItem>
-            {formSubmitted && passwordError && (
-              <IonText color="danger">
-                <p className="ion-padding-start">Password is required</p>
-              </IonText>
-            )}
-          </IonList>
-          <IonRow>
-            <IonCol>
-              <IonButton type="submit" expand="block">
-                Create
-              </IonButton>
-            </IonCol>
+        <IonGrid fixed>
+          <IonRow style={{ display: "flex", justifyContent: "center" }}>
+            <IonImg
+              alt="logo"
+              style={{ height: "100px", width: "100px" }}
+              src="/assets/icon/logo.png"
+            />
           </IonRow>
-        </form>
+
+          <form noValidate onSubmit={signup}>
+            <IonRow>
+              <IonCol size="12">
+                <IonLabel position="stacked">Username</IonLabel>
+                <IonInput
+                  className="input-shadow"
+                  name="username"
+                  type="text"
+                  spellCheck={false}
+                  maxlength={30}
+                  value={username}
+                  onIonChange={(e) => {
+                    setUsername(e.detail.value!)
+                    setUsernameError(false)
+                  }}
+                  required
+                />
+              </IonCol>
+              {formSubmitted && usernameError && (
+                <IonText color="danger">
+                  <p className="ion-padding-start">Username is required</p>
+                </IonText>
+              )}
+              <IonCol size="12">
+                <IonLabel position="stacked">Email</IonLabel>
+                <IonInput
+                  className="input-shadow"
+                  name="email"
+                  type="text"
+                  spellCheck={false}
+                  maxlength={50}
+                  value={email}
+                  onIonChange={(e) => {
+                    setEmail(e.detail.value!)
+                    setEmailError(false)
+                  }}
+                  required
+                />
+              </IonCol>
+              {formSubmitted && emailError && (
+                <IonText color="danger">
+                  <p className="ion-padding-start">Email is required</p>
+                </IonText>
+              )}
+              <IonCol size="12">
+                <IonLabel position="stacked">Password</IonLabel>
+                <IonInput
+                  className="input-shadow"
+                  name="password"
+                  type="password"
+                  spellCheck={false}
+                  value={password}
+                  maxlength={80}
+                  onIonChange={(e) => {
+                    setPassword(e.detail.value!)
+                    setPasswordError(false)
+                  }}
+                  required
+                />
+              </IonCol>
+              {formSubmitted && passwordError && (
+                <IonText color="danger">
+                  <p className="ion-padding-start">Password is required</p>
+                </IonText>
+              )}
+            </IonRow>
+            <IonRow>
+              <IonCol size="12">
+                <IonButton type="submit" expand="block">
+                  Create
+                </IonButton>
+              </IonCol>
+            </IonRow>
+          </form>
+        </IonGrid>
       </IonContent>
       <IonToast
         isOpen={showToast}

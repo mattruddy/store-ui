@@ -9,3 +9,22 @@
 box-shadow-hover:hover {
   box-shadow: var(--primaryBoxShadow);
 }
+
+.content {
+  --background: rgb(248, 248, 248);
+}
+/* #4AB4B2
+#6ADAC3
+#99FFCC */
+
+.button {
+  --color: black;
+}
+.fab {
+  --color: black;
+  --color-activated: black;
+}
+
+.input-shadow {
+  box-shadow: var(--primary-box-shadow);
+}

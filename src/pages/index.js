@@ -1,4 +1,3 @@
-import "./index.css"
 export { default as About } from "./About"
 export { default as Admin } from "./Admin"
 export { default as Login } from "./Login"
