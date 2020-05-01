@@ -94,7 +94,7 @@ const SignUp: React.FC<SignIn> = ({
               <IonCol size="12">
                 <IonLabel position="stacked">Username</IonLabel>
                 <IonInput
-                  className="input-shadow"
+                  className="border-light"
                   name="username"
                   type="text"
                   spellCheck={false}
@@ -115,7 +115,7 @@ const SignUp: React.FC<SignIn> = ({
               <IonCol size="12">
                 <IonLabel position="stacked">Email</IonLabel>
                 <IonInput
-                  className="input-shadow"
+                  className="border-light"
                   name="email"
                   type="text"
                   spellCheck={false}
@@ -136,7 +136,7 @@ const SignUp: React.FC<SignIn> = ({
               <IonCol size="12">
                 <IonLabel position="stacked">Password</IonLabel>
                 <IonInput
-                  className="input-shadow"
+                  className="border-light"
                   name="password"
                   type="password"
                   spellCheck={false}

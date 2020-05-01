@@ -122,7 +122,7 @@ const LogIn: React.FC<LoginProps> = ({
               <IonCol size="12">
                 <IonLabel position="stacked">Username</IonLabel>
                 <IonInput
-                  className="input-shadow"
+                  className="border-light"
                   name="username"
                   type="text"
                   spellCheck={false}
@@ -147,7 +147,7 @@ const LogIn: React.FC<LoginProps> = ({
               <IonCol size="12">
                 <IonLabel position="stacked">Password</IonLabel>
                 <IonInput
-                  className="input-shadow"
+                  className="border-light"
                   name="password"
                   type="password"
                   spellCheck={false}

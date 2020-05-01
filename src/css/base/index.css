@@ -20,11 +20,12 @@ box-shadow-hover:hover {
 .button {
   --color: black;
 }
+
 .fab {
   --color: black;
   --color-activated: black;
 }
 
-.input-shadow {
-  box-shadow: var(--primary-box-shadow);
+.border-light {
+  border: 1px var(--ion-color-light-shade) solid;
 }
