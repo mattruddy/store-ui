@@ -104,7 +104,7 @@ const SignUp: React.FC<SignIn> = ({
                   spellCheck={false}
                   maxlength={30}
                   value={username}
-                  onIonChange={(e) => {
+                  onIonChange={e => {
                     setUsername(e.detail.value!)
                     setUsernameError(false)
                   }}
@@ -124,7 +124,7 @@ const SignUp: React.FC<SignIn> = ({
                   spellCheck={false}
                   maxlength={50}
                   value={email}
-                  onIonChange={(e) => {
+                  onIonChange={e => {
                     setEmail(e.detail.value!)
                     setEmailError(false)
                   }}
@@ -144,7 +144,7 @@ const SignUp: React.FC<SignIn> = ({
                   spellCheck={false}
                   value={password}
                   maxlength={80}
-                  onIonChange={(e) => {
+                  onIonChange={e => {
                     setPassword(e.detail.value!)
                     setPasswordError(false)
                   }}
