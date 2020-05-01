@@ -121,9 +121,7 @@ const PWA: React.FC<PWAProps> = ({
 
                 {pwa.screenshots && (
                   <IonCol size="12">
-                    <ScreenshotSlider
-                      screenshots={pwa.screenshots}
-                    ></ScreenshotSlider>
+                    <ScreenshotSlider images={pwa.screenshots} />
                   </IonCol>
                 )}
                 <IonCol size="12">
