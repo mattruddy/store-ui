@@ -1,9 +1,7 @@
-import React, { useState, useEffect,memo } from "react"
+import React, { useState, useEffect, memo } from "react"
 import { RouteComponentProps, useLocation } from "react-router"
 import {
   IonPage,
-  IonList,
-  IonItem,
   IonRow,
   IonLabel,
   IonInput,
@@ -21,6 +19,7 @@ import { postLogin, postDevice } from "../../data/dataApi"
 import { connect } from "../../data/connect"
 import queryString from "query-string"
 import { logoGithub } from "ionicons/icons"
+import "./styles.css"
 
 interface OwnProps extends RouteComponentProps {}
 
@@ -126,12 +125,13 @@ const LogIn: React.FC<LoginProps> = ({
               </IonCol>
               <IonCol size="12">
                 <IonInput
+                  className="LoginInput"
                   name="username"
                   type="text"
                   spellCheck={false}
                   maxlength={30}
                   value={username}
-                  onIonChange={(e) => {
+                  onIonChange={e => {
                     setUsername(e.detail.value!)
                     setUsernameError(false)
                   }}
@@ -152,12 +152,13 @@ const LogIn: React.FC<LoginProps> = ({
               </IonCol>
               <IonCol size="12" sizeLg="12">
                 <IonInput
+                  className="LoginInput"
                   name="password"
                   type="password"
                   spellCheck={false}
                   maxlength={80}
                   value={password}
-                  onIonChange={(e) => {
+                  onIonChange={e => {
                     setPassword(e.detail.value!)
                     setPasswordError(false)
                   }}
@@ -209,5 +210,5 @@ export default connect<OwnProps, StateProps, DispatchProps>({
     setToken,
     setIsLoggedIn,
   },
-  component: LogIn,
+  component: memo(LogIn),
 })
