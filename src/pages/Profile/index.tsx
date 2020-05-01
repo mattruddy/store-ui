@@ -26,16 +26,25 @@ import {
   IonCol,
   useIonViewWillLeave,
   IonToast,
+  IonProgressBar,
+  IonSpinner,
 } from "@ionic/react"
-import { getProfile, postApp } from "../../data/dataApi"
+import {
+  getProfile,
+  postApp,
+  getLighthouseReport,
+  getManifest,
+  getImage,
+} from "../../data/dataApi"
 import { RouteComponentProps, withRouter } from "react-router"
 import ImageUploader from "react-images-upload"
 import { connect } from "../../data/connect"
-import { CategoryOptions, PWACard } from "../../components"
+import { CategoryOptions, Lighthouse, PWACard } from "../../components"
 import { UserProfile, PWA } from "../../util/types"
 import { add, menu, logOut, contractSharp } from "ionicons/icons"
 import { setToken, setIsLoggedIn } from "../../data/user/user.actions"
-
+//@ts-ignore
+import ReportViewer from "react-lighthouse-viewer"
 interface OwnProps extends RouteComponentProps {}
 
 interface DispatchProps {
@@ -74,6 +83,13 @@ const Profile: React.FC<ProfileProps> = ({
   const [toastMessage, setToastMessage] = useState<string>()
   const [showToast, setShowToast] = useState<boolean>(false)
   const [isSubmit, setIsSubmit] = useState<boolean>(false)
+  const [installable, setInstallable] = useState<boolean>(false)
+  const [iosIcon, setIosIcon] = useState<boolean>(false)
+  const [worksOffline, setWorksOffline] = useState<boolean>(false)
+  const [lightHouseLoading, setLightHouseLoading] = useState<boolean>(false)
+  const [lightHouseRan, setLightHouseRan] = useState(false)
+  const [passedUrl, setPassedUrl] = useState<string | undefined>(undefined)
+  const [lightHouseError, setLightHouseError] = useState<boolean>(false)
 
   useIonViewDidEnter(() => {
     loadProfile()
@@ -180,7 +196,7 @@ const Profile: React.FC<ProfileProps> = ({
 
   const loadPwas = (filter: string) => {
     if (profile && profile.pwas) {
-      const filteredPwas = profile.pwas.filter((pwa) => pwa.status === filter)
+      const filteredPwas = profile.pwas.filter(pwa => pwa.status === filter)
       if (filteredPwas.length > 0) {
         return filteredPwas.map((pwa, idx) => (
           <div key={idx}>
@@ -216,6 +232,77 @@ const Profile: React.FC<ProfileProps> = ({
     }
   }
 
+  const getLightHouseData = async (url: string) => {
+    setLightHouseError(false)
+    try {
+      setLightHouseLoading(true)
+      const response = await getLighthouseReport(url)
+      if (response.status === 200) {
+        if (response.data) {
+          if (response.data.lighthouseResult) {
+            const data = response.data
+            const lightHouseData = data.lighthouseResult
+            const iosIconTest =
+              lightHouseData.audits["apple-touch-icon"].score > 0 ? true : false
+            const installableTest =
+              lightHouseData.audits["installable-manifest"].score > 0
+                ? true
+                : false
+            const worksOfflineTest =
+              lightHouseData.audits["works-offline"].score > 0 ? true : false
+            setIosIcon(iosIconTest)
+            setInstallable(installableTest)
+            setWorksOffline(worksOfflineTest)
+            //passed all tests.
+            if (iosIconTest && installableTest && worksOfflineTest) {
+              setPassedUrl(url)
+              // TODO: Automatically get icon and name of app from manifest.
+              //const icon = await getIcon(url);
+            }
+            setLightHouseRan(true)
+          } else {
+            console.error(`No lighthouse result`)
+          }
+        }
+      }
+    } catch (e) {
+      console.error(`Issue getting lighthouse data: ${JSON.stringify(e.data)}`)
+      setLightHouseError(true)
+    }
+
+    setLightHouseLoading(false)
+  }
+
+  // TODO: Get this working without CORS errors.
+  const getIcon = async (url: string) => {
+    try {
+      const inputURL = new URL(url)
+      const response = await getManifest(inputURL.origin)
+      if (response.status === 200) {
+        const { data } = response
+        const manifest = data.manifest
+        if (manifest.icons) {
+          const size512 = manifest.icons.find(
+            (x: { sizes: string }) => x.sizes === "512x512"
+          )
+          const imageResponse = await getImage(
+            `${inputURL.origin}/${
+              size512 ? size512.src : manifest.icons[0].src
+            }`
+          )
+          console.log(imageResponse)
+          return imageResponse.data
+        } else {
+          console.error(`Missing icons in manifest`)
+        }
+      } else {
+        console.error(`Error getting manifest: ${response}`)
+      }
+    } catch (e) {
+      console.error(`Could not get the icon: ${e}`)
+    }
+  }
+
   return (
     <IonPage>
       <IonModal
@@ -246,7 +333,7 @@ const Profile: React.FC<ProfileProps> = ({
                   spellCheck={false}
                   value={name}
                   maxlength={25}
-                  onIonChange={(e) => {
+                  onIonChange={e => {
                     setName(e.detail.value!)
                     setNameError(undefined)
                   }}
@@ -286,7 +373,7 @@ const Profile: React.FC<ProfileProps> = ({
                   maxlength={80}
                   spellCheck={false}
                   value={url}
-                  onIonChange={(e) => {
+                  onIonChange={e => {
                     setUrlError(undefined)
                     const urlVal = e.detail.value!
                     if (urlVal === "") {
@@ -296,6 +383,7 @@ const Profile: React.FC<ProfileProps> = ({
                       setIsValidLink(isValid)
                     }
                     setUrl(e.detail.value!)
+                    setLightHouseRan(urlVal === passedUrl ? true : false)
                   }}
                   required
                 />
@@ -321,7 +409,7 @@ const Profile: React.FC<ProfileProps> = ({
                   spellCheck={true}
                   value={desc}
                   maxlength={1500}
-                  onIonChange={(e) => {
+                  onIonChange={e => {
                     setDescError(undefined)
                     setDesc(e.detail.value!)
                   }}
@@ -364,9 +452,55 @@ const Profile: React.FC<ProfileProps> = ({
             </IonList>
           </form>
         </IonContent>
-        <IonButton expand="block" onClick={onAddPWA} disabled={isSubmit}>
-          Submit
-        </IonButton>
+        {isValidLink && url && !lightHouseRan && (
+          <IonButton
+            expand="block"
+            onClick={() => {
+              if (url) getLightHouseData(url)
+            }}
+            disabled={lightHouseLoading}
+          >
+            {lightHouseLoading ? (
+              <IonSpinner />
+            ) : (
+              <p>Run Lighthouse PWA Check</p>
+            )}
+          </IonButton>
+        )}
+        {lightHouseRan && (
+          <Lighthouse
+            installable={installable}
+            iosIcon={iosIcon}
+            runsOffline={worksOffline}
+          />
+        )}
+        {lightHouseError && (
+          <IonRow>
+            <IonCol>
+              <IonText color="danger">
+                <p>
+                  There was an error running your site through Lighthouse.
+                  Please contact support if you think this is a problem with the
+                  store.
+                </p>
+              </IonText>
+            </IonCol>
+          </IonRow>
+        )}
+        {lightHouseRan &&
+          (passedUrl ? (
+            <IonButton expand="block" onClick={onAddPWA} disabled={isSubmit}>
+              Submit
+            </IonButton>
+          ) : (
+            <IonRow>
+              <IonCol>
+                <IonText color="danger">
+                  <p>Your app has not passed the proper tests on Lighthouse.</p>
+                </IonText>
+              </IonCol>
+            </IonRow>
+          ))}
       </IonModal>
       <IonHeader>
         <IonToolbar>

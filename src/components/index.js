@@ -1,5 +1,6 @@
 export { default as CategoryOptions } from "./CategoryOptions"
 export { default as DebouncedSearch } from "./DebouncedSearch"
+export { default as Lighthouse } from "./Lighthouse"
 export { default as LoadingScreen } from "./LoadingScreen"
 export { default as PWACard } from "./PWACard"
 export { default as PWAInfo } from "./PWAInfo"
