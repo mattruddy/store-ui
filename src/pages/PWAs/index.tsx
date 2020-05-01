@@ -5,7 +5,6 @@ import React, {
   useCallback,
   useMemo,
   memo,
-  lazy,
 } from "react"
 import {
   IonContent,
@@ -26,14 +25,12 @@ import {
   IonGrid,
   IonImg,
 } from "@ionic/react"
-import { CategoryOptions, DebouncedSearch } from "../../components"
+import { CategoryOptions, DebouncedSearch, PWACard } from "../../components"
 import { getPWAs, getSearchApp } from "../../data/dataApi"
 import { PWA } from "../../util/types"
 import { RouteComponentProps, withRouter } from "react-router"
 import { setLoading } from "../../data/user/user.actions"
 import "./styles.css"
-
-const PWACard = lazy(() => import("../../components/PWACard/index"))
 
 const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
   const [page, setPage] = useState<number>(0)
@@ -58,7 +55,7 @@ const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
     setIsLoading(true)
     const resp = await getPWAs(page, cat && cat !== "" ? cat : undefined)
     if (resp && resp.length > 0) {
-      setPwas((prev) => prev.concat(resp))
+      setPwas(prev => prev.concat(resp))
     }
     setIsLoading(false)
   }
@@ -71,7 +68,7 @@ const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
         cat && cat !== "" ? cat : undefined
       )
       if (nextPwas) {
-        setPwas((prev) => prev.concat(nextPwas))
+        setPwas(prev => prev.concat(nextPwas))
         setPage(nextPage)
       }
     } finally {
@@ -169,7 +166,7 @@ const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
 
           <IonSegment
             value={cat}
-            onIonChange={(e) => {
+            onIonChange={e => {
               setCat(e.detail.value!)
             }}
           >
