@@ -128,7 +128,7 @@ const LogIn: React.FC<LoginProps> = ({
                   spellCheck={false}
                   maxlength={30}
                   value={username}
-                  onIonChange={(e) => {
+                  onIonChange={e => {
                     setUsername(e.detail.value!)
                     setUsernameError(false)
                   }}
@@ -153,7 +153,7 @@ const LogIn: React.FC<LoginProps> = ({
                   spellCheck={false}
                   maxlength={80}
                   value={password}
-                  onIonChange={(e) => {
+                  onIonChange={e => {
                     setPassword(e.detail.value!)
                     setPasswordError(false)
                   }}

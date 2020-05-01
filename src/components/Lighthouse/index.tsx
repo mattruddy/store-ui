@@ -1,13 +1,9 @@
-import React, { useEffect } from "react"
+import React, { memo } from "react"
 import {
   IonList,
   IonItem,
   IonLabel,
-  IonRadioGroup,
-  IonTitle,
   IonListHeader,
-  IonRadio,
-  IonToggle,
   IonIcon,
 } from "@ionic/react"
 import { checkmarkDone, checkbox, checkmark, close } from "ionicons/icons"
@@ -50,4 +46,4 @@ const Lighthouse: React.FC<LighthouseProps> = ({
   )
 }
 
-export default Lighthouse
+export default memo(Lighthouse)

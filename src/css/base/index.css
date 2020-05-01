@@ -27,5 +27,5 @@ box-shadow-hover:hover {
 }
 
 .border-light {
-  border: 1px var(--ion-color-light-shade) solid;
+  border-bottom: 1px var(--ion-color-light-shade) solid;
 }
