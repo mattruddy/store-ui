@@ -23,6 +23,7 @@ import {
 import { connect } from "../../data/connect"
 import { setHasReadInstall } from "../../data/user/user.actions"
 import { ScreenshotSlider, Rating, PWAInfo, RatingItem } from "../../components"
+import ReactGA from "react-ga"
 
 const stars = ["ONE", "TWO", "THREE", "FOUR", "FIVE"]
 
@@ -55,6 +56,7 @@ const PWA: React.FC<PWAProps> = ({
 
   useIonViewDidEnter(() => {
     loadPWA(history.location.pathname.split("/")[2])
+    ReactGA.pageview(history.location.pathname.split("/")[2])
   }, [])
 
   useIonViewDidLeave(() => {

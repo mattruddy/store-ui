@@ -1,4 +1,4 @@
-import React, { useState, memo } from "react"
+import React, { useState, memo, useEffect } from "react"
 import { RouteComponentProps } from "react-router"
 import {
   IonContent,
@@ -16,6 +16,7 @@ import {
 import { setToken, setIsLoggedIn } from "../../data/user/user.actions"
 import { postSignup } from "../../data/dataApi"
 import { connect } from "../../data/connect"
+import ReactGA from "react-ga"
 
 interface OwnProps extends RouteComponentProps {}
 
@@ -77,6 +78,10 @@ const SignUp: React.FC<SignIn> = ({
     }
   }
 
+  useEffect(() => {
+    ReactGA.pageview("Sign Up")
+  }, [])
+
   return (
     <IonPage>
       <IonContent style={{ overflow: "hidden" }}>
@@ -99,7 +104,7 @@ const SignUp: React.FC<SignIn> = ({
                   spellCheck={false}
                   maxlength={30}
                   value={username}
-                  onIonChange={e => {
+                  onIonChange={(e) => {
                     setUsername(e.detail.value!)
                     setUsernameError(false)
                   }}
@@ -119,7 +124,7 @@ const SignUp: React.FC<SignIn> = ({
                   spellCheck={false}
                   maxlength={50}
                   value={email}
-                  onIonChange={e => {
+                  onIonChange={(e) => {
                     setEmail(e.detail.value!)
                     setEmailError(false)
                   }}
@@ -139,7 +144,7 @@ const SignUp: React.FC<SignIn> = ({
                   spellCheck={false}
                   value={password}
                   maxlength={80}
-                  onIonChange={e => {
+                  onIonChange={(e) => {
                     setPassword(e.detail.value!)
                     setPasswordError(false)
                   }}
