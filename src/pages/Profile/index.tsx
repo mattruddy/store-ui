@@ -98,6 +98,7 @@ const Profile: React.FC<ProfileProps> = ({
 
   useIonViewWillLeave(() => {
     setIsLoading(true)
+    setProfile(undefined)
   })
 
   const loadProfile = async () => {
