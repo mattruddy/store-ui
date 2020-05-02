@@ -5,7 +5,6 @@ import React, {
   useCallback,
   useMemo,
   memo,
-  lazy,
 } from "react"
 import {
   IonContent,
@@ -26,15 +25,13 @@ import {
   IonGrid,
   IonImg,
 } from "@ionic/react"
-import { CategoryOptions, DebouncedSearch } from "../../components"
+import { CategoryOptions, DebouncedSearch, PWACard } from "../../components"
 import { getPWAs, getSearchApp } from "../../data/dataApi"
 import { PWA } from "../../util/types"
 import { RouteComponentProps, withRouter } from "react-router"
 import { setLoading } from "../../data/user/user.actions"
 import "./styles.css"
 import ReactGA from "react-ga"
-
-const PWACard = lazy(() => import("../../components/PWACard/index"))
 
 const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
   const [page, setPage] = useState<number>(0)
