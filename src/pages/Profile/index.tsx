@@ -56,6 +56,15 @@ interface StateProps {}
 
 interface ProfileProps extends OwnProps, DispatchProps, StateProps {}
 
+interface LighthouseTest {
+  pass: boolean
+  url: string
+  iosIcon: boolean
+  installable: boolean
+  worksOffline: boolean
+  error: boolean
+}
+
 const Profile: React.FC<ProfileProps> = ({
   history,
   setToken,
@@ -83,13 +92,8 @@ const Profile: React.FC<ProfileProps> = ({
   const [toastMessage, setToastMessage] = useState<string>()
   const [showToast, setShowToast] = useState<boolean>(false)
   const [isSubmit, setIsSubmit] = useState<boolean>(false)
-  const [installable, setInstallable] = useState<boolean>(false)
-  const [iosIcon, setIosIcon] = useState<boolean>(false)
-  const [worksOffline, setWorksOffline] = useState<boolean>(false)
   const [lightHouseLoading, setLightHouseLoading] = useState<boolean>(false)
-  const [lightHouseRan, setLightHouseRan] = useState(false)
-  const [passedUrl, setPassedUrl] = useState<string | undefined>(undefined)
-  const [lightHouseError, setLightHouseError] = useState<boolean>(false)
+  const [lightHouseTests, setLightHouseTests] = useState<LighthouseTest[]>([])
 
   useIonViewDidEnter(() => {
     loadProfile()
@@ -234,7 +238,6 @@ const Profile: React.FC<ProfileProps> = ({
   }
 
   const getLightHouseData = async (url: string) => {
-    setLightHouseError(false)
     try {
       setLightHouseLoading(true)
       const response = await getLighthouseReport(url)
@@ -251,16 +254,21 @@ const Profile: React.FC<ProfileProps> = ({
                 : false
             const worksOfflineTest =
               lightHouseData.audits["works-offline"].score > 0 ? true : false
-            setIosIcon(iosIconTest)
-            setInstallable(installableTest)
-            setWorksOffline(worksOfflineTest)
+            setLightHouseTests([
+              {
+                pass:
+                  iosIconTest &&
+                  worksOfflineTest &&
+                  (installableTest as boolean),
+                url: url,
+                iosIcon: iosIconTest,
+                installable: installableTest,
+                worksOffline: worksOfflineTest,
+                error: false,
+              } as LighthouseTest,
+              ...lightHouseTests.filter((x) => x.url !== url),
+            ])
             //passed all tests.
-            if (iosIconTest && installableTest && worksOfflineTest) {
-              setPassedUrl(url)
-              // TODO: Automatically get icon and name of app from manifest.
-              //const icon = await getIcon(url);
-            }
-            setLightHouseRan(true)
           } else {
             console.error(`No lighthouse result`)
           }
@@ -268,7 +276,18 @@ const Profile: React.FC<ProfileProps> = ({
       }
     } catch (e) {
       console.error(`Issue getting lighthouse data: ${JSON.stringify(e.data)}`)
-      setLightHouseError(true)
+
+      setLightHouseTests([
+        {
+          pass: false,
+          url: url,
+          iosIcon: false,
+          installable: false,
+          worksOffline: false,
+          error: true,
+        } as LighthouseTest,
+        ...lightHouseTests.filter((x) => x.url !== url),
+      ])
     }
 
     setLightHouseLoading(false)
@@ -384,7 +403,6 @@ const Profile: React.FC<ProfileProps> = ({
                       setIsValidLink(isValid)
                     }
                     setUrl(e.detail.value!)
-                    setLightHouseRan(urlVal === passedUrl ? true : false)
                   }}
                   required
                 />
@@ -453,29 +471,38 @@ const Profile: React.FC<ProfileProps> = ({
             </IonList>
           </form>
         </IonContent>
-        {isValidLink && url && !lightHouseRan && (
-          <IonButton
-            expand="block"
-            onClick={() => {
-              if (url) getLightHouseData(url)
-            }}
-            disabled={lightHouseLoading}
-          >
-            {lightHouseLoading ? (
-              <IonSpinner />
-            ) : (
-              <p>Run Lighthouse PWA Check</p>
-            )}
-          </IonButton>
-        )}
-        {lightHouseRan && (
+        {isValidLink &&
+          url !== "" &&
+          !lightHouseTests.some((x) => x.url === url && x.pass) && (
+            <IonButton
+              expand="block"
+              onClick={() => {
+                if (url) {
+                  getLightHouseData(url)
+                  console.log(lightHouseTests)
+                }
+              }}
+              disabled={lightHouseLoading}
+            >
+              {lightHouseLoading ? (
+                <IonSpinner />
+              ) : (
+                <p>Run Lighthouse PWA Check</p>
+              )}
+            </IonButton>
+          )}
+        {lightHouseTests.some((x) => x.url === url && !x.error) && (
           <Lighthouse
-            installable={installable}
-            iosIcon={iosIcon}
-            runsOffline={worksOffline}
+            installable={
+              lightHouseTests.find((x) => x.url === url)!.installable
+            }
+            iosIcon={lightHouseTests.find((x) => x.url === url)!.iosIcon}
+            runsOffline={
+              lightHouseTests.find((x) => x.url === url)!.worksOffline
+            }
           />
         )}
-        {lightHouseError && (
+        {lightHouseTests.some((x) => x.url === url && x.error) && (
           <IonRow>
             <IonCol>
               <IonText color="danger">
@@ -488,8 +515,8 @@ const Profile: React.FC<ProfileProps> = ({
             </IonCol>
           </IonRow>
         )}
-        {lightHouseRan &&
-          (passedUrl && passedUrl === url ? (
+        {lightHouseTests.some((x) => x.url === url && !x.error) &&
+          (lightHouseTests.some((x) => x.url === url && x.pass) ? (
             <IonButton expand="block" onClick={onAddPWA} disabled={isSubmit}>
               Submit
             </IonButton>
