@@ -32,6 +32,7 @@ import { PWA } from "../../util/types"
 import { RouteComponentProps, withRouter } from "react-router"
 import { setLoading } from "../../data/user/user.actions"
 import "./styles.css"
+import ReactGA from "react-ga"
 
 const PWACard = lazy(() => import("../../components/PWACard/index"))
 
@@ -52,6 +53,10 @@ const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
       setPwas([])
       setPage(0)
     }
+  }, [])
+
+  useEffect(() => {
+    ReactGA.pageview("PWAs Home")
   }, [])
 
   const loadPWAs = async () => {
