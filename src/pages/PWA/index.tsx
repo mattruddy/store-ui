@@ -78,18 +78,20 @@ const PWA: React.FC<PWAProps> = ({
   }
 
   const onRatingSubmit = async (star: number, comment?: string) => {
-    const starVal = stars[star - 1]
-    const response = (await postRating(
-      starVal,
-      Number(match.params.id!),
-      comment
-    )) as NewRating
-    if (response && response.rating) {
-      if (response.rating.comment) {
-        setRatings([response.rating, ...ratings])
+    if (pwa) {
+      const starVal = stars[star - 1]
+      const response = (await postRating(
+        starVal,
+        pwa?.appId,
+        comment
+      )) as NewRating
+      if (response && response.rating) {
+        if (response.rating.comment) {
+          setRatings([response.rating, ...ratings])
+        }
+        setCurrentStar(response.averageStar)
+        setStarCount(response.ratingCount)
       }
-      setCurrentStar(response.averageStar)
-      setStarCount(response.ratingCount)
     }
   }
 
@@ -111,7 +113,7 @@ const PWA: React.FC<PWAProps> = ({
                 <IonCol size="12">
                   <PWAInfo
                     pwa={pwa}
-                    appId={Number(match.params.id!)}
+                    appId={pwa.appId}
                     currentStar={currentStar as number}
                     starCount={starCount as number}
                   />
@@ -185,7 +187,7 @@ const PWA: React.FC<PWAProps> = ({
 }
 
 export default connect<OwnProps, StateProps, DispatchProps>({
-  mapStateToProps: state => ({
+  mapStateToProps: (state) => ({
     hasRead: state.user.hasRead,
   }),
   mapDispatchToProps: {

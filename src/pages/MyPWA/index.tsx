@@ -115,55 +115,50 @@ const MyPWA: React.FC<PWAProps> = ({ history }) => {
   }
 
   const editApp = async () => {
-    let count = 0
-    if (!name) {
-      setNameError("Name is required, max length is 25 charaters")
-      count++
-    }
+    if (pwa) {
+      let count = 0
+      if (!name) {
+        setNameError("Name is required, max length is 25 charaters")
+        count++
+      }
 
-    if (!desc) {
-      setDescError("Description is required")
-      count++
-    }
+      if (!desc) {
+        setDescError("Description is required")
+        count++
+      }
 
-    if (!cat) {
-      setCatError("Category is required")
-      count++
-    }
+      if (!cat) {
+        setCatError("Category is required")
+        count++
+      }
 
-    if (images && images.length > 0) {
-      addImages()
-    }
-
-    if (
-      name === pwa?.name &&
-      desc === pwa?.description &&
-      cat === pwa?.category
-    ) {
-      setIsEdit(false)
-      return
-    }
-
-    if (count === 0) {
       if (images && images.length > 0) {
-        await postAddScreenshots(
-          images as File[],
-          Number(history.location.pathname.split("/")[2])
-        )
+        addImages()
       }
-      const resp = await putApp(
-        name!,
-        desc!,
-        cat!,
-        Number(history.location.pathname.split("/")[2])
-      )
-      if (resp?.status === 200) {
-        setPwa(resp.data)
-        setScreenshots(resp.data.screenshots)
-        setToastText("Success")
-        setShowToast(true)
+
+      if (
+        name === pwa.name &&
+        desc === pwa.description &&
+        cat === pwa.category
+      ) {
+        setIsEdit(false)
+        return
       }
-      setIsEdit(false)
+
+      if (count === 0) {
+        if (images && images.length > 0) {
+          await postAddScreenshots(images as File[], pwa.appId)
+        }
+        const resp = await putApp(name!, desc!, cat!, pwa.appId)
+        if (resp?.status === 200) {
+          setPwa(resp.data)
+          setScreenshots(resp.data.screenshots)
+          setToastText("Success")
+          setShowToast(true)
+          history.replace(`/mypwa/${name}`)
+        }
+        setIsEdit(false)
+      }
     }
   }
 
