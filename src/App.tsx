@@ -56,7 +56,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
   }, [])
 
   useEffect(() => {
-    ReactGA.initialize("UA-165324521-1", { debug: true })
+    ReactGA.initialize("UA-165324521-1")
   }, [])
 
   return (
