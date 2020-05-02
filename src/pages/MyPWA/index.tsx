@@ -176,14 +176,16 @@ const MyPWA: React.FC<PWAProps> = ({ history }) => {
   }
 
   const addImages = async () => {
-    const resp = await postAddScreenshots(
-      images as File[],
-      Number(history.location.pathname.split("/")[2])
-    )
-    if (resp.length > 0) {
-      setScreenshots((prev) => prev?.concat(resp))
-      slides.current.update()
-      setImages(undefined)
+    if (pwa) {
+      const resp = await postAddScreenshots(
+        images as File[],
+        pwa.appId as number
+      )
+      if (resp.length > 0) {
+        setScreenshots((prev) => prev?.concat(resp))
+        slides.current.update()
+        setImages(undefined)
+      }
     }
   }
 

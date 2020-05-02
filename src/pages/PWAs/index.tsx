@@ -132,20 +132,20 @@ const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
     <IonPage>
       <IonHeader>
         <IonToolbar class="header">
+          <IonButtons style={{ paddingRight: "10px" }} slot="end">
+            <CategoryOptions onPress={onPress} initValue={cat} />
+          </IonButtons>
           <IonTitle
             onClick={() => {
               content.current.scrollToTop()
             }}
           >
-            <IonImg
+            <img
               alt="icon"
               style={{ height: 40, width: 40 }}
               src="assets/icon/logo.png"
             />
           </IonTitle>
-          <IonButtons style={{ paddingRight: "10px" }} slot="end">
-            <CategoryOptions onPress={onPress} initValue={cat} />
-          </IonButtons>
         </IonToolbar>
       </IonHeader>
       <IonContent class="content" ref={content}>
