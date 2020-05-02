@@ -196,7 +196,7 @@ const Profile: React.FC<ProfileProps> = ({
 
   const loadPwas = (filter: string) => {
     if (profile && profile.pwas) {
-      const filteredPwas = profile.pwas.filter(pwa => pwa.status === filter)
+      const filteredPwas = profile.pwas.filter((pwa) => pwa.status === filter)
       if (filteredPwas.length > 0) {
         return filteredPwas.map((pwa, idx) => (
           <div key={idx}>
@@ -333,7 +333,7 @@ const Profile: React.FC<ProfileProps> = ({
                   spellCheck={false}
                   value={name}
                   maxlength={25}
-                  onIonChange={e => {
+                  onIonChange={(e) => {
                     setName(e.detail.value!)
                     setNameError(undefined)
                   }}
@@ -373,7 +373,7 @@ const Profile: React.FC<ProfileProps> = ({
                   maxlength={80}
                   spellCheck={false}
                   value={url}
-                  onIonChange={e => {
+                  onIonChange={(e) => {
                     setUrlError(undefined)
                     const urlVal = e.detail.value!
                     if (urlVal === "") {
@@ -409,7 +409,7 @@ const Profile: React.FC<ProfileProps> = ({
                   spellCheck={true}
                   value={desc}
                   maxlength={1500}
-                  onIonChange={e => {
+                  onIonChange={(e) => {
                     setDescError(undefined)
                     setDesc(e.detail.value!)
                   }}
@@ -488,7 +488,7 @@ const Profile: React.FC<ProfileProps> = ({
           </IonRow>
         )}
         {lightHouseRan &&
-          (passedUrl ? (
+          (passedUrl && passedUrl === url ? (
             <IonButton expand="block" onClick={onAddPWA} disabled={isSubmit}>
               Submit
             </IonButton>
