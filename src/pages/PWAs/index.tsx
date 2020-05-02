@@ -120,7 +120,6 @@ const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
           sizeMd="6"
           sizeLg="4"
           // sizeXl="3"
-          className="fade-in box-shadow-hover"
         >
           <PWACard url="/pwa" history={history} pwa={pwa} />
         </IonCol>
