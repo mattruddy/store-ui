@@ -40,7 +40,7 @@
   color: var(--ion-color-primary);
 }
 
-/* Remove Scrollbar */
+/* Remove Scrollbar
 ::-webkit-scrollbar,
 *::-webkit-scrollbar {
   display: none;
@@ -55,4 +55,4 @@ ion-content {
 
 ion-content::-webkit-scrollbar {
   display: none;
-}
+} */
