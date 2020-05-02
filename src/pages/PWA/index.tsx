@@ -12,6 +12,9 @@ import {
   IonButtons,
   IonToast,
   IonList,
+  IonGrid,
+  IonRow,
+  IonCol,
 } from "@ionic/react"
 import { getPWA, postRating } from "../../data/dataApi"
 import { RouteComponentProps, withRouter } from "react-router"
@@ -103,40 +106,56 @@ const PWA: React.FC<PWAProps> = ({
             </IonToolbar>
           </IonHeader>
           <IonContent class="content">
-            {
-              <PWAInfo
-                pwa={pwa}
-                appId={Number(match.params.id!)}
-                currentStar={currentStar as number}
-                starCount={starCount as number}
-              />
-            }
-            {<h2 style={{ paddingLeft: "10px" }}>Screenshots</h2>}
-            {pwa.screenshots && (
-              <ScreenshotSlider
-                screenshots={pwa.screenshots}
-              ></ScreenshotSlider>
-            )}
-            {<h2 style={{ paddingLeft: "10px" }}>Reviews</h2>}
-            <Rating onSubmit={onRatingSubmit} />
-            <IonList>
-              {ratings && ratings.length > 0 ? (
-                ratings.map((rating, idx) => (
-                  <RatingItem key={idx} rating={rating} />
-                ))
-              ) : (
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                >
-                  <p>
-                    <i>No Reviews Yet</i>
-                  </p>
-                </div>
-              )}
-            </IonList>
+            <IonGrid fixed>
+              <IonRow>
+                <IonCol size="12">
+                  <PWAInfo
+                    pwa={pwa}
+                    appId={Number(match.params.id!)}
+                    currentStar={currentStar as number}
+                    starCount={starCount as number}
+                  />
+                </IonCol>
+
+                <IonCol size="12">
+                  <h2 style={{ paddingLeft: "10px" }}>Screenshots</h2>
+                </IonCol>
+
+                {pwa.screenshots && (
+                  <IonCol size="12">
+                    <ScreenshotSlider screenshots={pwa.screenshots} />
+                  </IonCol>
+                )}
+                <IonCol size="12">
+                  <h2 style={{ paddingLeft: "10px" }}>Reviews</h2>
+                </IonCol>
+                <IonCol size="12">
+                  <Rating onSubmit={onRatingSubmit} />
+                </IonCol>
+              </IonRow>
+              <IonRow>
+                <IonCol size="12">
+                  <IonList>
+                    {ratings && ratings.length > 0 ? (
+                      ratings.map((rating, idx) => (
+                        <RatingItem key={idx} rating={rating} />
+                      ))
+                    ) : (
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <p>
+                          <i>No Reviews Yet</i>
+                        </p>
+                      </div>
+                    )}
+                  </IonList>
+                </IonCol>
+              </IonRow>
+            </IonGrid>
           </IonContent>
           <IonToast
             isOpen={hasRead !== undefined && hasRead === "false"}
@@ -166,7 +185,7 @@ const PWA: React.FC<PWAProps> = ({
 }
 
 export default connect<OwnProps, StateProps, DispatchProps>({
-  mapStateToProps: (state) => ({
+  mapStateToProps: state => ({
     hasRead: state.user.hasRead,
   }),
   mapDispatchToProps: {

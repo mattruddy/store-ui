@@ -43,6 +43,12 @@ box-shadow-hover:hover {
 }
 
 /* Remove Scrollbar */
+::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  display: none;
+  overflow: hidden;
+}
+
 ion-content {
   --offset-bottom: auto !important;
   --overflow: hidden;
