@@ -41,3 +41,14 @@ box-shadow-hover:hover {
 .primary-input-container:focus-within ion-label {
   color: var(--ion-color-primary);
 }
+
+/* Remove Scrollbar */
+ion-content {
+  --offset-bottom: auto !important;
+  --overflow: hidden;
+  overflow: auto;
+}
+
+ion-content::-webkit-scrollbar {
+  display: none;
+}
