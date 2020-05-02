@@ -31,11 +31,11 @@ box-shadow-hover:hover {
 }
 
 .primary-input-container input {
-  border-bottom: 2px var(--ion-color-light-shade) solid;
+  border-bottom: 1px var(--ion-color-light-shade) solid !important;
 }
 
 .primary-input-container input:focus-within {
-  border-bottom: 2px var(--ion-color-primary) solid;
+  box-shadow: 0 1px 0 var(--ion-color-primary) !important;
 }
 
 .primary-input-container:focus-within ion-label {
