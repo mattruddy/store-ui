@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Redirect, Route, Router } from "react-router-dom"
+import { Redirect, Route } from "react-router-dom"
 import {
   IonApp,
   IonIcon,
@@ -25,6 +25,7 @@ import {
 import { loadUserData } from "./data/user/user.actions"
 import { connect } from "./data/connect"
 import { AppContextProvider } from "./data/AppContext"
+import ReactGA from "react-ga"
 
 const App: React.FC = () => {
   return (
@@ -52,6 +53,10 @@ const IonicApp: React.FC<IonicAppProps> = ({
 }) => {
   useEffect(() => {
     loadUserData()
+  }, [])
+
+  useEffect(() => {
+    ReactGA.initialize("UA-165324521-1")
   }, [])
 
   return (

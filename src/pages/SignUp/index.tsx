@@ -1,4 +1,4 @@
-import React, { useState, memo } from "react"
+import React, { useState, memo, useEffect } from "react"
 import { RouteComponentProps } from "react-router"
 import {
   IonContent,
@@ -16,6 +16,7 @@ import {
 import { setToken, setIsLoggedIn } from "../../data/user/user.actions"
 import { postSignup } from "../../data/dataApi"
 import { connect } from "../../data/connect"
+import ReactGA from "react-ga"
 
 interface OwnProps extends RouteComponentProps {}
 
@@ -76,6 +77,10 @@ const SignUp: React.FC<SignIn> = ({
       }
     }
   }
+
+  useEffect(() => {
+    ReactGA.pageview("Sign Up")
+  }, [])
 
   return (
     <IonPage>
