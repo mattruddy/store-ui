@@ -100,7 +100,7 @@ const About: React.FC = () => (
         <IonRow>
           <IonItemDivider style={styles.divider}>
             <IonLabel style={styles.label}>
-              <strong>Why PWA's?</strong>
+              <strong>Why PWAs?</strong>
             </IonLabel>
           </IonItemDivider>
         </IonRow>
@@ -110,10 +110,10 @@ const About: React.FC = () => (
               <strong>FREE</strong> to install
             </li>
             <li>
-              HTTPS is <strong>required</strong> meaning you data is secure
+              HTTPS is <strong>required</strong> meaning your data is secure
             </li>
             <li>
-              Takes up <strong>less</strong> storage on your phone. No need to
+              Takes up <strong>less</strong> memory on your phone. No need to
               pay extra money for higher storage
             </li>
             <li>
@@ -176,13 +176,13 @@ const About: React.FC = () => (
         <IonRow style={styles.row}>
           <p>
             {" "}
-            We believe Progressive Web App's were how apps should have been all
-            along. It gives the creators the freedom and flexability to build
+            We believe Progressive Web Apps were how apps should have been all
+            along. It gives the creators the freedom and flexibility to build
             something that truly belongs to them without outside forces (Apple
             and Google) controlling the product and taking significant cuts for
             their hard work. This caused app stores to turn into a series of ads
-            and in app purchases. PWA's are a nice fresh start to make apps
-            enjoyable again. We really hope you enjoy using PWA's as much as we
+            and in app purchases. PWAs are a nice fresh start to make apps
+            enjoyable again. We really hope you enjoy using PWAs as much as we
             do!
           </p>
         </IonRow>
