@@ -14,7 +14,7 @@
       "purpose": "maskable"
     }
   ],
-  "start_url": "/pwas",
+  "start_url": "/",
   "display": "standalone",
   "theme_color": "#99ffcc",
   "background_color": "#99ffcc"

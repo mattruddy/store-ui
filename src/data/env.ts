@@ -3,7 +3,7 @@ export const vars = () => ({
     //local
     //"API_URL": "http://localhost:8080",
     //dev
-    // "API_URL": "http://45.79.173.223:8080",
+    // API_URL: "http://45.79.173.223:8080",
     //prod
     API_URL: "/api",
     APP_SERVER_KEY:
