@@ -6,3 +6,5 @@
 @import "../../node_modules/@ionic/react/css/normalize.css";
 @import "../../node_modules/@ionic/react/css/structure.css";
 @import "../../node_modules/@ionic/react/css/typography.css";
+/* Lightbox */
+@import "../../node_modules/react-image-lightbox/style.css";

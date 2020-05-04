@@ -14,6 +14,7 @@ const DebouncedSearch: React.FC<ContainerProps> = ({
     const { value } = e.detail
     onChangeCallback(value)
   }
+
   return <IonSearchbar onIonChange={handleOnChangeCallback} debounce={delay} />
 }
 

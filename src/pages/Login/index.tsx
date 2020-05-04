@@ -124,6 +124,7 @@ const LogIn: React.FC<LoginProps> = ({
                 <IonInput
                   name="username"
                   type="text"
+                  // placeholder="Username"
                   spellCheck={false}
                   maxlength={30}
                   value={username}
@@ -148,6 +149,7 @@ const LogIn: React.FC<LoginProps> = ({
                 <IonInput
                   name="password"
                   type="password"
+                  // placeholder="Password"
                   spellCheck={false}
                   maxlength={80}
                   value={password}
