@@ -1,0 +1,18 @@
+import React, { memo } from "react"
+import ShareUrl from ".."
+import { IonIcon } from "@ionic/react"
+import { logoFacebook } from "ionicons/icons"
+
+interface ContainerProps {
+  url: string
+}
+
+const ShareOnFacebook: React.FC<ContainerProps> = ({
+  url = window.location.href,
+}) => (
+  <ShareUrl href={`https://www.facebook.com/sharer/sharer.php?u=${url}`}>
+    <IonIcon icon={logoFacebook} />
+  </ShareUrl>
+)
+
+export default memo(ShareOnFacebook)

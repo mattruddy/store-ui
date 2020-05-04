@@ -1,7 +1,9 @@
 import React, { memo } from "react"
 import { IonButton, IonIcon, IonImg } from "@ionic/react"
+import { ShareUrl } from "../"
 import { PWA, Rating } from "../../util/types"
 import { postScore } from "../../data/dataApi"
+
 //@ts-ignore
 import StarRatings from "react-star-ratings"
 import { openOutline } from "ionicons/icons"
@@ -72,6 +74,7 @@ const PWAInfo: React.FC<ContainerProps> = ({
         />
         <span style={{ marginLeft: "5px" }}>({starCount})</span>
       </div>
+      <ShareUrl />
       <h2 style={{ paddingTop: "10px", paddingLeft: "10px" }}>About</h2>
       <div style={{ height: "200px", padding: "15px", overflowY: "scroll" }}>
         {pwa.description}

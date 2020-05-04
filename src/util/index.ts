@@ -92,6 +92,23 @@ const shareUrl = (url: string, title: string, text: string) => {
 //     .catch((error) => console.log("Sharing failed", error))
 // }
 
+const copyStringToClipboard = (s: string) => {
+  // Create new element
+  let el = document.createElement("textarea")
+  // Set value (string to be copied)
+  el.value = s
+  // Set non-editable to avoid focus and move outside of view
+  el.setAttribute("readonly", "")
+
+  document.body.appendChild(el)
+  // Select text inside element
+  el.select()
+  // Copy text to clipboard
+  document.execCommand("copy")
+  // Remove temporary element
+  document.body.removeChild(el)
+}
+
 export {
   blobToFile,
   fixFilesRotation,
@@ -99,4 +116,5 @@ export {
   fixRoation,
   dateFormatter,
   shareUrl,
+  copyStringToClipboard,
 }

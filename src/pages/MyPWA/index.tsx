@@ -43,7 +43,7 @@ import {
   checkmark,
   openOutline,
 } from "ionicons/icons"
-import { fixFilesRotation } from "../../util/utils"
+import { fixFilesRotation } from "../../util"
 import { CategoryOptions, RatingItem } from "../../components"
 //@ts-ignore
 import StarRatings from "react-star-ratings"

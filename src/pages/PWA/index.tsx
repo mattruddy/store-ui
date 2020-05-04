@@ -1,4 +1,4 @@
-import React, { useState, memo } from "react"
+import React, { useState, useMemo, memo, Fragment } from "react"
 import {
   IonContent,
   IonHeader,
@@ -32,7 +32,7 @@ import ReactGA from "react-ga"
 const stars = ["ONE", "TWO", "THREE", "FOUR", "FIVE"]
 
 interface MatchParams {
-  id: string | undefined
+  pwaName: string
 }
 
 interface OwnProps extends RouteComponentProps<MatchParams> {}
@@ -49,7 +49,7 @@ type PWAProps = OwnProps & StateProps & DispatchProps
 
 const PWA: React.FC<PWAProps> = ({
   match: {
-    params: { id },
+    params: { pwaName },
   },
   history,
   hasRead,
@@ -59,11 +59,10 @@ const PWA: React.FC<PWAProps> = ({
   const [ratings, setRatings] = useState<RatingType[]>([])
   const [currentStar, setCurrentStar] = useState<number>()
   const [starCount, setStarCount] = useState<number>()
-  const PwaName = id || ""
 
   useIonViewDidEnter(() => {
-    loadPWA(PwaName)
-    ReactGA.pageview(PwaName)
+    loadPWA(pwaName)
+    ReactGA.pageview(pwaName)
   }, [])
 
   useIonViewDidLeave(() => {
@@ -99,10 +98,29 @@ const PWA: React.FC<PWAProps> = ({
     }
   }
 
+  const renderRatings = useMemo(
+    () =>
+      ratings && ratings.length > 0 ? (
+        ratings.map((rating, i) => <RatingItem key={i} rating={rating} />)
+      ) : (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <p>
+            <i>No Reviews Yet</i>
+          </p>
+        </div>
+      ),
+    [ratings]
+  )
+
   return (
     <IonPage>
       {pwa && (
-        <>
+        <Fragment>
           <IonHeader>
             <IonToolbar>
               <IonButtons slot="start">
@@ -144,24 +162,7 @@ const PWA: React.FC<PWAProps> = ({
               </IonRow>
               <IonRow>
                 <IonCol size="12">
-                  <IonList>
-                    {ratings && ratings.length > 0 ? (
-                      ratings.map((rating, idx) => (
-                        <RatingItem key={idx} rating={rating} />
-                      ))
-                    ) : (
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "center",
-                        }}
-                      >
-                        <p>
-                          <i>No Reviews Yet</i>
-                        </p>
-                      </div>
-                    )}
-                  </IonList>
+                  <IonList>{renderRatings}</IonList>
                 </IonCol>
               </IonRow>
             </IonGrid>
@@ -187,7 +188,7 @@ const PWA: React.FC<PWAProps> = ({
               },
             ]}
           />
-        </>
+        </Fragment>
       )}
     </IonPage>
   )
