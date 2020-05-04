@@ -48,7 +48,9 @@ interface DispatchProps {
 type PWAProps = OwnProps & StateProps & DispatchProps
 
 const PWA: React.FC<PWAProps> = ({
-  match,
+  match: {
+    params: { id },
+  },
   history,
   hasRead,
   setHasReadInstall,
@@ -57,10 +59,11 @@ const PWA: React.FC<PWAProps> = ({
   const [ratings, setRatings] = useState<RatingType[]>([])
   const [currentStar, setCurrentStar] = useState<number>()
   const [starCount, setStarCount] = useState<number>()
+  const PwaName = id || ""
 
   useIonViewDidEnter(() => {
-    loadPWA(history.location.pathname.split("/")[2])
-    ReactGA.pageview(history.location.pathname.split("/")[2])
+    loadPWA(PwaName)
+    ReactGA.pageview(PwaName)
   }, [])
 
   useIonViewDidLeave(() => {
