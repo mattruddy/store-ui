@@ -8,6 +8,7 @@ import {
 } from "@ionic/react"
 
 const categories = [
+  "ADULT",
   "BUSINESS",
   "DATING",
   "EDUCATION",
