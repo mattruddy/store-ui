@@ -5,6 +5,7 @@ import React, {
   useMemo,
   memo,
   ReactChildren,
+  Fragment,
 } from "react"
 import { IonSlides, IonSlide, IonImg } from "@ionic/react"
 import Lightbox from "react-image-lightbox"
@@ -33,6 +34,7 @@ const ScreenshotSlider: React.FC<ContainerProps> = ({
     if (mounted.current) {
       setIsOpen(restOfProps.isOpen || false)
       setPhotoIndex(restOfProps.photoIndex || 0)
+      setImages(restOfProps.images || [])
     }
     mounted.current = true
   }, [restOfProps.photoIndex, restOfProps.isOpen])
@@ -92,7 +94,7 @@ const ScreenshotSlider: React.FC<ContainerProps> = ({
   // )
 
   return (
-    <>
+    <Fragment>
       <IonSlides
         className="slider"
         pager={true}
@@ -118,7 +120,7 @@ const ScreenshotSlider: React.FC<ContainerProps> = ({
           // toolbarButtons={toolBarImagesWithCallback}
         />
       )}
-    </>
+    </Fragment>
   )
 }
 
