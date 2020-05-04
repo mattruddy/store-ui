@@ -73,7 +73,7 @@ const Admin: React.FC<AdminProps> = ({ history }) => {
                   <IonItem>
                     <IonButton
                       onClick={() => {
-                        console.log("hey")
+                        window.open(pwa.link)
                       }}
                     >
                       Link
