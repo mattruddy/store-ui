@@ -140,7 +140,9 @@ const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
       <IonHeader>
         <IonToolbar class="header">
           <IonButtons style={{ paddingRight: "10px" }} slot="end">
-            <CategoryOptions onPress={onPress} initValue={cat} />
+            {pwaSearchValue === "" && (
+              <CategoryOptions onPress={onPress} initValue={cat} />
+            )}
           </IonButtons>
           <IonTitle
             onClick={() => {
@@ -175,28 +177,29 @@ const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
               <DebouncedSearch onChangeCallback={handleOnSearchChange} />
             </IonCol>
           </IonRow>
-          <IonSegment
-            value={cat}
-            onIonChange={(e) => {
-              setCat(e.detail.value!)
-            }}
-          >
-            <IonSegmentButton class="seg" value="TRENDING">
-              Trending
-            </IonSegmentButton>
-            <IonSegmentButton class="seg" value="NEW">
-              New
-            </IonSegmentButton>
-            <IonSegmentButton class="seg" value="">
-              Top
-            </IonSegmentButton>
-            {showCat && (
-              <IonSegmentButton class="seg" value={cat} disabled>
-                {cat}
+          {pwaSearchValue === "" && (
+            <IonSegment
+              value={cat}
+              onIonChange={(e) => {
+                setCat(e.detail.value!)
+              }}
+            >
+              <IonSegmentButton class="seg" value="TRENDING">
+                Trending
               </IonSegmentButton>
-            )}
-          </IonSegment>
-
+              <IonSegmentButton class="seg" value="NEW">
+                New
+              </IonSegmentButton>
+              <IonSegmentButton class="seg" value="">
+                Top
+              </IonSegmentButton>
+              {showCat && (
+                <IonSegmentButton class="seg" value={cat} disabled>
+                  {cat}
+                </IonSegmentButton>
+              )}
+            </IonSegment>
+          )}
           <IonRow>{renderPwaList}</IonRow>
           {cat !== "TRENDING" && (
             <IonInfiniteScroll
