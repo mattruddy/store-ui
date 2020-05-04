@@ -1,50 +1,102 @@
-import loadImage from 'blueimp-load-image';
-import moment from 'moment';
+import loadImage from "blueimp-load-image"
+import moment from "moment"
+import ReactGA from "react-ga"
 
-export const blobToFile = (blob: Blob, fileName: string): File => {
-    const b: any = blob;
-    b.lastModifiedDate = new Date();
-    return new File([blob], fileName);
+const blobToFile = (blob: Blob, fileName: string): File => {
+  const b: any = blob
+  b.lastModifiedDate = new Date()
+  return new File([blob], fileName)
 }
 
-export const fixFilesRotation = async (files: File[]) => {
-    for(let i = 0; i < files.length; i++) {
-        const blob = await fixRotation(files[i]);
-        files[i] = blobToFile(blob as Blob, files[i].name);
-    }
-    return files;
+const fixFilesRotation = async (files: File[]) => {
+  for (let i = 0; i < files.length; i++) {
+    const blob = await fixRotation(files[i])
+    files[i] = blobToFile(blob as Blob, files[i].name)
+  }
+  return files
 }
 
 function fixRotation(file: File) {
-    return new Promise((resolve) => {
-        loadImage(file, (img, data) => {
-            if (data && data.exif) {
-                //@ts-ignorets
-                console.log(data.exif.get('Orientation'));
-            }
-            (img as HTMLCanvasElement).toBlob(
-                (blob) => {
-                    resolve(blob)
-                },
-                'image/jpeg'
-            )
-        }, {orientation: true})
+  return new Promise((resolve) => {
+    loadImage(
+      file,
+      (img, data) => {
+        if (data && data.exif) {
+          //@ts-ignorets
+          console.log(data.exif.get("Orientation"))
+        }
+        ;(img as HTMLCanvasElement).toBlob((blob) => {
+          resolve(blob)
+        }, "image/jpeg")
+      },
+      { orientation: true }
+    )
+  })
+}
+
+const fixRoation = (src: string): string | undefined => {
+  let fixSrc
+  loadImage(
+    src,
+    (canvas) => {
+      fixSrc = (canvas as HTMLCanvasElement).toDataURL()
+    },
+    { orientation: true }
+  )
+  return fixSrc
+}
+
+const dateFormatter = (date: Date) => {
+  const momentDate = moment(date.toString())
+  return momentDate.format("MM/DD/YY h:mm a")
+}
+
+const shareUrl = (url: string, title: string, text: string) => {
+  // @ts-ignore
+  if (!navigator.share) return
+  navigator
+    // @ts-ignore
+    .share({
+      url,
+      title,
+      text,
+    })
+    .then((response: any) => {
+      console.log("Successfully shared: ", response)
+      ReactGA.event({
+        category: "Share Url",
+        action: "User shared a url!",
+      })
+    })
+    .catch((error: any) => {
+      console.log(error)
     })
 }
 
-export const fixRoation = (src: string): string | undefined => {
-    let fixSrc;
-    loadImage(
-        src,
-        (canvas) => {
-            fixSrc = (canvas as HTMLCanvasElement).toDataURL();
-        },
-        {orientation: true}
-    );
-    return fixSrc;
-}
+// export const shareFile = (file) => {
+//   let filesArray = [file]
+//   if (!navigator.canShare || !navigator.canShare({ files: filesArray })) return
+//   navigator
+//     .share({
+//       files: filesArray,
+//       title: "My File",
+//       text: "Here, Sharing my files. Keep it safe",
+//     })
+//     .then(() => {
+//       console.log("Share was successful.")
+//       ReactGA.event({
+//         category: "Share File",
+//         action: "User shared a file!",
+//       })
+//     })
+//     .catch((error) => console.log("Sharing failed", error))
+// }
 
-export const dateFormatter = (date: Date) => {
-    const momentDate = moment(date.toString());
-    return momentDate.format("MM/DD/YY h:mm a")
+export {
+  blobToFile,
+  fixFilesRotation,
+  fixRotation,
+  fixRoation,
+  dateFormatter,
+  shareUrl,
 }
