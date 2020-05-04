@@ -15,6 +15,7 @@ import {
   IonGrid,
   IonRow,
   IonCol,
+  IonLabel,
 } from "@ionic/react"
 import { getPWA, postRating } from "../../data/dataApi"
 import { RouteComponentProps, withRouter } from "react-router"
@@ -104,7 +105,10 @@ const PWA: React.FC<PWAProps> = ({
               <IonButtons slot="start">
                 <IonBackButton defaultHref="/pwas" />
               </IonButtons>
-              {<IonTitle>{pwa.name}</IonTitle>}
+              <IonLabel style={{ marginRight: "10px" }} slot="end">
+                PWA Store
+              </IonLabel>
+              <IonTitle>{pwa.name}</IonTitle>
             </IonToolbar>
           </IonHeader>
           <IonContent class="content">
