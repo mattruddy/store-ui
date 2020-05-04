@@ -24,6 +24,7 @@ import {
   IonButtons,
   IonGrid,
   IonImg,
+  IonCard,
 } from "@ionic/react"
 import { CategoryOptions, DebouncedSearch, PWACard } from "../../components"
 import { getPWAs, getSearchApp } from "../../data/dataApi"
@@ -35,7 +36,7 @@ import ReactGA from "react-ga"
 
 const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
   const [page, setPage] = useState<number>(0)
-  const [cat, setCat] = useState<string>("")
+  const [cat, setCat] = useState<string>("TRENDING")
   const [pwas, setPwas] = useState<PWA[]>([])
   const [pwaSearchValue, setPwaSearchValue] = useState<string>("")
   const [pwaSearchResults, setPwaSearchResults] = useState<PWA[]>([])
@@ -60,7 +61,7 @@ const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
     setIsLoading(true)
     const resp = await getPWAs(page, cat && cat !== "" ? cat : undefined)
     if (resp && resp.length > 0) {
-      setPwas(prev => prev.concat(resp))
+      setPwas((prev) => prev.concat(resp))
     }
     setIsLoading(false)
   }
@@ -73,7 +74,7 @@ const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
         cat && cat !== "" ? cat : undefined
       )
       if (nextPwas) {
-        setPwas(prev => prev.concat(nextPwas))
+        setPwas((prev) => prev.concat(nextPwas))
         setPage(nextPage)
       }
     } finally {
@@ -120,7 +121,6 @@ const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
           sizeMd="6"
           sizeLg="4"
           // sizeXl="3"
-          className="fade-in box-shadow-hover"
         >
           <PWACard url="/pwa" history={history} pwa={pwa} />
         </IonCol>
@@ -132,20 +132,22 @@ const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
     <IonPage>
       <IonHeader>
         <IonToolbar class="header">
+          <IonButtons style={{ paddingRight: "10px" }} slot="end">
+            {pwaSearchValue === "" && (
+              <CategoryOptions onPress={onPress} initValue={cat} />
+            )}
+          </IonButtons>
           <IonTitle
             onClick={() => {
               content.current.scrollToTop()
             }}
           >
-            <IonImg
+            <img
               alt="icon"
               style={{ height: 40, width: 40 }}
               src="assets/icon/logo.png"
             />
           </IonTitle>
-          <IonButtons style={{ paddingRight: "10px" }} slot="end">
-            <CategoryOptions onPress={onPress} initValue={cat} />
-          </IonButtons>
         </IonToolbar>
       </IonHeader>
       <IonContent class="content" ref={content}>
@@ -168,30 +170,34 @@ const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
               <DebouncedSearch onChangeCallback={handleOnSearchChange} />
             </IonCol>
           </IonRow>
-
-          <IonSegment
-            value={cat}
-            onIonChange={e => {
-              setCat(e.detail.value!)
-            }}
-          >
-            <IonSegmentButton class="seg" value="">
-              Trending
-            </IonSegmentButton>
-            <IonSegmentButton class="seg" value="NEW">
-              New
-            </IonSegmentButton>
-          </IonSegment>
-
+          {pwaSearchValue === "" && (
+            <IonSegment
+              value={cat}
+              onIonChange={(e) => {
+                setCat(e.detail.value!)
+              }}
+            >
+              <IonSegmentButton class="seg" value="TRENDING">
+                Trending
+              </IonSegmentButton>
+              <IonSegmentButton class="seg" value="NEW">
+                New
+              </IonSegmentButton>
+              <IonSegmentButton class="seg" value="">
+                Top
+              </IonSegmentButton>
+            </IonSegment>
+          )}
           <IonRow>{renderPwaList}</IonRow>
-
-          <IonInfiniteScroll
-            ref={scrollEl}
-            threshold="1000px"
-            onIonInfinite={loadMorePwas}
-          >
-            <IonInfiniteScrollContent></IonInfiniteScrollContent>
-          </IonInfiniteScroll>
+          {cat !== "TRENDING" && (
+            <IonInfiniteScroll
+              ref={scrollEl}
+              threshold="1000px"
+              onIonInfinite={loadMorePwas}
+            >
+              <IonInfiniteScrollContent></IonInfiniteScrollContent>
+            </IonInfiniteScroll>
+          )}
         </IonGrid>
       </IonContent>
     </IonPage>

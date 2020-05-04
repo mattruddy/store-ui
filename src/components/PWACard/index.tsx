@@ -13,9 +13,15 @@ interface ContainerProps {
 const styles = { root: { height: 330 } }
 
 const PWACard: React.FC<ContainerProps> = ({ pwa, url, history }) => {
-  const handleClick = () => history.push(`${url}/${pwa.name.replace(" ", "_")}`)
+  const handleClick = () =>
+    history.push(`${url}/${pwa.name.replace(/ /g, "-")}`)
   return (
-    <IonCard button onClick={handleClick} style={styles.root}>
+    <IonCard
+      className="fade-in box-shadow-hover"
+      button
+      onClick={handleClick}
+      style={styles.root}
+    >
       <IonCardContent style={{ overflow: "hidden" }}>
         <div style={{ display: "flex", justifyContent: "center" }}>
           <IonImg

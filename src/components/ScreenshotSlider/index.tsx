@@ -12,11 +12,11 @@ import { Image } from "../../util/types"
 import "./index.css"
 
 interface ContainerProps {
-  toolbarButtons: []
+  toolbarButtons?: []
   images: Image[]
-  photoIndex: number
-  isOpen: boolean
-  children: ReactChildren[]
+  photoIndex?: number
+  isOpen?: boolean
+  children?: ReactChildren[]
 }
 
 const ScreenshotSlider: React.FC<ContainerProps> = ({
@@ -31,8 +31,8 @@ const ScreenshotSlider: React.FC<ContainerProps> = ({
 
   useEffect(() => {
     if (mounted.current) {
-      setIsOpen(restOfProps.isOpen)
-      setPhotoIndex(restOfProps.photoIndex)
+      setIsOpen(restOfProps.isOpen || false)
+      setPhotoIndex(restOfProps.photoIndex || 0)
     }
     mounted.current = true
   }, [restOfProps.photoIndex, restOfProps.isOpen])

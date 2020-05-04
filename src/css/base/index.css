@@ -6,16 +6,14 @@
   --color-selected: black;
 }
 
-box-shadow-hover:hover {
-  box-shadow: var(--primaryBoxShadow);
+.box-shadow-hover:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+  transition: box-shadow 0.3s ease-in-out;
 }
 
 .content {
   --background: rgb(248, 248, 248);
 }
-/* #4AB4B2
-#6ADAC3
-#99FFCC */
 
 .button {
   --color: black;
@@ -31,13 +29,30 @@ box-shadow-hover:hover {
 }
 
 .primary-input-container input {
-  border-bottom: 2px var(--ion-color-light-shade) solid;
+  border-bottom: 1px var(--ion-color-light-shade) solid !important;
 }
 
 .primary-input-container input:focus-within {
-  border-bottom: 2px var(--ion-color-primary) solid;
+  box-shadow: 0 1px 0 var(--ion-color-primary) !important;
 }
 
 .primary-input-container:focus-within ion-label {
   color: var(--ion-color-primary);
 }
+
+/* Remove Scrollbar
+::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  display: none;
+  overflow: hidden;
+}
+
+ion-content {
+  --offset-bottom: auto !important;
+  --overflow: hidden;
+  overflow: auto;
+}
+
+ion-content::-webkit-scrollbar {
+  display: none;
+} */
