@@ -1,3 +1,25 @@
 .slider {
-    --bullet-background-active: #222428;
+  --bullet-background-active: #222428;
+}
+
+.ScreenshotSliderImage {
+  height: 400px;
+  max-width: 93%;
+}
+
+.ScreenshotSliderImage:hover {
+  cursor: pointer;
+  background-repeat: no-repeat;
+  backface-visibility: hidden;
+  -webkit-font-smoothing: subpixel-antialiased;
+  transition: -webkit-transform 0.425s cubic-bezier(0.485, 1.65, 0.545, 0.835);
+  transform: perspective(1px) translate3d(0, 0, 0) scale3d(1.05, 1.05, 1);
+  box-shadow: var(--primaryBoxShadow);
+  z-index: 9999;
+  overflow-x: initial;
+}
+
+.ScreenshotSliderLightbox .ril-prev-button:focus,
+.ScreenshotSliderLightbox .ril-next-button:focus {
+  outline: solid var(--ion-color-primary) 2px;
 }

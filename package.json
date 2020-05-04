@@ -29,6 +29,7 @@
     "react": "^16.12.0",
     "react-collapsible": "^2.7.0",
     "react-dom": "^16.12.0",
+    "react-image-lightbox": "^5.1.1",
     "react-ga": "^2.7.0",
     "react-images-upload": "^1.2.8",
     "react-router": "^5.1.2",

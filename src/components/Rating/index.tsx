@@ -1,4 +1,4 @@
-import React, { useState, memo } from "react"
+import React, { useRef, useEffect, useState, memo, Fragment } from "react"
 //@ts-ignore
 import StarRatings from "react-star-ratings"
 import Collapsible from "react-collapsible"
@@ -9,6 +9,14 @@ interface ContainerProps {
 }
 
 const Rating: React.FC<ContainerProps> = ({ onSubmit }) => {
+  const isUnMounting = useRef(false)
+
+  useEffect(() => {
+    return () => {
+      isUnMounting.current = true
+    }
+  }, [])
+
   const [star, setStar] = useState<number>(0)
   const [starError, setStarError] = useState<string | undefined>()
   const [comment, setComment] = useState<string | undefined>()
@@ -35,8 +43,26 @@ const Rating: React.FC<ContainerProps> = ({ onSubmit }) => {
     }
   }
 
+  const handleStarRatingChange = (newRating: number) => {
+    if (isUnMounting.current) return
+    setStarError(undefined)
+    setStar(newRating)
+  }
+
+  const handleIonTextAreaChange = (e: CustomEvent) => {
+    if (isUnMounting.current) return
+    setCommentError(undefined)
+    setComment(e.detail.value!)
+  }
+
+  const handleToastChange = () => {
+    if (isUnMounting.current) return
+    setShowToast(false)
+    setToastMessage(undefined)
+  }
+
   return (
-    <>
+    <Fragment>
       <Collapsible
         trigger="Click to Add a Review"
         triggerStyle={{
@@ -51,10 +77,7 @@ const Rating: React.FC<ContainerProps> = ({ onSubmit }) => {
         <div style={{ padding: "15px" }}>
           <StarRatings
             rating={star}
-            changeRating={(newRating: number) => {
-              setStarError(undefined)
-              setStar(newRating)
-            }}
+            changeRating={handleStarRatingChange}
             stars={5}
             starRatedColor="rgb(109, 122, 130)"
             starHoverColor="rgb(109, 122, 130)"
@@ -70,10 +93,7 @@ const Rating: React.FC<ContainerProps> = ({ onSubmit }) => {
           <IonTextarea
             placeholder="Add a comment (Optional)"
             value={comment}
-            onIonChange={(e) => {
-              setCommentError(undefined)
-              setComment(e.detail.value!)
-            }}
+            onIonChange={handleIonTextAreaChange}
             rows={7}
             maxlength={1500}
           />
@@ -91,12 +111,9 @@ const Rating: React.FC<ContainerProps> = ({ onSubmit }) => {
         isOpen={showToast}
         message={toastMessage}
         duration={2000}
-        onDidDismiss={() => {
-          setShowToast(false)
-          setToastMessage(undefined)
-        }}
+        onDidDismiss={handleToastChange}
       />
-    </>
+    </Fragment>
   )
 }
 
