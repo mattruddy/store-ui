@@ -40,7 +40,6 @@ const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
   const [pwas, setPwas] = useState<PWA[]>([])
   const [pwaSearchValue, setPwaSearchValue] = useState<string>("")
   const [pwaSearchResults, setPwaSearchResults] = useState<PWA[]>([])
-  const [showCat, setShowCat] = useState<boolean>(false)
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const scrollEl = useRef<any>(undefined)
@@ -57,12 +56,6 @@ const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
   useEffect(() => {
     ReactGA.pageview("PWAs Home")
   }, [])
-
-  useEffect(() => {
-    setTimeout(() => {
-      setShowCat(cat != "TRENDING" && cat != "NEW" && cat != "" ? true : false)
-    }, 200)
-  }, [cat])
 
   const loadPWAs = async () => {
     setIsLoading(true)
@@ -193,11 +186,6 @@ const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
               <IonSegmentButton class="seg" value="">
                 Top
               </IonSegmentButton>
-              {showCat && (
-                <IonSegmentButton class="seg" value={cat} disabled>
-                  {cat}
-                </IonSegmentButton>
-              )}
             </IonSegment>
           )}
           <IonRow>{renderPwaList}</IonRow>
