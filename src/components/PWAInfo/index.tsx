@@ -75,6 +75,10 @@ const PWAInfo: React.FC<ContainerProps> = ({
         <span style={{ marginLeft: "5px" }}>({starCount})</span>
       </div>
 
+      <div>
+        <ShareUrl title={pwa.name} />
+      </div>
+
       <div
         style={{
           paddingLeft: "10px",
@@ -84,7 +88,7 @@ const PWAInfo: React.FC<ContainerProps> = ({
           fontSize: "1.5rem",
         }}
       >
-        About <ShareUrl title={pwa.name} />
+        About
       </div>
       <div style={{ height: 200, padding: 16, overflowY: "scroll" }}>
         {pwa.description}
