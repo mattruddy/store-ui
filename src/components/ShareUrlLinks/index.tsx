@@ -1,5 +1,5 @@
 import React, { memo } from "react"
-import "./styles.css"
+import { IonFabButton } from "@ionic/react"
 
 interface ContainerProps {
   children: any
@@ -8,9 +8,14 @@ interface ContainerProps {
 }
 
 const ShareUrl: React.FC<ContainerProps> = ({ children, target, href }) => (
-  <a className="ShareUrlLinks" href={href} target={target || "_blank"}>
+  <IonFabButton
+    color="secondary"
+    className="ShareUrlLinks"
+    href={href}
+    target={target || "_blank"}
+  >
     {children}
-  </a>
+  </IonFabButton>
 )
 
 export default memo(ShareUrl)
