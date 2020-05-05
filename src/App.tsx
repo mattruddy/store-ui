@@ -25,6 +25,7 @@ import {
 import { loadUserData } from "./data/user/user.actions"
 import { connect } from "./data/connect"
 import { AppContextProvider } from "./data/AppContext"
+import { RouteMap } from "./routes"
 import ReactGA from "react-ga"
 
 const App: React.FC = () => {
@@ -64,34 +65,34 @@ const IonicApp: React.FC<IonicAppProps> = ({
       <IonReactRouter>
         <IonTabs>
           <IonRouterOutlet animated={false}>
-            <Route path="/pwa/:pwaName" component={PWA} exact={false} />
-            <Route path="/support" component={Support} exact={true} />
-            <Route path="/signup" component={SignUp} />
-            <Route path="/login" component={Login} />
-            <Route path="/profile" component={Profile} />
-            <Route path="/mypwa/:id" component={MyPWA} />
-            <Route path="/pwas" component={PWAs} exact />
-            <Route path="/about" component={About} />
-            <Route path="/admin" component={Admin} exact />
+            <Route path={[RouteMap.PWA_DETAIL]} component={PWA} exact={false} />
+            <Route path={[RouteMap.SUPPORT]} component={Support} exact={true} />
+            <Route path={RouteMap.SUPPORT} component={SignUp} />
+            <Route path={RouteMap.LOGIN} component={Login} />
+            <Route path={RouteMap.PROFILE} component={Profile} />
+            <Route path={RouteMap.MY_PWA_DETAIL} component={MyPWA} />
+            <Route path={RouteMap.PWAS} component={PWAs} exact />
+            <Route path={RouteMap.ABOUT} component={About} />
+            <Route path={RouteMap.ABOUT} component={Admin} exact />
             <Route
-              path="/"
-              render={() => <Redirect to="/pwas" />}
+              path={RouteMap.ROOT}
+              render={() => <Redirect to={RouteMap.PWAS} />}
               exact={true}
             />
           </IonRouterOutlet>
           <IonTabBar slot="bottom">
-            <IonTabButton class="tab" tab="pwas" href="/pwas">
+            <IonTabButton class="tab" tab="pwas" href={RouteMap.PWAS}>
               <IonIcon icon={home} />
               <IonLabel>PWAs</IonLabel>
             </IonTabButton>
-            <IonTabButton class="tab" tab="about" href="/about">
+            <IonTabButton class="tab" tab="about" href={RouteMap.ABOUT}>
               <IonIcon icon={informationCircle} />
               <IonLabel>About</IonLabel>
             </IonTabButton>
             <IonTabButton
               class="tab"
               tab="support"
-              href="/support"
+              href={RouteMap.SUPPORT}
               hidden={!isLoggedIn}
             >
               <IonIcon icon={bandage} />
@@ -100,7 +101,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
             <IonTabButton
               class="tab"
               tab="login"
-              href="/login"
+              href={RouteMap.LOGIN}
               disabled={isLoggedIn}
               hidden={isLoggedIn}
             >
@@ -110,7 +111,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
             <IonTabButton
               class="tab"
               tab="profile"
-              href="/profile"
+              href={RouteMap.PROFILE}
               disabled={!isLoggedIn}
               hidden={!isLoggedIn}
             >

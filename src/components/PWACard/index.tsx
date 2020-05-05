@@ -3,7 +3,6 @@ import { IonCard, IonCardContent, IonRippleEffect, IonImg } from "@ionic/react"
 //@ts-ignore
 import StarRatings from "react-star-ratings"
 import { PWA } from "../../util/types"
-
 interface ContainerProps {
   pwa: PWA
   url: string

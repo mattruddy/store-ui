@@ -22,6 +22,7 @@ import {
   menu,
   logoTwitter,
 } from "ionicons/icons"
+import { RouteMap } from "../../routes"
 
 const styles = {
   row: { color: "rgb(153, 153, 153)" },
@@ -140,7 +141,7 @@ const About: React.FC = () => (
               <IonRouterLink
                 style={{ textDecoration: "underline" }}
                 color="rgb(153, 153, 153)"
-                href="/login"
+                href={RouteMap.LOGIN}
               >
                 login
               </IonRouterLink>
