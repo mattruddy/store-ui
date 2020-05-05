@@ -75,7 +75,13 @@ const PWAInfo: React.FC<ContainerProps> = ({
         <span style={{ marginLeft: "5px" }}>({starCount})</span>
       </div>
 
-      <div>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+        }}
+      >
         <ShareUrl title={pwa.name} />
       </div>
 
