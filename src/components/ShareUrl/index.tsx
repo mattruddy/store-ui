@@ -57,19 +57,19 @@ const ShareUrl: React.FC<ContainerProps> = ({ title }) => {
   return (
     <IonGrid>
       <IonRow>
-        <IonCol sizeXs="6">
+        <IonCol sizeXs="6" sizeSm="3">
           <IonButton className="ShareButton" onClick={handleShareButtonClick}>
             <IonIcon icon={renderSharButtonIcon} />
             <IonText>{renderShareButtonText}</IonText>
           </IonButton>
         </IonCol>
-        <IonCol sizeXs="2">
+        <IonCol sizeXs="2" sizeSm="3">
           <ShareOnFaceBook url={url} />
         </IonCol>
-        <IonCol sizeXs="2">
+        <IonCol sizeXs="2" sizeSm="3">
           <ShareOnLinkedIn url={url} />
         </IonCol>
-        <IonCol sizeXs="2">
+        <IonCol sizeXs="2" sizeSm="3">
           <ShareOnTwitter text={twitterText} />
         </IonCol>
       </IonRow>
