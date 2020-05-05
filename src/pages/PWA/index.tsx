@@ -143,27 +143,17 @@ const PWA: React.FC<PWAProps> = ({
                     starCount={starCount as number}
                   />
                 </IonCol>
-
-                <IonCol size="12">
-                  <h2 style={{ paddingLeft: "10px" }}>Screenshots</h2>
+                <IonCol size="12" sizeMd="6">
+                  <h2 style={{ paddingLeft: "10px" }}>Reviews</h2>
+                  <Rating onSubmit={onRatingSubmit} />
+                  <IonList>{renderRatings}</IonList>
                 </IonCol>
-
                 {pwa.screenshots && (
-                  <IonCol size="12">
+                  <IonCol size="12" sizeMd="6">
+                    <h2 style={{ paddingLeft: "10px" }}>Screenshots</h2>
                     <ScreenshotSlider images={pwa.screenshots} />
                   </IonCol>
                 )}
-                <IonCol size="12">
-                  <h2 style={{ paddingLeft: "10px" }}>Reviews</h2>
-                </IonCol>
-                <IonCol size="12">
-                  <Rating onSubmit={onRatingSubmit} />
-                </IonCol>
-              </IonRow>
-              <IonRow>
-                <IonCol size="12">
-                  <IonList>{renderRatings}</IonList>
-                </IonCol>
               </IonRow>
             </IonGrid>
           </IonContent>

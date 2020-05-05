@@ -73,7 +73,6 @@ const ShareUrl: React.FC<ContainerProps> = ({ title }) => {
           <ShareOnTwitter text={twitterText} />
         </IonCol>
       </IonRow>
-      <IonItemDivider />
     </IonGrid>
   )
 }
