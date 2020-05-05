@@ -4,6 +4,8 @@ import { ShareOnFaceBook, ShareOnLinkedIn, ShareOnTwitter } from "../"
 import { checkmark, clipboard, share } from "ionicons/icons"
 import { copyStringToClipboard, shareUrl } from "../../util"
 
+const RESET_COPY_URL_INTERVAL = 5 * 1000
+
 interface ContainerProps {
   title: string
 }
@@ -23,6 +25,8 @@ const ShareUrl: React.FC<ContainerProps> = ({ title }) => {
 
   const renderMainShareButtonIcon = copiedUrlToClipboard ? checkmark : share
 
+  const mainShareButtonColor = copiedUrlToClipboard ? "success" : "secondary"
+
   const renderSharButtonIcon = copiedUrlToClipboard
     ? checkmark
     : canShareOnMobileDevice
@@ -32,6 +36,7 @@ const ShareUrl: React.FC<ContainerProps> = ({ title }) => {
   const handleCopyUrlToClipboard = () => {
     setCopiedUrlToClipboard(true)
     copyStringToClipboard(url)
+    setTimeout(() => setCopiedUrlToClipboard(false), RESET_COPY_URL_INTERVAL)
   }
 
   const handleShareOnMobile = () => {
@@ -48,7 +53,7 @@ const ShareUrl: React.FC<ContainerProps> = ({ title }) => {
 
   return (
     <IonFab style={{ position: "relative" }}>
-      <IonFabButton color="secondary" size="small">
+      <IonFabButton color={mainShareButtonColor} size="small">
         <IonIcon icon={renderMainShareButtonIcon} />
       </IonFabButton>
       <IonFabList side="end">

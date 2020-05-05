@@ -1,5 +1,5 @@
 import React, { memo } from "react"
-import { IonButton, IonIcon, IonImg } from "@ionic/react"
+import { IonButton, IonIcon, IonImg, IonTextarea } from "@ionic/react"
 import { ShareUrl } from "../"
 import { PWA, Rating } from "../../util/types"
 import { postScore } from "../../data/dataApi"
@@ -75,17 +75,18 @@ const PWAInfo: React.FC<ContainerProps> = ({
         <span style={{ marginLeft: "5px" }}>({starCount})</span>
       </div>
 
-      <h2
+      <div
         style={{
           paddingLeft: "10px",
           display: "flex",
           flexDirection: "row",
           alignItems: "center",
+          fontSize: "1.5rem",
         }}
       >
         About <ShareUrl title={pwa.name} />
-      </h2>
-      <div style={{ height: "200px", padding: "15px", overflowY: "scroll" }}>
+      </div>
+      <div style={{ height: 200, padding: 16, overflowY: "scroll" }}>
         {pwa.description}
       </div>
     </>

@@ -8,12 +8,7 @@ interface ContainerProps {
 }
 
 const ShareUrl: React.FC<ContainerProps> = ({ children, target, href }) => (
-  <IonFabButton
-    color="secondary"
-    className="ShareUrlLinks"
-    href={href}
-    target={target || "_blank"}
-  >
+  <IonFabButton color="secondary" href={href} target={target || "_blank"}>
     {children}
   </IonFabButton>
 )
