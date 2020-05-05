@@ -1,5 +1,5 @@
 import React, { memo } from "react"
-import ShareUrl from ".."
+import ShareUrlLink from ".."
 import { IonIcon } from "@ionic/react"
 import { logoFacebook } from "ionicons/icons"
 
@@ -10,9 +10,9 @@ interface ContainerProps {
 const ShareOnFacebook: React.FC<ContainerProps> = ({
   url = window.location.href,
 }) => (
-  <ShareUrl href={`https://www.facebook.com/sharer/sharer.php?u=${url}`}>
+  <ShareUrlLink href={`https://www.facebook.com/sharer/sharer.php?u=${url}`}>
     <IonIcon icon={logoFacebook} />
-  </ShareUrl>
+  </ShareUrlLink>
 )
 
 export default memo(ShareOnFacebook)
