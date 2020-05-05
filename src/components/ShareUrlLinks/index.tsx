@@ -5,7 +5,7 @@ interface ContainerProps {
   children: any
   href: string
   target?: "_blank" | "_self" | "_parent" | "_top"
-  color?: string | undefined
+  color?: string
 }
 
 const ShareUrl: React.FC<ContainerProps> = ({

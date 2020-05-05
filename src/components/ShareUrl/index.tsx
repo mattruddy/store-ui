@@ -1,7 +1,7 @@
 import React, { useState, memo } from "react"
 import { IonIcon, IonFab, IonFabButton, IonFabList } from "@ionic/react"
 import { ShareOnFaceBook, ShareOnLinkedIn, ShareOnTwitter } from "../"
-import { checkmark, clipboard, share } from "ionicons/icons"
+import { checkmark, clipboard, share, shareSocialOutline } from "ionicons/icons"
 import { copyStringToClipboard, shareUrl } from "../../util"
 
 const RESET_COPY_URL_INTERVAL = 5 * 1000
@@ -23,7 +23,9 @@ const ShareUrl: React.FC<ContainerProps> = ({ title }) => {
   // @ts-ignore
   const canShareOnMobileDevice = navigator.share ? true : false
 
-  const renderMainShareButtonIcon = copiedUrlToClipboard ? checkmark : share
+  const renderMainShareButtonIcon = copiedUrlToClipboard
+    ? checkmark
+    : shareSocialOutline
 
   const mainShareButtonColor = copiedUrlToClipboard ? "success" : "secondary"
 
