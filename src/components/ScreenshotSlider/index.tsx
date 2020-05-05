@@ -10,11 +10,11 @@ import React, {
 import { IonSlides, IonSlide, IonImg } from "@ionic/react"
 import Lightbox from "react-image-lightbox"
 import { Image } from "../../util/types"
-import "./index.css"
+import "./styles.css"
 
 interface ContainerProps {
   toolbarButtons?: []
-  images: Image[]
+  images?: Image[]
   photoIndex?: number
   isOpen?: boolean
   children?: ReactChildren[]

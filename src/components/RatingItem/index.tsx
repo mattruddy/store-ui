@@ -3,7 +3,7 @@ import React, { memo } from "react"
 import StarRatings from "react-star-ratings"
 import { Rating } from "../../util/types"
 import { IonItem, IonIcon } from "@ionic/react"
-import { dateFormatter } from "../../util/utils"
+import { dateFormatter } from "../../util"
 import { checkmarkCircleOutline } from "ionicons/icons"
 
 interface ContainerProps {

@@ -2,10 +2,6 @@
 @import "./variables/colors.css";
 @import "./animations/index.css";
 
-.tab {
-  --color-selected: black;
-}
-
 .box-shadow-hover:hover {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
   transition: box-shadow 0.3s ease-in-out;

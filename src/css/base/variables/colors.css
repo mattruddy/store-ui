@@ -25,11 +25,12 @@ http://ionicframework.com/docs/theming/ */
 :root {
   --ion-font-family: Roboto Slab, serif;
   --ion-segment-button-color-checked: black;
+  --ion-tab-bar-color-selected: #74b9ff;
 
   /** primary **/
-  --ion-color-primary: #99ffcc;
+  --ion-color-primary: #74b9ff;
   --ion-color-primary-rgb: 56, 128, 255;
-  --ion-color-primary-contrast: black;
+  --ion-color-primary-contrast: #2d3436;
   --ion-color-primary-contrast-rgb: 47, 79, 79;
   --ion-color-primary-shade: #99ffcc;
   --ion-color-primary-tint: #99ffcc;
@@ -37,7 +38,7 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-github: #24292e;
 
   /** secondary **/
-  --ion-color-secondary: #3dc2ff;
+  --ion-color-secondary: #99b0a7;
   --ion-color-secondary-rgb: 61, 194, 255;
   --ion-color-secondary-contrast: #ffffff;
   --ion-color-secondary-contrast-rgb: 255, 255, 255;
@@ -98,5 +99,46 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-light-contrast: #000000;
   --ion-color-light-contrast-rgb: 0, 0, 0;
   --ion-color-light-shade: #d7d8da;
-  --ion-color-light-tint: #f5f6f9;
+  --ion-color-light-tint: #74b9ff;
+}
+
+.ion-color-twitter {
+  --ion-color-base: #1da1f4;
+  --ion-color-base-rgb: 29, 161, 244;
+  --ion-color-contrast: #ffffff;
+  --ion-color-contrast-rgb: 255, 255, 255;
+  --ion-color-shade: #1a8ed7;
+  --ion-color-tint: #34aaf5;
+}
+
+.ion-color-google {
+  --ion-color-base: #dc4a38;
+  --ion-color-base-rgb: 220, 74, 56;
+  --ion-color-contrast: #ffffff;
+  --ion-color-contrast-rgb: 255, 255, 255;
+  --ion-color-shade: #c24131;
+  --ion-color-tint: #e05c4c;
+}
+
+.ion-color-vimeo {
+  --ion-color-base: #23b6ea;
+  --ion-color-base-rgb: 35, 182, 234;
+  --ion-color-contrast: #ffffff;
+  --ion-color-contrast-rgb: 255, 255, 255;
+  --ion-color-shade: #1fa0ce;
+  --ion-color-tint: #39bdec;
+}
+
+.ion-color-facebook {
+  --ion-color-base: #3b5998;
+  --ion-color-base-rgb: 59, 89, 152;
+  --ion-color-contrast: #ffffff;
+  --ion-color-contrast-rgb: 255, 255, 255;
+  --ion-color-shade: #344e86;
+  --ion-color-tint: #4f6aa2;
+}
+
+.ion-color-linkedin {
+  --ion-color-base: #0e76a8;
+  --ion-color-contrast: #ffffff;
 }

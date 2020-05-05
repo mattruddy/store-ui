@@ -1,4 +1,4 @@
-import React, { useState, memo } from "react"
+import React, { useState, useMemo, memo, Fragment } from "react"
 import {
   IonContent,
   IonHeader,
@@ -32,7 +32,7 @@ import ReactGA from "react-ga"
 const stars = ["ONE", "TWO", "THREE", "FOUR", "FIVE"]
 
 interface MatchParams {
-  id: string | undefined
+  pwaName: string
 }
 
 interface OwnProps extends RouteComponentProps<MatchParams> {}
@@ -48,7 +48,9 @@ interface DispatchProps {
 type PWAProps = OwnProps & StateProps & DispatchProps
 
 const PWA: React.FC<PWAProps> = ({
-  match,
+  match: {
+    params: { pwaName },
+  },
   history,
   hasRead,
   setHasReadInstall,
@@ -59,8 +61,8 @@ const PWA: React.FC<PWAProps> = ({
   const [starCount, setStarCount] = useState<number>()
 
   useIonViewDidEnter(() => {
-    loadPWA(history.location.pathname.split("/")[2])
-    ReactGA.pageview(history.location.pathname.split("/")[2])
+    loadPWA(pwaName)
+    ReactGA.pageview(pwaName)
   }, [])
 
   useIonViewDidLeave(() => {
@@ -96,10 +98,29 @@ const PWA: React.FC<PWAProps> = ({
     }
   }
 
+  const renderRatings = useMemo(
+    () =>
+      ratings && ratings.length > 0 ? (
+        ratings.map((rating, i) => <RatingItem key={i} rating={rating} />)
+      ) : (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <p>
+            <i>No Reviews Yet</i>
+          </p>
+        </div>
+      ),
+    [ratings]
+  )
+
   return (
     <IonPage>
       {pwa && (
-        <>
+        <Fragment>
           <IonHeader>
             <IonToolbar>
               <IonButtons slot="start">
@@ -122,43 +143,14 @@ const PWA: React.FC<PWAProps> = ({
                     starCount={starCount as number}
                   />
                 </IonCol>
-
-                <IonCol size="12">
+                <IonCol size="12" sizeMd="6" pushMd="6">
                   <h2 style={{ paddingLeft: "10px" }}>Screenshots</h2>
+                  <ScreenshotSlider images={pwa.screenshots} />
                 </IonCol>
-
-                {pwa.screenshots && (
-                  <IonCol size="12">
-                    <ScreenshotSlider images={pwa.screenshots} />
-                  </IonCol>
-                )}
-                <IonCol size="12">
+                <IonCol size="12" sizeMd="6" pullMd="6">
                   <h2 style={{ paddingLeft: "10px" }}>Reviews</h2>
-                </IonCol>
-                <IonCol size="12">
                   <Rating onSubmit={onRatingSubmit} />
-                </IonCol>
-              </IonRow>
-              <IonRow>
-                <IonCol size="12">
-                  <IonList>
-                    {ratings && ratings.length > 0 ? (
-                      ratings.map((rating, idx) => (
-                        <RatingItem key={idx} rating={rating} />
-                      ))
-                    ) : (
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "center",
-                        }}
-                      >
-                        <p>
-                          <i>No Reviews Yet</i>
-                        </p>
-                      </div>
-                    )}
-                  </IonList>
+                  <IonList>{renderRatings}</IonList>
                 </IonCol>
               </IonRow>
             </IonGrid>
@@ -184,7 +176,7 @@ const PWA: React.FC<PWAProps> = ({
               },
             ]}
           />
-        </>
+        </Fragment>
       )}
     </IonPage>
   )

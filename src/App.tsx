@@ -64,7 +64,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
       <IonReactRouter>
         <IonTabs>
           <IonRouterOutlet animated={false}>
-            <Route path="/pwa/:id" component={PWA} exact={false} />
+            <Route path="/pwa/:pwaName" component={PWA} exact={false} />
             <Route path="/support" component={Support} exact={true} />
             <Route path="/signup" component={SignUp} />
             <Route path="/login" component={Login} />
@@ -79,7 +79,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
               exact={true}
             />
           </IonRouterOutlet>
-          <IonTabBar slot="bottom" color="primary">
+          <IonTabBar slot="bottom">
             <IonTabButton class="tab" tab="pwas" href="/pwas">
               <IonIcon icon={home} />
               <IonLabel>PWAs</IonLabel>
