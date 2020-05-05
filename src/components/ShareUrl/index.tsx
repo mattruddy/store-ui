@@ -14,7 +14,6 @@ import { copyStringToClipboard, shareUrl } from "../../util"
 
 interface ContainerProps {
   title: string
-  text: string
 }
 
 const ShareUrl: React.FC<ContainerProps> = ({ title }) => {
