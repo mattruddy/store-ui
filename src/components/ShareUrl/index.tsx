@@ -1,4 +1,4 @@
-import React, { useState, useCallback, memo } from "react"
+import React, { useState, memo } from "react"
 import {
   IonGrid,
   IonRow,
@@ -43,9 +43,9 @@ const ShareUrl: React.FC<ContainerProps> = ({ title }) => {
     copyStringToClipboard(url)
   }
 
-  const handleShareOnMobile = useCallback(() => {
+  const handleShareOnMobile = () => {
     shareUrl(url, title, text)
-  }, [url])
+  }
 
   const handleShareButtonClick = () => {
     if (canShareOnMobileDevice) {
