@@ -79,7 +79,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
               exact={true}
             />
           </IonRouterOutlet>
-          <IonTabBar slot="bottom" color="primary">
+          <IonTabBar slot="bottom">
             <IonTabButton class="tab" tab="pwas" href="/pwas">
               <IonIcon icon={home} />
               <IonLabel>PWAs</IonLabel>
