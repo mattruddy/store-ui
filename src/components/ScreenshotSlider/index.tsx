@@ -14,7 +14,7 @@ import "./styles.css"
 
 interface ContainerProps {
   toolbarButtons?: []
-  images: Image[]
+  images?: Image[]
   photoIndex?: number
   isOpen?: boolean
   children?: ReactChildren[]
