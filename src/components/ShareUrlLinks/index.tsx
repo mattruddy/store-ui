@@ -5,10 +5,20 @@ interface ContainerProps {
   children: any
   href: string
   target?: "_blank" | "_self" | "_parent" | "_top"
+  color?: string | undefined
 }
 
-const ShareUrl: React.FC<ContainerProps> = ({ children, target, href }) => (
-  <IonFabButton color="secondary" href={href} target={target || "_blank"}>
+const ShareUrl: React.FC<ContainerProps> = ({
+  children,
+  target,
+  href,
+  color,
+}) => (
+  <IonFabButton
+    color={color || "primary"}
+    href={href}
+    target={target || "_blank"}
+  >
     {children}
   </IonFabButton>
 )

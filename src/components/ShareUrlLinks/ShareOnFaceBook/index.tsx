@@ -10,7 +10,10 @@ interface ContainerProps {
 const ShareOnFacebook: React.FC<ContainerProps> = ({
   url = window.location.href,
 }) => (
-  <ShareUrlLink href={`https://www.facebook.com/sharer/sharer.php?u=${url}`}>
+  <ShareUrlLink
+    color="facebook"
+    href={`https://www.facebook.com/sharer/sharer.php?u=${url}`}
+  >
     <IonIcon icon={logoFacebook} />
   </ShareUrlLink>
 )

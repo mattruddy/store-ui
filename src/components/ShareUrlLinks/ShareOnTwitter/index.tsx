@@ -10,7 +10,10 @@ interface ContainerProps {
 const ShareOnTwitter: React.FC<ContainerProps> = ({
   text = `Check my journal entry: ${window.location.href}`,
 }) => (
-  <ShareUrlLink href={`https://twitter.com/intent/tweet?text=${text}`}>
+  <ShareUrlLink
+    color="twitter"
+    href={`https://twitter.com/intent/tweet?text=${text}`}
+  >
     <IonIcon icon={logoTwitter} />
   </ShareUrlLink>
 )

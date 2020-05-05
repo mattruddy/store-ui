@@ -10,7 +10,10 @@ interface ContainerProps {
 const ShareOnLinkedIn: React.FC<ContainerProps> = ({
   url = window.location.href,
 }) => (
-  <ShareUrlLink href={`https://www.linkedin.com/shareArticle?mini=true&url=${url}`}>
+  <ShareUrlLink
+    color="linkedin"
+    href={`https://www.linkedin.com/shareArticle?mini=true&url=${url}`}
+  >
     <IonIcon icon={logoLinkedin} />
   </ShareUrlLink>
 )
