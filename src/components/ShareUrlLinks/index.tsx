@@ -7,8 +7,8 @@ interface ContainerProps {
   target?: "_blank" | "_self" | "_parent" | "_top"
 }
 
-const ShareUrl: React.FC<ContainerProps> = ({ children, ...restOfProps }) => (
-  <a className="ShareUrlLinks" {...restOfProps}>
+const ShareUrl: React.FC<ContainerProps> = ({ children, target, href }) => (
+  <a className="ShareUrlLinks" href={href} target={target || "_blank"}>
     {children}
   </a>
 )
