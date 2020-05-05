@@ -45,7 +45,7 @@ import {
 } from "ionicons/icons"
 import { fixFilesRotation } from "../../util"
 import { CategoryOptions, RatingItem } from "../../components"
-import { RouteMap,GetMyPWADetailUrl } from "../../routes"
+import { RouteMap, GetMyPWADetailUrl } from "../../routes"
 //@ts-ignore
 import StarRatings from "react-star-ratings"
 
