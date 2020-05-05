@@ -2,6 +2,7 @@
   "name": "store-ui",
   "version": "0.0.1",
   "private": true,
+  // "proxy": "http://store:8080",
   "dependencies": {
     "@capacitor/core": "^1.5.1",
     "@iconify/icons-mdi": "^1.0.88",

@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 services:
   db:
@@ -12,7 +12,7 @@ services:
     volumes:
       - ./.postgres/data:/var/lib/postgresql/data
   store:
-    image: mruddy/store:latest
+    image: mruddy/store-be-dev:latest
     expose:
       - 8080
     ports:
@@ -21,3 +21,14 @@ services:
       - db
     links:
       - db
+  fe:
+    image: mruddy/store-fe-dev
+    expose:
+      - 3000
+    ports:
+      - 3000:3000
+    depends_on:
+      - store
+    links:
+      - store
+    command: ["npm", "start"]
