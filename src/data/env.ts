@@ -2,8 +2,6 @@ export const vars = () => ({
   env: {
     //local
     // API_URL: "http://45.79.173.223:8080",
-    //dev
-    // API_URL: "",
     //prod
     API_URL: "/api",
     APP_SERVER_KEY:
