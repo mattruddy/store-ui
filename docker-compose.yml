@@ -26,6 +26,9 @@ services:
     ports:
       - 80:80
       - 443:443
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
     depends_on:
       - store
     links:
