@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 services:
   db:
@@ -12,7 +12,7 @@ services:
     volumes:
       - ./.postgres/data:/var/lib/postgresql/data
   store:
-    image: mruddy/store:latest
+    image: mruddy/store-be-dev:latest
     expose:
       - 8080
     ports:
@@ -21,3 +21,23 @@ services:
       - db
     links:
       - db
+  ui:
+    image: mruddy/store-fe-dev:latest
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    depends_on:
+      - store
+    links:
+      - store
+    command: '/bin/sh -c ''while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g "daemon off;"'''
+  certbot:
+    image: certbot/certbot
+    restart: unless-stopped
+    volumes:
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"

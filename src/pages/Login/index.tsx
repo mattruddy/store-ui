@@ -19,6 +19,7 @@ import { postLogin, postDevice } from "../../data/dataApi"
 import { connect } from "../../data/connect"
 import queryString from "query-string"
 import { logoGithub } from "ionicons/icons"
+import { RouteMap } from "../../routes"
 
 interface OwnProps extends RouteComponentProps {}
 
@@ -57,7 +58,7 @@ const LogIn: React.FC<LoginProps> = ({
         if (key && auth && endpoint) {
           await postDevice(key, auth, endpoint)
         }
-        history.push("/profile", { direction: "back" })
+        history.push(RouteMap.PROFILE, { direction: "back" })
       }
       thirdPartyLogin()
     }
@@ -87,7 +88,7 @@ const LogIn: React.FC<LoginProps> = ({
         if (username === "mattruddy") {
           localStorage.setItem("me", username)
         }
-        history.push("/profile")
+        history.push(RouteMap.PROFILE)
       } catch (e) {
         if (e.message === "Invalid Credentials") {
           setValidationError(true)
@@ -128,7 +129,7 @@ const LogIn: React.FC<LoginProps> = ({
                   spellCheck={false}
                   maxlength={30}
                   value={username}
-                  onIonChange={e => {
+                  onIonChange={(e) => {
                     setUsername(e.detail.value!)
                     setUsernameError(false)
                   }}
@@ -153,7 +154,7 @@ const LogIn: React.FC<LoginProps> = ({
                   spellCheck={false}
                   maxlength={80}
                   value={password}
-                  onIonChange={e => {
+                  onIonChange={(e) => {
                     setPassword(e.detail.value!)
                     setPasswordError(false)
                   }}

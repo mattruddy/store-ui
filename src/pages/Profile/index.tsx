@@ -43,6 +43,7 @@ import { CategoryOptions, Lighthouse, PWACard } from "../../components"
 import { UserProfile, PWA } from "../../util/types"
 import { add, menu, logOut, contractSharp } from "ionicons/icons"
 import { setToken, setIsLoggedIn } from "../../data/user/user.actions"
+import { RouteMap } from "../../routes"
 //@ts-ignore
 import ReportViewer from "react-lighthouse-viewer"
 interface OwnProps extends RouteComponentProps {}
@@ -586,7 +587,7 @@ const Profile: React.FC<ProfileProps> = ({
                 setIcon(undefined)
                 setScreenshots(undefined)
                 setShowModal(false)
-                history.push("/login")
+                history.push(RouteMap.LOGIN)
               },
             },
           ]}

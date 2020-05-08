@@ -45,6 +45,7 @@ import {
 } from "ionicons/icons"
 import { fixFilesRotation } from "../../util"
 import { CategoryOptions, RatingItem } from "../../components"
+import { RouteMap, GetMyPWADetailUrl } from "../../routes"
 //@ts-ignore
 import StarRatings from "react-star-ratings"
 
@@ -155,7 +156,7 @@ const MyPWA: React.FC<PWAProps> = ({ history }) => {
           setScreenshots(resp.data.screenshots)
           setToastText("Success")
           setShowToast(true)
-          history.replace(`/mypwa/${name}`)
+          history.replace(GetMyPWADetailUrl(name))
         }
         setIsEdit(false)
       }
@@ -189,7 +190,7 @@ const MyPWA: React.FC<PWAProps> = ({ history }) => {
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="start">
-            <IonBackButton defaultHref="/profile" />
+            <IonBackButton defaultHref={RouteMap.PROFILE} />
           </IonButtons>
           {pwa && <IonTitle>{pwa.name}</IonTitle>}
         </IonToolbar>
@@ -426,7 +427,7 @@ const MyPWA: React.FC<PWAProps> = ({ history }) => {
             text: "Delete",
             handler: async () => {
               const resp = await deleteApp(pwa?.appId!)
-              history.push("/profile")
+              history.push(RouteMap.PROFILE)
             },
           },
         ]}

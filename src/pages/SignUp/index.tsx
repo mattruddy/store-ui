@@ -16,6 +16,7 @@ import {
 import { setToken, setIsLoggedIn } from "../../data/user/user.actions"
 import { postSignup } from "../../data/dataApi"
 import { connect } from "../../data/connect"
+import { RouteMap } from "../../routes"
 import ReactGA from "react-ga"
 
 interface OwnProps extends RouteComponentProps {}
@@ -71,7 +72,7 @@ const SignUp: React.FC<SignIn> = ({
         setIsLoggedInAction(true)
         setToastMessage("Success")
         setShowToast(true)
-        history.push("/profile")
+        history.push(RouteMap.PROFILE)
       } catch (e) {
         console.log(`Error signing up: ${e}`)
       }
@@ -104,7 +105,7 @@ const SignUp: React.FC<SignIn> = ({
                   spellCheck={false}
                   maxlength={30}
                   value={username}
-                  onIonChange={e => {
+                  onIonChange={(e) => {
                     setUsername(e.detail.value!)
                     setUsernameError(false)
                   }}
@@ -124,7 +125,7 @@ const SignUp: React.FC<SignIn> = ({
                   spellCheck={false}
                   maxlength={50}
                   value={email}
-                  onIonChange={e => {
+                  onIonChange={(e) => {
                     setEmail(e.detail.value!)
                     setEmailError(false)
                   }}
@@ -144,7 +145,7 @@ const SignUp: React.FC<SignIn> = ({
                   spellCheck={false}
                   value={password}
                   maxlength={80}
-                  onIonChange={e => {
+                  onIonChange={(e) => {
                     setPassword(e.detail.value!)
                     setPasswordError(false)
                   }}
