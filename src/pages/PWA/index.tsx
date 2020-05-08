@@ -27,6 +27,7 @@ import {
 import { connect } from "../../data/connect"
 import { setHasReadInstall } from "../../data/user/user.actions"
 import { ScreenshotSlider, Rating, PWAInfo, RatingItem } from "../../components"
+import { RouteMap } from "../../routes"
 import ReactGA from "react-ga"
 
 const stars = ["ONE", "TWO", "THREE", "FOUR", "FIVE"]
@@ -171,7 +172,7 @@ const PWA: React.FC<PWAProps> = ({
                 text: "Learn",
                 handler: () => {
                   setHasReadInstall("true")
-                  history.push("/about")
+                  history.push(RouteMap.ABOUT)
                 },
               },
             ]}
