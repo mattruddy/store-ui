@@ -32,8 +32,8 @@ const ShareUrl: React.FC<ContainerProps> = ({ title }) => {
   const renderSharButtonIcon = copiedUrlToClipboard
     ? checkmark
     : canShareOnMobileDevice
-    ? share
-    : clipboard
+      ? share
+      : clipboard
 
   const handleCopyUrlToClipboard = () => {
     setCopiedUrlToClipboard(true)
@@ -54,7 +54,7 @@ const ShareUrl: React.FC<ContainerProps> = ({ title }) => {
   }
 
   return (
-    <IonFab style={{ position: "relative" }}>
+    <IonFab style={{ position: "relative" }} activated={true}>
       <IonFabButton color={mainShareButtonColor} size="small">
         <IonIcon icon={renderMainShareButtonIcon} />
       </IonFabButton>
