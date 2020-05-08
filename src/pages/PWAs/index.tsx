@@ -151,19 +151,19 @@ const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
         </IonToolbar>
       </IonHeader>
       <IonContent class="content" ref={content}>
+        <IonRefresher
+          slot="fixed"
+          onIonRefresh={async (event: any) => {
+            try {
+              await reloadPwas()
+            } finally {
+              event.detail.complete()
+            }
+          }}
+        >
+          <IonRefresherContent></IonRefresherContent>
+        </IonRefresher>
         <IonGrid fixed>
-          <IonRefresher
-            slot="fixed"
-            onIonRefresh={async (event: any) => {
-              try {
-                await reloadPwas()
-              } finally {
-                event.detail.complete()
-              }
-            }}
-          >
-            <IonRefresherContent></IonRefresherContent>
-          </IonRefresher>
           {isLoading && <IonProgressBar type="indeterminate" />}
           <IonRow>
             <IonCol>
