@@ -36,7 +36,7 @@ import ReactGA from "react-ga"
 
 const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
   const [page, setPage] = useState<number>(0)
-  const [cat, setCat] = useState<string>("TRENDING")
+  const [cat, setCat] = useState<string>("")
   const [pwas, setPwas] = useState<PWA[]>([])
   const [pwaSearchValue, setPwaSearchValue] = useState<string>("")
   const [pwaSearchResults, setPwaSearchResults] = useState<PWA[]>([])
@@ -178,13 +178,13 @@ const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
               }}
             >
               <IonSegmentButton class="seg" value="TRENDING">
-                Trending
-              </IonSegmentButton>
-              <IonSegmentButton class="seg" value="NEW">
-                New
+                Discover
               </IonSegmentButton>
               <IonSegmentButton class="seg" value="">
                 Top
+              </IonSegmentButton>
+              <IonSegmentButton class="seg" value="NEW">
+                New
               </IonSegmentButton>
             </IonSegment>
           )}
