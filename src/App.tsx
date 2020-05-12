@@ -71,26 +71,28 @@ const IonicApp: React.FC<IonicAppProps> = ({
             <Route path={RouteMap.LOGIN} component={Login} />
             <Route path={RouteMap.PROFILE} component={Profile} />
             <Route path={RouteMap.MY_PWA_DETAIL} component={MyPWA} />
-            <Route path={RouteMap.PWAS} component={PWAs} exact />
+            <Route path={[RouteMap.PWAS]} component={PWAs} exact />
             <Route path={RouteMap.ABOUT} component={About} />
             <Route path={RouteMap.ABOUT} component={Admin} exact />
             <Route
               path={RouteMap.ROOT}
-              render={() => <Redirect to={RouteMap.PWAS} />}
+              render={() => (
+                <Redirect to={RouteMap.PWAS.replace("/:category?", "")} />
+              )}
               exact={true}
             />
           </IonRouterOutlet>
           <IonTabBar slot="bottom">
-            <IonTabButton class="tab" tab="pwas" href={RouteMap.PWAS}>
+            <IonTabButton className="tab" tab="pwas" href={RouteMap.PWAS}>
               <IonIcon icon={home} />
               <IonLabel>PWAs</IonLabel>
             </IonTabButton>
-            <IonTabButton class="tab" tab="about" href={RouteMap.ABOUT}>
+            <IonTabButton className="tab" tab="about" href={RouteMap.ABOUT}>
               <IonIcon icon={informationCircle} />
               <IonLabel>About</IonLabel>
             </IonTabButton>
             <IonTabButton
-              class="tab"
+              className="tab"
               tab="support"
               href={RouteMap.SUPPORT}
               hidden={!isLoggedIn}
@@ -99,7 +101,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
               <IonLabel>Support</IonLabel>
             </IonTabButton>
             <IonTabButton
-              class="tab"
+              className="tab"
               tab="login"
               href={RouteMap.LOGIN}
               disabled={isLoggedIn}
@@ -109,7 +111,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
               <IonLabel>Log In</IonLabel>
             </IonTabButton>
             <IonTabButton
-              class="tab"
+              className="tab"
               tab="profile"
               href={RouteMap.PROFILE}
               disabled={!isLoggedIn}

@@ -1,6 +1,7 @@
 .PWACard {
-  background: transparent !important;
   height: 190px;
+  --background: transparent;
+  box-shadow: none;
 }
 
 .PWACardHeader {
@@ -10,13 +11,13 @@
 
 .PWACardImage {
   height: 120px;
-  width: 100%;
-  border-radius: 5px;
+  width: 120px;
+  border-radius: 6px;
+  background: transparent;
 }
 
 .PWACardTitle {
   font-size: 1rem;
-  overflow-x: hidden;
 }
 
 .PWACardSubTitle {

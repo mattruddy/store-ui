@@ -22,38 +22,28 @@ import {
   IonSegment,
   IonSegmentButton,
   IonButtons,
-  IonList,
-  IonItem,
-  IonListHeader,
-  IonItemGroup,
-  IonLabel,
   IonIcon,
   IonButton,
+  IonGrid,
 } from "@ionic/react"
-import { CategoryOptions, DebouncedSearch, PWACard } from "../../components"
+import {
+  CategoryOptions,
+  DebouncedSearch,
+  PWACard,
+  SideBar,
+} from "../../components"
 import { getPWAs, getSearchApp } from "../../data/dataApi"
 import { PWA } from "../../util/types"
-import { RouteComponentProps, withRouter } from "react-router"
+import { RouteComponentProps, useParams } from "react-router"
 import { setLoading } from "../../data/user/user.actions"
-import { categories } from "../../components/CategoryOptions"
+
 import "./styles.css"
 import ReactGA from "react-ga"
 import { capitalize } from "../../util"
-import {
-  search,
-  flashlightOutline,
-  ribbonOutline,
-  calendarOutline,
-  closeOutline,
-} from "ionicons/icons"
+import { search, closeOutline } from "ionicons/icons"
 
-const standardCategories = [
-  { category: "TOP", value: "", icon: ribbonOutline },
-  { category: "NEW", value: "NEW", icon: calendarOutline },
-  { category: "DISCOVER", value: "TRENDING", icon: flashlightOutline },
-]
-
-const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
+const PWAs: React.FC<RouteComponentProps> = () => {
+  const { category } = useParams()
   const [page, setPage] = useState<number>(0)
   const [cat, setCat] = useState<string>("")
   const [pwas, setPwas] = useState<PWA[]>([])
@@ -66,7 +56,7 @@ const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
   const content = useRef<any>()
 
   useEffect(() => {
-    loadPWAs()
+    ReactGA.pageview("PWAs Home")
     return () => {
       setPwas([])
       setPage(0)
@@ -74,12 +64,14 @@ const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
   }, [])
 
   useEffect(() => {
-    ReactGA.pageview("PWAs Home")
-  }, [])
+    setCat(category?.toUpperCase() || "")
+    loadPWAs()
+  }, [category])
 
   const loadPWAs = async () => {
     setIsLoading(true)
     const resp = await getPWAs(page, cat && cat !== "" ? cat : undefined)
+
     if (resp && resp.length > 0) {
       setPwas((prev) => prev.concat(resp))
     }
@@ -108,7 +100,6 @@ const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
   }
 
   const toggleSearch = () => {
-    console.log("hello")
     setShowSearch(!showSearch)
   }
 
@@ -147,7 +138,7 @@ const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
           sizeLg="3"
           // sizeXl="3"
         >
-          <PWACard url="/pwa" history={history} pwa={pwa} />
+          <PWACard url="/pwa" pwa={pwa} />
         </IonCol>
       )),
     [pwas, pwaSearchValue, pwaSearchResults]
@@ -156,7 +147,7 @@ const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar class="header">
+        <IonToolbar className="header">
           <IonButtons slot="end">
             <div className="select">
               {pwaSearchValue === "" && (
@@ -180,112 +171,80 @@ const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
           </IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent class="content" ref={content} forceOverscroll={true}>
-        <IonRefresher
-          slot="fixed"
-          onIonRefresh={async (event: any) => {
-            try {
-              await reloadPwas()
-            } finally {
-              event.detail.complete()
-            }
-          }}
-        >
-          <IonRefresherContent></IonRefresherContent>
-        </IonRefresher>
-        {/* <IonGrid fixed> */}
-        {isLoading && <IonProgressBar type="indeterminate" />}
-        <IonRow>
-          <IonCol size="2" class="side">
-            <IonRow>
-              <IonCol>
-                <IonList class="list">
-                  <IonItemGroup>
-                    {standardCategories.map((cat, i) => (
-                      <IonItem
-                        key={i}
-                        class="item-top"
-                        lines="none"
-                        button={true}
-                        onClick={() => onPress(cat.value)}
-                      >
-                        <IonIcon class="icon-top" icon={cat.icon} />
-                        {capitalize(cat.category)}
-                      </IonItem>
-                    ))}
-                  </IonItemGroup>
-                  <IonListHeader>
-                    <IonLabel>CATEGORIES</IonLabel>
-                  </IonListHeader>
-                  <IonItemGroup>
-                    {categories.map((cat, i) => (
-                      <IonItem
-                        class="item"
-                        key={i}
-                        button={true}
-                        lines="none"
-                        onClick={() => onPress(cat.category)}
-                      >
-                        <IonIcon class="icon" icon={cat.icon} />
-                        {capitalize(cat.category)}
-                      </IonItem>
-                    ))}
-                  </IonItemGroup>
-                </IonList>
-              </IonCol>
-            </IonRow>
-          </IonCol>
-          <IonCol>
-            <IonRow>
-              <IonCol class="search-mobile">
-                {showSearch && (
-                  <DebouncedSearch onChangeCallback={handleOnSearchChange} />
-                )}
-              </IonCol>
-            </IonRow>
-            {pwaSearchValue === "" && (
-              <IonSegment
-                class="seg"
-                value={cat}
-                onIonChange={(e) => {
-                  setCat(e.detail.value!)
+      <IonRefresherContent className="PWAs">
+        <IonContent className="content" ref={content} forceOverscroll={true}>
+          <IonRefresher
+            slot="fixed"
+            onIonRefresh={async (event: any) => {
+              try {
+                await reloadPwas()
+              } finally {
+                event.detail.complete()
+              }
+            }}
+          ></IonRefresher>
+
+          <IonRow>
+            <IonProgressBar
+              type={isLoading ? "indeterminate" : "determinate"}
+              color="primary"
+            />
+          </IonRow>
+          <IonRow>
+            <IonCol size="2" className="side">
+              <SideBar />
+            </IonCol>
+            <IonCol>
+              <IonRow>
+                <IonCol size="12">
+                  {showSearch && (
+                    <DebouncedSearch onChangeCallback={handleOnSearchChange} />
+                  )}
+                </IonCol>
+              </IonRow>
+              {pwaSearchValue === "" && (
+                <IonSegment
+                  className="seg"
+                  value={cat}
+                  onIonChange={(e) => {
+                    setCat(e.detail.value!)
+                  }}
+                >
+                  <IonSegmentButton className="seg-button" value="TRENDING">
+                    Discover
+                  </IonSegmentButton>
+                  <IonSegmentButton className="seg-button" value="">
+                    Top
+                  </IonSegmentButton>
+                  <IonSegmentButton className="seg-button" value="NEW">
+                    New
+                  </IonSegmentButton>
+                </IonSegment>
+              )}
+              <h1
+                style={{
+                  marginLeft: "20px",
                 }}
               >
-                <IonSegmentButton class="seg-button" value="TRENDING">
-                  Discover
-                </IonSegmentButton>
-                <IonSegmentButton class="seg-button" value="">
-                  Top
-                </IonSegmentButton>
-                <IonSegmentButton class="seg-button" value="NEW">
-                  New
-                </IonSegmentButton>
-              </IonSegment>
-            )}
-            <h1
-              style={{
-                marginLeft: "20px",
-              }}
-            >
-              {capitalize(cat === "" ? "TOP" : cat)}
-            </h1>
-            <IonRow>{renderPwaList}</IonRow>
-          </IonCol>
-        </IonRow>
+                {capitalize(cat === "" ? "TOP" : cat)}
+              </h1>
+              <IonRow>{renderPwaList}</IonRow>
+            </IonCol>
+          </IonRow>
 
-        {cat !== "TRENDING" && (
-          <IonInfiniteScroll
-            ref={scrollEl}
-            threshold="1000px"
-            onIonInfinite={loadMorePwas}
-          >
-            <IonInfiniteScrollContent></IonInfiniteScrollContent>
-          </IonInfiniteScroll>
-        )}
-        {/* </IonGrid> */}
-      </IonContent>
+          {cat !== "TRENDING" && (
+            <IonInfiniteScroll
+              ref={scrollEl}
+              threshold="1000px"
+              onIonInfinite={loadMorePwas}
+            >
+              <IonInfiniteScrollContent />
+            </IonInfiniteScroll>
+          )}
+        </IonContent>
+      </IonRefresherContent>
     </IonPage>
   )
 }
 
-export default withRouter(memo(PWAs))
+export default memo(PWAs)

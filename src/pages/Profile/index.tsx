@@ -206,7 +206,7 @@ const Profile: React.FC<ProfileProps> = ({
       if (filteredPwas.length > 0) {
         return filteredPwas.map((pwa, idx) => (
           <div key={idx}>
-            <PWACard url="/mypwa" history={history} pwa={pwa} />
+            <PWACard url="/mypwa" pwa={pwa} />
             {filter === "DENIED" && (
               <>
                 <span style={{ paddingLeft: "15px" }}>

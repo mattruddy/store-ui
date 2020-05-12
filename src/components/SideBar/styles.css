@@ -1,0 +1,33 @@
+.SideBar {
+  background: rgb(248, 248, 248);
+  position: fixed;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.SideBarCategory {
+  --min-height: 36px;
+  --background: rgb(248, 248, 248);
+}
+
+.StandardCategoriesItem {
+  font-size: 15px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.StandardCategoriesItemIcon {
+  margin-right: 0.5rem;
+}
+
+.CategoriesItem {
+  --color: #737373;
+
+  font-size: 12px;
+}
+
+.CategoriesItemIcon {
+  height: 15px;
+  width: 15px;
+  margin-right: 10px;
+}

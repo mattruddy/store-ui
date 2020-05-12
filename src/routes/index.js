@@ -6,9 +6,10 @@ const RouteMap = {
   LOGIN: "/login",
   PROFILE: "/profile",
   MY_PWA_DETAIL: "/mypwa/:id",
-  PWAS: "/pwas",
   ABOUT: "/about",
   ADMIN: "/admin",
+
+  PWAS: "/pwas/:category?",
 }
 
 const getPwaName = (name) => name.replace(/ /g, "-")
@@ -23,4 +24,7 @@ const GetMyPWADetailUrl = (name) => {
   return RouteMap.PWA_DETAIL.replace(":id", name)
 }
 
-export { RouteMap, GetPWADetailUrl, GetMyPWADetailUrl }
+const GetPwaCategoryUrl = (category) =>
+  RouteMap.PWAS.replace(":category?", category)
+
+export { RouteMap, GetPWADetailUrl, GetMyPWADetailUrl, GetPwaCategoryUrl }

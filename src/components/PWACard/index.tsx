@@ -16,18 +16,13 @@ import "./styles.css"
 interface ContainerProps {
   pwa: PWA
   url: string
-  history: any
 }
 
-const PWACard: React.FC<ContainerProps> = ({ pwa, url, history }) => {
-  const handleClick = () =>
-    history.push(`${url}/${pwa.name.replace(/ /g, "-")}`)
+const PWACard: React.FC<ContainerProps> = ({ pwa, url }) => {
+  const href = `${url}/${pwa.name.replace(/ /g, "-")}`
+
   return (
-    <IonCard
-      className="PWACard fade-in "
-      button
-      onClick={handleClick}
-    >
+    <IonCard className="PWACard fade-in" href={href}>
       <IonCardHeader className="PWACardHeader PWACardContent">
         <IonImg alt="icon" className="PWACardImage" src={pwa.icon} />
       </IonCardHeader>
