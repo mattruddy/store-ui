@@ -22,12 +22,13 @@ import {
   IonSegment,
   IonSegmentButton,
   IonButtons,
-  IonGrid,
-  IonImg,
-  IonCard,
   IonList,
   IonItem,
   IonListHeader,
+  IonItemGroup,
+  IonLabel,
+  IonIcon,
+  IonButton,
 } from "@ionic/react"
 import { CategoryOptions, DebouncedSearch, PWACard } from "../../components"
 import { getPWAs, getSearchApp } from "../../data/dataApi"
@@ -38,6 +39,18 @@ import { categories } from "../../components/CategoryOptions"
 import "./styles.css"
 import ReactGA from "react-ga"
 import { capitalize } from "../../util"
+import {
+  search,
+  flashlightOutline,
+  ribbonOutline,
+  calendarOutline,
+} from "ionicons/icons"
+
+const standardCategories = [
+  { category: "TOP", value: "", icon: ribbonOutline },
+  { category: "NEW", value: "NEW", icon: calendarOutline },
+  { category: "DISCOVER", value: "TRENDING", icon: flashlightOutline },
+]
 
 const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
   const [page, setPage] = useState<number>(0)
@@ -123,8 +136,8 @@ const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
         <IonCol
           key={i}
           size="12"
-          sizeMd="6"
-          sizeLg="4"
+          sizeMd="4"
+          sizeLg="3"
           // sizeXl="3"
         >
           <PWACard url="/pwa" history={history} pwa={pwa} />
@@ -137,10 +150,15 @@ const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
     <IonPage>
       <IonHeader>
         <IonToolbar class="header">
-          <IonButtons class="select" slot="end">
-            {pwaSearchValue === "" && (
-              <CategoryOptions onPress={onPress} initValue={cat} />
-            )}
+          <IonButtons slot="end">
+            <div className="select">
+              {pwaSearchValue === "" && (
+                <CategoryOptions onPress={onPress} initValue={cat} />
+              )}
+            </div>
+            <IonButton slot="end">
+              <IonIcon icon={search} />
+            </IonButton>
           </IonButtons>
           <IonTitle
             onClick={() => {
@@ -155,7 +173,7 @@ const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
           </IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent class="content" ref={content}>
+      <IonContent class="content" ref={content} forceOverscroll={true}>
         <IonRefresher
           slot="fixed"
           onIonRefresh={async (event: any) => {
@@ -174,23 +192,38 @@ const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
           <IonCol size="2" class="side">
             <IonRow>
               <IonCol>
-                <DebouncedSearch onChangeCallback={handleOnSearchChange} />
-              </IonCol>
-            </IonRow>
-            <IonRow>
-              <IonCol>
-                <IonList>
-                  {categories.map((cat, i) => (
-                    <IonItem
-                      key={i}
-                      button={true}
-                      lines="none"
-                      onClick={() => onPress(cat)}
-                    >
-                      {capitalize(cat)}
-                    </IonItem>
-                  ))}
-                  <IonItem></IonItem>
+                <IonList class="list">
+                  <IonItemGroup>
+                    {standardCategories.map((cat, i) => (
+                      <IonItem
+                        key={i}
+                        class="item-top"
+                        lines="none"
+                        button={true}
+                        onClick={() => onPress(cat.value)}
+                      >
+                        <IonIcon class="icon-top" icon={cat.icon} />
+                        {capitalize(cat.category)}
+                      </IonItem>
+                    ))}
+                  </IonItemGroup>
+                  <IonListHeader>
+                    <IonLabel>CATEGORIES</IonLabel>
+                  </IonListHeader>
+                  <IonItemGroup>
+                    {categories.map((cat, i) => (
+                      <IonItem
+                        class="item"
+                        key={i}
+                        button={true}
+                        lines="none"
+                        onClick={() => onPress(cat.category)}
+                      >
+                        <IonIcon class="icon" icon={cat.icon} />
+                        {capitalize(cat.category)}
+                      </IonItem>
+                    ))}
+                  </IonItemGroup>
                 </IonList>
               </IonCol>
             </IonRow>
@@ -203,22 +236,30 @@ const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
             </IonRow>
             {pwaSearchValue === "" && (
               <IonSegment
+                class="seg"
                 value={cat}
                 onIonChange={(e) => {
                   setCat(e.detail.value!)
                 }}
               >
-                <IonSegmentButton class="seg" value="TRENDING">
+                <IonSegmentButton class="seg-button" value="TRENDING">
                   Discover
                 </IonSegmentButton>
-                <IonSegmentButton class="seg" value="">
+                <IonSegmentButton class="seg-button" value="">
                   Top
                 </IonSegmentButton>
-                <IonSegmentButton class="seg" value="NEW">
+                <IonSegmentButton class="seg-button" value="NEW">
                   New
                 </IonSegmentButton>
               </IonSegment>
             )}
+            <h1
+              style={{
+                marginLeft: "20px",
+              }}
+            >
+              {capitalize(cat === "" ? "TOP" : cat)}
+            </h1>
             <IonRow>{renderPwaList}</IonRow>
           </IonCol>
         </IonRow>

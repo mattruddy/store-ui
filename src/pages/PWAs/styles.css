@@ -1,5 +1,9 @@
-.seg {
+.seg-button {
   --color-checked: black;
+}
+
+.seg {
+  display: none;
 }
 
 .select {
@@ -7,7 +11,35 @@
 }
 
 .search-mobile {
-    display: none;
+  display: none;
+}
+
+.side {
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.list {
+  background: rgb(248, 248, 248);
+}
+
+.item {
+  --color: #737373;
+  --background: rgb(248, 248, 248);
+  font-size: 12px;
+}
+
+.item-top {
+  font-size: 15px;
+}
+
+.icon {
+  height: 15px;
+  width: 15px;
+  margin-right: 10px;
+}
+
+.icon-top {
+  margin-right: 10px;
 }
 
 @media screen and (max-width: 960px) {
@@ -20,6 +52,10 @@
   }
 
   .search-mobile {
-      display: inline;
+    display: inline;
+  }
+
+  .seg {
+    display: flex;
   }
 }

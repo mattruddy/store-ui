@@ -1,28 +1,39 @@
 import React, { useMemo, memo } from "react"
+import { IonSelect, IonSelectOption } from "@ionic/react"
 import {
-  IonSelect,
-  IonSelectOption,
-  IonItem,
-  IonItemDivider,
-  IonLabel,
-} from "@ionic/react"
+  business,
+  heartOutline,
+  schoolOutline,
+  starOutline,
+  fastFoodOutline,
+  gameControllerOutline,
+  easelOutline,
+  musicalNoteOutline,
+  newspaperOutline,
+  chatbubblesOutline,
+  basketballOutline,
+  codeOutline,
+  constructOutline,
+  airplaneOutline,
+  cartOutline,
+} from "ionicons/icons"
 
 export const categories = [
-  "BUSINESS",
-  "DATING",
-  "EDUCATION",
-  "ENTERTAINMENT",
-  "FOOD",
-  "GAME",
-  "LIFESTYLE",
-  "MUSIC",
-  "NEWS",
-  "SHOPPING",
-  "SOCIAL",
-  "SPORTS",
-  "TECH",
-  "TOOL",
-  "TRAVEL",
+  { category: "BUSINESS", icon: business },
+  { category: "DATING", icon: heartOutline },
+  { category: "EDUCATION", icon: schoolOutline },
+  { category: "ENTERTAINMENT", icon: starOutline },
+  { category: "FOOD", icon: fastFoodOutline },
+  { category: "GAME", icon: gameControllerOutline },
+  { category: "LIFESTYLE", icon: easelOutline },
+  { category: "MUSIC", icon: musicalNoteOutline },
+  { category: "NEWS", icon: newspaperOutline },
+  { category: "SHOPPING", icon: cartOutline },
+  { category: "SOCIAL", icon: chatbubblesOutline },
+  { category: "SPORTS", icon: basketballOutline },
+  { category: "TECH", icon: codeOutline },
+  { category: "TOOL", icon: constructOutline },
+  { category: "TRAVEL", icon: airplaneOutline },
 ]
 interface ContainerProps {
   onPress: (option: string) => void
@@ -33,9 +44,9 @@ const CategoryOptions: React.FC<ContainerProps> = ({ onPress, initValue }) => {
   const renderOptions: JSX.Element[] = useMemo(
     () =>
       categories.map((cat, i) => (
-        <IonSelectOption key={i} value={cat}>{`${cat.charAt(0)}${cat
-          .slice(1)
-          .toLowerCase()}`}</IonSelectOption>
+        <IonSelectOption key={i} value={cat}>{`${cat.category.charAt(
+          0
+        )}${cat.category.slice(1).toLowerCase()}`}</IonSelectOption>
       )),
     [categories]
   )

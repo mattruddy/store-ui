@@ -9,7 +9,7 @@ interface ContainerProps {
   history: any
 }
 
-const styles = { root: { height: 330 } }
+const styles = { root: { height: 220 } }
 
 const PWACard: React.FC<ContainerProps> = ({ pwa, url, history }) => {
   const handleClick = () =>
@@ -25,7 +25,7 @@ const PWACard: React.FC<ContainerProps> = ({ pwa, url, history }) => {
         <div style={{ display: "flex", justifyContent: "center" }}>
           <IonImg
             alt="icon"
-            style={{ height: "200px", width: "200px", borderRadius: "5px" }}
+            style={{ height: "100px", width: "100px", borderRadius: "5px" }}
             src={pwa.icon}
           />
         </div>
