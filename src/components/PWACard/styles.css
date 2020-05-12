@@ -15,3 +15,8 @@
   max-height: 18px;
   overflow-x: hidden;
 }
+
+.fade-in {
+  --background: transparent;
+  height: 220px;
+}
