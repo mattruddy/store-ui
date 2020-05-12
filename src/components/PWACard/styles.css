@@ -1,0 +1,17 @@
+.content {
+  display: flex;
+  justify-content: center;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  height: 40px;
+}
+
+.title {
+  font-size: 15px;
+  max-height: 18px;
+  overflow-x: hidden;
+}

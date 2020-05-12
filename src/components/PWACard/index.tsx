@@ -1,8 +1,18 @@
 import React, { memo } from "react"
-import { IonCard, IonCardContent, IonRippleEffect, IonImg } from "@ionic/react"
+import {
+  IonCard,
+  IonCardContent,
+  IonRippleEffect,
+  IonImg,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardSubtitle,
+} from "@ionic/react"
 //@ts-ignore
 import StarRatings from "react-star-ratings"
 import { PWA } from "../../util/types"
+import "./styles.css"
+
 interface ContainerProps {
   pwa: PWA
   url: string
@@ -21,31 +31,26 @@ const PWACard: React.FC<ContainerProps> = ({ pwa, url, history }) => {
       onClick={handleClick}
       style={styles.root}
     >
-      <IonCardContent style={{ overflow: "hidden" }}>
-        <div style={{ display: "flex", justifyContent: "center" }}>
+      <IonCardHeader>
+        <IonCardTitle class="title">{pwa.name}</IonCardTitle>
+        <IonCardSubtitle style={{ fontSize: "12px" }}>
+          {pwa.category}
+        </IonCardSubtitle>
+      </IonCardHeader>
+      <IonCardContent>
+        <div className="content">
           <IonImg
             alt="icon"
             style={{ height: "100px", width: "100px", borderRadius: "5px" }}
             src={pwa.icon}
           />
         </div>
-        <div style={{ paddingLeft: "10px" }}>
-          <p style={{ margin: "0", fontSize: "19px" }}>{pwa.name}</p>
-          <small>{pwa.category}</small>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            alignItems: "center",
-            height: "50px",
-          }}
-        >
+        <div className="card-footer">
           <StarRatings
             rating={pwa.averageRating}
             stars={5}
-            starDimension="20px"
-            starSpacing="4px"
+            starDimension="15px"
+            starSpacing="2px"
           />
         </div>
       </IonCardContent>
