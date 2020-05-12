@@ -1,22 +1,30 @@
-.content {
-  display: flex;
-  justify-content: center;
+.PWACard {
+  background: transparent !important;
+  height: 190px;
 }
 
-.card-footer {
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
-  height: 40px;
+.PWACardHeader {
+  padding: 0;
+  margin-bottom: 0.25rem;
 }
 
-.title {
-  font-size: 15px;
-  max-height: 18px;
+.PWACardImage {
+  height: 120px;
+  width: 100%;
+  border-radius: 5px;
+}
+
+.PWACardTitle {
+  font-size: 1rem;
   overflow-x: hidden;
 }
 
-.fade-in {
-  --background: transparent;
-  height: 220px;
+.PWACardSubTitle {
+  font-size: 0.75rem;
+}
+
+.PWACardContent {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
 }

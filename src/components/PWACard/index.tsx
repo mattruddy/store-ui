@@ -23,22 +23,26 @@ const PWACard: React.FC<ContainerProps> = ({ pwa, url, history }) => {
   const handleClick = () =>
     history.push(`${url}/${pwa.name.replace(/ /g, "-")}`)
   return (
-    <IonCard className="fade-in box-shadow-hover" button onClick={handleClick}>
-      <IonCardHeader>
-        <IonCardTitle class="title">{pwa.name}</IonCardTitle>
-        <IonCardSubtitle style={{ fontSize: "12px" }}>
-          {pwa.category}
-        </IonCardSubtitle>
+    <IonCard
+      className="PWACard fade-in "
+      button
+      onClick={handleClick}
+    >
+      <IonCardHeader className="PWACardHeader PWACardContent">
+        <IonImg alt="icon" className="PWACardImage" src={pwa.icon} />
       </IonCardHeader>
       <IonCardContent>
-        <div className="content">
-          <IonImg
-            alt="icon"
-            style={{ height: "100px", width: "100px", borderRadius: "5px" }}
-            src={pwa.icon}
-          />
+        <div className="PWACardContent">
+          <IonCardTitle className="PWACardTitle">{pwa.name}</IonCardTitle>
         </div>
-        <div className="card-footer">
+
+        <div className="PWACardContent">
+          <IonCardSubtitle className="PWACardSubTitle">
+            {pwa.category}
+          </IonCardSubtitle>
+        </div>
+
+        <div className="PWACardContent">
           <StarRatings
             rating={pwa.averageRating}
             stars={5}
