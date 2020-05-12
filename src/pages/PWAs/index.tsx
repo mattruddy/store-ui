@@ -44,6 +44,7 @@ import {
   flashlightOutline,
   ribbonOutline,
   calendarOutline,
+  closeOutline,
 } from "ionicons/icons"
 
 const standardCategories = [
@@ -58,6 +59,7 @@ const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
   const [pwas, setPwas] = useState<PWA[]>([])
   const [pwaSearchValue, setPwaSearchValue] = useState<string>("")
   const [pwaSearchResults, setPwaSearchResults] = useState<PWA[]>([])
+  const [showSearch, setShowSearch] = useState<boolean>(false)
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const scrollEl = useRef<any>(undefined)
@@ -103,6 +105,11 @@ const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
   const onPress = (option: string) => {
     setCat(option)
     reloadPwas(option)
+  }
+
+  const toggleSearch = () => {
+    console.log("hello")
+    setShowSearch(!showSearch)
   }
 
   const reloadPwas = async (option?: string) => {
@@ -156,8 +163,8 @@ const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
                 <CategoryOptions onPress={onPress} initValue={cat} />
               )}
             </div>
-            <IonButton slot="end">
-              <IonIcon icon={search} />
+            <IonButton slot="end" onClick={toggleSearch}>
+              <IonIcon icon={showSearch ? closeOutline : search} />
             </IonButton>
           </IonButtons>
           <IonTitle
@@ -231,7 +238,9 @@ const PWAs: React.FC<RouteComponentProps> = ({ history }) => {
           <IonCol>
             <IonRow>
               <IonCol class="search-mobile">
-                <DebouncedSearch onChangeCallback={handleOnSearchChange} />
+                {showSearch && (
+                  <DebouncedSearch onChangeCallback={handleOnSearchChange} />
+                )}
               </IonCol>
             </IonRow>
             {pwaSearchValue === "" && (

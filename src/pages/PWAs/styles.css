@@ -10,10 +10,6 @@
   display: none;
 }
 
-.search-mobile {
-  display: none;
-}
-
 .side {
   border-right: 1px solid rgba(0, 0, 0, 0.1);
 }
@@ -49,10 +45,6 @@
   }
 
   .select {
-    display: inline;
-  }
-
-  .search-mobile {
     display: inline;
   }
 
