@@ -7,7 +7,7 @@ import {
   IonLabel,
 } from "@ionic/react"
 
-const categories = [
+export const categories = [
   "BUSINESS",
   "DATING",
   "EDUCATION",

@@ -109,6 +109,10 @@ const copyStringToClipboard = (s: string) => {
   document.body.removeChild(el)
 }
 
+const capitalize = (s: string): string => {
+  return `${s[0].toUpperCase()}${s.slice(1).toLowerCase()}`
+}
+
 export {
   blobToFile,
   fixFilesRotation,
@@ -117,4 +121,5 @@ export {
   dateFormatter,
   shareUrl,
   copyStringToClipboard,
+  capitalize,
 }

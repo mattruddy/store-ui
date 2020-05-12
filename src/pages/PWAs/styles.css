@@ -1,3 +1,25 @@
 .seg {
-    --color-checked: black;
+  --color-checked: black;
+}
+
+.select {
+  display: none;
+}
+
+.search-mobile {
+    display: none;
+}
+
+@media screen and (max-width: 960px) {
+  .side {
+    display: none;
+  }
+
+  .select {
+    display: inline;
+  }
+
+  .search-mobile {
+      display: inline;
+  }
 }
