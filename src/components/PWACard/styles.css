@@ -18,6 +18,8 @@
 
 .PWACardTitle {
   font-size: 1rem;
+  max-height: 18px;
+  overflow: hidden;
 }
 
 .PWACardSubTitle {

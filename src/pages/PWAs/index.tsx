@@ -64,8 +64,9 @@ const PWAs: React.FC<RouteComponentProps> = () => {
   }, [])
 
   useEffect(() => {
-    setCat(category?.toUpperCase() || "")
-    loadPWAs()
+    const newCat = category?.toUpperCase() || ""
+    setCat(newCat)
+    reloadPwas(newCat)
     content.current.scrollToTop()
   }, [category])
 
@@ -74,7 +75,7 @@ const PWAs: React.FC<RouteComponentProps> = () => {
     const resp = await getPWAs(page, cat && cat !== "" ? cat : undefined)
 
     if (resp && resp.length > 0) {
-      setPwas((prev) => prev.concat(resp))
+      setPwas(resp)
     }
     setIsLoading(false)
   }
@@ -93,11 +94,6 @@ const PWAs: React.FC<RouteComponentProps> = () => {
     } finally {
       scrollEl.current.complete()
     }
-  }
-
-  const onPress = (option: string) => {
-    setCat(option)
-    reloadPwas(option)
   }
 
   const toggleSearch = () => {

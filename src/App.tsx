@@ -83,7 +83,11 @@ const IonicApp: React.FC<IonicAppProps> = ({
             />
           </IonRouterOutlet>
           <IonTabBar slot="bottom">
-            <IonTabButton className="tab" tab="pwas" href={RouteMap.PWAS}>
+            <IonTabButton
+              className="tab"
+              tab="pwas"
+              href={RouteMap.PWAS.replace("/:category?", "")}
+            >
               <IonIcon icon={home} />
               <IonLabel>PWAs</IonLabel>
             </IonTabButton>
