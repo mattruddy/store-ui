@@ -148,9 +148,6 @@ const PWAs: React.FC<RouteComponentProps> = () => {
       <IonHeader>
         <IonToolbar className="header">
           <IonButtons slot="end">
-            <div className="select">
-              {pwaSearchValue === "" && <CategoryOptions initValue={cat} />}
-            </div>
             <IonButton slot="end" onClick={toggleSearch}>
               <IonIcon icon={showSearch ? closeOutline : search} />
             </IonButton>
@@ -199,25 +196,6 @@ const PWAs: React.FC<RouteComponentProps> = () => {
                 )}
               </IonCol>
             </IonRow>
-            {pwaSearchValue === "" && (
-              <IonSegment
-                className="seg"
-                value={cat}
-                onIonChange={(e) => {
-                  setCat(e.detail.value!)
-                }}
-              >
-                <IonSegmentButton className="seg-button" value="TRENDING">
-                  Discover
-                </IonSegmentButton>
-                <IonSegmentButton className="seg-button" value="">
-                  Top
-                </IonSegmentButton>
-                <IonSegmentButton className="seg-button" value="NEW">
-                  New
-                </IonSegmentButton>
-              </IonSegment>
-            )}
             <h1
               style={{
                 marginLeft: "20px",

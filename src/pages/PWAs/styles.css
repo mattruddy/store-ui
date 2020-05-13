@@ -15,6 +15,10 @@
   padding: 0;
 }
 
+.CatTabButton {
+  display: none;
+}
+
 @media screen and (max-width: 768px) {
   .side {
     display: none;
@@ -26,5 +30,9 @@
 
   .seg {
     display: flex;
+  }
+
+  .CatTabButton {
+    display: inline;
   }
 }

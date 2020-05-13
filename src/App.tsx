@@ -10,7 +10,14 @@ import {
   IonTabs,
 } from "@ionic/react"
 import { IonReactRouter } from "@ionic/react-router"
-import { person, home, logIn, bandage, informationCircle } from "ionicons/icons"
+import {
+  person,
+  home,
+  logIn,
+  bandage,
+  informationCircle,
+  albumsOutline,
+} from "ionicons/icons"
 import {
   PWAs,
   SignUp,
@@ -21,6 +28,7 @@ import {
   MyPWA,
   About,
   Admin,
+  Categories,
 } from "./pages"
 import { loadUserData } from "./data/user/user.actions"
 import { connect } from "./data/connect"
@@ -74,6 +82,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
             <Route path={[RouteMap.PWAS]} component={PWAs} exact />
             <Route path={RouteMap.ABOUT} component={About} />
             <Route path={RouteMap.ABOUT} component={Admin} exact />
+            <Route path={RouteMap.CATEGORIES} component={Categories} exact />
             <Route
               path={RouteMap.ROOT}
               render={() => (
@@ -90,6 +99,14 @@ const IonicApp: React.FC<IonicAppProps> = ({
             >
               <IonIcon icon={home} />
               <IonLabel>PWAs</IonLabel>
+            </IonTabButton>
+            <IonTabButton
+              className="CatTabButton"
+              tab="categories"
+              href={RouteMap.CATEGORIES}
+            >
+              <IonIcon icon={albumsOutline} />
+              <IonLabel>Categories</IonLabel>
             </IonTabButton>
             <IonTabButton className="tab" tab="about" href={RouteMap.ABOUT}>
               <IonIcon icon={informationCircle} />

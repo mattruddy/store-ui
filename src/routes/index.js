@@ -8,7 +8,7 @@ const RouteMap = {
   MY_PWA_DETAIL: "/mypwa/:id",
   ABOUT: "/about",
   ADMIN: "/admin",
-
+  CATEGORIES: "/categories",
   PWAS: "/pwas/:category?",
 }
 
