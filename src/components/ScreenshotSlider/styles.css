@@ -1,5 +1,5 @@
 .slider {
-  --bullet-background-active: #222428;
+  --bullet-background-active: var(--ion-color-primary);
 }
 
 .ScreenshotSliderImage {

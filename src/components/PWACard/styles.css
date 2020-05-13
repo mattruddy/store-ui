@@ -12,8 +12,8 @@
 .PWACardImage {
   height: 120px;
   width: 120px;
-  border-radius: 6px;
   background: transparent;
+  border-radius: 6px;
 }
 
 .PWACardTitle {

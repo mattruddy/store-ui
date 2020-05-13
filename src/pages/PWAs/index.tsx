@@ -24,7 +24,6 @@ import {
   IonButtons,
   IonIcon,
   IonButton,
-  IonGrid,
 } from "@ionic/react"
 import {
   CategoryOptions,
@@ -34,13 +33,15 @@ import {
 } from "../../components"
 import { getPWAs, getSearchApp } from "../../data/dataApi"
 import { PWA } from "../../util/types"
-import { RouteComponentProps, useParams } from "react-router"
+import { RouteComponentProps, useParams, useHistory } from "react-router"
 import { setLoading } from "../../data/user/user.actions"
 
 import "./styles.css"
 import ReactGA from "react-ga"
 import { capitalize } from "../../util"
 import { search, closeOutline } from "ionicons/icons"
+import { categories } from "../../components/CategoryOptions"
+import { standardCategories } from "../../components/SideBar"
 
 const PWAs: React.FC<RouteComponentProps> = () => {
   const { category } = useParams()
@@ -50,6 +51,7 @@ const PWAs: React.FC<RouteComponentProps> = () => {
   const [pwaSearchValue, setPwaSearchValue] = useState<string>("")
   const [pwaSearchResults, setPwaSearchResults] = useState<PWA[]>([])
   const [showSearch, setShowSearch] = useState<boolean>(false)
+  const [scrollDisabled, setScrollDisabled] = useState<boolean>(false)
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const scrollEl = useRef<any>(undefined)
@@ -64,32 +66,34 @@ const PWAs: React.FC<RouteComponentProps> = () => {
   }, [])
 
   useEffect(() => {
-    const newCat = category?.toUpperCase() || ""
+    let newCat = ""
+    if (
+      category &&
+      (categories.find((cat) => cat.category === category.toUpperCase()) ||
+        standardCategories.find((cat) => cat.value === category.toUpperCase()))
+    ) {
+      newCat = category.toUpperCase()
+    }
     setCat(newCat)
     reloadPwas(newCat)
+    setScrollDisabled(false)
     content.current.scrollToTop()
   }, [category])
 
-  const loadPWAs = async () => {
-    setIsLoading(true)
-    const resp = await getPWAs(page, cat && cat !== "" ? cat : undefined)
-
-    if (resp && resp.length > 0) {
-      setPwas(resp)
-    }
-    setIsLoading(false)
-  }
-
   const loadMorePwas = async () => {
     try {
-      const nextPage = page + 1
-      const nextPwas = await getPWAs(
-        nextPage,
-        cat && cat !== "" ? cat : undefined
-      )
-      if (nextPwas) {
-        setPwas((prev) => prev.concat(nextPwas))
-        setPage(nextPage)
+      if (cat !== "TRENDING") {
+        const nextPage = page + 1
+        const nextPwas = (await getPWAs(
+          nextPage,
+          cat && cat !== "" ? cat : undefined
+        )) as P]8'=[-0o98765413`w2q WA[]
+        if (nextPwas && nextPwas.length > 0) {
+          setPwas((prev) => prev.concat(nextPwas))
+          setPage(nextPage)
+        } else {
+          setScrollDisabled(true)
+        }
       }
     } finally {
       scrollEl.current.complete()
@@ -97,7 +101,11 @@ const PWAs: React.FC<RouteComponentProps> = () => {
   }
 
   const toggleSearch = () => {
-    setShowSearch(!showSearch)
+    const newShowSearch = !showSearch
+    setShowSearch(newShowSearch)
+    if (newShowSearch) {
+      content.current.scrollToTop()
+    }
   }
 
   const reloadPwas = async (option?: string) => {
@@ -222,16 +230,14 @@ const PWAs: React.FC<RouteComponentProps> = () => {
             <IonRow>{renderPwaList}</IonRow>
           </IonCol>
         </IonRow>
-
-        {cat !== "TRENDING" && (
-          <IonInfiniteScroll
-            ref={scrollEl}
-            threshold="100px"
-            onIonInfinite={loadMorePwas}
-          >
-            <IonInfiniteScrollContent />
-          </IonInfiniteScroll>
-        )}
+        <IonInfiniteScroll
+          ref={scrollEl}
+          threshold="100px"
+          disabled={scrollDisabled}
+          onIonInfinite={loadMorePwas}
+        >
+          <IonInfiniteScrollContent />
+        </IonInfiniteScroll>
       </IonContent>
     </IonPage>
   )

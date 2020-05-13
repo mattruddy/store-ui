@@ -18,17 +18,18 @@ import { useHistory } from "react-router"
 import { GetPwaCategoryUrl } from "../../routes"
 import "./styles.css"
 
+export const standardCategories = [
+  { category: "TOP", value: "", icon: ribbonOutline },
+  { category: "NEW", value: "NEW", icon: calendarOutline },
+  { category: "DISCOVER", value: "TRENDING", icon: flashlightOutline },
+]
+
 const SideBar = () => {
   const history = useHistory()
 
-  const standardCategories = [
-    { category: "TOP", value: "", icon: ribbonOutline },
-    { category: "NEW", value: "NEW", icon: calendarOutline },
-    { category: "DISCOVER", value: "TRENDING", icon: flashlightOutline },
-  ]
-
-  const onPress = (category: string) =>
+  const onPress = (category: string) => {
     history.push(GetPwaCategoryUrl(category.toLowerCase()))
+  }
 
   const renderStandardCategories = useMemo(
     () =>
@@ -63,7 +64,6 @@ const SideBar = () => {
       )),
     []
   )
-
   return (
     <IonList className="SideBar">
       <IonItemGroup>{renderStandardCategories}</IonItemGroup>
