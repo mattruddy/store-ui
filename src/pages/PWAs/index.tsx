@@ -24,6 +24,7 @@ import {
   IonButtons,
   IonIcon,
   IonButton,
+  IonBackButton,
 } from "@ionic/react"
 import {
   CategoryOptions,
@@ -42,6 +43,7 @@ import { capitalize } from "../../util"
 import { search, closeOutline } from "ionicons/icons"
 import { categories } from "../../components/CategoryOptions"
 import { standardCategories } from "../../components/SideBar"
+import { RouteMap } from "../../routes"
 
 const PWAs: React.FC<RouteComponentProps> = () => {
   const { category } = useParams()
@@ -147,6 +149,11 @@ const PWAs: React.FC<RouteComponentProps> = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar className="header">
+          <IonButtons className="PWAsBackButton" slot="start">
+            {categories.find((x) => x.category === cat) && (
+              <IonBackButton defaultHref={RouteMap.CATEGORIES} />
+            )}
+          </IonButtons>
           <IonButtons slot="end">
             <IonButton slot="end" onClick={toggleSearch}>
               <IonIcon icon={showSearch ? closeOutline : search} />

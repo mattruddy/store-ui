@@ -19,7 +19,7 @@ const Categories: React.FC = () => {
   const history = useHistory()
 
   const onPress = (category: string) =>
-    history.replace(GetPwaCategoryUrl(category.toLowerCase()))
+    history.push(GetPwaCategoryUrl(category.toLowerCase()))
 
   return (
     <IonPage>
