@@ -114,7 +114,6 @@ const PWAs: React.FC<RouteComponentProps> = () => {
   const reloadPwas = async (option?: string) => {
     try {
       setLoading(true)
-      //setPwas([])
       setPage(0)
       const resp = await getPWAs(
         0,
@@ -139,7 +138,13 @@ const PWAs: React.FC<RouteComponentProps> = () => {
   const renderPwaList = useMemo(() => {
     const streamPWAs = pwaSearchValue ? pwaSearchResults : pwas
     if (!isLoading && streamPWAs.length < 1) {
-      return <IonNote className="PWAsEmptyNote">No PWAs in the following category</IonNote>
+      return (
+        !showSearch && (
+          <IonNote className="PWAsEmptyNote">
+            No PWAs in the following category
+          </IonNote>
+        )
+      )
     }
     return streamPWAs.map((pwa, i) => (
       <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
@@ -206,15 +211,17 @@ const PWAs: React.FC<RouteComponentProps> = () => {
                 )}
               </IonCol>
             </IonRow>
-            <h1
-              style={{
-                marginLeft: "20px",
-              }}
-            >
-              {capitalize(
-                cat === "" ? "TOP" : cat === "TRENDING" ? "DISCOVER" : cat
-              )}
-            </h1>
+            {!showSearch && (
+              <h1
+                style={{
+                  marginLeft: "20px",
+                }}
+              >
+                {capitalize(
+                  cat === "" ? "TOP" : cat === "TRENDING" ? "DISCOVER" : cat
+                )}
+              </h1>
+            )}
             <IonRow>{renderPwaList}</IonRow>
           </IonCol>
         </IonRow>
