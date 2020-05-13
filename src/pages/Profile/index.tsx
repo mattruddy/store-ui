@@ -533,6 +533,11 @@ const Profile: React.FC<ProfileProps> = ({
       </IonModal>
       <IonHeader>
         <IonToolbar>
+          <IonButtons slot="end">
+            <IonButton onClick={() => history.push(RouteMap.SUPPORT)}>
+              SUPPORT
+            </IonButton>
+          </IonButtons>
           <IonTitle>{profile?.username}</IonTitle>
         </IonToolbar>
       </IonHeader>

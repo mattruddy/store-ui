@@ -11,8 +11,11 @@ import {
   IonLabel,
   IonToast,
   IonItem,
+  IonButtons,
+  IonBackButton,
 } from "@ionic/react"
 import { postEmail } from "../../data/dataApi"
+import { RouteMap } from "../../routes"
 
 const Support: React.FC = () => {
   const [text, setText] = useState<string>()
@@ -23,6 +26,9 @@ const Support: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
+          <IonButtons slot="start">
+            <IonBackButton defaultHref={RouteMap.PROFILE} />
+          </IonButtons>
           <IonTitle>Support</IonTitle>
         </IonToolbar>
       </IonHeader>

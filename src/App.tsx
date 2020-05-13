@@ -114,15 +114,6 @@ const IonicApp: React.FC<IonicAppProps> = ({
             </IonTabButton>
             <IonTabButton
               className="tab"
-              tab="support"
-              href={RouteMap.SUPPORT}
-              hidden={!isLoggedIn}
-            >
-              <IonIcon icon={bandage} />
-              <IonLabel>Support</IonLabel>
-            </IonTabButton>
-            <IonTabButton
-              className="tab"
               tab="login"
               href={RouteMap.LOGIN}
               disabled={isLoggedIn}
