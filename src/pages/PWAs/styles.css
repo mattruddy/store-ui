@@ -11,6 +11,10 @@
   padding: 0;
 }
 
+.PWAsEmptyNote {
+  margin-left: 32px;
+}
+
 .CatTabButton {
   display: none;
 }

@@ -25,6 +25,7 @@ import {
   IonIcon,
   IonButton,
   IonBackButton,
+  IonNote,
 } from "@ionic/react"
 import {
   CategoryOptions,
@@ -113,7 +114,7 @@ const PWAs: React.FC<RouteComponentProps> = () => {
   const reloadPwas = async (option?: string) => {
     try {
       setLoading(true)
-      setPwas([])
+      //setPwas([])
       setPage(0)
       const resp = await getPWAs(
         0,
@@ -135,15 +136,17 @@ const PWAs: React.FC<RouteComponentProps> = () => {
     }
   }, [])
 
-  const renderPwaList = useMemo(
-    () =>
-      (pwaSearchValue ? pwaSearchResults : pwas).map((pwa, i) => (
-        <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
-          <PWACard url="/pwa" pwa={pwa} />
-        </IonCol>
-      )),
-    [pwas, pwaSearchValue, pwaSearchResults]
-  )
+  const renderPwaList = useMemo(() => {
+    const streamPWAs = pwaSearchValue ? pwaSearchResults : pwas
+    if (!isLoading && streamPWAs.length < 1) {
+      return <IonNote className="PWAsEmptyNote">No PWAs in the following category</IonNote>
+    }
+    return streamPWAs.map((pwa, i) => (
+      <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
+        <PWACard url="/pwa" pwa={pwa} />
+      </IonCol>
+    ))
+  }, [pwas, pwaSearchValue, pwaSearchResults])
 
   return (
     <IonPage>
