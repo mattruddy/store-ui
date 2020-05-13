@@ -28,7 +28,7 @@ const SideBar = () => {
   const history = useHistory()
 
   const onPress = (category: string) => {
-    history.push(GetPwaCategoryUrl(category.toLowerCase()))
+    history.replace(GetPwaCategoryUrl(category.toLowerCase()))
   }
 
   const renderStandardCategories = useMemo(
@@ -54,7 +54,7 @@ const SideBar = () => {
         <IonItem
           key={i}
           className="CategoriesItem SideBarCategory"
-          lines="none"
+          // lines="none"
           button={true}
           onClick={() => onPress(cat.category)}
         >

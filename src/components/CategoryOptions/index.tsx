@@ -46,7 +46,7 @@ const CategoryOptions: React.FC<ContainerProps> = ({ initValue }) => {
   const history = useHistory()
 
   const onPress = (category: any) =>
-    history.push(GetPwaCategoryUrl(category.toLowerCase()))
+    history.replace(GetPwaCategoryUrl(category.toLowerCase()))
 
   const renderOptions: JSX.Element[] = useMemo(
     () =>
