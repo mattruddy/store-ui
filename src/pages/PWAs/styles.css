@@ -15,7 +15,7 @@
   padding: 0;
 }
 
-@media screen and (max-width: 960px) {
+@media screen and (max-width: 768px) {
   .side {
     display: none;
   }

@@ -128,13 +128,7 @@ const PWAs: React.FC<RouteComponentProps> = () => {
   const renderPwaList = useMemo(
     () =>
       (pwaSearchValue ? pwaSearchResults : pwas).map((pwa, i) => (
-        <IonCol
-          key={i}
-          size="6"
-          sizeMd="4"
-          sizeLg="3"
-          // sizeXl="3"
-        >
+        <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
           <PWACard url="/pwa" pwa={pwa} />
         </IonCol>
       )),
@@ -186,7 +180,7 @@ const PWAs: React.FC<RouteComponentProps> = () => {
           />
         </IonRow>
         <IonRow>
-          <IonCol size="2" className="side">
+          <IonCol size="2.5" className="side">
             <SideBar />
           </IonCol>
           <IonCol className="CardListCol">
@@ -221,7 +215,9 @@ const PWAs: React.FC<RouteComponentProps> = () => {
                 marginLeft: "20px",
               }}
             >
-              {capitalize(cat === "" ? "TOP" : cat)}
+              {capitalize(
+                cat === "" ? "TOP" : cat === "TRENDING" ? "DISCOVER" : cat
+              )}
             </h1>
             <IonRow>{renderPwaList}</IonRow>
           </IonCol>
