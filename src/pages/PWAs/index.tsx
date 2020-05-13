@@ -84,10 +84,10 @@ const PWAs: React.FC<RouteComponentProps> = () => {
     try {
       if (cat !== "TRENDING") {
         const nextPage = page + 1
-        const nextPwas = (await getPWAs(
+        const nextPwas = await getPWAs(
           nextPage,
           cat && cat !== "" ? cat : undefined
-        )) as P]8'=[-0o98765413`w2q WA[]
+        )
         if (nextPwas && nextPwas.length > 0) {
           setPwas((prev) => prev.concat(nextPwas))
           setPage(nextPage)
