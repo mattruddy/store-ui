@@ -136,7 +136,7 @@ const PWAs: React.FC<RouteComponentProps> = () => {
   }, [])
 
   const renderPwaList = useMemo(() => {
-    const streamPWAs = pwaSearchValue ? pwaSearchResults : pwas
+    const streamPWAs = showSearch ? pwaSearchResults : pwas
     if (!isLoading && streamPWAs.length < 1) {
       return (
         !showSearch && (
@@ -151,7 +151,7 @@ const PWAs: React.FC<RouteComponentProps> = () => {
         <PWACard url="/pwa" pwa={pwa} />
       </IonCol>
     ))
-  }, [pwas, pwaSearchValue, pwaSearchResults])
+  }, [pwas, pwaSearchValue, pwaSearchResults, showSearch])
 
   return (
     <IonPage>

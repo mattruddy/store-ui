@@ -248,7 +248,7 @@ const MyPWA: React.FC<PWAProps> = ({ history }) => {
                 )}
                 {isEdit ? (
                   <>
-                    <CategoryOptions initValue={cat} />
+                    <CategoryOptions onPress={onCatChange} initValue={cat} />
                     {catError && (
                       <IonText color="danger">
                         <p>{catError}</p>

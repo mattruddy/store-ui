@@ -39,15 +39,11 @@ export const categories = [
   { category: "TRAVEL", icon: airplaneOutline },
 ]
 interface ContainerProps {
+  onPress: (option: string) => void
   initValue?: string
 }
 
-const CategoryOptions: React.FC<ContainerProps> = ({ initValue }) => {
-  const history = useHistory()
-
-  const onPress = (category: any) =>
-    history.replace(GetPwaCategoryUrl(category.toLowerCase()))
-
+const CategoryOptions: React.FC<ContainerProps> = ({ onPress, initValue }) => {
   const renderOptions: JSX.Element[] = useMemo(
     () =>
       categories.map((cat, i) => (
@@ -60,7 +56,6 @@ const CategoryOptions: React.FC<ContainerProps> = ({ initValue }) => {
 
   return (
     <IonSelect
-      interface="popover"
       interfaceOptions={{
         header: "Categories",
       }}
