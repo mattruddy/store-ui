@@ -17,6 +17,9 @@ import {
   airplaneOutline,
   cartOutline,
 } from "ionicons/icons"
+import { useHistory } from "react-router"
+import { GetPwaCategoryUrl } from "../../routes"
+import { capitalize } from "../../util"
 
 export const categories = [
   { category: "BUSINESS", icon: business },
@@ -36,17 +39,21 @@ export const categories = [
   { category: "TRAVEL", icon: airplaneOutline },
 ]
 interface ContainerProps {
-  onPress: (option: string) => void
   initValue?: string
 }
 
-const CategoryOptions: React.FC<ContainerProps> = ({ onPress, initValue }) => {
+const CategoryOptions: React.FC<ContainerProps> = ({ initValue }) => {
+  const history = useHistory()
+
+  const onPress = (category: any) =>
+    history.push(GetPwaCategoryUrl(category.toLowerCase()))
+
   const renderOptions: JSX.Element[] = useMemo(
     () =>
       categories.map((cat, i) => (
-        <IonSelectOption key={i} value={cat}>{`${cat.category.charAt(
-          0
-        )}${cat.category.slice(1).toLowerCase()}`}</IonSelectOption>
+        <IonSelectOption key={i} value={cat.category}>
+          {capitalize(cat.category)}
+        </IonSelectOption>
       )),
     [categories]
   )

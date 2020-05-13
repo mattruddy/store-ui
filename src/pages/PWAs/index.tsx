@@ -66,6 +66,7 @@ const PWAs: React.FC<RouteComponentProps> = () => {
   useEffect(() => {
     setCat(category?.toUpperCase() || "")
     loadPWAs()
+    content.current.scrollToTop()
   }, [category])
 
   const loadPWAs = async () => {
@@ -133,7 +134,7 @@ const PWAs: React.FC<RouteComponentProps> = () => {
       (pwaSearchValue ? pwaSearchResults : pwas).map((pwa, i) => (
         <IonCol
           key={i}
-          size="12"
+          size="6"
           sizeMd="4"
           sizeLg="3"
           // sizeXl="3"
@@ -150,9 +151,7 @@ const PWAs: React.FC<RouteComponentProps> = () => {
         <IonToolbar className="header">
           <IonButtons slot="end">
             <div className="select">
-              {pwaSearchValue === "" && (
-                <CategoryOptions onPress={onPress} initValue={cat} />
-              )}
+              {pwaSearchValue === "" && <CategoryOptions initValue={cat} />}
             </div>
             <IonButton slot="end" onClick={toggleSearch}>
               <IonIcon icon={showSearch ? closeOutline : search} />
@@ -171,78 +170,77 @@ const PWAs: React.FC<RouteComponentProps> = () => {
           </IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonRefresherContent className="PWAs">
-        <IonContent className="content" ref={content} forceOverscroll={true}>
-          <IonRefresher
-            slot="fixed"
-            onIonRefresh={async (event: any) => {
-              try {
-                await reloadPwas()
-              } finally {
-                event.detail.complete()
-              }
-            }}
-          ></IonRefresher>
-
-          <IonRow>
-            <IonProgressBar
-              type={isLoading ? "indeterminate" : "determinate"}
-              color="primary"
-            />
-          </IonRow>
-          <IonRow>
-            <IonCol size="2" className="side">
-              <SideBar />
-            </IonCol>
-            <IonCol>
-              <IonRow>
-                <IonCol size="12">
-                  {showSearch && (
-                    <DebouncedSearch onChangeCallback={handleOnSearchChange} />
-                  )}
-                </IonCol>
-              </IonRow>
-              {pwaSearchValue === "" && (
-                <IonSegment
-                  className="seg"
-                  value={cat}
-                  onIonChange={(e) => {
-                    setCat(e.detail.value!)
-                  }}
-                >
-                  <IonSegmentButton className="seg-button" value="TRENDING">
-                    Discover
-                  </IonSegmentButton>
-                  <IonSegmentButton className="seg-button" value="">
-                    Top
-                  </IonSegmentButton>
-                  <IonSegmentButton className="seg-button" value="NEW">
-                    New
-                  </IonSegmentButton>
-                </IonSegment>
-              )}
-              <h1
-                style={{
-                  marginLeft: "20px",
+      <IonContent className="content" ref={content}>
+        <IonRefresher
+          slot="fixed"
+          onIonRefresh={async (event: any) => {
+            try {
+              await reloadPwas()
+            } finally {
+              event.detail.complete()
+            }
+          }}
+        >
+          <IonRefresherContent />
+        </IonRefresher>
+        <IonRow>
+          <IonProgressBar
+            type={isLoading ? "indeterminate" : "determinate"}
+            color="primary"
+          />
+        </IonRow>
+        <IonRow>
+          <IonCol size="2" className="side">
+            <SideBar />
+          </IonCol>
+          <IonCol className="CardListCol">
+            <IonRow>
+              <IonCol size="12">
+                {showSearch && (
+                  <DebouncedSearch onChangeCallback={handleOnSearchChange} />
+                )}
+              </IonCol>
+            </IonRow>
+            {pwaSearchValue === "" && (
+              <IonSegment
+                className="seg"
+                value={cat}
+                onIonChange={(e) => {
+                  setCat(e.detail.value!)
                 }}
               >
-                {capitalize(cat === "" ? "TOP" : cat)}
-              </h1>
-              <IonRow>{renderPwaList}</IonRow>
-            </IonCol>
-          </IonRow>
-
-          {cat !== "TRENDING" && (
-            <IonInfiniteScroll
-              ref={scrollEl}
-              threshold="1000px"
-              onIonInfinite={loadMorePwas}
+                <IonSegmentButton className="seg-button" value="TRENDING">
+                  Discover
+                </IonSegmentButton>
+                <IonSegmentButton className="seg-button" value="">
+                  Top
+                </IonSegmentButton>
+                <IonSegmentButton className="seg-button" value="NEW">
+                  New
+                </IonSegmentButton>
+              </IonSegment>
+            )}
+            <h1
+              style={{
+                marginLeft: "20px",
+              }}
             >
-              <IonInfiniteScrollContent />
-            </IonInfiniteScroll>
-          )}
-        </IonContent>
-      </IonRefresherContent>
+              {capitalize(cat === "" ? "TOP" : cat)}
+            </h1>
+            <IonRow>{renderPwaList}</IonRow>
+          </IonCol>
+        </IonRow>
+
+        {cat !== "TRENDING" && (
+          <IonInfiniteScroll
+            ref={scrollEl}
+            threshold="100px"
+            onIonInfinite={loadMorePwas}
+          >
+            <IonInfiniteScrollContent />
+          </IonInfiniteScroll>
+        )}
+      </IonContent>
     </IonPage>
   )
 }

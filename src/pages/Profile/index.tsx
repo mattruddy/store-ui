@@ -442,7 +442,7 @@ const Profile: React.FC<ProfileProps> = ({
                 )}
               </IonItem>
               <IonItem>
-                <CategoryOptions onPress={onPress} initValue={cat} />
+                <CategoryOptions initValue={cat} />
                 {catError && (
                   <IonText color="danger">
                     <p>{catError}</p>
