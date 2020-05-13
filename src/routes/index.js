@@ -20,7 +20,6 @@ const GetPWADetailUrl = (name) => {
 }
 
 const GetMyPWADetailUrl = (name) => {
-  // const pwaName = getPwaName(name)
   return RouteMap.PWA_DETAIL.replace(":id", name)
 }
 
