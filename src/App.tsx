@@ -88,9 +88,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
             <Route path="/home" component={Home} />
             <Route
               path={RouteMap.ROOT}
-              render={() => (
-                <Redirect to={RouteMap.PWAS.replace("/:category?", "")} />
-              )}
+              render={() => <Redirect to={RouteMap.HOME} />}
               exact={true}
             />
           </IonRouterOutlet>
