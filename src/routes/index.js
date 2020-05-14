@@ -2,7 +2,7 @@ const RouteMap = {
   ROOT: "/",
   PWA_DETAIL: "/pwa/:pwaName",
   SUPPORT: "/support",
-  SIGNUP: "/sign-up",
+  SIGNUP: "/signup",
   LOGIN: "/login",
   PROFILE: "/profile",
   MY_PWA_DETAIL: "/mypwa/:id",
