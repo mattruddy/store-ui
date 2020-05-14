@@ -69,6 +69,23 @@ export const getPWAs = async (page: number, category?: string) => {
   }
 }
 
+export const getHome = async () => {
+  try {
+    const response = await Axios.request({
+      url: `${vars().env.API_URL}/public/home`,
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+    const { data } = response
+    return data
+  } catch (error) {
+    return error.response
+  }
+}
+
 export const getPWA = async (name: string) => {
   try {
     const response = await Axios.request({
@@ -529,10 +546,10 @@ export const getManifest = async (url: string) => {
 export const getManifest1 = async (url: string) => {
   const requestUrl = `https://fetch-manifest.now.sh/?url=${url}`
   try {
-    const response = await FetchCors(requestUrl);
-    return response as Response;
+    const response = await FetchCors(requestUrl)
+    return response as Response
   } catch (error) {
-    throw error;
+    throw error
   }
 
   // try {
