@@ -19,20 +19,13 @@ import {
   IonProgressBar,
   IonRefresher,
   IonRefresherContent,
-  IonSegment,
-  IonSegmentButton,
   IonButtons,
   IonIcon,
   IonButton,
   IonBackButton,
   IonNote,
 } from "@ionic/react"
-import {
-  CategoryOptions,
-  DebouncedSearch,
-  PWACard,
-  SideBar,
-} from "../../components"
+import { DebouncedSearch, PWACard, SideBar } from "../../components"
 import { getPWAs, getSearchApp, getHome } from "../../data/dataApi"
 import { PWA, HomePWAs } from "../../util/types"
 import { RouteComponentProps, useParams, useHistory } from "react-router"
@@ -63,16 +56,11 @@ const PWAs: React.FC<RouteComponentProps> = () => {
 
   useEffect(() => {
     ReactGA.pageview("PWAs Home")
-    loadHomeApps()
     return () => {
       setPwas([])
       setPage(0)
     }
   }, [])
-
-  const loadHomeApps = async () => {
-    setHomeResult(await getHome())
-  }
 
   useEffect(() => {
     let newCat = ""
@@ -159,37 +147,6 @@ const PWAs: React.FC<RouteComponentProps> = () => {
     ))
   }, [pwas, pwaSearchValue, pwaSearchResults, showSearch])
 
-  const renderHomeList = useMemo(() => {
-    return (
-      <>
-        <h1>Top</h1>
-        <IonRow className="HomeRow">
-          {homeResult?.topApps.map((topApp, i) => (
-            <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
-              <PWACard url="/pwa" pwa={topApp} />
-            </IonCol>
-          ))}
-        </IonRow>
-        <IonTitle>New</IonTitle>
-        <IonRow className="HomeRow">
-          {homeResult?.newApps.map((newApp, i) => (
-            <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
-              <PWACard url="/pwa" pwa={newApp} />
-            </IonCol>
-          ))}
-        </IonRow>
-        <h1>Discover</h1>
-        <IonRow className="HomeRow">
-          {homeResult?.topApps.map((discoverApp, i) => (
-            <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
-              <PWACard url="/pwa" pwa={discoverApp} />
-            </IonCol>
-          ))}
-        </IonRow>
-      </>
-    )
-  }, [homeResult])
-
   return (
     <IonPage>
       <IonHeader>
@@ -237,9 +194,7 @@ const PWAs: React.FC<RouteComponentProps> = () => {
           />
         </IonRow>
         <IonRow>
-          <IonCol size="2.5" className="side">
-            <SideBar />
-          </IonCol>
+          <SideBar />
           <IonCol className="CardListCol">
             <IonRow>
               <IonCol size="12">
@@ -259,8 +214,7 @@ const PWAs: React.FC<RouteComponentProps> = () => {
                 )}
               </h1>
             )}
-            {cat !== "" && <IonRow>{renderPwaList}</IonRow>}
-            {cat === "" && <IonRow>{renderHomeList}</IonRow>}
+            <IonRow>{renderPwaList}</IonRow>
           </IonCol>
         </IonRow>
         <IonInfiniteScroll

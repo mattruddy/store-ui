@@ -36,6 +36,7 @@ import { AppContextProvider } from "./data/AppContext"
 import { RouteMap } from "./routes"
 import ReactGA from "react-ga"
 import { SideBar } from "./components"
+import Home from "./pages/Home"
 
 const App: React.FC = () => {
   return (
@@ -80,28 +81,21 @@ const IonicApp: React.FC<IonicAppProps> = ({
             <Route path={RouteMap.LOGIN} component={Login} />
             <Route path={RouteMap.PROFILE} component={Profile} />
             <Route path={RouteMap.MY_PWA_DETAIL} component={MyPWA} />
-            <Route path={[RouteMap.PWAS]} component={PWAs} exact />
             <Route path={RouteMap.ABOUT} component={About} />
             <Route path={RouteMap.ADMIN} component={Admin} exact />
             <Route path={RouteMap.CATEGORIES} component={Categories} exact />
-            <Route path="/test">
-              <SideBar />
-              <Route path="/home"></Route>
-              <Route
-                path={RouteMap.ROOT}
-                render={() => (
-                  <Redirect to={RouteMap.PWAS.replace("/:category?", "")} />
-                )}
-                exact={true}
-              />
-            </Route>
+            <Route path={[RouteMap.PWAS]} component={PWAs} exact />
+            <Route path="/home" component={Home} />
+            <Route
+              path={RouteMap.ROOT}
+              render={() => (
+                <Redirect to={RouteMap.PWAS.replace("/:category?", "")} />
+              )}
+              exact={true}
+            />
           </IonRouterOutlet>
           <IonTabBar slot="bottom">
-            <IonTabButton
-              className="tab"
-              tab="pwas"
-              href={RouteMap.PWAS.replace("/:category?", "")}
-            >
+            <IonTabButton className="tab" tab="home" href={RouteMap.HOME}>
               <IonIcon icon={home} />
               <IonLabel>PWAs</IonLabel>
             </IonTabButton>
