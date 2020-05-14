@@ -124,7 +124,7 @@ const PWA: React.FC<PWAProps> = ({
           <IonHeader>
             <IonToolbar>
               <IonButtons slot="start">
-                <IonBackButton defaultHref="/pwas" />
+                <IonBackButton defaultHref="/home" />
               </IonButtons>
               <IonLabel style={{ marginRight: "10px" }} slot="end">
                 PWA Store

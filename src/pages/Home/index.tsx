@@ -1,4 +1,11 @@
-import React, { useState, useEffect, useRef, useMemo, memo } from "react"
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  memo,
+  useCallback,
+} from "react"
 import {
   IonContent,
   IonHeader,
@@ -8,35 +15,69 @@ import {
   IonRow,
   IonCol,
   IonProgressBar,
+  useIonViewDidEnter,
+  IonRouterLink,
+  IonButton,
+  IonButtons,
+  IonIcon,
+  IonNote,
 } from "@ionic/react"
-import { PWACard, SideBar } from "../../components"
-import { getHome } from "../../data/dataApi"
+import { PWACard, SideBar, DebouncedSearch } from "../../components"
+import { getHome, getSearchApp } from "../../data/dataApi"
 import { PWA, HomePWAs } from "../../util/types"
 import { RouteComponentProps, useParams, useHistory } from "react-router"
+import "./styles.css"
+import { RouteMap, GetPwaCategoryUrl } from "../../routes"
+import { closeOutline, search } from "ionicons/icons"
 
 const Home: React.FC<RouteComponentProps> = () => {
-  const { category } = useParams()
-  const [page, setPage] = useState<number>(0)
-  const [cat, setCat] = useState<string>("")
-  const [pwas, setPwas] = useState<PWA[]>([])
+  const history = useHistory()
   const [pwaSearchValue, setPwaSearchValue] = useState<string>("")
   const [pwaSearchResults, setPwaSearchResults] = useState<PWA[]>([])
   const [homeResult, setHomeResult] = useState<HomePWAs>()
   const [showSearch, setShowSearch] = useState<boolean>(false)
-  const [scrollDisabled, setScrollDisabled] = useState<boolean>(false)
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const scrollEl = useRef<any>(undefined)
   const content = useRef<any>()
+
+  useIonViewDidEnter(() => {
+    loadHomeApps()
+  })
 
   const loadHomeApps = async () => {
     setHomeResult(await getHome())
   }
 
+  const onPress = (category: string) =>
+    history.push(GetPwaCategoryUrl(category))
+
+  const toggleSearch = () => {
+    const newShowSearch = !showSearch
+    setShowSearch(newShowSearch)
+    if (newShowSearch) {
+      content.current.scrollToTop()
+    }
+  }
+
+  const handleOnSearchChange = useCallback(async (appName: string) => {
+    setPwaSearchValue(appName)
+    if (appName) {
+      const results = await getSearchApp(appName)
+      setPwaSearchResults(results)
+    } else {
+      setPwaSearchResults([])
+    }
+  }, [])
+
   const renderHomeList = useMemo(() => {
     return (
       <>
-        <h1>Top</h1>
+        <div className="HomeRowHeader">
+          <h1>Top</h1>
+          <IonButton className="HomeViewMoreButton" onClick={() => onPress("")}>
+            More
+          </IonButton>
+        </div>
         <IonRow className="HomeRow">
           {homeResult?.topApps.map((topApp, i) => (
             <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
@@ -44,7 +85,15 @@ const Home: React.FC<RouteComponentProps> = () => {
             </IonCol>
           ))}
         </IonRow>
-        <IonTitle>New</IonTitle>
+        <div className="HomeRowHeader">
+          <h1>New</h1>
+          <IonButton
+            className="HomeViewMoreButton"
+            onClick={() => onPress("NEW")}
+          >
+            More
+          </IonButton>
+        </div>
         <IonRow className="HomeRow">
           {homeResult?.newApps.map((newApp, i) => (
             <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
@@ -52,7 +101,15 @@ const Home: React.FC<RouteComponentProps> = () => {
             </IonCol>
           ))}
         </IonRow>
-        <h1>Discover</h1>
+        <div className="HomeRowHeader">
+          <h1>Discover</h1>
+          <IonButton
+            className="HomeViewMoreButton"
+            onClick={() => onPress("TRENDING")}
+          >
+            More
+          </IonButton>
+        </div>
         <IonRow className="HomeRow">
           {homeResult?.topApps.map((discoverApp, i) => (
             <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
@@ -68,11 +125,12 @@ const Home: React.FC<RouteComponentProps> = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar className="header">
-          <IonTitle
-            onClick={() => {
-              content.current.scrollToTop()
-            }}
-          >
+          <IonButtons slot="end">
+            <IonButton slot="end" onClick={toggleSearch}>
+              <IonIcon icon={showSearch ? closeOutline : search} />
+            </IonButton>
+          </IonButtons>
+          <IonTitle>
             <img
               alt="icon"
               style={{ height: 40, width: 40 }}
@@ -90,8 +148,17 @@ const Home: React.FC<RouteComponentProps> = () => {
         </IonRow>
         <IonRow>
           <SideBar />
-          <IonCol className="CardListCol">
-            {cat === "" && <IonRow>{renderHomeList}</IonRow>}
+          <IonCol sizeMd="8" className="CardListCol">
+            <IonRow>
+              <IonCol size="12">
+                {showSearch && (
+                  <DebouncedSearch onChangeCallback={handleOnSearchChange} />
+                )}
+              </IonCol>
+            </IonRow>
+            <h1>PWA Store</h1>
+            <IonNote>Largest online platform for Progressive Web Apps</IonNote>
+            {!showSearch && renderHomeList}
           </IonCol>
         </IonRow>
       </IonContent>

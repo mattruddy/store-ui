@@ -50,7 +50,7 @@ const PWAs: React.FC<RouteComponentProps> = () => {
   const [showSearch, setShowSearch] = useState<boolean>(false)
   const [scrollDisabled, setScrollDisabled] = useState<boolean>(false)
 
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
   const scrollEl = useRef<any>(undefined)
   const content = useRef<any>()
 
@@ -63,18 +63,24 @@ const PWAs: React.FC<RouteComponentProps> = () => {
   }, [])
 
   useEffect(() => {
-    let newCat = ""
-    if (
-      category &&
-      (categories.find((cat) => cat.category === category.toUpperCase()) ||
-        standardCategories.find((cat) => cat.value === category.toUpperCase()))
-    ) {
-      newCat = category.toUpperCase()
+    try {
+      let newCat = ""
+      if (
+        category &&
+        (categories.find((cat) => cat.category === category.toUpperCase()) ||
+          standardCategories.find(
+            (cat) => cat.value === category.toUpperCase()
+          ))
+      ) {
+        newCat = category.toUpperCase()
+      }
+      setCat(newCat)
+      reloadPwas(newCat)
+      setScrollDisabled(false)
+      content.current.scrollToTop()
+    } finally {
+      setIsLoading(false)
     }
-    setCat(newCat)
-    reloadPwas(newCat)
-    setScrollDisabled(false)
-    content.current.scrollToTop()
   }, [category])
 
   const loadMorePwas = async () => {
@@ -106,17 +112,12 @@ const PWAs: React.FC<RouteComponentProps> = () => {
   }
 
   const reloadPwas = async (option?: string) => {
-    try {
-      setLoading(true)
       setPage(0)
       const resp = await getPWAs(
         0,
         option || option === "" ? option : cat && cat !== "" ? cat : undefined
       )
       setPwas(resp)
-    } finally {
-      setLoading(false)
-    }
   }
 
   const handleOnSearchChange = useCallback(async (appName: string) => {
@@ -152,9 +153,7 @@ const PWAs: React.FC<RouteComponentProps> = () => {
       <IonHeader>
         <IonToolbar className="header">
           <IonButtons className="PWAsBackButton" slot="start">
-            {categories.find((x) => x.category === cat) && (
-              <IonBackButton defaultHref={RouteMap.CATEGORIES} />
-            )}
+            <IonBackButton defaultHref={RouteMap.CATEGORIES} />
           </IonButtons>
           <IonButtons slot="end">
             <IonButton slot="end" onClick={toggleSearch}>
@@ -203,7 +202,7 @@ const PWAs: React.FC<RouteComponentProps> = () => {
                 )}
               </IonCol>
             </IonRow>
-            {!showSearch && cat != "" && (
+            {!showSearch && (
               <h1
                 style={{
                   marginLeft: "20px",

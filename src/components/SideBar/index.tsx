@@ -71,7 +71,7 @@ const SideBar = () => {
     []
   )
   return (
-    <IonCol size="2.5" className="side">
+    <IonCol size="2.8" className="side">
       <IonList className="SideBar">
         <IonItemGroup>{renderStandardCategories}</IonItemGroup>
         <IonListHeader>

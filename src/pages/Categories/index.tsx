@@ -8,18 +8,28 @@ import {
   IonList,
   IonItem,
   IonIcon,
+  IonItemDivider,
+  IonItemGroup,
+  IonListHeader,
+  IonLabel,
 } from "@ionic/react"
 import { categories } from "../../components/CategoryOptions"
 import { capitalize } from "../../util"
 import { useHistory } from "react-router"
-import { GetPwaCategoryUrl } from "../../routes"
+import { GetPwaCategoryUrl, RouteMap } from "../../routes"
 import "./styles.css"
+import { standardCategories } from "../../components/SideBar"
 
 const Categories: React.FC = () => {
   const history = useHistory()
 
-  const onPress = (category: string) =>
-    history.push(GetPwaCategoryUrl(category.toLowerCase()))
+  const onPress = (category: string) => {
+    if (category.toLowerCase() === "home") {
+      history.push(RouteMap.HOME)
+    } else {
+      history.push(GetPwaCategoryUrl(category.toLowerCase()))
+    }
+  }
 
   return (
     <IonPage>
@@ -30,17 +40,36 @@ const Categories: React.FC = () => {
       </IonHeader>
       <IonContent>
         <IonList>
-          {categories.map((cat, i) => (
-            <IonItem
-              className="CategoryPageItem"
-              key={i}
-              button
-              onClick={() => onPress(cat.category)}
-            >
-              <IonIcon className="CategoryPageItemIcon" icon={cat.icon} />
-              {capitalize(cat.category)}
-            </IonItem>
-          ))}
+          <IonItemGroup>
+            {standardCategories.map((cat, i) => (
+              <IonItem
+                className="CategoryPageItem"
+                lines="none"
+                key={i}
+                button
+                onClick={() => onPress(cat.category)}
+              >
+                <IonIcon className="CategoryPageItemIcon" icon={cat.icon} />
+                {capitalize(cat.category)}
+              </IonItem>
+            ))}
+          </IonItemGroup>
+          <IonListHeader>
+            <IonLabel>CATEGORIES</IonLabel>
+          </IonListHeader>
+          <IonItemGroup>
+            {categories.map((cat, i) => (
+              <IonItem
+                className="CategoryPageItem"
+                key={i}
+                button
+                onClick={() => onPress(cat.category)}
+              >
+                <IonIcon className="CategoryPageItemIcon" icon={cat.icon} />
+                {capitalize(cat.category)}
+              </IonItem>
+            ))}
+          </IonItemGroup>
         </IonList>
       </IonContent>
     </IonPage>

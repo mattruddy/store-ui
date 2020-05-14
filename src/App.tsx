@@ -97,7 +97,7 @@ const IonicApp: React.FC<IonicAppProps> = ({
           <IonTabBar slot="bottom">
             <IonTabButton className="tab" tab="home" href={RouteMap.HOME}>
               <IonIcon icon={home} />
-              <IonLabel>PWAs</IonLabel>
+              <IonLabel>Home</IonLabel>
             </IonTabButton>
             <IonTabButton
               className="CatTabButton"
