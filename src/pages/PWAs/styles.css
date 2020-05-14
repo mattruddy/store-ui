@@ -15,6 +15,13 @@
   margin-left: 32px;
 }
 
+.HomeRow {
+  height: 250px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  flex-wrap: nowrap;
+}
+
 .CatTabButton {
   display: none;
 }

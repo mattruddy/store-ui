@@ -35,6 +35,7 @@ import { connect } from "./data/connect"
 import { AppContextProvider } from "./data/AppContext"
 import { RouteMap } from "./routes"
 import ReactGA from "react-ga"
+import { SideBar } from "./components"
 
 const App: React.FC = () => {
   return (
@@ -75,21 +76,25 @@ const IonicApp: React.FC<IonicAppProps> = ({
           <IonRouterOutlet animated={false}>
             <Route path={[RouteMap.PWA_DETAIL]} component={PWA} exact={false} />
             <Route path={[RouteMap.SUPPORT]} component={Support} exact={true} />
-            <Route path={RouteMap.SUPPORT} component={SignUp} />
+            <Route path={RouteMap.SIGNUP} component={SignUp} />
             <Route path={RouteMap.LOGIN} component={Login} />
             <Route path={RouteMap.PROFILE} component={Profile} />
             <Route path={RouteMap.MY_PWA_DETAIL} component={MyPWA} />
             <Route path={[RouteMap.PWAS]} component={PWAs} exact />
             <Route path={RouteMap.ABOUT} component={About} />
-            <Route path={RouteMap.ABOUT} component={Admin} exact />
+            <Route path={RouteMap.ADMIN} component={Admin} exact />
             <Route path={RouteMap.CATEGORIES} component={Categories} exact />
-            <Route
-              path={RouteMap.ROOT}
-              render={() => (
-                <Redirect to={RouteMap.PWAS.replace("/:category?", "")} />
-              )}
-              exact={true}
-            />
+            <Route path="/test">
+              <SideBar />
+              <Route path="/home"></Route>
+              <Route
+                path={RouteMap.ROOT}
+                render={() => (
+                  <Redirect to={RouteMap.PWAS.replace("/:category?", "")} />
+                )}
+                exact={true}
+              />
+            </Route>
           </IonRouterOutlet>
           <IonTabBar slot="bottom">
             <IonTabButton

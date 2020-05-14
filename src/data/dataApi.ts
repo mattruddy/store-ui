@@ -2,7 +2,7 @@ import { Plugins } from "@capacitor/core"
 import Axios from "axios"
 import { AxiosCors, FetchCors } from "./AxiosConfig"
 import { vars } from "./env"
-import { PWA, UserProfile, Search } from "../util/types"
+import { PWA, UserProfile, Search, HomePWAs } from "../util/types"
 import { getPlatforms } from "@ionic/react"
 
 const { Storage } = Plugins
@@ -80,7 +80,7 @@ export const getHome = async () => {
       },
     })
     const { data } = response
-    return data
+    return data as HomePWAs
   } catch (error) {
     return error.response
   }
