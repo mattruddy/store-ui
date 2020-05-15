@@ -148,7 +148,7 @@ const Home: React.FC<RouteComponentProps> = () => {
         </IonRow>
         <IonRow>
           <SideBar />
-          <IonCol sizeMd="8" className="CardListCol">
+          <IonCol sizeMd="8" className="HomeCardListCol">
             <IonRow>
               <IonCol size="12">
                 {showSearch && (
@@ -156,7 +156,7 @@ const Home: React.FC<RouteComponentProps> = () => {
                 )}
               </IonCol>
             </IonRow>
-            <h1>PWA Store</h1>
+            <h1 className="HomeCardsHeader">PWA Store</h1>
             <IonNote>Largest online platform for Progressive Web Apps</IonNote>
             {!showSearch && renderHomeList}
           </IonCol>

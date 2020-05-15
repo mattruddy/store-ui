@@ -5,6 +5,14 @@
   align-items: center;
 }
 
+.HomeCardListCol {
+  padding: 30px;
+}
+
+.HomeCardsHeader {
+  font-size: 40px;
+}
+
 .HomeViewMoreButton {
   --background: transparent;
   --box-shadow: none;
