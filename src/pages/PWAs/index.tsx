@@ -108,6 +108,8 @@ const PWAs: React.FC<RouteComponentProps> = () => {
     setShowSearch(newShowSearch)
     if (newShowSearch) {
       content.current.scrollToTop()
+    } else {
+      setPwaSearchResults([])
     }
   }
 
@@ -194,13 +196,8 @@ const PWAs: React.FC<RouteComponentProps> = () => {
         </IonRow>
         <IonRow>
           <SideBar />
-          <IonCol size="12">
-            {showSearch && (
-              <DebouncedSearch onChangeCallback={handleOnSearchChange} />
-            )}
-          </IonCol>
           <IonCol className="CardListCol">
-            {!showSearch && (
+            {!showSearch ? (
               <h1
                 style={{
                   marginLeft: "20px",
@@ -210,6 +207,10 @@ const PWAs: React.FC<RouteComponentProps> = () => {
                   cat === "" ? "TOP" : cat === "TRENDING" ? "DISCOVER" : cat
                 )}
               </h1>
+            ) : (
+              <IonRow>
+                <DebouncedSearch onChangeCallback={handleOnSearchChange} />
+              </IonRow>
             )}
             <IonRow>{renderPwaList}</IonRow>
           </IonCol>

@@ -16,7 +16,6 @@ import {
   IonCol,
   IonProgressBar,
   useIonViewDidEnter,
-  IonRouterLink,
   IonButton,
   IonButtons,
   IonIcon,
@@ -56,6 +55,8 @@ const Home: React.FC<RouteComponentProps> = () => {
     setShowSearch(newShowSearch)
     if (newShowSearch) {
       content.current.scrollToTop()
+    } else {
+      setPwaSearchResults([])
     }
   }
 
@@ -71,7 +72,7 @@ const Home: React.FC<RouteComponentProps> = () => {
 
   const renderSearchResults = useMemo(() => {
     return pwaSearchResults.map((pwa, i) => (
-      <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
+      <IonCol key={i} sizeXs="6" sizeSm="4" sizeMd="4" sizeLg="3">
         <PWACard url="/pwa" pwa={pwa} />
       </IonCol>
     ))
@@ -156,12 +157,15 @@ const Home: React.FC<RouteComponentProps> = () => {
         </IonRow>
         <IonRow>
           <SideBar />
-          <IonCol size="12">
-            {showSearch && (
-              <DebouncedSearch onChangeCallback={handleOnSearchChange} />
-            )}
-          </IonCol>
-          {!showSearch ? (
+          {showSearch && (
+            <IonCol>
+              <IonRow>
+                <DebouncedSearch onChangeCallback={handleOnSearchChange} />
+              </IonRow>
+              <IonRow>{renderSearchResults}</IonRow>
+            </IonCol>
+          )}
+          {!showSearch && (
             <IonCol sizeMd="8" className="HomeCardListCol">
               <h1 className="HomeCardsHeader">PWA Store</h1>
               <IonNote>
@@ -169,8 +173,6 @@ const Home: React.FC<RouteComponentProps> = () => {
               </IonNote>
               {renderHomeList}
             </IonCol>
-          ) : (
-            renderSearchResults
           )}
         </IonRow>
       </IonContent>
