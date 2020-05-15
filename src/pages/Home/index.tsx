@@ -80,7 +80,7 @@ const Home: React.FC<RouteComponentProps> = () => {
         </div>
         <IonRow className="HomeRow">
           {homeResult?.topApps.map((topApp, i) => (
-            <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
+            <IonCol key={i} sizeXs="8" sizeSm="4" sizeMd="5" sizeLg="4">
               <PWACard url="/pwa" pwa={topApp} />
             </IonCol>
           ))}
@@ -96,7 +96,7 @@ const Home: React.FC<RouteComponentProps> = () => {
         </div>
         <IonRow className="HomeRow">
           {homeResult?.newApps.map((newApp, i) => (
-            <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
+            <IonCol key={i} sizeXs="8" sizeSm="4" sizeMd="5" sizeLg="4">
               <PWACard url="/pwa" pwa={newApp} />
             </IonCol>
           ))}
@@ -112,7 +112,7 @@ const Home: React.FC<RouteComponentProps> = () => {
         </div>
         <IonRow className="HomeRow">
           {homeResult?.topApps.map((discoverApp, i) => (
-            <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
+            <IonCol key={i} sizeXs="8" sizeSm="4" sizeMd="5" sizeLg="4">
               <PWACard url="/pwa" pwa={discoverApp} />
             </IonCol>
           ))}
@@ -156,9 +156,15 @@ const Home: React.FC<RouteComponentProps> = () => {
                 )}
               </IonCol>
             </IonRow>
-            <h1 className="HomeCardsHeader">PWA Store</h1>
-            <IonNote>Largest online platform for Progressive Web Apps</IonNote>
-            {!showSearch && renderHomeList}
+            {!showSearch && (
+              <>
+                <h1 className="HomeCardsHeader">PWA Store</h1>
+                <IonNote>
+                  Largest online platform for Progressive Web Apps
+                </IonNote>
+                {renderHomeList}
+              </>
+            )}
           </IonCol>
         </IonRow>
       </IonContent>

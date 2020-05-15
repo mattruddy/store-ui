@@ -26,7 +26,6 @@ import {
   IonCol,
   useIonViewWillLeave,
   IonToast,
-  IonProgressBar,
   IonSpinner,
 } from "@ionic/react"
 import {
@@ -44,8 +43,9 @@ import { UserProfile, PWA } from "../../util/types"
 import { add, menu, logOut, contractSharp } from "ionicons/icons"
 import { setToken, setIsLoggedIn } from "../../data/user/user.actions"
 import { RouteMap } from "../../routes"
-//@ts-ignore
-import ReportViewer from "react-lighthouse-viewer"
+import { noSpecialChars } from "../../util"
+import "./styles.css"
+
 interface OwnProps extends RouteComponentProps {}
 
 interface DispatchProps {
@@ -137,6 +137,11 @@ const Profile: React.FC<ProfileProps> = ({
       check++
     }
 
+    if (!noSpecialChars(name)) {
+      setNameError("No Special Chars allowed")
+      check++
+    }
+
     if (!icon) {
       setIconError("Icon is required")
       check++
@@ -205,7 +210,7 @@ const Profile: React.FC<ProfileProps> = ({
       const filteredPwas = profile.pwas.filter((pwa) => pwa.status === filter)
       if (filteredPwas.length > 0) {
         return filteredPwas.map((pwa, idx) => (
-          <div key={idx}>
+          <IonCol key={idx} sizeXs="6" sizeSm="4" sizeMd="3">
             <PWACard url="/mypwa" pwa={pwa} />
             {filter === "DENIED" && (
               <>
@@ -215,11 +220,11 @@ const Profile: React.FC<ProfileProps> = ({
                 <p style={{ padding: "15px" }}>{pwa.reason}</p>
               </>
             )}
-          </div>
+          </IonCol>
         ))
       } else {
         return (
-          <div
+          <IonCol
             style={{
               width: "100%",
               margin: "20px",
@@ -232,7 +237,7 @@ const Profile: React.FC<ProfileProps> = ({
             <small
               style={{ paddingLeft: "15px", color: "rgb(115, 115, 115)" }}
             >{`No ${filter.toLowerCase()} apps yet`}</small>
-          </div>
+          </IonCol>
         )
       }
     }
@@ -356,7 +361,11 @@ const Profile: React.FC<ProfileProps> = ({
                   maxlength={25}
                   onIonChange={(e) => {
                     setName(e.detail.value!)
-                    setNameError(undefined)
+                    if (!noSpecialChars(e.detail.value!)) {
+                      setNameError("No special characters allowed")
+                    } else {
+                      setNameError(undefined)
+                    }
                   }}
                   required
                 />
@@ -534,7 +543,10 @@ const Profile: React.FC<ProfileProps> = ({
       <IonHeader>
         <IonToolbar>
           <IonButtons slot="end">
-            <IonButton onClick={() => history.push(RouteMap.SUPPORT)}>
+            <IonButton
+              className="ProfileSupportButton"
+              onClick={() => history.push(RouteMap.SUPPORT)}
+            >
               SUPPORT
             </IonButton>
           </IonButtons>
@@ -556,18 +568,12 @@ const Profile: React.FC<ProfileProps> = ({
           </IonFabList>
         </IonFab>
         <IonGrid>
-          <IonCol>
-            {!isLoading && <h2 style={{ marginLeft: "20px" }}>Approved</h2>}
-            <IonRow>{loadPwas("APPROVED")}</IonRow>
-          </IonCol>
-          <IonCol>
-            {!isLoading && <h2 style={{ marginLeft: "20px" }}>Pending</h2>}
-            <IonRow>{loadPwas("PENDING")}</IonRow>
-          </IonCol>
-          <IonCol>
-            {!isLoading && <h2 style={{ marginLeft: "20px" }}>Denied</h2>}
-            <IonRow>{loadPwas("DENIED")}</IonRow>
-          </IonCol>
+          {!isLoading && <h2 style={{ marginLeft: "20px" }}>Approved</h2>}
+          <IonRow>{loadPwas("APPROVED")}</IonRow>
+          {!isLoading && <h2 style={{ marginLeft: "20px" }}>Pending</h2>}
+          <IonRow>{loadPwas("PENDING")}</IonRow>
+          {!isLoading && <h2 style={{ marginLeft: "20px" }}>Denied</h2>}
+          <IonRow>{loadPwas("DENIED")}</IonRow>
         </IonGrid>
         <IonAlert
           isOpen={showAlert}

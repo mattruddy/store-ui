@@ -43,7 +43,7 @@ import {
   checkmark,
   openOutline,
 } from "ionicons/icons"
-import { fixFilesRotation } from "../../util"
+import { fixFilesRotation, noSpecialChars } from "../../util"
 import { CategoryOptions, RatingItem } from "../../components"
 import { RouteMap, GetMyPWADetailUrl } from "../../routes"
 //@ts-ignore
@@ -120,6 +120,11 @@ const MyPWA: React.FC<PWAProps> = ({ history }) => {
       let count = 0
       if (!name) {
         setNameError("Name is required, max length is 25 charaters")
+        count++
+      }
+
+      if (!noSpecialChars(name!)) {
+        setNameError("No special charaters allowed")
         count++
       }
 

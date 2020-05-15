@@ -113,6 +113,10 @@ const capitalize = (s: string): string => {
   return `${s[0].toUpperCase()}${s.slice(1).toLowerCase()}`
 }
 
+const noSpecialChars = (s: string): boolean => {
+  return !/[^a-zA-Z0-9\s]/.test(s)
+}
+
 export {
   blobToFile,
   fixFilesRotation,
@@ -122,4 +126,5 @@ export {
   shareUrl,
   copyStringToClipboard,
   capitalize,
+  noSpecialChars,
 }
