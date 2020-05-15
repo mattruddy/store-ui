@@ -148,14 +148,12 @@ const Home: React.FC<RouteComponentProps> = () => {
         </IonRow>
         <IonRow>
           <SideBar />
+          <IonCol size="12">
+            {showSearch && (
+              <DebouncedSearch onChangeCallback={handleOnSearchChange} />
+            )}
+          </IonCol>
           <IonCol sizeMd="8" className="HomeCardListCol">
-            <IonRow>
-              <IonCol size="12">
-                {showSearch && (
-                  <DebouncedSearch onChangeCallback={handleOnSearchChange} />
-                )}
-              </IonCol>
-            </IonRow>
             {!showSearch && (
               <>
                 <h1 className="HomeCardsHeader">PWA Store</h1>

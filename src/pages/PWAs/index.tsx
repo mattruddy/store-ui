@@ -112,12 +112,12 @@ const PWAs: React.FC<RouteComponentProps> = () => {
   }
 
   const reloadPwas = async (option?: string) => {
-      setPage(0)
-      const resp = await getPWAs(
-        0,
-        option || option === "" ? option : cat && cat !== "" ? cat : undefined
-      )
-      setPwas(resp)
+    setPage(0)
+    const resp = await getPWAs(
+      0,
+      option || option === "" ? option : cat && cat !== "" ? cat : undefined
+    )
+    setPwas(resp)
   }
 
   const handleOnSearchChange = useCallback(async (appName: string) => {
@@ -194,14 +194,12 @@ const PWAs: React.FC<RouteComponentProps> = () => {
         </IonRow>
         <IonRow>
           <SideBar />
+          <IonCol size="12">
+            {showSearch && (
+              <DebouncedSearch onChangeCallback={handleOnSearchChange} />
+            )}
+          </IonCol>
           <IonCol className="CardListCol">
-            <IonRow>
-              <IonCol size="12">
-                {showSearch && (
-                  <DebouncedSearch onChangeCallback={handleOnSearchChange} />
-                )}
-              </IonCol>
-            </IonRow>
             {!showSearch && (
               <h1
                 style={{
