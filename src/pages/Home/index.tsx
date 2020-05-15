@@ -69,6 +69,14 @@ const Home: React.FC<RouteComponentProps> = () => {
     }
   }, [])
 
+  const renderSearchResults = useMemo(() => {
+    return pwaSearchResults.map((pwa, i) => (
+      <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
+        <PWACard url="/pwa" pwa={pwa} />
+      </IonCol>
+    ))
+  }, [pwaSearchResults])
+
   const renderHomeList = useMemo(() => {
     return (
       <>
@@ -153,17 +161,17 @@ const Home: React.FC<RouteComponentProps> = () => {
               <DebouncedSearch onChangeCallback={handleOnSearchChange} />
             )}
           </IonCol>
-          <IonCol sizeMd="8" className="HomeCardListCol">
-            {!showSearch && (
-              <>
-                <h1 className="HomeCardsHeader">PWA Store</h1>
-                <IonNote>
-                  Largest online platform for Progressive Web Apps
-                </IonNote>
-                {renderHomeList}
-              </>
-            )}
-          </IonCol>
+          {!showSearch ? (
+            <IonCol sizeMd="8" className="HomeCardListCol">
+              <h1 className="HomeCardsHeader">PWA Store</h1>
+              <IonNote>
+                Largest online platform for Progressive Web Apps
+              </IonNote>
+              {renderHomeList}
+            </IonCol>
+          ) : (
+            renderSearchResults
+          )}
         </IonRow>
       </IonContent>
     </IonPage>
