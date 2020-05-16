@@ -8,7 +8,6 @@ import {
   IonList,
   IonItem,
   IonIcon,
-  IonItemDivider,
   IonItemGroup,
   IonListHeader,
   IonLabel,
@@ -47,7 +46,7 @@ const Categories: React.FC = () => {
                 lines="none"
                 key={i}
                 button
-                onClick={() => onPress(cat.category)}
+                onClick={() => onPress(cat.value)}
               >
                 <IonIcon className="CategoryPageItemIcon" icon={cat.icon} />
                 {capitalize(cat.category)}

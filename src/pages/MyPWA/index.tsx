@@ -285,7 +285,7 @@ const MyPWA: React.FC<PWAProps> = ({ history, pwa, removeApp, replaceApp }) => {
           </div>
           {pwa && (
             <IonButton
-              style={{ marginRight: "10px" }}
+              style={{ marginRight: "10px", marginLeft: "10px" }}
               onClick={() => {
                 window.open(link, "_blank")
               }}

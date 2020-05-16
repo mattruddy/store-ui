@@ -57,7 +57,7 @@ const PWAInfo: React.FC<ContainerProps> = ({
         </div>
         <IonButton
           class="button"
-          style={{ marginRight: "10px" }}
+          style={{ marginRight: "10px", marginLeft: "10px" }}
           onClick={() => {
             postScore(appId)
             window.open(pwa.link, "_blank")

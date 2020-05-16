@@ -168,9 +168,7 @@ const Home: React.FC<RouteComponentProps> = () => {
           {!showSearch && (
             <IonCol sizeMd="8" className="HomeCardListCol">
               <h1 className="HomeCardsHeader">PWA Store</h1>
-              <IonNote>
-                Largest online platform for Progressive Web Apps
-              </IonNote>
+              <IonNote>Progressive Web App Discovery</IonNote>
               {renderHomeList}
             </IonCol>
           )}
