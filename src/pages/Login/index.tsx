@@ -92,6 +92,8 @@ const LogIn: React.FC<LoginProps> = ({
         if (username === "mattruddy") {
           localStorage.setItem("me", username)
         }
+        setPassword("")
+        setUsername("")
         history.push(RouteMap.PROFILE)
       } catch (e) {
         if (e.message === "Invalid Credentials") {

@@ -72,6 +72,9 @@ const SignUp: React.FC<SignIn> = ({
         setIsLoggedInAction(true)
         setToastMessage("Success")
         setShowToast(true)
+        setUsername("")
+        setEmail("")
+        setPassword("")
         history.push(RouteMap.PROFILE)
       } catch (e) {
         console.log(`Error signing up: ${e}`)
