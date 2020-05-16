@@ -14,7 +14,11 @@ import {
   IonGrid,
   IonImg,
 } from "@ionic/react"
-import { setToken, setIsLoggedIn } from "../../data/user/user.actions"
+import {
+  setToken,
+  setIsLoggedIn,
+  loadProfile,
+} from "../../data/user/user.actions"
 import { postLogin, postDevice } from "../../data/dataApi"
 import { connect } from "../../data/connect"
 import queryString from "query-string"

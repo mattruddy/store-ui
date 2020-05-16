@@ -36,6 +36,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.0",
     "react-star-ratings": "^2.3.0",
+    "reselect": "^4.0.0",
     "typescript": "3.7.4"
   },
   "scripts": {

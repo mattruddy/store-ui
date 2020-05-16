@@ -89,7 +89,7 @@ const Home: React.FC<RouteComponentProps> = () => {
         </div>
         <IonRow className="HomeRow">
           {homeResult?.topApps.map((topApp, i) => (
-            <IonCol key={i} sizeXs="8" sizeSm="4" sizeMd="5" sizeLg="4">
+            <IonCol key={i} sizeXs="6.7" sizeSm="4" sizeMd="5" sizeLg="4">
               <PWACard url="/pwa" pwa={topApp} />
             </IonCol>
           ))}
@@ -105,7 +105,7 @@ const Home: React.FC<RouteComponentProps> = () => {
         </div>
         <IonRow className="HomeRow">
           {homeResult?.newApps.map((newApp, i) => (
-            <IonCol key={i} sizeXs="8" sizeSm="4" sizeMd="5" sizeLg="4">
+            <IonCol key={i} sizeXs="6.7" sizeSm="4" sizeMd="5" sizeLg="4">
               <PWACard url="/pwa" pwa={newApp} />
             </IonCol>
           ))}
@@ -120,8 +120,8 @@ const Home: React.FC<RouteComponentProps> = () => {
           </IonButton>
         </div>
         <IonRow className="HomeRow">
-          {homeResult?.topApps.map((discoverApp, i) => (
-            <IonCol key={i} sizeXs="8" sizeSm="4" sizeMd="5" sizeLg="4">
+          {homeResult?.discoverApps.map((discoverApp, i) => (
+            <IonCol key={i} sizeXs="6.7" sizeSm="4" sizeMd="5" sizeLg="4">
               <PWACard url="/pwa" pwa={discoverApp} />
             </IonCol>
           ))}

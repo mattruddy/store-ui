@@ -27,6 +27,8 @@ import {
   useIonViewWillLeave,
   IonToast,
   IonSpinner,
+  useIonViewDidLeave,
+  IonProgressBar,
 } from "@ionic/react"
 import {
   getProfile,
@@ -41,7 +43,7 @@ import { connect } from "../../data/connect"
 import { CategoryOptions, Lighthouse, PWACard } from "../../components"
 import { UserProfile, PWA } from "../../util/types"
 import { add, menu, logOut, contractSharp } from "ionicons/icons"
-import { setToken, setIsLoggedIn } from "../../data/user/user.actions"
+import { setToken, setIsLoggedIn, addApp } from "../../data/user/user.actions"
 import { RouteMap } from "../../routes"
 import { noSpecialChars } from "../../util"
 import "./styles.css"
@@ -51,9 +53,13 @@ interface OwnProps extends RouteComponentProps {}
 interface DispatchProps {
   setToken: typeof setToken
   setIsLoggedIn: typeof setIsLoggedIn
+  addApp: typeof addApp
 }
 
-interface StateProps {}
+interface StateProps {
+  pwas?: PWA[]
+  username?: string
+}
 
 interface ProfileProps extends OwnProps, DispatchProps, StateProps {}
 
@@ -70,8 +76,10 @@ const Profile: React.FC<ProfileProps> = ({
   history,
   setToken,
   setIsLoggedIn,
+  addApp,
+  pwas,
+  username,
 }) => {
-  const [profile, setProfile] = useState<UserProfile | undefined>(undefined)
   const [url, setUrl] = useState<string>("")
   const [urlError, setUrlError] = useState<string | undefined>(undefined)
   const [name, setName] = useState<string>("")
@@ -96,22 +104,13 @@ const Profile: React.FC<ProfileProps> = ({
   const [lightHouseLoading, setLightHouseLoading] = useState<boolean>(false)
   const [lightHouseTests, setLightHouseTests] = useState<LighthouseTest[]>([])
 
-  useIonViewDidEnter(() => {
-    loadProfile()
-    setIsLoading(false)
-  })
-
-  useIonViewWillLeave(() => {
-    setIsLoading(true)
-    setProfile(undefined)
-  })
-
-  const loadProfile = async () => {
-    const resp = await getProfile()
-    if (resp) {
-      setProfile(resp)
+  useEffect(() => {
+    if (pwas) {
+      setIsLoading(false)
+    } else {
+      setIsLoading(true)
     }
-  }
+  }, [pwas])
 
   const onPress = (option: string) => {
     setCatError(undefined)
@@ -190,7 +189,7 @@ const Profile: React.FC<ProfileProps> = ({
         setToastMessage(resp.data.message)
         setShowToast(true)
       } else if (resp && resp.appId) {
-        profile?.pwas.push(resp as PWA)
+        addApp(resp as PWA)
         setName("")
         setDesc("")
         setCat("")
@@ -206,8 +205,8 @@ const Profile: React.FC<ProfileProps> = ({
   }
 
   const loadPwas = (filter: string) => {
-    if (profile && profile.pwas) {
-      const filteredPwas = profile.pwas.filter((pwa) => pwa.status === filter)
+    if (pwas) {
+      const filteredPwas = pwas.filter((pwa) => pwa.status === filter)
       if (filteredPwas.length > 0) {
         return filteredPwas.map((pwa, idx) => (
           <IonCol key={idx} sizeXs="6" sizeSm="4" sizeMd="3">
@@ -550,10 +549,16 @@ const Profile: React.FC<ProfileProps> = ({
               SUPPORT
             </IonButton>
           </IonButtons>
-          <IonTitle>{profile?.username}</IonTitle>
+          <IonTitle>{username}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent class="content">
+        {isLoading && (
+          <IonProgressBar
+            type={isLoading ? "indeterminate" : "determinate"}
+            color="primary"
+          />
+        )}
         <IonFab vertical="top" horizontal="end" slot="fixed">
           <IonFabButton class="fab">
             <IonIcon icon={menu} />
@@ -590,7 +595,6 @@ const Profile: React.FC<ProfileProps> = ({
               handler: () => {
                 setToken(undefined)
                 setIsLoggedIn(false)
-                setProfile(undefined)
                 setName("")
                 setDesc("")
                 setCat("")
@@ -616,9 +620,15 @@ const Profile: React.FC<ProfileProps> = ({
 }
 
 export default connect<OwnProps, StateProps, DispatchProps>({
+  mapStateToProps: (state) => ({
+    pwas: state.user.pwas,
+    username: state.user.username,
+  }),
+
   mapDispatchToProps: {
     setToken,
     setIsLoggedIn,
+    addApp,
   },
   component: withRouter(memo(Profile)),
 })

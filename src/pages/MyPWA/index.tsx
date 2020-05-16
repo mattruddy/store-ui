@@ -1,4 +1,4 @@
-import React, { useState, useRef, memo } from "react"
+import React, { useState, useRef, memo, useEffect } from "react"
 import {
   IonContent,
   IonHeader,
@@ -24,17 +24,18 @@ import {
   IonTitle,
   IonList,
   IonImg,
+  IonProgressBar,
 } from "@ionic/react"
 import ImageUploader from "react-images-upload"
 import {
-  getPWA,
   putApp,
   deleteScreenshot,
   postAddScreenshots,
   deleteApp,
 } from "../../data/dataApi"
 import { RouteComponentProps, withRouter } from "react-router"
-import { PWA as PWAType, Image } from "../../util/types"
+import * as selectors from "../../data/selectors"
+import { PWA as PWAType, Image, PWA } from "../../util/types"
 import {
   pencil,
   options,
@@ -48,6 +49,8 @@ import { CategoryOptions, RatingItem } from "../../components"
 import { RouteMap, GetMyPWADetailUrl } from "../../routes"
 //@ts-ignore
 import StarRatings from "react-star-ratings"
+import { connect } from "../../data/connect"
+import { replaceApp, removeApp } from "../../data/user/user.actions"
 
 interface MatchParams {
   id: string | undefined
@@ -55,14 +58,18 @@ interface MatchParams {
 
 interface OwnProps extends RouteComponentProps<MatchParams> {}
 
-interface StateProps {}
+interface StateProps {
+  pwa?: PWA
+}
 
-interface DispatchProps {}
+interface DispatchProps {
+  replaceApp: typeof replaceApp
+  removeApp: typeof removeApp
+}
 
 type PWAProps = OwnProps & StateProps & DispatchProps
 
-const MyPWA: React.FC<PWAProps> = ({ history }) => {
-  const [pwa, setPwa] = useState<PWAType>()
+const MyPWA: React.FC<PWAProps> = ({ history, pwa, removeApp, replaceApp }) => {
   const [screenshots, setScreenshots] = useState<Image[]>()
   const [isEdit, setIsEdit] = useState<boolean>(false)
   const [name, setName] = useState<string | undefined>(undefined)
@@ -79,15 +86,13 @@ const MyPWA: React.FC<PWAProps> = ({ history }) => {
   const [showToast, setShowToast] = useState<boolean>(false)
   const slides = useRef<any>()
 
-  useIonViewDidEnter(() => {
-    loadPWA()
-    setIsLoading(false)
-  }, [])
+  useEffect(() => {
+    load()
+  }, [pwa])
 
   useIonViewDidLeave(() => {
-    setPwa(undefined)
     setScreenshots(undefined)
-  }, [])
+  })
 
   useIonViewWillLeave(() => {
     setIsLoading(true)
@@ -98,16 +103,17 @@ const MyPWA: React.FC<PWAProps> = ({ history }) => {
     setImages(fixedFiles)
   }
 
-  const loadPWA = async () => {
-    const resp = (await getPWA(
-      history.location.pathname.split("/")[2]
-    )) as PWAType
-    setPwa(resp)
-    setScreenshots(resp.screenshots)
-    setName(resp.name)
-    setCat(resp.category)
-    setDesc(resp.description)
-    setLink(resp.link)
+  const load = async () => {
+    if (pwa) {
+      setIsLoading(false)
+      setScreenshots(pwa.screenshots)
+      setName(pwa.name)
+      setCat(pwa.category)
+      setDesc(pwa.description)
+      setLink(pwa.link)
+    } else {
+      setIsLoading(true)
+    }
   }
 
   const onCatChange = (cat: string) => {
@@ -157,11 +163,11 @@ const MyPWA: React.FC<PWAProps> = ({ history }) => {
         }
         const resp = await putApp(name!, desc!, cat!, pwa.appId)
         if (resp?.status === 200) {
-          setPwa(resp.data)
+          replaceApp(resp.data)
           setScreenshots(resp.data.screenshots)
           setToastText("Success")
           setShowToast(true)
-          history.replace(GetMyPWADetailUrl(name))
+          history.replace(GetMyPWADetailUrl(name?.replace(/ /g, "-")))
         }
         setIsEdit(false)
       }
@@ -170,8 +176,8 @@ const MyPWA: React.FC<PWAProps> = ({ history }) => {
 
   const removeImage = async (imageId: number) => {
     const resp = await deleteScreenshot(imageId)
-    if (resp && screenshots) {
-      setScreenshots(screenshots.filter((shot) => shot.imageId !== imageId))
+    if (resp && resp.status === 200) {
+      replaceApp(resp.data as PWA)
       slides.current.update()
     }
   }
@@ -201,6 +207,12 @@ const MyPWA: React.FC<PWAProps> = ({ history }) => {
         </IonToolbar>
       </IonHeader>
       <IonContent className="content" style={{ overflow: "hidden" }}>
+        {isLoading && (
+          <IonProgressBar
+            type={isLoading ? "indeterminate" : "determinate"}
+            color="primary"
+          />
+        )}
         <div
           style={{
             display: "flex",
@@ -432,7 +444,10 @@ const MyPWA: React.FC<PWAProps> = ({ history }) => {
             text: "Delete",
             handler: async () => {
               const resp = await deleteApp(pwa?.appId!)
-              history.push(RouteMap.PROFILE)
+              if (resp?.status === 200) {
+                removeApp(pwa?.appId!)
+                history.push(RouteMap.PROFILE)
+              }
             },
           },
         ]}
@@ -450,4 +465,15 @@ const MyPWA: React.FC<PWAProps> = ({ history }) => {
   )
 }
 
-export default withRouter(memo(MyPWA))
+export default connect<OwnProps, StateProps, DispatchProps>({
+  mapStateToProps: (state, OwnProps) => ({
+    pwa: selectors.getPwa(state, OwnProps),
+  }),
+
+  mapDispatchToProps: {
+    replaceApp,
+    removeApp,
+  },
+
+  component: withRouter(memo(MyPWA)),
+})

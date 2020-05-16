@@ -30,7 +30,7 @@ import {
   Admin,
   Categories,
 } from "./pages"
-import { loadUserData } from "./data/user/user.actions"
+import { loadUserData, loadProfile } from "./data/user/user.actions"
 import { connect } from "./data/connect"
 import { AppContextProvider } from "./data/AppContext"
 import { RouteMap } from "./routes"
@@ -53,6 +53,7 @@ interface StateProps {
 
 interface DispatchProps {
   loadUserData: typeof loadUserData
+  loadProfile: typeof loadProfile
 }
 
 interface IonicAppProps extends StateProps, DispatchProps {}
@@ -61,10 +62,17 @@ const IonicApp: React.FC<IonicAppProps> = ({
   token,
   isLoggedIn,
   loadUserData,
+  loadProfile,
 }) => {
   useEffect(() => {
     loadUserData()
   }, [])
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      loadProfile()
+    }
+  }, [isLoggedIn])
 
   useEffect(() => {
     ReactGA.initialize("UA-165324521-1")
@@ -145,6 +153,7 @@ const IonicAppConnected = connect<{}, StateProps, DispatchProps>({
   }),
   mapDispatchToProps: {
     loadUserData,
+    loadProfile,
   },
   component: IonicApp,
 })

@@ -43,7 +43,7 @@ const SideBar = () => {
       standardCategories.map((cat, i) => (
         <IonItem
           key={i}
-          className="StandardCategoriesItem SideBarCategory"
+          className="StandardCategoriesItem SideBarCategory item"
           lines="none"
           button={true}
           onClick={() => onPress(cat.value)}
@@ -60,7 +60,7 @@ const SideBar = () => {
       categories.map((cat, i) => (
         <IonItem
           key={i}
-          className="CategoriesItem SideBarCategory"
+          className="CategoriesItem SideBarCategory item"
           button={true}
           onClick={() => onPress(cat.category)}
         >
