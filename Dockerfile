@@ -4,9 +4,9 @@ WORKDIR /app
 ENV NPM_CONFIG_LOGLEVEL warn
 COPY . .
 RUN npm install --silent
-RUN npm install workbox-cli --global --silent
+# RUN npm install workbox-cli --global --silent
 RUN npm run build
-RUN workbox injectManifest
+# RUN workbox injectManifest
 
 ### STAGE 2: Production Environment ###
 FROM nginx:1.14-alpine

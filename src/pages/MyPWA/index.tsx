@@ -144,8 +144,10 @@ const MyPWA: React.FC<PWAProps> = ({ history, pwa, removeApp, replaceApp }) => {
         count++
       }
 
+      let addedImage = false
       if (images && images.length > 0) {
         addImages()
+        addedImage = true
       }
 
       if (
@@ -158,7 +160,7 @@ const MyPWA: React.FC<PWAProps> = ({ history, pwa, removeApp, replaceApp }) => {
       }
 
       if (count === 0) {
-        if (images && images.length > 0) {
+        if (images && images.length > 0 && !addedImage) {
           await postAddScreenshots(images as File[], pwa.appId)
         }
         const resp = await putApp(name!, desc!, cat!, pwa.appId)
@@ -189,7 +191,10 @@ const MyPWA: React.FC<PWAProps> = ({ history, pwa, removeApp, replaceApp }) => {
         pwa.appId as number
       )
       if (resp.length > 0) {
-        setScreenshots((prev) => prev?.concat(resp))
+        const newScreenshots = screenshots!.concat(resp)
+        setScreenshots(newScreenshots)
+        pwa.screenshots = newScreenshots
+        replaceApp(pwa)
         slides.current.update()
         setImages(undefined)
       }
