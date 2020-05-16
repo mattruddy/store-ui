@@ -65,13 +65,13 @@ export const setData = (data: Partial<UserState>) =>
     data,
   } as const)
 
-export const setProfile = (pwas: PWA[]) =>
+export const setProfile = (pwas: PWA[] | undefined) =>
   ({
     type: "set-profile",
     pwas,
   } as const)
 
-export const setUsername = (username: string) =>
+export const setUsername = (username: string | undefined) =>
   ({
     type: "set-username",
     username,

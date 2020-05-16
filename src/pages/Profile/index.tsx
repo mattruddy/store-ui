@@ -43,7 +43,13 @@ import { connect } from "../../data/connect"
 import { CategoryOptions, Lighthouse, PWACard } from "../../components"
 import { UserProfile, PWA } from "../../util/types"
 import { add, menu, logOut, contractSharp } from "ionicons/icons"
-import { setToken, setIsLoggedIn, addApp } from "../../data/user/user.actions"
+import {
+  setToken,
+  setIsLoggedIn,
+  addApp,
+  setProfile,
+  setUsername,
+} from "../../data/user/user.actions"
 import { RouteMap } from "../../routes"
 import { noSpecialChars } from "../../util"
 import "./styles.css"
@@ -54,6 +60,8 @@ interface DispatchProps {
   setToken: typeof setToken
   setIsLoggedIn: typeof setIsLoggedIn
   addApp: typeof addApp
+  setProfile: typeof setProfile
+  setUsername: typeof setUsername
 }
 
 interface StateProps {
@@ -77,6 +85,8 @@ const Profile: React.FC<ProfileProps> = ({
   setToken,
   setIsLoggedIn,
   addApp,
+  setProfile,
+  setUsername,
   pwas,
   username,
 }) => {
@@ -602,6 +612,8 @@ const Profile: React.FC<ProfileProps> = ({
                 setIcon(undefined)
                 setScreenshots(undefined)
                 setShowModal(false)
+                setProfile(undefined)
+                setUsername(undefined)
                 history.push(RouteMap.LOGIN)
               },
             },
@@ -629,6 +641,8 @@ export default connect<OwnProps, StateProps, DispatchProps>({
     setToken,
     setIsLoggedIn,
     addApp,
+    setProfile,
+    setUsername,
   },
   component: withRouter(memo(Profile)),
 })
