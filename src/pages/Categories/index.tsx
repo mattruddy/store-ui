@@ -40,18 +40,20 @@ const Categories: React.FC = () => {
       <IonContent>
         <IonList>
           <IonItemGroup>
-            {standardCategories.map((cat, i) => (
-              <IonItem
-                className="CategoryPageItem"
-                lines="none"
-                key={i}
-                button
-                onClick={() => onPress(cat.value)}
-              >
-                <IonIcon className="CategoryPageItemIcon" icon={cat.icon} />
-                {capitalize(cat.category)}
-              </IonItem>
-            ))}
+            {standardCategories
+              .filter((x) => x.category !== "HOME")
+              .map((cat, i) => (
+                <IonItem
+                  className="CategoryPageItem"
+                  lines="none"
+                  key={i}
+                  button
+                  onClick={() => onPress(cat.value)}
+                >
+                  <IonIcon className="CategoryPageItemIcon" icon={cat.icon} />
+                  {capitalize(cat.category)}
+                </IonItem>
+              ))}
           </IonItemGroup>
           <IonListHeader>
             <IonLabel>CATEGORIES</IonLabel>
