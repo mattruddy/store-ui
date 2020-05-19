@@ -20,6 +20,7 @@ import {
   IonButtons,
   IonIcon,
   IonNote,
+  IonFooter,
 } from "@ionic/react"
 import { PWACard, SideBar, DebouncedSearch } from "../../components"
 import { getHome, getSearchApp } from "../../data/dataApi"
@@ -27,7 +28,8 @@ import { PWA, HomePWAs } from "../../util/types"
 import { RouteComponentProps, useParams, useHistory } from "react-router"
 import "./styles.css"
 import { RouteMap, GetPwaCategoryUrl } from "../../routes"
-import { closeOutline, search } from "ionicons/icons"
+import { closeOutline, search, logoTwitter } from "ionicons/icons"
+import Footer from "../../components/Footer"
 
 const Home: React.FC<RouteComponentProps> = () => {
   const history = useHistory()
@@ -170,6 +172,7 @@ const Home: React.FC<RouteComponentProps> = () => {
               <h1 className="HomeCardsHeader">PWA Store</h1>
               <IonNote>Progressive Web App Discovery</IonNote>
               {renderHomeList}
+              <Footer />
             </IonCol>
           )}
         </IonRow>
