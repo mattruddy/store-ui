@@ -632,9 +632,9 @@ const Profile: React.FC<ProfileProps> = ({
 }
 
 export default connect<OwnProps, StateProps, DispatchProps>({
-  mapStateToProps: (state) => ({
-    pwas: state.user.pwas,
-    username: state.user.username,
+  mapStateToProps: ({ user: { pwas, username } }) => ({
+    pwas,
+    username,
   }),
 
   mapDispatchToProps: {
