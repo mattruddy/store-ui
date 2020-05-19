@@ -18,7 +18,7 @@ const Footer: React.FC = () => {
         </a>
         <a
           className="FooterRightIcon"
-          href="https://github.com/mattruddy/store-ui"
+          href="https://github.com/mattruddy/"
           target="_blank"
         >
           <IonIcon color="dark" icon={logoGithub} />
