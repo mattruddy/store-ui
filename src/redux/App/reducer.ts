@@ -14,9 +14,6 @@ const App = (state = DEFAULT_STATE_APP, action: ActionProps) => {
     case AppActionTypes.APP_SET_VERSION:
       return { ...state, version: payload.toFixed(3) }
 
-    case AppActionTypes.APP_SET_LOCAL_STORAGE_USAGE:
-      return { ...state, ...payload }
-
     case AppActionTypes.REDUX_RESET:
       return state
 
