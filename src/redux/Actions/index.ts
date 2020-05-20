@@ -70,13 +70,14 @@ Axios request response : https://kapeli.com/cheat_sheets/Axios.docset/Contents/R
 */
 
 const Axios = async (responseType?: "json") => {
-  const response = await getUserData().then()
+  const response = await getUserData()
   const { isLoggedIn, token, hasRead } = response
 
   return axios.create({
     withCredentials: true,
     baseURL: API_URL,
     //timeout: 25000,
+    //@ts-ignore
     crossDomain: true,
     responseType,
     headers: token

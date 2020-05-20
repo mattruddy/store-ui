@@ -1,4 +1,4 @@
-const isOnMobileBrowser = userAgent =>
+const isOnMobileBrowser = (userAgent: string) =>
   /iPhone|iPad|iPod|Android|Windows/i.test(userAgent)
 
 const getConnectionProps = ({
@@ -7,7 +7,7 @@ const getConnectionProps = ({
   onchange,
   rtt,
   saveDate
-}) => ({ downlink, effectiveType, onchange, rtt, saveDate })
+}: any) => ({ downlink, effectiveType, onchange, rtt, saveDate })
 
 const getScreenProps = ({
   availHeight,
@@ -19,7 +19,7 @@ const getScreenProps = ({
   // orientation: { angle, onchange, type },
   pixelDepth,
   width
-}) => ({
+}: any) => ({
   availHeight,
   availLeft,
   availTop,
@@ -67,7 +67,7 @@ const getNavigatorProps = ({
   userAgent,
   vendor,
   vendorSub
-}) => ({
+}: any) => ({
   appCodeName,
   appName,
   appVersion,
