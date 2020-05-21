@@ -1,5 +1,12 @@
 import React, { memo } from "react"
-import { IonButton, IonIcon, IonImg, IonTextarea } from "@ionic/react"
+import {
+  IonButton,
+  IonIcon,
+  IonImg,
+  IonTextarea,
+  IonChip,
+  IonLabel,
+} from "@ionic/react"
 import { ShareUrl } from "../"
 import { PWA, Rating } from "../../util/types"
 import { postScore } from "../../data/dataApi"
@@ -13,6 +20,7 @@ interface ContainerProps {
   appId: number
   currentStar: number
   starCount: number
+  tags: string[]
 }
 
 const PWAInfo: React.FC<ContainerProps> = ({
@@ -20,6 +28,7 @@ const PWAInfo: React.FC<ContainerProps> = ({
   appId,
   currentStar,
   starCount,
+  tags,
 }) => {
   return (
     <>
@@ -84,7 +93,13 @@ const PWAInfo: React.FC<ContainerProps> = ({
       >
         <ShareUrl title={pwa.name} />
       </div>
-
+      <div style={{ padding: "10px" }}>
+        {tags.map((x) => (
+          <IonChip>
+            <IonLabel>{x}</IonLabel>
+          </IonChip>
+        ))}
+      </div>
       <div
         style={{
           paddingLeft: "10px",

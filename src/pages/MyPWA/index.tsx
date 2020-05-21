@@ -84,7 +84,8 @@ const MyPWA: React.FC<PWAProps> = ({ history, pwa, removeApp, replaceApp }) => {
   const [catError, setCatError] = useState<string | undefined>(undefined)
   const [link, setLink] = useState<string | undefined>(undefined)
   const [images, setImages] = useState<File[] | undefined>(undefined)
-  const [tags, setTags] = useState<string[]>(["sports", "dating"])
+  const [tags, setTags] = useState<string[]>([])
+  const [tagError, setTagError] = useState<boolean>(false)
   const [showDeleteAlert, setShowDeleteAlter] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [toastText, setToastText] = useState<string>()
@@ -116,6 +117,7 @@ const MyPWA: React.FC<PWAProps> = ({ history, pwa, removeApp, replaceApp }) => {
       setCat(pwa.category)
       setDesc(pwa.description)
       setLink(pwa.link)
+      setTags(pwa.tags)
     } else {
       setIsLoading(true)
     }
@@ -168,7 +170,7 @@ const MyPWA: React.FC<PWAProps> = ({ history, pwa, removeApp, replaceApp }) => {
         if (images && images.length > 0 && !addedImage) {
           await postAddScreenshots(images as File[], pwa.appId)
         }
-        const resp = await putApp(name!, desc!, cat!, pwa.appId)
+        const resp = await putApp(name!, desc!, cat!, pwa.appId, tags)
         if (resp?.status === 200) {
           replaceApp(resp.data)
           setScreenshots(resp.data.screenshots)
@@ -351,15 +353,27 @@ const MyPWA: React.FC<PWAProps> = ({ history, pwa, removeApp, replaceApp }) => {
           <h2 style={{ paddingTop: "10px", paddingLeft: "10px" }}>Tags</h2>
         )}
         {isEdit ? (
-          <div style={{ paddingLeft: "10px", paddingRight: "10px" }}>
-            <ReactTagInput
-              tags={tags}
-              onChange={(newTags) => setTags(newTags)}
-              removeOnBackspace={true}
-              maxTags={5}
-              placeholder="Add tags"
-            />
-          </div>
+          <>
+            <div style={{ paddingLeft: "10px", paddingRight: "10px" }}>
+              <ReactTagInput
+                tags={tags}
+                onChange={(newTags) => setTags(newTags)}
+                validator={(tag) => {
+                  const valid = tag.length <= 30
+                  setTagError(!valid)
+                  return valid
+                }}
+                removeOnBackspace={true}
+                maxTags={5}
+                placeholder="Add tags"
+              />
+              {tagError && (
+                <IonText color="danger">
+                  <p>Must be less than 30 characters</p>
+                </IonText>
+              )}
+            </div>
+          </>
         ) : (
           <div style={{ paddingLeft: "10px", paddingRight: "10px" }}>
             {tags.map((x) => (

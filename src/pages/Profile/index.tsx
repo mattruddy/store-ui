@@ -116,6 +116,7 @@ const Profile: React.FC<ProfileProps> = ({
   const [lightHouseLoading, setLightHouseLoading] = useState<boolean>(false)
   const [lightHouseTests, setLightHouseTests] = useState<LighthouseTest[]>([])
   const [tags, setTags] = useState<string[]>([])
+  const [tagError, setTagError] = useState<boolean>(false)
 
   useEffect(() => {
     if (pwas) {
@@ -196,7 +197,8 @@ const Profile: React.FC<ProfileProps> = ({
         url,
         cat,
         icon as File,
-        screenshots as File[]
+        screenshots as File[],
+        tags
       )
       if (resp && resp.data && resp.data.message) {
         setToastMessage(resp.data.message)
@@ -398,12 +400,24 @@ const Profile: React.FC<ProfileProps> = ({
                 >
                   <ReactTagInput
                     tags={tags}
-                    onChange={(newTags) => setTags(newTags)}
+                    onChange={(newTags) => {
+                      setTags(newTags)
+                    }}
+                    validator={(tag) => {
+                      const valid = tag.length <= 30
+                      setTagError(!valid)
+                      return valid
+                    }}
                     removeOnBackspace={true}
                     maxTags={5}
                     placeholder="Add tags"
                   />
                 </div>
+                {tagError && (
+                  <IonText color="danger">
+                    <p>Must be less than 30 characters</p>
+                  </IonText>
+                )}
               </IonItem>
               <IonItem>
                 <IonLabel position="stacked">Icon</IonLabel>
