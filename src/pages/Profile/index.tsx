@@ -53,6 +53,8 @@ import {
 import { RouteMap } from "../../routes"
 import { noSpecialChars } from "../../util"
 import "./styles.css"
+import ReactTagInput from "@pathofdev/react-tag-input"
+import "@pathofdev/react-tag-input/build/index.css"
 
 interface OwnProps extends RouteComponentProps {}
 
@@ -113,6 +115,7 @@ const Profile: React.FC<ProfileProps> = ({
   const [isSubmit, setIsSubmit] = useState<boolean>(false)
   const [lightHouseLoading, setLightHouseLoading] = useState<boolean>(false)
   const [lightHouseTests, setLightHouseTests] = useState<LighthouseTest[]>([])
+  const [tags, setTags] = useState<string[]>([])
 
   useEffect(() => {
     if (pwas) {
@@ -385,6 +388,25 @@ const Profile: React.FC<ProfileProps> = ({
                 )}
               </IonItem>
               <IonItem>
+                <IonLabel position="stacked">Tags</IonLabel>
+                <div
+                  style={{
+                    paddingTop: "15px",
+                    paddingBottom: "15px",
+                    width: "100%",
+                  }}
+                >
+                  <ReactTagInput
+                    tags={tags}
+                    onChange={(newTags) => setTags(newTags)}
+                    removeOnBackspace={true}
+                    maxTags={5}
+                    placeholder="Add tags"
+                  />
+                </div>
+              </IonItem>
+              <IonItem>
+                <IonLabel position="stacked">Icon</IonLabel>
                 <ImageUploader
                   fileContainerStyle={{
                     boxShadow: "none",
@@ -460,6 +482,7 @@ const Profile: React.FC<ProfileProps> = ({
                 )}
               </IonItem>
               <IonItem>
+                <IonLabel position="stacked">Category</IonLabel>
                 <CategoryOptions onPress={onPress} initValue={cat} />
                 {catError && (
                   <IonText color="danger">
@@ -468,6 +491,7 @@ const Profile: React.FC<ProfileProps> = ({
                 )}
               </IonItem>
               <IonItem>
+                <IonLabel position="stacked">Screenshots</IonLabel>
                 <ImageUploader
                   fileContainerStyle={{
                     boxShadow: "none",
