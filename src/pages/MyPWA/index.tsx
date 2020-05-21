@@ -25,6 +25,8 @@ import {
   IonList,
   IonImg,
   IonProgressBar,
+  IonChip,
+  IonLabel,
 } from "@ionic/react"
 import ImageUploader from "react-images-upload"
 import {
@@ -51,6 +53,8 @@ import { RouteMap, GetMyPWADetailUrl } from "../../routes"
 import StarRatings from "react-star-ratings"
 import { connect } from "../../data/connect"
 import { replaceApp, removeApp } from "../../data/user/user.actions"
+import ReactTagInput from "@pathofdev/react-tag-input"
+import "@pathofdev/react-tag-input/build/index.css"
 
 interface MatchParams {
   id: string | undefined
@@ -80,6 +84,7 @@ const MyPWA: React.FC<PWAProps> = ({ history, pwa, removeApp, replaceApp }) => {
   const [catError, setCatError] = useState<string | undefined>(undefined)
   const [link, setLink] = useState<string | undefined>(undefined)
   const [images, setImages] = useState<File[] | undefined>(undefined)
+  const [tags, setTags] = useState<string[]>(["sports", "dating"])
   const [showDeleteAlert, setShowDeleteAlter] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [toastText, setToastText] = useState<string>()
@@ -343,6 +348,28 @@ const MyPWA: React.FC<PWAProps> = ({ history, pwa, removeApp, replaceApp }) => {
           </div>
         )}
         {!isLoading && (
+          <h2 style={{ paddingTop: "10px", paddingLeft: "10px" }}>Tags</h2>
+        )}
+        {isEdit ? (
+          <div style={{ paddingLeft: "10px", paddingRight: "10px" }}>
+            <ReactTagInput
+              tags={tags}
+              onChange={(newTags) => setTags(newTags)}
+              removeOnBackspace={true}
+              maxTags={5}
+              placeholder="Add tags"
+            />
+          </div>
+        ) : (
+          <div style={{ paddingLeft: "10px", paddingRight: "10px" }}>
+            {tags.map((x) => (
+              <IonChip>
+                <IonLabel>{x}</IonLabel>
+              </IonChip>
+            ))}
+          </div>
+        )}
+        {!isLoading && (
           <h2 style={{ paddingTop: "10px", paddingLeft: "10px" }}>About</h2>
         )}
         {isEdit ? (
@@ -425,7 +452,6 @@ const MyPWA: React.FC<PWAProps> = ({ history, pwa, removeApp, replaceApp }) => {
             />
           </form>
         )}
-
         {!isEdit && <h2 style={{ paddingLeft: "10px" }}>Reviews</h2>}
         {!isEdit && pwa && pwa.ratings && (
           <IonList>
