@@ -44,6 +44,14 @@ const SignUp: React.FC<SignIn> = ({
   const [passwordError, setPasswordError] = useState(false)
   const [toastMessage, setToastMessage] = useState<string>()
   const [showToast, setShowToast] = useState<boolean>(false)
+  const [isValidPW, setIsValidPW] = useState<boolean>(false)
+
+  const checkValidPW = (pw: string) => {
+    return RegExp(
+      "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
+      "g"
+    ).test(pw)
+  }
 
   const signup = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -151,10 +159,18 @@ const SignUp: React.FC<SignIn> = ({
                   onIonChange={(e) => {
                     setPassword(e.detail.value!)
                     setPasswordError(false)
+                    setIsValidPW(checkValidPW(e.detail.value as string))
                   }}
                   required
                 />
               </IonCol>
+              {password !== "" && !isValidPW && (
+                <IonText color="danger">
+                  <p className="ion-padding-start">
+                    Password must contain a capital letter, number and symbol
+                  </p>
+                </IonText>
+              )}
               {formSubmitted && passwordError && (
                 <IonText color="danger">
                   <p className="ion-padding-start">Password is required</p>
@@ -163,7 +179,7 @@ const SignUp: React.FC<SignIn> = ({
             </IonRow>
             <IonRow>
               <IonCol size="12">
-                <IonButton type="submit" expand="block">
+                <IonButton type="submit" expand="block" disabled={!isValidPW}>
                   Sign Up
                 </IonButton>
               </IonCol>
