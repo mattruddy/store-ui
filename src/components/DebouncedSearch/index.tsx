@@ -1,5 +1,6 @@
 import React, { memo } from "react"
 import { IonSearchbar } from "@ionic/react"
+import ReactGA from "react-ga"
 
 interface ContainerProps {
   delay?: number
@@ -12,6 +13,10 @@ const DebouncedSearch: React.FC<ContainerProps> = ({
 }) => {
   const handleOnChangeCallback = async (e: CustomEvent) => {
     const { value } = e.detail
+    ReactGA.event({
+      category: "search",
+      action: value,
+    })
     onChangeCallback(value)
   }
 
