@@ -55,7 +55,6 @@ const PWAs: React.FC<RouteComponentProps> = () => {
   const content = useRef<any>()
 
   useEffect(() => {
-    ReactGA.pageview("PWAs Home")
     return () => {
       setPwas([])
       setPage(0)
@@ -78,6 +77,7 @@ const PWAs: React.FC<RouteComponentProps> = () => {
       reloadPwas(newCat)
       setScrollDisabled(false)
       content.current.scrollToTop()
+      ReactGA.pageview(`PWAs ${newCat}`)
     } finally {
       setIsLoading(false)
     }
