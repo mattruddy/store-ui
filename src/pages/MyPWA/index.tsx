@@ -160,7 +160,8 @@ const MyPWA: React.FC<PWAProps> = ({ history, pwa, removeApp, replaceApp }) => {
       if (
         name === pwa.name &&
         desc === pwa.description &&
-        cat === pwa.category
+        cat === pwa.category &&
+        tags === pwa.tags
       ) {
         setIsEdit(false)
         return
