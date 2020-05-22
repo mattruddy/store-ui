@@ -75,6 +75,10 @@ const SignUp: React.FC<SignIn> = ({
         setUsername("")
         setEmail("")
         setPassword("")
+        ReactGA.event({
+          category: "sign up",
+          action: "User signed up!",
+        })
         history.push(RouteMap.PROFILE)
       } catch (e) {
         console.log(`Error signing up: ${e}`)

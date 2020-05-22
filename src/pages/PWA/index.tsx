@@ -90,10 +90,18 @@ const PWA: React.FC<PWAProps> = ({
       )) as NewRating
       if (response && response.rating) {
         if (response.rating.comment) {
+          ReactGA.event({
+            category: "comment",
+            action: `User added comment for ${pwa.name}`,
+          })
           setRatings([response.rating, ...ratings])
         }
         setCurrentStar(response.averageStar)
         setStarCount(response.ratingCount)
+        ReactGA.event({
+          category: "rating",
+          action: `User added rating for ${pwa.name}`,
+        })
       }
     }
   }
