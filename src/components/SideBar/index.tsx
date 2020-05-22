@@ -1,4 +1,4 @@
-import React, { memo, useMemo, useEffect, useState } from "react"
+import React, { memo, useMemo } from "react"
 import {
   IonList,
   IonItem,
@@ -7,7 +7,6 @@ import {
   IonLabel,
   IonIcon,
   IonCol,
-  IonText,
 } from "@ionic/react"
 import { categories } from "../CategoryOptions"
 import { capitalize } from "../../util"
@@ -17,7 +16,7 @@ import {
   calendarOutline,
   home,
 } from "ionicons/icons"
-import { useHistory, useParams } from "react-router"
+import { useHistory } from "react-router"
 import { GetPwaCategoryUrl, RouteMap } from "../../routes"
 import "./styles.css"
 
