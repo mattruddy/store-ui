@@ -1,4 +1,4 @@
-import React, { memo } from "react"
+import React, { memo, useEffect, useRef } from "react"
 import { IonSearchbar } from "@ionic/react"
 import ReactGA from "react-ga"
 
@@ -11,6 +11,16 @@ const DebouncedSearch: React.FC<ContainerProps> = ({
   delay = 400,
   onChangeCallback,
 }) => {
+  let ref = useRef<any>(null)
+
+  useEffect(() => {
+    if (ref) {
+      ref.current.getInputElement().then((input: any) => {
+        ref.current.setFocus()
+      })
+    }
+  }, [ref])
+
   const handleOnChangeCallback = async (e: CustomEvent) => {
     const { value } = e.detail
     ReactGA.event({
@@ -20,7 +30,13 @@ const DebouncedSearch: React.FC<ContainerProps> = ({
     onChangeCallback(value)
   }
 
-  return <IonSearchbar onIonChange={handleOnChangeCallback} debounce={delay} />
+  return (
+    <IonSearchbar
+      onIonChange={handleOnChangeCallback}
+      debounce={delay}
+      ref={ref}
+    />
+  )
 }
 
 export default memo(DebouncedSearch)
