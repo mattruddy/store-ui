@@ -195,7 +195,7 @@ const PWAs: React.FC<RouteComponentProps> = () => {
           />
         </IonRow>
         <IonRow>
-          <SideBar />
+          <SideBar category={category ? category : ""} />
           <IonCol className="CardListCol">
             {!showSearch ? (
               <h1

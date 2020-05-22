@@ -163,7 +163,7 @@ const Home: React.FC<RouteComponentProps> = () => {
           />
         </IonRow>
         <IonRow>
-          <SideBar />
+          <SideBar category={"home"} />
           {showSearch && (
             <IonCol>
               <IonRow>

@@ -27,7 +27,11 @@ export const standardCategories = [
   { category: "DISCOVER", value: "TRENDING", icon: flashlightOutline },
 ]
 
-const SideBar = () => {
+interface ContainerProps {
+  category: string | undefined
+}
+
+const SideBar: React.FC<ContainerProps> = ({ category }) => {
   const history = useHistory()
 
   const onPress = (category: string) => {
@@ -38,21 +42,31 @@ const SideBar = () => {
     }
   }
 
+  const selected = (cat: string) => {
+    return !category ? cat === "" : cat.toLowerCase() === category.toLowerCase()
+  }
+
   const renderStandardCategories = useMemo(
     () =>
       standardCategories.map((cat, i) => (
         <IonItem
           key={i}
-          className="StandardCategoriesItem SideBarCategory item"
+          className={`StandardCategoriesItem SideBarCategory item ${
+            selected(cat.value) && "Selected"
+          }`}
           lines="none"
           button={true}
           onClick={() => onPress(cat.value)}
         >
-          <IonIcon className="StandardCategoriesItemIcon" icon={cat.icon} />
+          <IonIcon
+            className={`StandardCategoriesItemIcon`}
+            icon={cat.icon}
+            color={selected(cat.value) ? "primary" : undefined}
+          />
           {capitalize(cat.category)}
         </IonItem>
       )),
-    []
+    [category]
   )
 
   const renderCategories = useMemo(
@@ -60,15 +74,21 @@ const SideBar = () => {
       categories.map((cat, i) => (
         <IonItem
           key={i}
-          className="CategoriesItem SideBarCategory item"
+          className={`CategoriesItem SideBarCategory item ${
+            selected(cat.category) && "Selected"
+          }`}
           button={true}
           onClick={() => onPress(cat.category)}
         >
-          <IonIcon className="CategoriesItemIcon" icon={cat.icon} />
+          <IonIcon
+            className="CategoriesItemIcon"
+            icon={cat.icon}
+            color={selected(cat.category) ? "primary" : undefined}
+          />
           {capitalize(cat.category)}
         </IonItem>
       )),
-    []
+    [category]
   )
   return (
     <IonCol size="2.8" className="side">
