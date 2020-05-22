@@ -30,6 +30,7 @@ import "./styles.css"
 import { RouteMap, GetPwaCategoryUrl } from "../../routes"
 import { closeOutline, search, logoTwitter } from "ionicons/icons"
 import Footer from "../../components/Footer"
+import ReactGA from "react-ga"
 
 const Home: React.FC<RouteComponentProps> = () => {
   const history = useHistory()
@@ -44,6 +45,10 @@ const Home: React.FC<RouteComponentProps> = () => {
   useIonViewDidEnter(() => {
     loadHomeApps()
   })
+
+  useEffect(() => {
+    ReactGA.pageview(`Home`)
+  }, [])
 
   const loadHomeApps = async () => {
     setHomeResult(await getHome())

@@ -10,6 +10,7 @@ import {
 import { ShareUrl } from "../"
 import { PWA, Rating } from "../../util/types"
 import { postScore } from "../../data/dataApi"
+import ReactGA from "react-ga"
 
 //@ts-ignore
 import StarRatings from "react-star-ratings"
@@ -69,7 +70,14 @@ const PWAInfo: React.FC<ContainerProps> = ({
           style={{ marginRight: "10px", marginLeft: "10px" }}
           onClick={() => {
             postScore(appId)
-            window.open(pwa.link, "_blank")
+            ReactGA.outboundLink(
+              {
+                label: `Installed ${pwa.name}`,
+              },
+              () => {
+                window.open(pwa.link, "_blank")
+              }
+            )
           }}
         >
           FREE <IonIcon style={{ marginLeft: "10px" }} icon={openOutline} />
