@@ -1,11 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useCallback,
-  useMemo,
-  memo,
-} from "react"
+import React, { useState, useEffect, useRef, useCallback, useMemo } from "react"
 import {
   IonContent,
   IonHeader,
@@ -25,11 +18,13 @@ import {
   IonBackButton,
   IonNote,
 } from "@ionic/react"
+import { connect as reduxConnect } from "react-redux"
 import { DebouncedSearch, PWACard, SideBar } from "../../components"
-import { getPWAs, getSearchApp, getHome } from "../../data/dataApi"
+import { getSearchApp, getHome } from "../../data/dataApi"
 import { PWA, HomePWAs } from "../../util/types"
 import { RouteComponentProps, useParams, useHistory } from "react-router"
 import { setLoading } from "../../data/user/user.actions"
+import { getPWAs } from "../../redux/PWAs/actions"
 
 import "./styles.css"
 import ReactGA from "react-ga"
@@ -38,26 +33,45 @@ import { search, closeOutline } from "ionicons/icons"
 import { categories } from "../../components/CategoryOptions"
 import { standardCategories } from "../../components/SideBar"
 import { RouteMap } from "../../routes"
+import { PWAsState } from "../../redux/PWAs/reducer"
+//@ts-ignore
+const mapStateToProps = ({ PWAs: { items }, isPending }) => ({
+  pwas: items,
+  isLoading: isPending,
+})
 
-const PWAs: React.FC<RouteComponentProps> = () => {
+const mapDispatchToProps = { getPWAs }
+
+interface OwnProps extends RouteComponentProps {}
+
+interface DispatchProps {
+  getPWAs: typeof getPWAs
+}
+
+interface StateProps {
+  pwas?: PWA[]
+  isLoading: boolean
+  username?: string
+}
+
+interface PWAsProps extends OwnProps, DispatchProps, StateProps {}
+
+const PWAs: React.FC<PWAsProps> = ({ pwas, getPWAs, isLoading }) => {
   const { category } = useParams()
   const [page, setPage] = useState<number>(0)
   const [cat, setCat] = useState<string>("")
-  const [pwas, setPwas] = useState<PWA[]>([])
   const [pwaSearchValue, setPwaSearchValue] = useState<string>("")
   const [pwaSearchResults, setPwaSearchResults] = useState<PWA[]>([])
   const [homeResult, setHomeResult] = useState<HomePWAs>()
   const [showSearch, setShowSearch] = useState<boolean>(false)
   const [scrollDisabled, setScrollDisabled] = useState<boolean>(false)
 
-  const [isLoading, setIsLoading] = useState<boolean>(true)
   const scrollEl = useRef<any>(undefined)
   const content = useRef<any>()
 
   useEffect(() => {
     ReactGA.pageview("PWAs Home")
     return () => {
-      setPwas([])
       setPage(0)
     }
   }, [])
@@ -79,28 +93,14 @@ const PWAs: React.FC<RouteComponentProps> = () => {
       setScrollDisabled(false)
       content.current.scrollToTop()
     } finally {
-      setIsLoading(false)
     }
   }, [category])
 
   const loadMorePwas = async () => {
-    try {
-      if (cat !== "TRENDING") {
-        const nextPage = page + 1
-        const nextPwas = (await getPWAs(
-          nextPage,
-          cat && cat !== "" ? cat : undefined
-        )) as PWA[]
-        if (nextPwas && nextPwas.length > 0) {
-          setPwas((prev) => prev.concat(nextPwas))
-          setPage(nextPage)
-        } else {
-          setScrollDisabled(true)
-        }
-      }
-    } finally {
-      scrollEl.current.complete()
-    }
+    const nextPage = page + 1
+    await getPWAs(nextPage, cat && cat !== "" ? cat : undefined)
+
+    scrollEl.current.complete()
   }
 
   const toggleSearch = () => {
@@ -115,11 +115,11 @@ const PWAs: React.FC<RouteComponentProps> = () => {
 
   const reloadPwas = async (option?: string) => {
     setPage(0)
-    const resp = await getPWAs(
+
+    await getPWAs(
       0,
       option || option === "" ? option : cat && cat !== "" ? cat : undefined
     )
-    setPwas(resp)
   }
 
   const handleOnSearchChange = useCallback(async (appName: string) => {
@@ -134,6 +134,7 @@ const PWAs: React.FC<RouteComponentProps> = () => {
 
   const renderPwaList = useMemo(() => {
     const streamPWAs = showSearch ? pwaSearchResults : pwas
+    //@ts-ignore
     if (!isLoading && streamPWAs.length < 1) {
       return (
         !showSearch && (
@@ -143,6 +144,7 @@ const PWAs: React.FC<RouteComponentProps> = () => {
         )
       )
     }
+    //@ts-ignore
     return streamPWAs.map((pwa, i) => (
       <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
         <PWACard url="/pwa" pwa={pwa} />
@@ -227,5 +229,5 @@ const PWAs: React.FC<RouteComponentProps> = () => {
     </IonPage>
   )
 }
-
-export default memo(PWAs)
+//@ts-ignore
+export default reduxConnect(mapStateToProps, mapDispatchToProps)(PWAs)

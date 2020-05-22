@@ -1,6 +1,9 @@
 import axios from "axios"
 import { vars } from "../../data/env"
 import { Plugins } from "@capacitor/core"
+declare module "axios" {
+  export interface AxiosResponse<T = any> extends Promise<T> {}
+}
 const { Storage } = Plugins
 const { API_URL } = vars().env
 const TOKEN = "token"
@@ -45,7 +48,7 @@ const base = {
 const baseHeaders = {
   ...base,
   "Cache-Control": "no-cache",
-  "Content-Type": "application/x-www-form-urlencoded",
+  "Content-Type": "application/json",
 }
 
 /*
@@ -69,13 +72,15 @@ Axios request response : https://kapeli.com/cheat_sheets/Axios.docset/Contents/R
 }
 */
 
-const Axios = async (responseType?: "json") => {
+const Axios = async (url: string, method?: "GET", responseType?: "json") => {
   const response = await getUserData()
   const { isLoggedIn, token, hasRead } = response
 
-  return axios.create({
+  return await axios.request({
     withCredentials: true,
     baseURL: API_URL,
+    url,
+    method,
     //timeout: 25000,
     //@ts-ignore
     crossDomain: true,

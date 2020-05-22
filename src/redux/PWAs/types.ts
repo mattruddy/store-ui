@@ -1,3 +1,5 @@
 export const PWAsActionTypes = {
+  PWAS_PENDING: "PWAS_PENDING",
+  PWAS_COMPLETE: "PWAS_COMPLETE",
   PWAS_SET: "PWAS_SET",
 }
