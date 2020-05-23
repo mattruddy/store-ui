@@ -34,6 +34,7 @@ export interface PWA {
   ratings: Rating[]
   averageRating: number
   ratingsCount: number
+  tags: string[]
 }
 
 export interface UserProfile {
