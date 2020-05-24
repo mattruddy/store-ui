@@ -17,6 +17,8 @@ export function userReducer(state: UserState, action: UserActions): UserState {
       return { ...state, pwas: action.pwas }
     case "set-username":
       return { ...state, username: action.username }
+    case "set-email":
+      return { ...state, email: action.email }
     case "replace-app":
       return {
         ...state,

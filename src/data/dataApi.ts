@@ -103,7 +103,7 @@ export const getPWA = async (name: string) => {
   }
 }
 
-export const postEmail = async (text: string) => {
+export const postEmail = async (text: string, email: string) => {
   const token = await Storage.get({ key: TOKEN })
   if (!token || !token.value) return
   try {
@@ -117,6 +117,7 @@ export const postEmail = async (text: string) => {
       },
       data: {
         text: text,
+        email: email,
       },
     })
     const { data } = response
@@ -232,6 +233,7 @@ export const getProfile = async () => {
     return {
       username: data.username,
       pwas: data.pageResponses as PWA[],
+      email: data.email,
     } as UserProfile
   } catch (error) {
     throw error

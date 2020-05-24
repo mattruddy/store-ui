@@ -50,6 +50,7 @@ export const loadProfile = () => async (dispatch: React.Dispatch<any>) => {
   if (profile) {
     dispatch(setProfile(profile.pwas))
     dispatch(setUsername(profile.username))
+    dispatch(setEmail(profile.email))
   }
 }
 
@@ -76,6 +77,11 @@ export const setUsername = (username: string | undefined) =>
     type: "set-username",
     username,
   } as const)
+
+export const setEmail = (email: string | undefined) => ({
+  type: "set-email",
+  email
+} as const)
 
 export const replaceApp = (app: PWA) =>
   ({
@@ -104,5 +110,6 @@ export type UserActions =
   | ActionType<typeof replaceApp>
   | ActionType<typeof setProfile>
   | ActionType<typeof setUsername>
+  | ActionType<typeof setEmail>
   | ActionType<typeof addApp>
   | ActionType<typeof removeApp>
