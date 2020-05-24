@@ -90,10 +90,18 @@ const PWA: React.FC<PWAProps> = ({
       )) as NewRating
       if (response && response.rating) {
         if (response.rating.comment) {
+          ReactGA.event({
+            category: "comment",
+            action: `User added comment for ${pwa.name}`,
+          })
           setRatings([response.rating, ...ratings])
         }
         setCurrentStar(response.averageStar)
         setStarCount(response.ratingCount)
+        ReactGA.event({
+          category: "rating",
+          action: `User added rating for ${pwa.name}`,
+        })
       }
     }
   }
@@ -141,6 +149,7 @@ const PWA: React.FC<PWAProps> = ({
                     appId={pwa.appId}
                     currentStar={currentStar as number}
                     starCount={starCount as number}
+                    tags={pwa.tags}
                   />
                 </IonCol>
                 <IonCol size="12" sizeMd="6" pushMd="6">

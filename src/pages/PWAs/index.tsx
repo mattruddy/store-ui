@@ -70,7 +70,6 @@ const PWAs: React.FC<PWAsProps> = ({ pwas, getPWAs, isLoading }) => {
   const content = useRef<any>()
 
   useEffect(() => {
-    ReactGA.pageview("PWAs Home")
     return () => {
       setPage(0)
     }
@@ -92,6 +91,7 @@ const PWAs: React.FC<PWAsProps> = ({ pwas, getPWAs, isLoading }) => {
       reloadPwas(newCat)
       setScrollDisabled(false)
       content.current.scrollToTop()
+      ReactGA.pageview(`PWAs ${newCat}`)
     } finally {
     }
   }, [category])
@@ -197,7 +197,7 @@ const PWAs: React.FC<PWAsProps> = ({ pwas, getPWAs, isLoading }) => {
           />
         </IonRow>
         <IonRow>
-          <SideBar />
+          <SideBar category={category ? category : ""} />
           <IonCol className="CardListCol">
             {!showSearch ? (
               <h1

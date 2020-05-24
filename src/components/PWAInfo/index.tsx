@@ -1,8 +1,16 @@
 import React, { memo } from "react"
-import { IonButton, IonIcon, IonImg, IonTextarea } from "@ionic/react"
+import {
+  IonButton,
+  IonIcon,
+  IonImg,
+  IonTextarea,
+  IonChip,
+  IonLabel,
+} from "@ionic/react"
 import { ShareUrl } from "../"
 import { PWA, Rating } from "../../util/types"
 import { postScore } from "../../data/dataApi"
+import ReactGA from "react-ga"
 
 //@ts-ignore
 import StarRatings from "react-star-ratings"
@@ -13,6 +21,7 @@ interface ContainerProps {
   appId: number
   currentStar: number
   starCount: number
+  tags: string[]
 }
 
 const PWAInfo: React.FC<ContainerProps> = ({
@@ -20,6 +29,7 @@ const PWAInfo: React.FC<ContainerProps> = ({
   appId,
   currentStar,
   starCount,
+  tags,
 }) => {
   return (
     <>
@@ -60,7 +70,14 @@ const PWAInfo: React.FC<ContainerProps> = ({
           style={{ marginRight: "10px", marginLeft: "10px" }}
           onClick={() => {
             postScore(appId)
-            window.open(pwa.link, "_blank")
+            ReactGA.outboundLink(
+              {
+                label: `Installed ${pwa.name}`,
+              },
+              () => {
+                window.open(pwa.link, "_blank")
+              }
+            )
           }}
         >
           FREE <IonIcon style={{ marginLeft: "10px" }} icon={openOutline} />
@@ -84,7 +101,13 @@ const PWAInfo: React.FC<ContainerProps> = ({
       >
         <ShareUrl title={pwa.name} />
       </div>
-
+      <div style={{ padding: "10px" }}>
+        {tags.map((x) => (
+          <IonChip>
+            <IonLabel>{x}</IonLabel>
+          </IonChip>
+        ))}
+      </div>
       <div
         style={{
           paddingLeft: "10px",

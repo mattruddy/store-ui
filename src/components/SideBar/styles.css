@@ -27,6 +27,10 @@
   --color-activated: black;
 }
 
+.Selected {
+  --color: var(--ion-color-primary);
+}
+
 .CategoriesItemIcon {
   height: 15px;
   width: 15px;

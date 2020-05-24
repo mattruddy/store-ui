@@ -261,7 +261,8 @@ export const postApp = async (
   url: string,
   category: string,
   icon: File,
-  screenshots: File[]
+  screenshots: File[],
+  tags: string[]
 ) => {
   const token = await Storage.get({ key: TOKEN })
   if (!token) return
@@ -271,6 +272,7 @@ export const postApp = async (
       description: desc,
       link: url,
       category: category,
+      tags: tags,
     }
 
     const fd = new FormData()
@@ -373,7 +375,8 @@ export const putApp = async (
   name: string,
   description: string,
   category: string,
-  appId: number
+  appId: number,
+  tags: string[]
 ) => {
   const token = await Storage.get({ key: TOKEN })
   if (!token) return
@@ -390,6 +393,7 @@ export const putApp = async (
         name: name,
         description: description,
         category: category,
+        tags: tags,
       },
     })
 

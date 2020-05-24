@@ -53,6 +53,8 @@ import {
 import { RouteMap } from "../../routes"
 import { noSpecialChars } from "../../util"
 import "./styles.css"
+import ReactTagInput from "@pathofdev/react-tag-input"
+import "@pathofdev/react-tag-input/build/index.css"
 
 interface OwnProps extends RouteComponentProps {}
 
@@ -113,6 +115,8 @@ const Profile: React.FC<ProfileProps> = ({
   const [isSubmit, setIsSubmit] = useState<boolean>(false)
   const [lightHouseLoading, setLightHouseLoading] = useState<boolean>(false)
   const [lightHouseTests, setLightHouseTests] = useState<LighthouseTest[]>([])
+  const [tags, setTags] = useState<string[]>([])
+  const [tagError, setTagError] = useState<boolean>(false)
 
   useEffect(() => {
     if (pwas) {
@@ -193,7 +197,8 @@ const Profile: React.FC<ProfileProps> = ({
         url,
         cat,
         icon as File,
-        screenshots as File[]
+        screenshots as File[],
+        tags
       )
       if (resp && resp.data && resp.data.message) {
         setToastMessage(resp.data.message)
@@ -385,6 +390,37 @@ const Profile: React.FC<ProfileProps> = ({
                 )}
               </IonItem>
               <IonItem>
+                <IonLabel position="stacked">Tags</IonLabel>
+                <div
+                  style={{
+                    paddingTop: "15px",
+                    paddingBottom: "15px",
+                    width: "100%",
+                  }}
+                >
+                  <ReactTagInput
+                    tags={tags}
+                    onChange={(newTags) => {
+                      setTags(newTags)
+                    }}
+                    validator={(tag) => {
+                      const valid = tag.length <= 30
+                      setTagError(!valid)
+                      return valid
+                    }}
+                    removeOnBackspace={true}
+                    maxTags={5}
+                    placeholder="Add tags"
+                  />
+                </div>
+                {tagError && (
+                  <IonText color="danger">
+                    <p>Must be less than 30 characters</p>
+                  </IonText>
+                )}
+              </IonItem>
+              <IonItem>
+                <IonLabel position="stacked">Icon</IonLabel>
                 <ImageUploader
                   fileContainerStyle={{
                     boxShadow: "none",
@@ -460,6 +496,7 @@ const Profile: React.FC<ProfileProps> = ({
                 )}
               </IonItem>
               <IonItem>
+                <IonLabel position="stacked">Category</IonLabel>
                 <CategoryOptions onPress={onPress} initValue={cat} />
                 {catError && (
                   <IonText color="danger">
@@ -468,6 +505,7 @@ const Profile: React.FC<ProfileProps> = ({
                 )}
               </IonItem>
               <IonItem>
+                <IonLabel position="stacked">Screenshots</IonLabel>
                 <ImageUploader
                   fileContainerStyle={{
                     boxShadow: "none",
