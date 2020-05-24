@@ -377,11 +377,12 @@ const MyPWA: React.FC<PWAProps> = ({ history, pwa, removeApp, replaceApp }) => {
           </>
         ) : (
           <div style={{ paddingLeft: "10px", paddingRight: "10px" }}>
-            {tags.map((x) => (
-              <IonChip>
-                <IonLabel>{x}</IonLabel>
-              </IonChip>
-            ))}
+            {pwa &&
+              pwa.tags.map((x, i) => (
+                <IonChip key={i}>
+                  <IonLabel>{x}</IonLabel>
+                </IonChip>
+              ))}
           </div>
         )}
         {!isLoading && (

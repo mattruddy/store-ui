@@ -117,6 +117,10 @@ const noSpecialChars = (s: string): boolean => {
   return !/[^a-zA-Z0-9\s]/.test(s)
 }
 
+const validEmail = (email: string): boolean => {
+  return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
+}
+
 export {
   blobToFile,
   fixFilesRotation,
@@ -127,4 +131,5 @@ export {
   copyStringToClipboard,
   capitalize,
   noSpecialChars,
+  validEmail,
 }
