@@ -16,13 +16,6 @@ const Footer: React.FC = () => {
         >
           <IonIcon className="ion-color-twitter" icon={logoTwitter} />
         </a>
-        <a
-          className="FooterRightIcon"
-          href="https://github.com/mattruddy/"
-          target="_blank"
-        >
-          <IonIcon color="dark" icon={logoGithub} />
-        </a>
       </div>
     </div>
   )
