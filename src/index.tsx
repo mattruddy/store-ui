@@ -1,6 +1,8 @@
 import "./css/index.css"
 import React, { Suspense, lazy } from "react"
 import ReactDOM from "react-dom"
+// @ts-ignore
+import { render } from "react-snapshot"
 import { LoadingScreen } from "./components"
 import * as serviceWorker from "./serviceWorker"
 import { defineCustomElements } from "@ionic/pwa-elements/loader"
@@ -17,7 +19,7 @@ setupConfig({
   swipeBackEnabled: false,
 })
 
-ReactDOM.render(
+render(
   <Suspense fallback={<LoadingScreen />}>
     <App />
   </Suspense>,
