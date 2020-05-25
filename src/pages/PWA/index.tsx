@@ -136,6 +136,7 @@ const PWA: React.FC<PWAProps> = ({
           <meta property="og:description" content={pwa.description}></meta>
           <meta property="og:image" content={pwa.icon} />
           <meta property="og:url" content={window.location.toString()} />
+          <meta name="description" content={pwa.description} />
         </Helmet>
       )}
       {pwa && (
