@@ -131,7 +131,11 @@ const PWA: React.FC<PWAProps> = ({
     <IonPage>
       {pwa && (
         <Helmet>
-          <title>{pwa.name}</title>
+          <title>{"Store | " + pwa.name}</title>
+          <meta property="og:title" content={pwa.name} />
+          <meta property="og:description" content={pwa.description}></meta>
+          <meta property="og:image" content={pwa.icon} />
+          <meta property="og:url" content={window.location.toString()} />
         </Helmet>
       )}
       {pwa && (
