@@ -28,6 +28,8 @@ import { setHasReadInstall } from "../../data/user/user.actions"
 import { ScreenshotSlider, Rating, PWAInfo, RatingItem } from "../../components"
 import { RouteMap } from "../../routes"
 import ReactGA from "react-ga"
+// @ts-ignore
+import { Helmet } from "react-helmet"
 
 const stars = ["ONE", "TWO", "THREE", "FOUR", "FIVE"]
 
@@ -127,6 +129,11 @@ const PWA: React.FC<PWAProps> = ({
 
   return (
     <IonPage>
+      {pwa && (
+        <Helmet>
+          <title>{pwa.name}</title>
+        </Helmet>
+      )}
       {pwa && (
         <Fragment>
           <IonHeader>
