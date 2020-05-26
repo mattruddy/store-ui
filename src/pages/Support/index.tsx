@@ -1,4 +1,4 @@
-import React, { useState, memo } from "react"
+import React, { useState, memo, useEffect } from "react"
 import {
   IonContent,
   IonHeader,
@@ -10,17 +10,50 @@ import {
   IonInput,
   IonLabel,
   IonToast,
-  IonItem,
   IonButtons,
   IonBackButton,
+  IonNote,
 } from "@ionic/react"
 import { postEmail } from "../../data/dataApi"
 import { RouteMap } from "../../routes"
+import { connect } from "../../data/connect"
+import { setEmail } from "../../data/user/user.actions"
+import { validEmail } from "../../util/index"
+import { RouteComponentProps } from "react-router"
 
-const Support: React.FC = () => {
-  const [text, setText] = useState<string>()
+interface OwnProps extends RouteComponentProps {}
+
+interface DispatchProps {
+  setEmail: typeof setEmail
+}
+
+interface StateProps {
+  email?: string
+}
+interface SupportProps extends OwnProps, DispatchProps, StateProps {}
+
+const Support: React.FC<SupportProps> = ({ history, email, setEmail }) => {
+  const [text, setText] = useState<string>("")
+  const [fromEmail, setFromEmail] = useState<string>("")
+  const [emailError, setEmailError] = useState<string | undefined>(undefined)
   const [toastText, setToastText] = useState<string>()
   const [showToast, setShowToast] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (email && validEmail(email) && !email.endsWith("@pwa.com")) {
+      setFromEmail(email)
+    }
+  }, [email])
+
+  const submitSupport = async () => {
+    if (!text || !fromEmail || !validEmail(fromEmail)) return
+    await postEmail(text!, fromEmail)
+    setEmail(fromEmail)
+    setText("")
+    setToastText("Sent. You will hear from us shortly")
+    setShowToast(true)
+    history.goBack()
+  }
 
   return (
     <IonPage>
@@ -44,10 +77,27 @@ const Support: React.FC = () => {
           <div style={{ width: "100%", padding: "15px" }}>
             <IonLabel style={{ marginLeft: "30px" }}>Support Request</IonLabel>
           </div>
+          <IonInput
+            style={{ boxShadow: "0 0 3px #ccc", width: "95%" }}
+            value={fromEmail}
+            placeholder="Email"
+            maxlength={50}
+            onIonChange={(e) => {
+              const newEmail = e.detail.value!
+              if (!validEmail(newEmail)) {
+                setEmailError("Invalid email")
+              } else {
+                setEmailError(undefined)
+              }
+              setFromEmail(newEmail)
+            }}
+          />
+          <IonNote color="danger">{emailError && <p>{emailError}</p>}</IonNote>
           <IonTextarea
             style={{ boxShadow: "0 0 3px #ccc", width: "95%" }}
             value={text}
             rows={10}
+            maxlength={1000}
             placeholder="Please add a message"
             onIonChange={(e) => {
               setText(e.detail.value!)
@@ -57,13 +107,8 @@ const Support: React.FC = () => {
             style={{ width: "95%", marginTop: "15px", borderRadius: "5px" }}
             type="button"
             expand="full"
-            onClick={async () => {
-              if (!text || text === "") return
-              await postEmail(text!)
-              setText("")
-              setToastText("Sent. You will hear from us shortly")
-              setShowToast(true)
-            }}
+            disabled={(!validEmail(fromEmail) || !text)}
+            onClick={submitSupport}
           >
             Submit
           </IonButton>
@@ -80,4 +125,12 @@ const Support: React.FC = () => {
   )
 }
 
-export default memo(Support)
+export default connect<OwnProps, StateProps, DispatchProps>({
+  mapStateToProps: ({ user: { email } }) => ({
+    email,
+  }),
+  mapDispatchToProps: {
+    setEmail,
+  },
+  component: memo(Support),
+})

@@ -41,6 +41,7 @@ export interface PWA {
 
 export interface UserProfile {
   username: string
+  email: string
   pwas: PWA[]
 }
 

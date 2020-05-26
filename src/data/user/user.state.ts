@@ -7,4 +7,5 @@ export interface UserState {
   hasRead?: string
   pwas?: PWA[]
   username?: string
+  email?: string
 }

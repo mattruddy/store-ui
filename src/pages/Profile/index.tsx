@@ -22,12 +22,9 @@ import {
   IonFabButton,
   IonFabList,
   IonAlert,
-  useIonViewDidEnter,
   IonCol,
-  useIonViewWillLeave,
   IonToast,
   IonSpinner,
-  useIonViewDidLeave,
   IonProgressBar,
 } from "@ionic/react"
 import {

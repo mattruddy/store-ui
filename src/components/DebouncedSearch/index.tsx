@@ -27,7 +27,8 @@ const DebouncedSearch: React.FC<ContainerProps> = ({
       category: "search",
       action: value,
     })
-    onChangeCallback(value)
+    const searchName = value.replace(/[^A-Za-z0-9 ]/g, "").trim()
+    onChangeCallback(searchName)
   }
 
   return (
