@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from "axios"
+import axios, { AxiosRequestConfig, AxiosInstance } from "axios"
 import { vars } from "../../data/env"
 import { Plugins } from "@capacitor/core"
 import { AxiosCustomRequestConfig } from "../../util/types"
@@ -73,15 +73,13 @@ Axios request response : https://kapeli.com/cheat_sheets/Axios.docset/Contents/R
 }
 */
 
-const Axios = async (url: string, method?: "GET", responseType?: "json") => {
+const Axios = async (responseType: "json" = "json"): Promise<AxiosInstance> => {
   const response = await getUserData()
   const { isLoggedIn, token, hasRead } = response
 
-  return await axios.request({
+  return axios.create({
     withCredentials: true,
     baseURL: API_URL,
-    url,
-    method,
     // timeout: 25000,
     crossDomain: true,
     responseType,

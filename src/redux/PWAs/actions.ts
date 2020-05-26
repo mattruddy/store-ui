@@ -23,7 +23,8 @@ const thunkGetPWAs = (
     : `/public/pwas/${page}`
 
   try {
-    const response = await Axios(url)
+    const axiosInstance = await Axios()
+    const response = await axiosInstance.get(url)
     const data: PWA[] = response.data
     dispatch(setPWAs(data))
     dispatch(completePWAs())
