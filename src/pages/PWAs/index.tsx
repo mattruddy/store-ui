@@ -34,7 +34,7 @@ import { categories } from "../../components/CategoryOptions"
 import { standardCategories } from "../../components/SideBar"
 import { RouteMap } from "../../routes"
 import { PWAsState } from "../../redux/PWAs/reducer"
-//@ts-ignore
+
 const mapStateToProps = ({ PWAs: { items }, isPending }) => ({
   pwas: items,
   isLoading: isPending,
@@ -134,7 +134,7 @@ const PWAs: React.FC<PWAsProps> = ({ pwas, getPWAs, isLoading }) => {
 
   const renderPwaList = useMemo(() => {
     const streamPWAs = showSearch ? pwaSearchResults : pwas
-    //@ts-ignore
+    
     if (!isLoading && streamPWAs.length < 1) {
       return (
         !showSearch && (
@@ -144,7 +144,7 @@ const PWAs: React.FC<PWAsProps> = ({ pwas, getPWAs, isLoading }) => {
         )
       )
     }
-    //@ts-ignore
+  
     return streamPWAs.map((pwa, i) => (
       <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
         <PWACard url="/pwa" pwa={pwa} />
@@ -229,5 +229,5 @@ const PWAs: React.FC<PWAsProps> = ({ pwas, getPWAs, isLoading }) => {
     </IonPage>
   )
 }
-//@ts-ignore
+
 export default reduxConnect(mapStateToProps, mapDispatchToProps)(PWAs)
