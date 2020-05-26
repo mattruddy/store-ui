@@ -95,11 +95,13 @@ const Home: React.FC<RouteComponentProps> = () => {
           </IonButton>
         </div>
         <IonRow className="HomeRow">
-          {homeResult?.topApps.map((topApp, i) => (
-            <IonCol key={i} sizeXs="6.7" sizeSm="4" sizeMd="5" sizeLg="4">
-              <PWACard url="/pwa" pwa={topApp} />
-            </IonCol>
-          ))}
+          {homeResult &&
+            homeResult.topApps &&
+            homeResult.topApps.map((topApp, i) => (
+              <IonCol key={i} sizeXs="6.7" sizeSm="4" sizeMd="5" sizeLg="4">
+                <PWACard url="/pwa" pwa={topApp} />
+              </IonCol>
+            ))}
         </IonRow>
         <div className="HomeRowHeader">
           <h1>New</h1>
@@ -111,11 +113,13 @@ const Home: React.FC<RouteComponentProps> = () => {
           </IonButton>
         </div>
         <IonRow className="HomeRow">
-          {homeResult?.newApps.map((newApp, i) => (
-            <IonCol key={i} sizeXs="6.7" sizeSm="4" sizeMd="5" sizeLg="4">
-              <PWACard url="/pwa" pwa={newApp} />
-            </IonCol>
-          ))}
+          {homeResult &&
+            homeResult.newApps &&
+            homeResult.newApps.map((newApp, i) => (
+              <IonCol key={i} sizeXs="6.7" sizeSm="4" sizeMd="5" sizeLg="4">
+                <PWACard url="/pwa" pwa={newApp} />
+              </IonCol>
+            ))}
         </IonRow>
         <div className="HomeRowHeader">
           <h1>Discover</h1>
@@ -127,11 +131,13 @@ const Home: React.FC<RouteComponentProps> = () => {
           </IonButton>
         </div>
         <IonRow className="HomeRow">
-          {homeResult?.discoverApps.map((discoverApp, i) => (
-            <IonCol key={i} sizeXs="6.7" sizeSm="4" sizeMd="5" sizeLg="4">
-              <PWACard url="/pwa" pwa={discoverApp} />
-            </IonCol>
-          ))}
+          {homeResult &&
+            homeResult.discoverApps &&
+            homeResult.discoverApps.map((discoverApp, i) => (
+              <IonCol key={i} sizeXs="6.7" sizeSm="4" sizeMd="5" sizeLg="4">
+                <PWACard url="/pwa" pwa={discoverApp} />
+              </IonCol>
+            ))}
         </IonRow>
       </>
     )

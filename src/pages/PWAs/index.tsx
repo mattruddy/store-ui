@@ -238,4 +238,5 @@ const PWAs: React.FC<PWAsProps> = ({ pwas, getPWAs, isLoading }) => {
   )
 }
 
+//@ts-ignore
 export default reduxConnect(mapStateToProps, mapDispatchToProps)(PWAs)
