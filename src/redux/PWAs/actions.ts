@@ -3,6 +3,7 @@ import { PWAsActionTypes } from "./types"
 import { Axios } from "../Actions"
 import { MiddlewareAPI } from "redux"
 import ReactGA from "react-ga"
+import { PWA } from "../../util/types"
 
 const loadingPWAs = () => ({ type: PWAsActionTypes.PWAS_PENDING })
 

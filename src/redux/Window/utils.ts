@@ -6,7 +6,7 @@ const getConnectionProps = ({
   effectiveType,
   onchange,
   rtt,
-  saveDate
+  saveDate,
 }: any) => ({ downlink, effectiveType, onchange, rtt, saveDate })
 
 const getScreenProps = ({
@@ -18,7 +18,7 @@ const getScreenProps = ({
   height,
   // orientation: { angle, onchange, type },
   pixelDepth,
-  width
+  width,
 }: any) => ({
   availHeight,
   availLeft,
@@ -28,7 +28,7 @@ const getScreenProps = ({
   height,
   // orientation: { angle, onchange, type },
   pixelDepth,
-  width
+  width,
 })
 
 const getNavigatorProps = ({
@@ -66,7 +66,7 @@ const getNavigatorProps = ({
   // userActivation: { hasBeenActive, isActive },
   userAgent,
   vendor,
-  vendorSub
+  vendorSub,
 }: any) => ({
   appCodeName,
   appName,
@@ -102,7 +102,7 @@ const getNavigatorProps = ({
 
   userAgent,
   vendor,
-  vendorSub
+  vendorSub,
 })
 
 const getWindowDimensions = () => {
@@ -114,7 +114,7 @@ const getWindowDimensions = () => {
     screen,
     matchMedia,
     navigator,
-    performance
+    performance,
   } = window
 
   const isMobile = innerWidth < 768
@@ -130,7 +130,7 @@ const getWindowDimensions = () => {
     // navBarHeight: isMobile ? 64 : 68,
     navBarHeight: 64,
     isInStandalone: matchMedia("(display-mode: standalone)").matches,
-    isOnMobileBrowser: isOnMobileBrowser(window.navigator.userAgent)
+    isOnMobileBrowser: isOnMobileBrowser(window.navigator.userAgent),
   }
 }
 

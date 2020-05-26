@@ -18,7 +18,12 @@ import {
   IonBackButton,
   IonNote,
 } from "@ionic/react"
-import { connect as reduxConnect } from "react-redux"
+import {
+  connect as reduxConnect,
+  MapStateToProps,
+  MapDispatchToProps,
+  MapStateToPropsParam,
+} from "react-redux"
 import { DebouncedSearch, PWACard, SideBar } from "../../components"
 import { getSearchApp, getHome } from "../../data/dataApi"
 import { PWA, HomePWAs } from "../../util/types"
@@ -34,15 +39,14 @@ import { categories } from "../../components/CategoryOptions"
 import { standardCategories } from "../../components/SideBar"
 import { RouteMap } from "../../routes"
 import { PWAsState } from "../../redux/PWAs/reducer"
+import { ReduxState } from "../../redux/RootReducer"
 
-const mapStateToProps = ({ PWAs: { items }, isPending }) => ({
-  pwas: items,
-  isLoading: isPending,
+const mapDispatchToProps: DispatchProps = { getPWAs }
+
+const mapStateToProps = ({ pwas }: ReduxState) => ({
+  pwas: pwas.items,
+  isLoading: pwas.isPending,
 })
-
-const mapDispatchToProps = { getPWAs }
-
-interface OwnProps extends RouteComponentProps {}
 
 interface DispatchProps {
   getPWAs: typeof getPWAs
@@ -51,10 +55,11 @@ interface DispatchProps {
 interface StateProps {
   pwas?: PWA[]
   isLoading: boolean
-  username?: string
 }
 
-interface PWAsProps extends OwnProps, DispatchProps, StateProps {}
+//interface PWAsProps extends OwnProps, DispatchProps, StateProps {}
+
+type PWAsProps = RouteComponentProps & StateProps & DispatchProps
 
 const PWAs: React.FC<PWAsProps> = ({ pwas, getPWAs, isLoading }) => {
   const { category } = useParams()
@@ -134,7 +139,7 @@ const PWAs: React.FC<PWAsProps> = ({ pwas, getPWAs, isLoading }) => {
 
   const renderPwaList = useMemo(() => {
     const streamPWAs = showSearch ? pwaSearchResults : pwas
-    
+
     if (!isLoading && streamPWAs.length < 1) {
       return (
         !showSearch && (
@@ -144,7 +149,7 @@ const PWAs: React.FC<PWAsProps> = ({ pwas, getPWAs, isLoading }) => {
         )
       )
     }
-  
+
     return streamPWAs.map((pwa, i) => (
       <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
         <PWACard url="/pwa" pwa={pwa} />

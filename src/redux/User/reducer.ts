@@ -1,13 +1,22 @@
 import { UserActionTypes } from "./types"
 import { AppActionTypes } from "../App/types"
 import { ActionProps } from "../Actions/propTypes"
+import { Reducer } from "redux"
 
-const DEFAULT_STATE_USER = {
-  token: null,
-  id: null,
+export interface UserState {
+  token?: string
+  id?: number
 }
 
-const User = (state = DEFAULT_STATE_USER, action: ActionProps) => {
+const DEFAULT_STATE_USER: UserState = {
+  token: undefined,
+  id: undefined,
+}
+
+const User: Reducer<UserState> = (
+  state = DEFAULT_STATE_USER,
+  action
+): UserState => {
   const { type, payload } = action
   switch (type) {
     case UserActionTypes.USER_SET:

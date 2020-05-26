@@ -2,28 +2,29 @@ import { PWAsActionTypes } from "./types"
 import { AppActionTypes } from "../App/types"
 import { ActionProps } from "../Actions/propTypes"
 import { PWA } from "../../util/types"
+import { Reducer } from "redux"
 
 export interface PWAsState {
   count?: number
   next?: string
   previous?: string
   items: PWA[]
-  isPending?: boolean
+  isPending: boolean
   error?: string
   search?: string
 }
 
-const DEFAULT_STATE_PWAS = {
-  count: null,
-  next: null,
-  previous: null,
+const DEFAULT_STATE_PWAS: PWAsState = {
+  count: undefined,
+  next: undefined,
+  previous: undefined,
   items: [],
   isPending: false,
-  error: null,
+  error: undefined,
   search: "",
 }
 
-const PWAs = (state = DEFAULT_STATE_PWAS, action: ActionProps) => {
+const PWAs: Reducer<PWAsState> = (state = DEFAULT_STATE_PWAS, action) => {
   const { id, type, payload } = action
   switch (type) {
     case PWAsActionTypes.PWAS_PENDING:

@@ -1,16 +1,28 @@
 import { AlertActionTypes } from "./types"
 import { AppActionTypes } from "../App/types"
 import { ActionProps } from "../Actions/propTypes"
+import { Reducer } from "redux"
 
-const DEFAULT_STATE_ALERTS = {
+export interface AlertsState {
+  apiResponseStatus: number
+  title?: string
+  message?: string
+  timeout: number
+  serviceWorkerRegistration?: string
+}
+
+const DEFAULT_STATE_ALERTS: AlertsState = {
   apiResponseStatus: 404,
   title: "",
   message: "",
   timeout: 3000,
-  serviceWorkerRegistration: null,
+  serviceWorkerRegistration: undefined,
 }
 
-const Alerts = (state = DEFAULT_STATE_ALERTS, action: ActionProps) => {
+const Alerts: Reducer<AlertsState> = (
+  state = DEFAULT_STATE_ALERTS,
+  action
+): AlertsState => {
   const { type, payload } = action
   switch (type) {
     case AlertActionTypes.ALERTS_SET_API_RESPONSE_STATUS:
