@@ -140,7 +140,7 @@ const PWAs: React.FC<PWAsProps> = ({ pwas, getPWAs, isLoading }) => {
   const renderPwaList = useMemo(() => {
     const streamPWAs = showSearch ? pwaSearchResults : pwas
 
-    if (!isLoading && streamPWAs.length < 1) {
+    if (!isLoading && streamPWAs && streamPWAs.length < 1) {
       return (
         !showSearch && (
           <IonNote className="PWAsEmptyNote">
@@ -150,11 +150,14 @@ const PWAs: React.FC<PWAsProps> = ({ pwas, getPWAs, isLoading }) => {
       )
     }
 
-    return streamPWAs.map((pwa, i) => (
-      <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
-        <PWACard url="/pwa" pwa={pwa} />
-      </IonCol>
-    ))
+    return (
+      streamPWAs &&
+      streamPWAs.map((pwa, i) => (
+        <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
+          <PWACard url="/pwa" pwa={pwa} />
+        </IonCol>
+      ))
+    )
   }, [pwas, pwaSearchValue, pwaSearchResults, showSearch])
 
   return (
