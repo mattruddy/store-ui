@@ -1,39 +1,58 @@
-import { AppActionTypes } from "./types"
-import { WindowActionTypes } from "../Window/types"
+import { APP_SET_VERSION, REDUX_RESET } from "./types"
 import axios from "axios"
 import ReactGA from "react-ga"
-import { ActionProps } from "../Actions/propTypes"
-import { MiddlewareAPI } from "redux"
+import { Action } from "redux"
+import { ThunkAction } from "redux-thunk"
+import { SET_WINDOW } from "../Window/types"
+import { ReduxCombinedState } from "../RootReducer"
 const { PUBLIC_URL } = process.env
 
-const SetWindow = (payload: ActionProps["payload"]) => ({
-  type: WindowActionTypes.SET_WINDOW,
+const setWindow = (payload: any) => ({
+  type: SET_WINDOW,
   payload,
 })
 
-const ResetRedux = () => (dispatch: MiddlewareAPI["dispatch"]) =>
-  dispatch({ type: AppActionTypes.REDUX_RESET })
+const thunkResetRedux = (): ThunkAction<
+  void,
+  ReduxCombinedState,
+  null,
+  Action<string>
+> => async (dispatch) => dispatch({ type: REDUX_RESET })
 
-const GetAppVersion = () => (
-  dispatch: MiddlewareAPI["dispatch"],
-  getState: MiddlewareAPI["getState"]
-) => {
+const setAppVersion = (data: any) => ({
+  type: APP_SET_VERSION,
+  payload: data,
+})
+
+const getAppVersion = (): ThunkAction<
+  void,
+  ReduxCombinedState,
+  null,
+  Action<string>
+> => async (dispatch, getState) => {
   const {
-    App: { version },
+    app: { version },
   } = getState()
-  return axios
-    .get(`${PUBLIC_URL}/version.txt`)
-    .then(({ data }) => {
-      dispatch({ type: AppActionTypes.APP_SET_VERSION, payload: data })
-      ReactGA.event({
-        category: "Check App Version",
-        action: "User got the latest app version!",
-        value: data,
-      })
-
-      return { currentVersion: version, latestVersion: data }
+  try {
+    const { data } = await axios.get(`${PUBLIC_URL}/version.txt`)
+    dispatch(setAppVersion(data))
+    ReactGA.event({
+      category: "Check App Version",
+      action: "User got the latest app version!",
+      value: data,
     })
-    .catch(({ response }) => console.log("ERROR: ", response))
+    return {
+      currentVersion: version,
+      latestVersion: data,
+    } as ComparableVersions
+  } catch ({ response }) {
+    return console.log("ERROR: ", response)
+  }
 }
 
-export { SetWindow, ResetRedux, GetAppVersion }
+interface ComparableVersions {
+  currentVersion: number
+  latestVersion: number
+}
+
+export { setWindow, thunkResetRedux, getAppVersion }

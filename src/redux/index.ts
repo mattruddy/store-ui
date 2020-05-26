@@ -1,4 +1,4 @@
-import { RootReducer } from "./RootReducer"
+import { rootReducer } from "./RootReducer"
 import thunk from "redux-thunk"
 import { createStore, applyMiddleware } from "redux"
 import { composeWithDevTools } from "redux-devtools-extension"
@@ -12,7 +12,7 @@ const storeFactory = () => {
     ? composeWithDevTools(applyMiddleware(thunk))
     : applyMiddleware(thunk)
 
-  const store = createStore(RootReducer, middleWares)
+  const store = createStore(rootReducer, middleWares)
 
   return { store }
 }

@@ -107,7 +107,7 @@ const getNavigatorProps = ({
 
 const getWindowDimensions = () => {
   const isClient = typeof window === "object"
-  if (!isClient) return {}
+  if (!isClient) return undefined
   const {
     innerHeight,
     innerWidth,
@@ -131,7 +131,20 @@ const getWindowDimensions = () => {
     navBarHeight: 64,
     isInStandalone: matchMedia("(display-mode: standalone)").matches,
     isOnMobileBrowser: isOnMobileBrowser(window.navigator.userAgent),
-  }
+  } as WindowDimensions
+}
+
+export interface WindowDimensions {
+  innerHeight: number
+  innerWidth: number
+  screen: Screen
+  matchMedia: (query: string) => MediaQueryList
+  navigator: Navigator
+  performance: Performance
+  isMobile: boolean
+  navBarHeight: number
+  isInStandalone: boolean
+  isOnMobileBrowser: boolean
 }
 
 export { isOnMobileBrowser, getWindowDimensions }

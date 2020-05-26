@@ -1,28 +1,25 @@
-import { WindowActionTypes } from "./types"
-import { getWindowDimensions } from "./utils"
-import { ActionProps } from "../Actions/propTypes"
-import { Reducer } from "redux"
+import { getWindowDimensions, WindowDimensions } from "./utils"
+import { SET_WINDOW, WindowActionTypes } from "./types"
 
 export interface WindowState {
-  dimensions: any
+  dimensions: WindowDimensions | undefined
 }
 
 const DEFAULT_STATE_WINDOW: WindowState = {
-  dimensions: { ...getWindowDimensions() },
+  dimensions: getWindowDimensions(),
 }
 
-const Window: Reducer<WindowState> = (
+const windowReducer = (
   state = DEFAULT_STATE_WINDOW,
-  action
+  action: WindowActionTypes
 ): WindowState => {
-  const { type, payload } = action
-  switch (type) {
-    case WindowActionTypes.SET_WINDOW:
-      return { ...state, ...getWindowDimensions() }
+  switch (action.type) {
+    case SET_WINDOW:
+      return { ...state, dimensions: getWindowDimensions() }
 
     default:
       return state
   }
 }
 
-export { DEFAULT_STATE_WINDOW, Window }
+export { DEFAULT_STATE_WINDOW, windowReducer }

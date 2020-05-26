@@ -18,18 +18,11 @@ import {
   IonBackButton,
   IonNote,
 } from "@ionic/react"
-import {
-  connect as reduxConnect,
-  MapStateToProps,
-  MapDispatchToProps,
-  MapStateToPropsParam,
-} from "react-redux"
+import { connect as reduxConnect } from "react-redux"
 import { DebouncedSearch, PWACard, SideBar } from "../../components"
-import { getSearchApp, getHome } from "../../data/dataApi"
+import { getSearchApp } from "../../data/dataApi"
 import { PWA, HomePWAs } from "../../util/types"
-import { RouteComponentProps, useParams, useHistory } from "react-router"
-import { setLoading } from "../../data/user/user.actions"
-import { getPWAs } from "../../redux/PWAs/actions"
+import { RouteComponentProps, useParams } from "react-router"
 
 import "./styles.css"
 import ReactGA from "react-ga"
@@ -38,26 +31,24 @@ import { search, closeOutline } from "ionicons/icons"
 import { categories } from "../../components/CategoryOptions"
 import { standardCategories } from "../../components/SideBar"
 import { RouteMap } from "../../routes"
-import { PWAsState } from "../../redux/PWAs/reducer"
-import { ReduxState } from "../../redux/RootReducer"
+import { ReduxCombinedState } from "../../redux/RootReducer"
+import { thunkGetPWAs } from "../../redux/PWAs/actions"
 
-const mapDispatchToProps: DispatchProps = { getPWAs }
+const mapDispatchToProps = { thunkGetPWAs }
 
-const mapStateToProps = ({ pwas }: ReduxState) => ({
+const mapStateToProps = ({ pwas }: ReduxCombinedState) => ({
   pwas: pwas.items,
   isLoading: pwas.isPending,
 })
 
 interface DispatchProps {
-  getPWAs: typeof getPWAs
+  getPWAs: typeof thunkGetPWAs
 }
 
 interface StateProps {
   pwas?: PWA[]
   isLoading: boolean
 }
-
-//interface PWAsProps extends OwnProps, DispatchProps, StateProps {}
 
 type PWAsProps = RouteComponentProps & StateProps & DispatchProps
 
@@ -67,7 +58,7 @@ const PWAs: React.FC<PWAsProps> = ({ pwas, getPWAs, isLoading }) => {
   const [cat, setCat] = useState<string>("")
   const [pwaSearchValue, setPwaSearchValue] = useState<string>("")
   const [pwaSearchResults, setPwaSearchResults] = useState<PWA[]>([])
-  const [homeResult, setHomeResult] = useState<HomePWAs>()
+  const [] = useState<HomePWAs>()
   const [showSearch, setShowSearch] = useState<boolean>(false)
   const [scrollDisabled, setScrollDisabled] = useState<boolean>(false)
 
@@ -238,5 +229,4 @@ const PWAs: React.FC<PWAsProps> = ({ pwas, getPWAs, isLoading }) => {
   )
 }
 
-//@ts-ignore
 export default reduxConnect(mapStateToProps, mapDispatchToProps)(PWAs)

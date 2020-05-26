@@ -1,16 +1,19 @@
-import { AlertActionTypes } from "./types"
-import { ActionProps } from "../Actions/propTypes"
+import {
+  ALERTS_SET_MESSAGE,
+  ALERTS_SET_API_RESPONSE_STATUS,
+  ALERTS_CLEAR,
+} from "./types"
 
-const SetApiResponseStatus = (payload: ActionProps["payload"]) => ({
-  type: AlertActionTypes.ALERTS_SET_API_RESPONSE_STATUS,
-  payload,
+const setApiResponseStatus = (status: number) => ({
+  type: ALERTS_SET_API_RESPONSE_STATUS,
+  payload: status,
 })
 
-const SetAlert = (payload: ActionProps["payload"]) => ({
-  type: AlertActionTypes.ALERTS_SET_MESSAGE,
-  payload,
+const setAlert = (message: string) => ({
+  type: ALERTS_SET_MESSAGE,
+  payload: message,
 })
 
-const ClearAlerts = () => ({ type: AlertActionTypes.ALERTS_CLEAR })
+const clearAlerts = () => ({ type: ALERTS_CLEAR })
 
-export { SetApiResponseStatus, SetAlert, ClearAlerts }
+export { setApiResponseStatus, setAlert, clearAlerts }
