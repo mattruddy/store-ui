@@ -34,12 +34,12 @@ import { RouteMap } from "../../routes"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { thunkGetPWAs } from "../../redux/PWAs/actions"
 
-const mapDispatchToProps = { thunkGetPWAs }
-
 const mapStateToProps = ({ pwas }: ReduxCombinedState) => ({
   pwas: pwas.items,
   isLoading: pwas.isPending,
 })
+
+const mapDispatchToProps = { getPWAs: thunkGetPWAs }
 
 interface DispatchProps {
   getPWAs: typeof thunkGetPWAs
@@ -62,6 +62,8 @@ const PWAs: React.FC<PWAsProps> = ({ pwas, getPWAs, isLoading }) => {
   const [showSearch, setShowSearch] = useState<boolean>(false)
   const [scrollDisabled, setScrollDisabled] = useState<boolean>(false)
 
+  console.log(getPWAs)
+
   const scrollEl = useRef<any>(undefined)
   const content = useRef<any>()
 
@@ -76,10 +78,8 @@ const PWAs: React.FC<PWAsProps> = ({ pwas, getPWAs, isLoading }) => {
       let newCat = ""
       if (
         category &&
-        (categories.find((cat) => cat.category === category.toUpperCase()) ||
-          standardCategories.find(
-            (cat) => cat.value === category.toUpperCase()
-          ))
+        (categories.find(cat => cat.category === category.toUpperCase()) ||
+          standardCategories.find(cat => cat.value === category.toUpperCase()))
       ) {
         newCat = category.toUpperCase()
       }
@@ -92,9 +92,9 @@ const PWAs: React.FC<PWAsProps> = ({ pwas, getPWAs, isLoading }) => {
     }
   }, [category])
 
-  const loadMorePwas = async () => {
+  const loadMorePwas = () => {
     const nextPage = page + 1
-    await getPWAs(nextPage, cat && cat !== "" ? cat : undefined)
+    getPWAs(nextPage, cat && cat !== "" ? cat : undefined)
 
     scrollEl.current.complete()
   }
@@ -109,10 +109,10 @@ const PWAs: React.FC<PWAsProps> = ({ pwas, getPWAs, isLoading }) => {
     }
   }
 
-  const reloadPwas = async (option?: string) => {
+  const reloadPwas = (option?: string) => {
     setPage(0)
 
-    await getPWAs(
+    getPWAs(
       0,
       option || option === "" ? option : cat && cat !== "" ? cat : undefined
     )
