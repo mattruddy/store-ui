@@ -1,3 +1,5 @@
+import { AxiosRequestConfig } from "axios"
+
 export interface DispatchObject {
   [key: string]: any
   type: string
@@ -51,6 +53,10 @@ export interface HomePWAs {
 export interface Search {
   name: string
   appId: number
+}
+
+export interface AxiosCustomRequestConfig extends AxiosRequestConfig {
+  crossDomain?: boolean
 }
 
 type PromiseResolveValue<T> = T extends Promise<infer R> ? R : T

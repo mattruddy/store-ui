@@ -1,6 +1,7 @@
-import axios from "axios"
+import axios, { AxiosRequestConfig } from "axios"
 import { vars } from "../../data/env"
 import { Plugins } from "@capacitor/core"
+import { AxCustom, AxiosCustomRequestConfig } from "../../util/types"
 declare module "axios" {
   export interface AxiosResponse<T = any> extends Promise<T> {}
 }
@@ -82,7 +83,6 @@ const Axios = async (url: string, method?: "GET", responseType?: "json") => {
     url,
     method,
     //timeout: 25000,
-    //@ts-ignore
     crossDomain: true,
     responseType,
     headers: token
@@ -91,7 +91,7 @@ const Axios = async (url: string, method?: "GET", responseType?: "json") => {
           ...baseHeaders,
         }
       : baseHeaders,
-  })
+  } as AxiosCustomRequestConfig)
 }
 
 export { Axios }
