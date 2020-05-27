@@ -67,11 +67,15 @@ const PWAs: React.FC<PWAsProps> = ({
   const [scrollDisabled, setScrollDisabled] = useState<boolean>(false)
 
   const sectionPwas = useMemo(() => {
-    const section = pwasSections.find(
-      (section) =>
-        section.page === page && stringMatch(section.category, category!)
-    )
-    return section ? section.items : []
+    const section = pwasSections
+      .filter(
+        (section) =>
+          section.page <= page && stringMatch(section.category, category!)
+      )
+      .map((section) => section.items)
+      .flat(1)
+
+    return section
   }, [pwasSections, category, page])
 
   const scrollEl = useRef<any>(undefined)
@@ -107,6 +111,7 @@ const PWAs: React.FC<PWAsProps> = ({
   const loadMorePwas = () => {
     const nextPage = page + 1
     getPWAs(nextPage, cat && cat !== "" ? cat : undefined)
+    setPage(nextPage)
 
     scrollEl.current.complete()
   }
