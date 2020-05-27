@@ -62,7 +62,6 @@ const PWAs: React.FC<PWAsProps> = ({
   const [cat, setCat] = useState<string>("")
   const [pwaSearchValue, setPwaSearchValue] = useState<string>("")
   const [pwaSearchResults, setPwaSearchResults] = useState<PWA[]>([])
-  const [] = useState<HomePWAs>()
   const [showSearch, setShowSearch] = useState<boolean>(false)
   const [scrollDisabled, setScrollDisabled] = useState<boolean>(false)
 
@@ -78,8 +77,8 @@ const PWAs: React.FC<PWAsProps> = ({
     return section
   }, [pwasSections, category, page])
 
-  const scrollEl = useRef<any>(undefined)
-  const content = useRef<any>()
+  const scrollEl = useRef<HTMLIonInfiniteScrollElement>(null)
+  const content = useRef<HTMLIonContentElement>(null)
 
   useEffect(() => {
     return () => {
@@ -102,7 +101,7 @@ const PWAs: React.FC<PWAsProps> = ({
       setCat(newCat)
       reloadPwas(newCat)
       setScrollDisabled(false)
-      content.current.scrollToTop()
+      content.current && content.current.scrollToTop()
       ReactGA.pageview(`PWAs ${newCat}`)
     } finally {
     }
@@ -113,14 +112,14 @@ const PWAs: React.FC<PWAsProps> = ({
     getPWAs(nextPage, cat && cat !== "" ? cat : undefined)
     setPage(nextPage)
 
-    scrollEl.current.complete()
+    scrollEl.current && scrollEl.current.complete()
   }
 
   const toggleSearch = () => {
     const newShowSearch = !showSearch
     setShowSearch(newShowSearch)
     if (newShowSearch) {
-      content.current.scrollToTop()
+      content.current && content.current.scrollToTop()
     } else {
       setPwaSearchResults([])
     }
@@ -182,7 +181,7 @@ const PWAs: React.FC<PWAsProps> = ({
           </IonButtons>
           <IonTitle
             onClick={() => {
-              content.current.scrollToTop()
+              content.current && content.current.scrollToTop()
             }}
           >
             <img
@@ -198,7 +197,7 @@ const PWAs: React.FC<PWAsProps> = ({
           slot="fixed"
           onIonRefresh={async (event: any) => {
             try {
-              await reloadPwas()
+              reloadPwas()
             } finally {
               event.detail.complete()
             }
