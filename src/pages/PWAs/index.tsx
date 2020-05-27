@@ -42,25 +42,12 @@ import { PWASection, PWAsActionTypes } from "../../redux/PWAs/types"
 import "./styles.css"
 import PWACardPlaceholder from "../../components/PWACardPlaceholder"
 
-const mapStateToProps = ({ pwas }: ReduxCombinedState): StateProps => ({
-  pwasSections: pwas.pwaSections,
-  isLoading: pwas.isPending,
-})
-
-const mapDispatchToProps = { thunkGetPWAs }
-
-interface StateProps {
-  pwasSections: PWASection[]
-  isLoading: boolean
-}
-
 type PWAsProps = RouteComponentProps
 
 const PWAs: React.FC<PWAsProps> = () => {
   const { category } = useParams()
   const [page, setPage] = useState<number>(0)
   const [cat, setCat] = useState<string>("")
-  const [pwaSearchValue, setPwaSearchValue] = useState<string>("")
   const [pwaSearchResults, setPwaSearchResults] = useState<PWA[]>([])
   const [showSearch, setShowSearch] = useState<boolean>(false)
   const [scrollDisabled, setScrollDisabled] = useState<boolean>(false)
@@ -74,8 +61,11 @@ const PWAs: React.FC<PWAsProps> = () => {
   )
 
   const dispatch = useDispatch()
-  const getPWAs = (page: number, category?: string) =>
-    dispatch(thunkGetPWAs(page, category))
+  const getPWAs = useCallback(
+    async (page: number, category?: string) =>
+      dispatch(thunkGetPWAs(page, category)),
+    [dispatch]
+  )
 
   const sectionPwas = useMemo(() => {
     const section = pwasSections
@@ -119,11 +109,10 @@ const PWAs: React.FC<PWAsProps> = () => {
     }
   }, [category])
 
-  const loadMorePwas = () => {
+  const loadMorePwas = async () => {
     const nextPage = page + 1
-    getPWAs(nextPage, cat && cat !== "" ? cat : undefined)
+    await getPWAs(nextPage, cat && cat !== "" ? cat : undefined)
     setPage(nextPage)
-
     scrollEl.current && scrollEl.current.complete()
   }
 
@@ -147,7 +136,6 @@ const PWAs: React.FC<PWAsProps> = () => {
   }
 
   const handleOnSearchChange = useCallback(async (appName: string) => {
-    setPwaSearchValue(appName)
     if (appName) {
       const results = await getSearchApp(appName)
       setPwaSearchResults(results)

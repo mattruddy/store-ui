@@ -42,7 +42,9 @@ const Home: React.FC<RouteComponentProps> = () => {
     shallowEqual
   )
   const dispatch = useDispatch()
-  const getHomeData = () => dispatch(thunkGetHomeData())
+  const getHomeData = useCallback(() => dispatch(thunkGetHomeData()), [
+    dispatch,
+  ])
 
   useIonViewDidEnter(() => {
     loadHomeApps()
