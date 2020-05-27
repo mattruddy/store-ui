@@ -51,6 +51,7 @@ const PWAs: React.FC<PWAsProps> = () => {
   const [pwaSearchResults, setPwaSearchResults] = useState<PWA[]>([])
   const [showSearch, setShowSearch] = useState<boolean>(false)
   const [scrollDisabled, setScrollDisabled] = useState<boolean>(false)
+  const [loadingMore, setLoadingMore] = useState<boolean>(false)
 
   const { pwasSections, isLoading } = useSelector(
     ({ pwas }: ReduxCombinedState) => ({
@@ -110,10 +111,12 @@ const PWAs: React.FC<PWAsProps> = () => {
   }, [category])
 
   const loadMorePwas = async () => {
+    setLoadingMore(true)
     const nextPage = page + 1
     await getPWAs(nextPage, cat && cat !== "" ? cat : undefined)
     setPage(nextPage)
     scrollEl.current && scrollEl.current.complete()
+    setLoadingMore(false)
   }
 
   const toggleSearch = () => {
@@ -157,7 +160,7 @@ const PWAs: React.FC<PWAsProps> = () => {
       )
     }
 
-    return isLoading
+    return isLoading && !loadingMore
       ? [...Array(10)].map((_e, i) => (
           <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
             <PWACardPlaceholder />
@@ -169,7 +172,7 @@ const PWAs: React.FC<PWAsProps> = () => {
               <PWACard url="/pwa" pwa={pwa} />
             </IonCol>
           ))
-  }, [sectionPwas, pwaSearchResults, showSearch, isLoading])
+  }, [sectionPwas, pwaSearchResults, showSearch, isLoading, loadingMore])
 
   return (
     <IonPage>
