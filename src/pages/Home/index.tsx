@@ -1,11 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useMemo,
-  memo,
-  useCallback,
-} from "react"
+import React, { useState, useEffect, useRef, useMemo, useCallback } from "react"
 import {
   IonContent,
   IonHeader,
@@ -22,17 +15,18 @@ import {
   IonNote,
 } from "@ionic/react"
 import { PWACard, SideBar, DebouncedSearch } from "../../components"
-import { getSearchApp, getHome } from "../../data/dataApi"
+import { getSearchApp } from "../../data/dataApi"
 import { PWA, HomePWAs } from "../../util/types"
 import { RouteComponentProps, useHistory } from "react-router"
 import "./styles.css"
 import { GetPwaCategoryUrl } from "../../routes"
-import { closeOutline, search, home } from "ionicons/icons"
+import { closeOutline, search } from "ionicons/icons"
 import Footer from "../../components/Footer"
 import ReactGA from "react-ga"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { thunkGetHomeData } from "../../redux/PWAs/actions"
 import { connect as reduxConnector, ConnectedProps } from "react-redux"
+import PWACardPlaceholder from "../../components/PWACardPlaceholder"
 
 const mapStateToProps = ({ pwas }: ReduxCombinedState): StateProps => ({
   homeData: pwas.home,
@@ -113,11 +107,17 @@ const Home: React.FC<HomeProps> = ({
           </IonButton>
         </div>
         <IonRow className="HomeRow">
-          {homeData.topApps.map((topApp, i) => (
-            <IonCol key={i} sizeXs="6.7" sizeSm="4" sizeMd="5" sizeLg="4">
-              <PWACard url="/pwa" pwa={topApp} />
-            </IonCol>
-          ))}
+          {isLoading
+            ? [...Array(5)].map((_e, i) => (
+                <IonCol key={i} sizeXs="6.7" sizeSm="4" sizeMd="5" sizeLg="4">
+                  <PWACardPlaceholder />
+                </IonCol>
+              ))
+            : homeData.topApps.map((topApp, i) => (
+                <IonCol key={i} sizeXs="6.7" sizeSm="4" sizeMd="5" sizeLg="4">
+                  <PWACard url="/pwa" pwa={topApp} />
+                </IonCol>
+              ))}
         </IonRow>
         <div className="HomeRowHeader">
           <h1>New</h1>
@@ -129,11 +129,17 @@ const Home: React.FC<HomeProps> = ({
           </IonButton>
         </div>
         <IonRow className="HomeRow">
-          {homeData.newApps.map((newApp, i) => (
-            <IonCol key={i} sizeXs="6.7" sizeSm="4" sizeMd="5" sizeLg="4">
-              <PWACard url="/pwa" pwa={newApp} />
-            </IonCol>
-          ))}
+          {isLoading
+            ? [...Array(5)].map((_e, i) => (
+                <IonCol key={i} sizeXs="6.7" sizeSm="4" sizeMd="5" sizeLg="4">
+                  <PWACardPlaceholder />
+                </IonCol>
+              ))
+            : homeData.newApps.map((newApp, i) => (
+                <IonCol key={i} sizeXs="6.7" sizeSm="4" sizeMd="5" sizeLg="4">
+                  <PWACard url="/pwa" pwa={newApp} />
+                </IonCol>
+              ))}
         </IonRow>
         <div className="HomeRowHeader">
           <h1>Discover</h1>
@@ -145,15 +151,27 @@ const Home: React.FC<HomeProps> = ({
           </IonButton>
         </div>
         <IonRow className="HomeRow">
-          {homeData.discoverApps.map((discoverApp, i) => (
-            <IonCol key={i} sizeXs="6.7" sizeSm="4" sizeMd="5" sizeLg="4">
-              <PWACard url="/pwa" pwa={discoverApp} />
-            </IonCol>
-          ))}
+          {isLoading
+            ? [...Array(5)].map((_e, i) => (
+                <IonCol key={i} sizeXs="6.7" sizeSm="4" sizeMd="5" sizeLg="4">
+                  <PWACardPlaceholder />
+                </IonCol>
+              ))
+            : homeData.discoverApps.map((discoverApp, i) => (
+                <IonCol key={i} sizeXs="6.7" sizeSm="4" sizeMd="5" sizeLg="4">
+                  <PWACard url="/pwa" pwa={discoverApp} />
+                </IonCol>
+              ))}
         </IonRow>
       </>
     )
-  }, [homeData])
+  }, [
+    homeData.discoverApps,
+    homeData.newApps,
+    homeData.topApps,
+    isLoading,
+    onPress,
+  ])
 
   return (
     <IonPage>
