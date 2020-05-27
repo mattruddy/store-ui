@@ -39,7 +39,7 @@ const mapStateToProps = ({ pwas }: ReduxCombinedState) => ({
   isLoading: pwas.isPending,
 })
 
-const mapDispatchToProps = { getPWAs: thunkGetPWAs }
+const mapDispatchToProps = { thunkGetPWAs }
 
 interface DispatchProps {
   getPWAs: typeof thunkGetPWAs
@@ -78,8 +78,10 @@ const PWAs: React.FC<PWAsProps> = ({ pwas, getPWAs, isLoading }) => {
       let newCat = ""
       if (
         category &&
-        (categories.find(cat => cat.category === category.toUpperCase()) ||
-          standardCategories.find(cat => cat.value === category.toUpperCase()))
+        (categories.find((cat) => cat.category === category.toUpperCase()) ||
+          standardCategories.find(
+            (cat) => cat.value === category.toUpperCase()
+          ))
       ) {
         newCat = category.toUpperCase()
       }
