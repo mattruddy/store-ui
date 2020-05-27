@@ -72,7 +72,9 @@ const PWAs: React.FC<PWAsProps> = () => {
     const section = pwasSections
       .filter(
         (section) =>
-          section.page <= page && stringMatch(section.category, category!)
+          section.page <= page &&
+          section.category.toLowerCase() ===
+            (category ? category : "").toLowerCase()
       )
       .map((section) => section.items)
       .flat(1)
@@ -104,8 +106,9 @@ const PWAs: React.FC<PWAsProps> = () => {
       setCat(newCat)
       reloadPwas(newCat)
       setScrollDisabled(false)
-      //content.current && content.current.scrollToTop()
       ReactGA.pageview(`PWAs ${newCat}`)
+      content.current != null && content.current.scrollToTop(0)
+    } catch {
     } finally {
     }
   }, [category])
