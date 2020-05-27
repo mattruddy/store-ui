@@ -18,7 +18,7 @@ import {
   IonBackButton,
   IonNote,
 } from "@ionic/react"
-import { connect as reduxConnect } from "react-redux"
+import { connect as reduxConnector, ConnectedProps } from "react-redux"
 import { DebouncedSearch, PWACard, SideBar } from "../../components"
 import { getSearchApp } from "../../data/dataApi"
 import { PWA, HomePWAs } from "../../util/types"
@@ -41,18 +41,21 @@ const mapStateToProps = ({ pwas }: ReduxCombinedState) => ({
 
 const mapDispatchToProps = { thunkGetPWAs }
 
-interface DispatchProps {
-  getPWAs: typeof thunkGetPWAs
-}
-
 interface StateProps {
   pwas?: PWA[]
   isLoading: boolean
 }
 
-type PWAsProps = RouteComponentProps & StateProps & DispatchProps
+const connector = reduxConnector(mapStateToProps, mapDispatchToProps)
+type PropsFromRedux = ConnectedProps<typeof connector>
 
-const PWAs: React.FC<PWAsProps> = ({ pwas, getPWAs, isLoading }) => {
+type PWAsProps = RouteComponentProps & PropsFromRedux
+
+const PWAs: React.FC<PWAsProps> = ({
+  pwas,
+  thunkGetPWAs: getPWAs,
+  isLoading,
+}) => {
   const { category } = useParams()
   const [page, setPage] = useState<number>(0)
   const [cat, setCat] = useState<string>("")
@@ -61,8 +64,6 @@ const PWAs: React.FC<PWAsProps> = ({ pwas, getPWAs, isLoading }) => {
   const [] = useState<HomePWAs>()
   const [showSearch, setShowSearch] = useState<boolean>(false)
   const [scrollDisabled, setScrollDisabled] = useState<boolean>(false)
-
-  console.log(getPWAs)
 
   const scrollEl = useRef<any>(undefined)
   const content = useRef<any>()
@@ -231,4 +232,4 @@ const PWAs: React.FC<PWAsProps> = ({ pwas, getPWAs, isLoading }) => {
   )
 }
 
-export default reduxConnect(mapStateToProps, mapDispatchToProps)(PWAs)
+export default connector(PWAs)
