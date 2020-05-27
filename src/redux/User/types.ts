@@ -1,13 +1,13 @@
 import { PWA } from "../../util/types"
 
 export interface UserState {
-  token?: string
-  id?: number
+  token: string
+  id: number
   loading: boolean
   hasRead: false
-  pwas?: PWA[]
-  username?: string
-  email?: string
+  pwas: PWA[]
+  username: string
+  email: string
 }
 
 export const USER_SET = "USER_SET"
