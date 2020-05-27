@@ -8,12 +8,12 @@ import {
 import { AppActionTypes, REDUX_RESET } from "../App/types"
 
 const DEFAULT_STATE_PWAS: PWAsState = {
-  count: undefined,
-  next: undefined,
-  previous: undefined,
+  count: 0,
+  next: "",
+  previous: "",
   items: [],
   isPending: false,
-  error: undefined,
+  error: "",
   search: "",
 }
 

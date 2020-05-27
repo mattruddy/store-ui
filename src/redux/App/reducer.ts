@@ -2,9 +2,9 @@ import { AppActionTypes, APP_SET_VERSION, REDUX_RESET, AppState } from "./types"
 
 const DEFAULT_STATE_APP: AppState = {
   version: (1).toFixed(3),
-  localStorageUsage: undefined,
-  localStorageQuota: undefined,
-  localStorageUsageDetails: undefined,
+  localStorageUsage: "",
+  localStorageQuota: "",
+  localStorageUsageDetails: "",
 }
 
 const appReducer = (state = DEFAULT_STATE_APP, action: AppActionTypes) => {

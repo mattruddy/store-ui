@@ -2,9 +2,9 @@ import { SET_WINDOW } from "../Window/types"
 
 export interface AppState {
   version: string
-  localStorageUsage?: string
-  localStorageQuota?: string
-  localStorageUsageDetails?: string
+  localStorageUsage: string
+  localStorageQuota: string
+  localStorageUsageDetails: string
 }
 
 export const APP_SET_VERSION = "APP_SET_VERSION"

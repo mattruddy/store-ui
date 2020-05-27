@@ -14,12 +14,9 @@ const setPWAs = (data: PWA[]) => ({ type: PWAS_SET, payload: data })
 const thunkGetPWAs = (
   page: number,
   category?: string
-): ThunkAction<
-  void,
-  ReduxCombinedState,
-  null,
-  Action<string>
-> => async dispatch => {
+): ThunkAction<void, ReduxCombinedState, null, Action<string>> => async (
+  dispatch
+) => {
   dispatch(loadingPWAs())
   const url = category
     ? `/public/pwas/${page}/${category}`

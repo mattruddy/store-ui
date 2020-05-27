@@ -16,13 +16,13 @@ import { act } from "react-dom/test-utils"
 import { pwasReducer } from "../PWAs/reducer"
 
 const DEFAULT_STATE_USER: UserState = {
-  token: undefined,
-  id: undefined,
+  token: "",
+  id: -1,
   loading: false,
   hasRead: false,
-  pwas: undefined,
-  username: undefined,
-  email: undefined,
+  pwas: [],
+  username: "",
+  email: "",
 }
 
 const userReducer = (
@@ -72,12 +72,10 @@ const userReducer = (
     case USER_REPLACE_APP:
       return {
         ...state,
-        pwas: state.pwas
-          ? [
-              action.payload,
-              ...state.pwas.filter((x) => x.appId !== action.payload.appId),
-            ]
-          : undefined,
+        pwas: [
+          action.payload,
+          ...state.pwas.filter((x) => x.appId !== action.payload.appId),
+        ],
       }
 
     case USER_ADD_APP:
@@ -89,9 +87,7 @@ const userReducer = (
     case USER_REMOVE_APP:
       return {
         ...state,
-        pwas: state.pwas
-          ? [...state.pwas.filter((x) => x.appId !== action.payload)]
-          : undefined,
+        pwas: [...state.pwas.filter((x) => x.appId !== action.payload)],
       }
 
     case REDUX_RESET:

@@ -1,9 +1,9 @@
 export interface AlertsState {
   apiResponseStatus: number
-  title?: string
-  message?: string
+  title: string
+  message: string
   timeout: number
-  serviceWorkerRegistration?: string
+  serviceWorkerRegistration: string
 }
 
 export const ALERTS_SET_API_RESPONSE_STATUS = "ALERTS_SET_API_RESPONSE_STATUS"

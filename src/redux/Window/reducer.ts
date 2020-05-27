@@ -1,9 +1,5 @@
 import { getWindowDimensions, WindowDimensions } from "./utils"
-import { SET_WINDOW, WindowActionTypes } from "./types"
-
-export interface WindowState {
-  dimensions: WindowDimensions | undefined
-}
+import { SET_WINDOW, WindowActionTypes, WindowState } from "./types"
 
 const DEFAULT_STATE_WINDOW: WindowState = {
   dimensions: getWindowDimensions(),

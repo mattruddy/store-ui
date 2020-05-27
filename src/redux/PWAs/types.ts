@@ -1,13 +1,13 @@
 import { PWA } from "../../util/types"
 
 export interface PWAsState {
-  count?: number
-  next?: string
-  previous?: string
+  count: number
+  next: ""
+  previous: ""
   items: PWA[]
   isPending: boolean
-  error?: string
-  search?: string
+  error: ""
+  search: string
 }
 
 export const PWAS_PENDING = "PWAS_PENDING"
