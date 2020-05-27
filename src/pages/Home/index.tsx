@@ -25,7 +25,7 @@ import Footer from "../../components/Footer"
 import ReactGA from "react-ga"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { thunkGetHomeData } from "../../redux/PWAs/actions"
-import { useSelector, useDispatch } from "react-redux"
+import { useSelector, useDispatch, shallowEqual } from "react-redux"
 import PWACardPlaceholder from "../../components/PWACardPlaceholder"
 
 const Home: React.FC<RouteComponentProps> = () => {
@@ -38,7 +38,8 @@ const Home: React.FC<RouteComponentProps> = () => {
     ({ pwas }: ReduxCombinedState) => ({
       homeData: pwas.home,
       isLoading: pwas.isPending,
-    })
+    }),
+    shallowEqual
   )
   const dispatch = useDispatch()
   const getHomeData = () => dispatch(thunkGetHomeData())
