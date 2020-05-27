@@ -34,7 +34,7 @@ import { RouteMap } from "../../routes"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { thunkGetPWAs } from "../../redux/PWAs/actions"
 
-const mapStateToProps = ({ pwas }: ReduxCombinedState) => ({
+const mapStateToProps = ({ pwas }: ReduxCombinedState): StateProps => ({
   pwas: pwas.items,
   isLoading: pwas.isPending,
 })
