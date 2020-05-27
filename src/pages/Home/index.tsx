@@ -20,26 +20,45 @@ import {
   IonButtons,
   IonIcon,
   IonNote,
-  IonFooter,
 } from "@ionic/react"
 import { PWACard, SideBar, DebouncedSearch } from "../../components"
-import { getHome, getSearchApp } from "../../data/dataApi"
+import { getSearchApp, getHome } from "../../data/dataApi"
 import { PWA, HomePWAs } from "../../util/types"
-import { RouteComponentProps, useParams, useHistory } from "react-router"
+import { RouteComponentProps, useHistory } from "react-router"
 import "./styles.css"
-import { RouteMap, GetPwaCategoryUrl } from "../../routes"
-import { closeOutline, search, logoTwitter } from "ionicons/icons"
+import { GetPwaCategoryUrl } from "../../routes"
+import { closeOutline, search, home } from "ionicons/icons"
 import Footer from "../../components/Footer"
 import ReactGA from "react-ga"
+import { ReduxCombinedState } from "../../redux/RootReducer"
+import { thunkGetHomeData } from "../../redux/PWAs/actions"
+import { connect as reduxConnector, ConnectedProps } from "react-redux"
 
-const Home: React.FC<RouteComponentProps> = () => {
+const mapStateToProps = ({ pwas }: ReduxCombinedState): StateProps => ({
+  homeData: pwas.home,
+  isLoading: pwas.isPending,
+})
+
+const mapDispatchToProps = { thunkGetHomeData }
+
+interface StateProps {
+  homeData: HomePWAs
+  isLoading: boolean
+}
+
+const connector = reduxConnector(mapStateToProps, mapDispatchToProps)
+type PropsFromRedux = ConnectedProps<typeof connector>
+
+type HomeProps = RouteComponentProps & PropsFromRedux
+
+const Home: React.FC<HomeProps> = ({
+  homeData,
+  thunkGetHomeData: getHomeData,
+  isLoading,
+}) => {
   const history = useHistory()
-  const [pwaSearchValue, setPwaSearchValue] = useState<string>("")
   const [pwaSearchResults, setPwaSearchResults] = useState<PWA[]>([])
-  const [homeResult, setHomeResult] = useState<HomePWAs>()
   const [showSearch, setShowSearch] = useState<boolean>(false)
-
-  const [isLoading, setIsLoading] = useState<boolean>(false)
   const content = useRef<any>()
 
   useIonViewDidEnter(() => {
@@ -50,8 +69,8 @@ const Home: React.FC<RouteComponentProps> = () => {
     ReactGA.pageview(`Home`)
   }, [])
 
-  const loadHomeApps = async () => {
-    setHomeResult(await getHome())
+  const loadHomeApps = () => {
+    getHomeData()
   }
 
   const onPress = (category: string) =>
@@ -68,7 +87,6 @@ const Home: React.FC<RouteComponentProps> = () => {
   }
 
   const handleOnSearchChange = useCallback(async (appName: string) => {
-    setPwaSearchValue(appName)
     if (appName) {
       const results = await getSearchApp(appName)
       setPwaSearchResults(results)
@@ -95,13 +113,11 @@ const Home: React.FC<RouteComponentProps> = () => {
           </IonButton>
         </div>
         <IonRow className="HomeRow">
-          {homeResult &&
-            homeResult.topApps &&
-            homeResult.topApps.map((topApp, i) => (
-              <IonCol key={i} sizeXs="6.7" sizeSm="4" sizeMd="5" sizeLg="4">
-                <PWACard url="/pwa" pwa={topApp} />
-              </IonCol>
-            ))}
+          {homeData.topApps.map((topApp, i) => (
+            <IonCol key={i} sizeXs="6.7" sizeSm="4" sizeMd="5" sizeLg="4">
+              <PWACard url="/pwa" pwa={topApp} />
+            </IonCol>
+          ))}
         </IonRow>
         <div className="HomeRowHeader">
           <h1>New</h1>
@@ -113,13 +129,11 @@ const Home: React.FC<RouteComponentProps> = () => {
           </IonButton>
         </div>
         <IonRow className="HomeRow">
-          {homeResult &&
-            homeResult.newApps &&
-            homeResult.newApps.map((newApp, i) => (
-              <IonCol key={i} sizeXs="6.7" sizeSm="4" sizeMd="5" sizeLg="4">
-                <PWACard url="/pwa" pwa={newApp} />
-              </IonCol>
-            ))}
+          {homeData.newApps.map((newApp, i) => (
+            <IonCol key={i} sizeXs="6.7" sizeSm="4" sizeMd="5" sizeLg="4">
+              <PWACard url="/pwa" pwa={newApp} />
+            </IonCol>
+          ))}
         </IonRow>
         <div className="HomeRowHeader">
           <h1>Discover</h1>
@@ -131,17 +145,15 @@ const Home: React.FC<RouteComponentProps> = () => {
           </IonButton>
         </div>
         <IonRow className="HomeRow">
-          {homeResult &&
-            homeResult.discoverApps &&
-            homeResult.discoverApps.map((discoverApp, i) => (
-              <IonCol key={i} sizeXs="6.7" sizeSm="4" sizeMd="5" sizeLg="4">
-                <PWACard url="/pwa" pwa={discoverApp} />
-              </IonCol>
-            ))}
+          {homeData.discoverApps.map((discoverApp, i) => (
+            <IonCol key={i} sizeXs="6.7" sizeSm="4" sizeMd="5" sizeLg="4">
+              <PWACard url="/pwa" pwa={discoverApp} />
+            </IonCol>
+          ))}
         </IonRow>
       </>
     )
-  }, [homeResult])
+  }, [homeData])
 
   return (
     <IonPage>
@@ -192,4 +204,4 @@ const Home: React.FC<RouteComponentProps> = () => {
   )
 }
 
-export default memo(Home)
+export default connector(Home)

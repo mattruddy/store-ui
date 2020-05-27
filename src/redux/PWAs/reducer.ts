@@ -4,8 +4,10 @@ import {
   PWAS_COMPLETE,
   PWAS_SET,
   PWAsState,
+  HOME_SET,
 } from "./types"
 import { AppActionTypes, REDUX_RESET } from "../App/types"
+import { HomePWAs } from "../../util/types"
 
 const DEFAULT_STATE_PWAS: PWAsState = {
   count: 0,
@@ -15,6 +17,7 @@ const DEFAULT_STATE_PWAS: PWAsState = {
   isPending: false,
   error: "",
   search: "",
+  home: { topApps: [], newApps: [], discoverApps: [] } as HomePWAs,
 }
 
 const pwasReducer = (
@@ -30,6 +33,12 @@ const pwasReducer = (
 
     case PWAS_SET:
       return { ...state, items: action.payload }
+
+    case HOME_SET:
+      return {
+        ...state,
+        home: action.payload,
+      }
 
     case REDUX_RESET:
       return { ...DEFAULT_STATE_PWAS, items: [] }
