@@ -18,7 +18,13 @@ import {
   IonBackButton,
   IonNote,
 } from "@ionic/react"
-import { connect as reduxConnector, ConnectedProps } from "react-redux"
+import {
+  connect as reduxConnector,
+  ConnectedProps,
+  useSelector,
+  shallowEqual,
+  useDispatch,
+} from "react-redux"
 import { DebouncedSearch, PWACard, SideBar } from "../../components"
 import { getSearchApp } from "../../data/dataApi"
 import { PWA, HomePWAs } from "../../util/types"
@@ -32,8 +38,9 @@ import { standardCategories } from "../../components/SideBar"
 import { RouteMap } from "../../routes"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { thunkGetPWAs } from "../../redux/PWAs/actions"
-import { PWASection } from "../../redux/PWAs/types"
+import { PWASection, PWAsActionTypes } from "../../redux/PWAs/types"
 import "./styles.css"
+import PWACardPlaceholder from "../../components/PWACardPlaceholder"
 
 const mapStateToProps = ({ pwas }: ReduxCombinedState): StateProps => ({
   pwasSections: pwas.pwaSections,
@@ -47,16 +54,9 @@ interface StateProps {
   isLoading: boolean
 }
 
-const connector = reduxConnector(mapStateToProps, mapDispatchToProps)
-type PropsFromRedux = ConnectedProps<typeof connector>
+type PWAsProps = RouteComponentProps
 
-type PWAsProps = RouteComponentProps & PropsFromRedux
-
-const PWAs: React.FC<PWAsProps> = ({
-  pwasSections,
-  thunkGetPWAs: getPWAs,
-  isLoading,
-}) => {
+const PWAs: React.FC<PWAsProps> = () => {
   const { category } = useParams()
   const [page, setPage] = useState<number>(0)
   const [cat, setCat] = useState<string>("")
@@ -64,6 +64,18 @@ const PWAs: React.FC<PWAsProps> = ({
   const [pwaSearchResults, setPwaSearchResults] = useState<PWA[]>([])
   const [showSearch, setShowSearch] = useState<boolean>(false)
   const [scrollDisabled, setScrollDisabled] = useState<boolean>(false)
+
+  const { pwasSections, isLoading } = useSelector(
+    ({ pwas }: ReduxCombinedState) => ({
+      pwasSections: pwas.pwaSections,
+      isLoading: pwas.isPending,
+    }),
+    shallowEqual
+  )
+
+  const dispatch = useDispatch()
+  const getPWAs = (page: number, category?: string) =>
+    dispatch(thunkGetPWAs(page, category))
 
   const sectionPwas = useMemo(() => {
     const section = pwasSections
@@ -101,7 +113,7 @@ const PWAs: React.FC<PWAsProps> = ({
       setCat(newCat)
       reloadPwas(newCat)
       setScrollDisabled(false)
-      content.current && content.current.scrollToTop()
+      //content.current && content.current.scrollToTop()
       ReactGA.pageview(`PWAs ${newCat}`)
     } finally {
     }
@@ -157,15 +169,19 @@ const PWAs: React.FC<PWAsProps> = ({
       )
     }
 
-    return (
-      streamPWAs &&
-      streamPWAs.map((pwa, i) => (
-        <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
-          <PWACard url="/pwa" pwa={pwa} />
-        </IonCol>
-      ))
-    )
-  }, [sectionPwas, pwaSearchValue, pwaSearchResults, showSearch])
+    return isLoading
+      ? [...Array(10)].map((_e, i) => (
+          <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
+            <PWACardPlaceholder />
+          </IonCol>
+        ))
+      : streamPWAs &&
+          streamPWAs.map((pwa, i) => (
+            <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
+              <PWACard url="/pwa" pwa={pwa} />
+            </IonCol>
+          ))
+  }, [sectionPwas, pwaSearchResults, showSearch, isLoading])
 
   return (
     <IonPage>
@@ -245,4 +261,4 @@ const PWAs: React.FC<PWAsProps> = ({
   )
 }
 
-export default connector(PWAs)
+export default PWAs
