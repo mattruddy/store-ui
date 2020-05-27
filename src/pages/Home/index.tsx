@@ -16,7 +16,7 @@ import {
 } from "@ionic/react"
 import { PWACard, SideBar, DebouncedSearch } from "../../components"
 import { getSearchApp } from "../../data/dataApi"
-import { PWA, HomePWAs } from "../../util/types"
+import { PWA } from "../../util/types"
 import { RouteComponentProps, useHistory } from "react-router"
 import "./styles.css"
 import { GetPwaCategoryUrl } from "../../routes"
@@ -25,35 +25,23 @@ import Footer from "../../components/Footer"
 import ReactGA from "react-ga"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { thunkGetHomeData } from "../../redux/PWAs/actions"
-import { connect as reduxConnector, ConnectedProps } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import PWACardPlaceholder from "../../components/PWACardPlaceholder"
 
-const mapStateToProps = ({ pwas }: ReduxCombinedState): StateProps => ({
-  homeData: pwas.home,
-  isLoading: pwas.isPending,
-})
-
-const mapDispatchToProps = { thunkGetHomeData }
-
-interface StateProps {
-  homeData: HomePWAs
-  isLoading: boolean
-}
-
-const connector = reduxConnector(mapStateToProps, mapDispatchToProps)
-type PropsFromRedux = ConnectedProps<typeof connector>
-
-type HomeProps = RouteComponentProps & PropsFromRedux
-
-const Home: React.FC<HomeProps> = ({
-  homeData,
-  thunkGetHomeData: getHomeData,
-  isLoading,
-}) => {
+const Home: React.FC<RouteComponentProps> = () => {
   const history = useHistory()
   const [pwaSearchResults, setPwaSearchResults] = useState<PWA[]>([])
   const [showSearch, setShowSearch] = useState<boolean>(false)
   const content = useRef<any>()
+
+  const { homeData, isLoading } = useSelector(
+    ({ pwas }: ReduxCombinedState) => ({
+      homeData: pwas.home,
+      isLoading: pwas.isPending,
+    })
+  )
+  const dispatch = useDispatch()
+  const getHomeData = () => dispatch(thunkGetHomeData())
 
   useIonViewDidEnter(() => {
     loadHomeApps()
@@ -222,4 +210,4 @@ const Home: React.FC<HomeProps> = ({
   )
 }
 
-export default connector(Home)
+export default Home
