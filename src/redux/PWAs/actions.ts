@@ -1,4 +1,11 @@
-import { PWAS_PENDING, PWAS_COMPLETE, PWAS_SET, HOME_SET } from "./types"
+import {
+  PWAS_PENDING,
+  PWAS_COMPLETE,
+  HOME_SET,
+  PWAS_ADD,
+  PWASection,
+  PWAS_REPLACE,
+} from "./types"
 import { Axios } from "../Actions"
 import { Action } from "redux"
 import { ThunkAction } from "redux-thunk"
@@ -9,7 +16,12 @@ const loadingPWAs = () => ({ type: PWAS_PENDING })
 
 const completePWAs = () => ({ type: PWAS_COMPLETE })
 
-const setPWAs = (data: PWA[]) => ({ type: PWAS_SET, payload: data })
+const addPWASection = (data: PWASection) => ({ type: PWAS_ADD, payload: data })
+
+const replacePWASection = (data: PWASection) => ({
+  type: PWAS_REPLACE,
+  payload: data,
+})
 
 const setHomeData = (data: HomePWAs) => ({
   type: HOME_SET,
@@ -18,30 +30,51 @@ const setHomeData = (data: HomePWAs) => ({
 
 const thunkGetPWAs = (
   page: number,
-  category?: string,
-  reload?: boolean
+  category: string = "",
+  reload: boolean = false
 ): ThunkAction<void, ReduxCombinedState, null, Action<string>> => async (
-  dispatch
+  dispatch,
+  getState
 ) => {
   dispatch(loadingPWAs())
-  const url = category
-    ? `/public/pwas/${page}/${category}`
-    : `/public/pwas/${page}`
-
   try {
-    const axiosInstance = await Axios()
-    const response = await axiosInstance.get(url)
-    const data: PWA[] = response.data
-    dispatch(setPWAs(data))
-    dispatch(completePWAs())
-    return data
+    const {
+      pwas: { pwaSections },
+    } = getState()
+
+    const pwaSection = pwaSections.find(
+      (x) => x.category === category && x.page === page
+    )
+    if (pwaSection) {
+      return pwaSection.items
+    } else {
+      const url = category
+        ? `/public/pwas/${page}/${category}`
+        : `/public/pwas/${page}`
+
+      const axiosInstance = await Axios()
+      const response = await axiosInstance.get(url)
+      const newPWAsSection = {
+        items: response.data,
+        category: category,
+        page: page,
+      } as PWASection
+      if (reload) {
+        dispatch(replacePWASection(newPWAsSection))
+      } else {
+        dispatch(addPWASection(newPWAsSection))
+      }
+      return newPWAsSection.items
+    }
   } catch (e) {
     return console.log(e)
+  } finally {
+    dispatch(completePWAs())
   }
 }
 
 const thunkGetHomeData = (
-  reload?: boolean
+  reload: boolean = false
 ): ThunkAction<void, ReduxCombinedState, null, Action<string>> => async (
   dispatch,
   getState

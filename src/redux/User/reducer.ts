@@ -81,7 +81,7 @@ const userReducer = (
     case USER_ADD_APP:
       return {
         ...state,
-        pwas: state.pwas ? [...state.pwas, action.payload] : [action.payload],
+        pwas: [...state.pwas, action.payload],
       }
 
     case USER_REMOVE_APP:

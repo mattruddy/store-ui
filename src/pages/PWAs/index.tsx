@@ -24,25 +24,26 @@ import { getSearchApp } from "../../data/dataApi"
 import { PWA, HomePWAs } from "../../util/types"
 import { RouteComponentProps, useParams } from "react-router"
 
-import "./styles.css"
 import ReactGA from "react-ga"
-import { capitalize } from "../../util"
+import { capitalize, stringMatch } from "../../util"
 import { search, closeOutline } from "ionicons/icons"
 import { categories } from "../../components/CategoryOptions"
 import { standardCategories } from "../../components/SideBar"
 import { RouteMap } from "../../routes"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { thunkGetPWAs } from "../../redux/PWAs/actions"
+import { PWASection } from "../../redux/PWAs/types"
+import "./styles.css"
 
 const mapStateToProps = ({ pwas }: ReduxCombinedState): StateProps => ({
-  pwas: pwas.items,
+  pwasSections: pwas.pwaSections,
   isLoading: pwas.isPending,
 })
 
 const mapDispatchToProps = { thunkGetPWAs }
 
 interface StateProps {
-  pwas?: PWA[]
+  pwasSections: PWASection[]
   isLoading: boolean
 }
 
@@ -52,7 +53,7 @@ type PropsFromRedux = ConnectedProps<typeof connector>
 type PWAsProps = RouteComponentProps & PropsFromRedux
 
 const PWAs: React.FC<PWAsProps> = ({
-  pwas,
+  pwasSections,
   thunkGetPWAs: getPWAs,
   isLoading,
 }) => {
@@ -64,6 +65,14 @@ const PWAs: React.FC<PWAsProps> = ({
   const [] = useState<HomePWAs>()
   const [showSearch, setShowSearch] = useState<boolean>(false)
   const [scrollDisabled, setScrollDisabled] = useState<boolean>(false)
+
+  const sectionPwas = useMemo(() => {
+    const section = pwasSections.find(
+      (section) =>
+        section.page === page && stringMatch(section.category, category!)
+    )
+    return section ? section.items : []
+  }, [pwasSections, category, page])
 
   const scrollEl = useRef<any>(undefined)
   const content = useRef<any>()
@@ -132,7 +141,7 @@ const PWAs: React.FC<PWAsProps> = ({
   }, [])
 
   const renderPwaList = useMemo(() => {
-    const streamPWAs = showSearch ? pwaSearchResults : pwas
+    const streamPWAs = showSearch ? pwaSearchResults : sectionPwas
 
     if (!isLoading && streamPWAs && streamPWAs.length < 1) {
       return (
@@ -152,7 +161,7 @@ const PWAs: React.FC<PWAsProps> = ({
         </IonCol>
       ))
     )
-  }, [pwas, pwaSearchValue, pwaSearchResults, showSearch])
+  }, [sectionPwas, pwaSearchValue, pwaSearchResults, showSearch])
 
   return (
     <IonPage>

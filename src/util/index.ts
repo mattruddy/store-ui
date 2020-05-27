@@ -121,6 +121,22 @@ const validEmail = (email: string): boolean => {
   return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
 }
 
+// $& means the whole matched string
+const escapeRegExp = (s: string) =>
+  s ? s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") : s
+
+const stringMatch = (
+  s1: string,
+  s2: string,
+  caseSensitive: boolean = false
+) => {
+  const flags = caseSensitive ? "g" : "gi"
+  const cleanString = escapeRegExp(s2)
+
+  const regexMatch = new RegExp(cleanString, flags)
+  return s1.match(regexMatch)
+}
+
 export {
   blobToFile,
   fixFilesRotation,
@@ -132,4 +148,5 @@ export {
   capitalize,
   noSpecialChars,
   validEmail,
+  stringMatch,
 }
