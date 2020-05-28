@@ -8,8 +8,13 @@ import {
   USER_REPLACE_APP,
   USER_ADD_APP,
   USER_REMOVE_APP,
+  USER_HAS_READ_INSTALL,
 } from "./types"
 import { PWA } from "../../util/types"
+import { setHasReadInstallData } from "../../data/dataApi"
+import { ReduxCombinedState } from "../RootReducer"
+import { Action } from "redux"
+import { ThunkAction } from "redux-thunk"
 
 export const setLoading = (isLoading: boolean) =>
   ({
@@ -58,3 +63,13 @@ export const removeApp = (appId: number) =>
     type: USER_REMOVE_APP,
     appId,
   } as const)
+
+export const setHasReadInstall = (
+  hasReadInstall: string
+): ThunkAction<void, ReduxCombinedState, null, Action> => async () => {
+  await setHasReadInstallData(hasReadInstall)
+  return {
+    type: USER_HAS_READ_INSTALL,
+    hasReadInstall,
+  } as const
+}

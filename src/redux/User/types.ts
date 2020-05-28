@@ -19,6 +19,7 @@ export const USER_SET_EMAIL = "USER_SET_EMAIL"
 export const USER_REPLACE_APP = "USER_REPLACE_APP"
 export const USER_ADD_APP = "USER_ADD_APP"
 export const USER_REMOVE_APP = "USER_REMOVE_APP"
+export const USER_HAS_READ_INSTALL = "USER_HAS_READ_INSTALL"
 
 export interface SetUserAction {
   type: typeof USER_SET
@@ -65,6 +66,11 @@ export interface RemoveAppAction {
   payload: number
 }
 
+export interface SetHasReadInstallAction {
+  type: typeof USER_HAS_READ_INSTALL
+  payload: boolean
+}
+
 export type UserActionTypes =
   | SetUserAction
   | SetLoadingAction
@@ -76,3 +82,4 @@ export type UserActionTypes =
   | ReplaceAppAction
   | SetUsernameAction
   | SetLoadingAction
+  | SetHasReadInstallAction

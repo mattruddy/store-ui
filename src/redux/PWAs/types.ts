@@ -2,7 +2,7 @@ import { PWA, HomePWAs } from "../../util/types"
 
 export interface PWASection {
   category: string
-  items: PWA[]
+  appId: number[]
   page: number
 }
 
@@ -11,6 +11,7 @@ export interface PWAsState {
   next: ""
   previous: ""
   pwaSections: PWASection[]
+  pwas: PWA[]
   isPending: boolean
   error: ""
   search: string
@@ -19,17 +20,23 @@ export interface PWAsState {
 
 export const PWAS_PENDING = "PWAS_PENDING"
 export const PWAS_COMPLETE = "PWAS_COMPLETE"
-export const PWAS_ADD = "PWAS_ADD"
-export const PWAS_REPLACE = "PWAS_REPLACE"
+export const PWAS_SECTION_ADD = "PWAS_SECTION_ADD"
+export const PWAS_SECTION_REPLACE = "PWAS_SECTION_REPLACE"
 export const HOME_SET = "HOME_SET"
+export const PWAS_ADD = "PWAS_ADD"
 
-export interface AddPWAsAction {
-  type: typeof PWAS_ADD
+export interface AddPWAsSectionAction {
+  type: typeof PWAS_SECTION_ADD
   payload: PWASection
 }
 
-export interface ReplacePWAsAction {
-  type: typeof PWAS_REPLACE
+export interface AddPWAsAction {
+  type: typeof PWAS_ADD
+  payload: PWA[]
+}
+
+export interface ReplacePWAsSectionAction {
+  type: typeof PWAS_SECTION_REPLACE
   payload: PWASection
 }
 
@@ -47,8 +54,9 @@ export interface SetHomeDataAction {
 }
 
 export type PWAsActionTypes =
-  | ReplacePWAsAction
-  | AddPWAsAction
+  | ReplacePWAsSectionAction
+  | AddPWAsSectionAction
   | CompletePWAsAction
   | LoadingPWAsAction
   | SetHomeDataAction
+  | AddPWAsAction

@@ -53,10 +53,11 @@ const PWAs: React.FC<PWAsProps> = () => {
   const [scrollDisabled, setScrollDisabled] = useState<boolean>(false)
   const [loadingMore, setLoadingMore] = useState<boolean>(false)
 
-  const { pwasSections, isLoading } = useSelector(
+  const { pwasSections, isLoading, pwas } = useSelector(
     ({ pwas }: ReduxCombinedState) => ({
       pwasSections: pwas.pwaSections,
       isLoading: pwas.isPending,
+      pwas: pwas.pwas,
     }),
     shallowEqual
   )
@@ -76,11 +77,10 @@ const PWAs: React.FC<PWAsProps> = () => {
           section.category.toLowerCase() ===
             (category ? category : "").toLowerCase()
       )
-      .map((section) => section.items)
-      .flat(1)
-
+      .flatMap((section) => section.appId)
+      .map((id) => pwas.find((i) => i.appId === id) as PWA)
     return section
-  }, [pwasSections, category, page])
+  }, [pwasSections, category, page, pwas])
 
   const scrollEl = useRef<HTMLIonInfiniteScrollElement>(null)
   const content = useRef<HTMLIonContentElement>(null)
