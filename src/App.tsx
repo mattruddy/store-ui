@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useCallback } from "react"
 import { Redirect, Route } from "react-router-dom"
 import {
   IonApp,
@@ -37,42 +37,48 @@ import { RouteMap } from "./routes"
 import ReactGA from "react-ga"
 import { SideBar } from "./components"
 import Home from "./pages/Home"
+import { useDispatch, useSelector } from "react-redux"
+import { thunkLoadUserData, thunkLoadProfile } from "./redux/User/actions"
+import { ReduxCombinedState } from "./redux/RootReducer"
 
 const App: React.FC = () => {
   return (
     <AppContextProvider>
-      <IonicAppConnected />
+      <IonicApp />
     </AppContextProvider>
   )
 }
 
-interface StateProps {
-  token?: string
-  isLoggedIn: boolean
-}
+const IonicApp: React.FC = () => {
+  const dispatch = useDispatch()
+  // TODO: Remove other load user and rename this.
+  const loadUserData = useCallback(() => dispatch(thunkLoadUserData()), [
+    dispatch,
+  ])
 
-interface DispatchProps {
-  loadUserData: typeof loadUserData
-  loadProfile: typeof loadProfile
-}
+  // TODO: Remove other load profile and rename this.
+  const loadProfile = useCallback(
+    (token: string) => dispatch(thunkLoadProfile(token)),
+    [dispatch]
+  )
 
-interface IonicAppProps extends StateProps, DispatchProps {}
+  // TODO: Remove other state and rename vars
+  const { isLoggedIn, token } = useSelector(
+    ({ user: { isLoggedIn, token } }: ReduxCombinedState) => ({
+      isLoggedIn: isLoggedIn,
+      token: token,
+    })
+  )
 
-const IonicApp: React.FC<IonicAppProps> = ({
-  token,
-  isLoggedIn,
-  loadUserData,
-  loadProfile,
-}) => {
   useEffect(() => {
     loadUserData()
   }, [])
 
   useEffect(() => {
-    if (isLoggedIn) {
-      loadProfile()
+    if (isLoggedIn && token) {
+      loadProfile(token)
     }
-  }, [isLoggedIn])
+  }, [isLoggedIn, token])
 
   useEffect(() => {
     ReactGA.initialize("UA-165324521-1")
@@ -145,15 +151,3 @@ const IonicApp: React.FC<IonicAppProps> = ({
 }
 
 export default App
-
-const IonicAppConnected = connect<{}, StateProps, DispatchProps>({
-  mapStateToProps: (state) => ({
-    token: state.user.token,
-    isLoggedIn: state.user.isLoggedIn,
-  }),
-  mapDispatchToProps: {
-    loadUserData,
-    loadProfile,
-  },
-  component: IonicApp,
-})

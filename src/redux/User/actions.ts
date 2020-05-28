@@ -22,7 +22,7 @@ import {
   Axios,
 } from "../Actions"
 
-export const loadUserData = (): ThunkAction<
+export const thunkLoadUserData = (): ThunkAction<
   void,
   ReduxCombinedState,
   null,
@@ -34,13 +34,13 @@ export const loadUserData = (): ThunkAction<
   dispatch(setLoading(false))
 }
 
-export const login = (
+export const thunkLogin = (
   username: string,
   password: string
 ): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
   dispatch(setLoading(true))
   try {
-    const url = `/login`
+    const url = `secure/login`
     const response = await (await Axios()).post(url, { username, password })
     const {
       data: { token },
@@ -57,12 +57,12 @@ export const login = (
   }
 }
 
-export const loadProfile = (
+export const thunkLoadProfile = (
   token: string
 ): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
   dispatch(setLoading(true))
   try {
-    const url = `/profile`
+    const url = `secure/profile`
     const resp = await (await Axios()).get(url, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -88,7 +88,7 @@ export const loadProfile = (
   }
 }
 
-export const setUser = (
+export const thunkSetUser = (
   username: string,
   email: string = "",
   token: string
@@ -109,7 +109,7 @@ export const setUser = (
   dispatch(setLoading(false))
 }
 
-export const logout = (): ThunkAction<
+export const thunkLogout = (): ThunkAction<
   void,
   ReduxCombinedState,
   null,

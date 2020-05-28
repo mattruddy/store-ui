@@ -125,11 +125,13 @@ const thunkGetHomeData = (
       const response = await axiosInstance.get(url)
       const data: HomePWAs = response.data
       dispatch(setHomeData(data))
+      const joint = [...data.discoverApps, ...data.newApps, ...data.topApps]
+      console.log(joint)
       dispatch(
         addPWAs(
-          [...home.discoverApps, ...home.newApps, ...home.topApps].filter(
-            (x) => !pwas.includes(x)
-          )
+          joint
+            .filter((x, i) => joint.indexOf(x) === i)
+            .filter((x) => !pwas.includes(x))
         )
       )
       return data
