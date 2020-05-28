@@ -4,6 +4,7 @@ import {
   ALERTS_SET_MESSAGE,
   ALERTS_CLEAR,
   AlertsState,
+  ALERTS_SET,
 } from "./types"
 import { AppActionTypes, REDUX_RESET } from "../App/types"
 
@@ -12,6 +13,7 @@ const DEFAULT_STATE_ALERTS: AlertsState = {
   title: "",
   message: "",
   timeout: 3000,
+  show: false,
   serviceWorkerRegistration: "",
 }
 
@@ -30,6 +32,11 @@ const alertsReducer = (
       return {
         ...DEFAULT_STATE_ALERTS,
         apiResponseStatus: state.apiResponseStatus,
+      }
+    case ALERTS_SET:
+      return {
+        ...state,
+        ...action.payload,
       }
 
     case REDUX_RESET:

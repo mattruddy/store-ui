@@ -7,6 +7,7 @@ import {
   USER_ADD_APP,
   USER_REMOVE_APP,
   USER_HAS_READ_INSTALL,
+  UserRole,
 } from "./types"
 import { PWA } from "../../util/types"
 import { ReduxCombinedState } from "../RootReducer"
@@ -20,7 +21,9 @@ import {
   setUsernameStorage,
   setIsLoggedInStorage,
   Axios,
+  setRoleStorage,
 } from "../Actions"
+import { setAlert } from "../Alerts/actions"
 
 export const thunkLoadUserData = (): ThunkAction<
   void,
@@ -40,17 +43,32 @@ export const thunkLogin = (
 ): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
   dispatch(setLoading(true))
   try {
-    const url = `secure/login`
+    const url = `public/login`
     const response = await (await Axios()).post(url, { username, password })
     const {
       data: { token },
     } = response
+
+    // TODO: do this in the api.
+    var role = UserRole.Dev
+    if (username === "mattruddy") {
+      role = UserRole.Admin
+    }
     dispatch(setData({ token, username, isLoggedIn: true }))
+    await setRoleStorage(UserRole.Admin.toString())
     await setTokenStorage(token)
     await setUsernameStorage(username)
     await setIsLoggedInStorage("true")
+    dispatch(setAlert({ message: "Succuess", timeout: 3000, show: true }))
   } catch (e) {
-    dispatch(setData({ error: e }))
+    dispatch(
+      setAlert({
+        message: e.response.message,
+        apiResponseStatus: e.response.status,
+        timeout: 3000,
+        show: true,
+      })
+    )
     return console.log(e)
   } finally {
     dispatch(setLoading(false))
@@ -81,7 +99,14 @@ export const thunkLoadProfile = (
     await setEmailStorage(email)
     await setUsernameStorage(username)
   } catch (e) {
-    dispatch(setData({ error: e }))
+    dispatch(
+      setAlert({
+        message: e.response.message,
+        apiResponseStatus: e.response.status,
+        timeout: 3000,
+        show: true,
+      })
+    )
     return console.error(e)
   } finally {
     dispatch(setLoading(false))

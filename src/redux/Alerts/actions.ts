@@ -2,6 +2,8 @@ import {
   ALERTS_SET_MESSAGE,
   ALERTS_SET_API_RESPONSE_STATUS,
   ALERTS_CLEAR,
+  ALERTS_SET,
+  AlertsState,
 } from "./types"
 
 const setApiResponseStatus = (status: number) => ({
@@ -9,9 +11,9 @@ const setApiResponseStatus = (status: number) => ({
   payload: status,
 })
 
-const setAlert = (message: string) => ({
-  type: ALERTS_SET_MESSAGE,
-  payload: message,
+const setAlert = (data: Partial<AlertsState>) => ({
+  type: ALERTS_SET,
+  payload: data,
 })
 
 const clearAlerts = () => ({ type: ALERTS_CLEAR })

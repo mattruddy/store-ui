@@ -8,6 +8,7 @@ import {
   USER_ADD_APP,
   USER_REMOVE_APP,
   USER_HAS_READ_INSTALL,
+  UserRole,
 } from "./types"
 import { AppActionTypes, REDUX_RESET } from "../App/types"
 
@@ -21,7 +22,7 @@ const DEFAULT_STATE_USER: UserState = {
   email: "",
   darkMode: false,
   isLoggedIn: false,
-  error: undefined,
+  role: UserRole.Dev,
 }
 
 const userReducer = (

@@ -10,7 +10,14 @@ export interface UserState {
   email: string
   darkMode: boolean
   isLoggedIn: boolean
-  error: any
+  role: UserRole
+}
+
+export enum UserRole {
+  User = 0,
+  Dev = 1,
+  Mod = 2,
+  Admin = 3,
 }
 
 export const USER_SET_LOADING = "USER_SET_LOADING"

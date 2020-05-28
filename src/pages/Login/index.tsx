@@ -1,5 +1,5 @@
-import React, { useState, useEffect, memo } from "react"
-import { RouteComponentProps, useLocation } from "react-router"
+import React, { useState, useEffect, memo, useCallback } from "react"
+import { RouteComponentProps, useLocation, useHistory } from "react-router"
 import {
   IonPage,
   IonRow,
@@ -19,28 +19,21 @@ import {
   setIsLoggedIn,
   loadProfile,
 } from "../../data/user/user.actions"
-import { postLogin, postDevice } from "../../data/dataApi"
+import {
+  postLogin,
+  postDevice,
+  setTokenData,
+  setIsLoggedInData,
+} from "../../data/dataApi"
 import { connect } from "../../data/connect"
 import queryString from "query-string"
 import { logoGithub } from "ionicons/icons"
 import { RouteMap } from "../../routes"
+import { useDispatch, useSelector } from "react-redux"
+import { thunkLogin } from "../../redux/User/actions"
+import { ReduxCombinedState } from "../../redux/RootReducer"
 
-interface OwnProps extends RouteComponentProps {}
-
-interface DispatchProps {
-  setToken: typeof setToken
-  setIsLoggedIn: typeof setIsLoggedIn
-}
-
-interface StateProps {}
-
-interface LoginProps extends OwnProps, DispatchProps, StateProps {}
-
-const LogIn: React.FC<LoginProps> = ({
-  setToken: setTokenAction,
-  history,
-  setIsLoggedIn: setIsLoggedInAction,
-}) => {
+const LogIn: React.FC = () => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [formSubmitted, setFormSubmitted] = useState(false)
@@ -51,24 +44,55 @@ const LogIn: React.FC<LoginProps> = ({
   const [showToast, setShowToast] = useState<boolean>(false)
   const location = useLocation()
 
+  const history = useHistory()
+
+  const { isLoading, token } = useSelector(
+    ({ user: { loading, token } }: ReduxCombinedState) => ({
+      isLoading: loading,
+      token: token,
+    })
+  )
+  const dispatch = useDispatch()
+  const setToken = useCallback(
+    (token: string) => dispatch(setTokenData(token)),
+    [dispatch]
+  )
+  const setIsLoggedin = useCallback(
+    (isLoggedIn: boolean) => dispatch(setIsLoggedInData(isLoggedIn)),
+    [dispatch]
+  )
+  const login = useCallback(
+    async (username: string, password: string) =>
+      dispatch(thunkLogin(username, password)),
+    [dispatch]
+  )
+
   useEffect(() => {
     if (location && queryString.parse(location.search).token) {
       const thirdPartyLogin = async () => {
-        setTokenAction(queryString.parse(location.search).token as string)
-        setIsLoggedInAction(true)
+        setToken(queryString.parse(location.search).token as string)
+        setIsLoggedin(true)
         const key = localStorage.getItem("push_key")
         const auth = localStorage.getItem("push_auth")
         const endpoint = localStorage.getItem("push_endpoint")
         if (key && auth && endpoint) {
           await postDevice(key, auth, endpoint)
         }
-        history.push(RouteMap.PROFILE, { direction: "back" })
       }
       thirdPartyLogin()
     }
   }, [location])
 
-  const signup = async (e: React.FormEvent) => {
+  useEffect(() => {
+    if (token) {
+      history.push(RouteMap.PROFILE, { direction: "back" })
+
+      setPassword("")
+      setUsername("")
+    }
+  }, [token])
+
+  const onLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setFormSubmitted(true)
     if (!username || username.length < 6) {
@@ -78,29 +102,7 @@ const LogIn: React.FC<LoginProps> = ({
       setPasswordError(true)
     }
 
-    if (username && password) {
-      try {
-        const data = await postLogin(username, password)
-        if (!data.token) {
-          throw "No Token data!"
-        }
-        setTokenAction(data.token)
-        setIsLoggedInAction(true)
-        setValidationError(false)
-        setToastMessage("Success")
-        setShowToast(true)
-        if (username === "mattruddy") {
-          localStorage.setItem("me", username)
-        }
-        setPassword("")
-        setUsername("")
-        history.push(RouteMap.PROFILE)
-      } catch (e) {
-        if (e.message === "Invalid Credentials") {
-          setValidationError(true)
-        }
-      }
-    }
+    await login(username, password)
   }
 
   return (
@@ -115,7 +117,7 @@ const LogIn: React.FC<LoginProps> = ({
             />
           </IonRow>
 
-          <form noValidate onSubmit={signup}>
+          <form noValidate onSubmit={onLogin}>
             <IonRow>
               {formSubmitted && validationError && (
                 <IonCol size="12">
@@ -211,10 +213,4 @@ const LogIn: React.FC<LoginProps> = ({
   )
 }
 
-export default connect<OwnProps, StateProps, DispatchProps>({
-  mapDispatchToProps: {
-    setToken,
-    setIsLoggedIn,
-  },
-  component: memo(LogIn),
-})
+export default memo(LogIn)

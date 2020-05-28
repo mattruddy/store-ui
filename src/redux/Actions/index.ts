@@ -2,6 +2,7 @@ import axios, { AxiosRequestConfig, AxiosInstance } from "axios"
 import { vars } from "../../data/env"
 import { Plugins } from "@capacitor/core"
 import { AxiosCustomRequestConfig } from "../../util/types"
+import { UserRole } from "../User/types"
 declare module "axios" {
   export interface AxiosResponse<T = any> extends Promise<T> {}
 }
@@ -13,6 +14,7 @@ const HAS_READ = "hasRead"
 const DARK_MODE = "darkMode"
 const USERNAME = "username"
 const EMAIL = "email"
+const ROLE = "role"
 
 const getUserData = async () => {
   const response = await Promise.all([
@@ -22,6 +24,7 @@ const getUserData = async () => {
     Storage.get({ key: DARK_MODE }),
     Storage.get({ key: USERNAME }),
     Storage.get({ key: EMAIL }),
+    Storage.get({ key: ROLE }),
   ])
   const isLoggedIn = response[0].value === "true"
   const token = response[1].value || undefined
@@ -29,6 +32,7 @@ const getUserData = async () => {
   const darkMode = response[3].value === "true"
   const username = response[4].value || undefined
   const email = response[5].value || undefined
+  const role = parseInt(response[6].value || "2")
   const data = {
     isLoggedIn,
     token,
@@ -36,6 +40,7 @@ const getUserData = async () => {
     darkMode,
     username,
     email,
+    role,
   }
   return data
 }
@@ -62,6 +67,10 @@ const setUsernameStorage = async (username: string) => {
 
 const setEmailStorage = async (email: string) => {
   await Storage.set({ key: USERNAME, value: email })
+}
+
+const setRoleStorage = async (role: string) => {
+  await Storage.set({ key: USERNAME, value: role })
 }
 
 const base = {
@@ -123,4 +132,5 @@ export {
   setTokenStorage,
   setEmailStorage,
   setUsernameStorage,
+  setRoleStorage,
 }

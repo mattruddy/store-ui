@@ -8,6 +8,7 @@ import {
   IonTabBar,
   IonTabButton,
   IonTabs,
+  IonToast,
 } from "@ionic/react"
 import { IonReactRouter } from "@ionic/react-router"
 import {
@@ -40,6 +41,7 @@ import Home from "./pages/Home"
 import { useDispatch, useSelector } from "react-redux"
 import { thunkLoadUserData, thunkLoadProfile } from "./redux/User/actions"
 import { ReduxCombinedState } from "./redux/RootReducer"
+import { clearAlerts } from "./redux/Alerts/actions"
 
 const App: React.FC = () => {
   return (
@@ -62,11 +64,14 @@ const IonicApp: React.FC = () => {
     [dispatch]
   )
 
+  const clearAlert = useCallback(() => dispatch(clearAlerts()), [dispatch])
+
   // TODO: Remove other state and rename vars
-  const { isLoggedIn, token } = useSelector(
-    ({ user: { isLoggedIn, token } }: ReduxCombinedState) => ({
+  const { isLoggedIn, token, alerts } = useSelector(
+    ({ user: { isLoggedIn, token }, alerts }: ReduxCombinedState) => ({
       isLoggedIn: isLoggedIn,
       token: token,
+      alerts: alerts,
     })
   )
 
@@ -145,6 +150,21 @@ const IonicApp: React.FC = () => {
             </IonTabButton>
           </IonTabBar>
         </IonTabs>
+        <IonToast
+          isOpen={alerts.show}
+          message={alerts.message}
+          duration={alerts.timeout}
+          onDidDismiss={clearAlert}
+          buttons={[
+            {
+              side: "end",
+              text: "Dismiss",
+              handler: () => {
+                clearAlert()
+              },
+            },
+          ]}
+        />
       </IonReactRouter>
     </IonApp>
   )
