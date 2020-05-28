@@ -7,14 +7,15 @@ import { LoadingScreen } from "./components"
 import * as serviceWorker from "./serviceWorker"
 import { defineCustomElements } from "@ionic/pwa-elements/loader"
 import { setupConfig } from "@ionic/core"
+import App from "./App"
 const { store } = storeFactory()
 
 // Show loading Screen for 1 second
-const App = lazy(() =>
-  new Promise((resolve) => setTimeout(resolve, 1000)).then(() =>
-    import("./App")
-  )
-)
+// const App = lazy(() =>
+//   new Promise((resolve) => setTimeout(resolve, 1000)).then(() =>
+//     import("./App")
+//   )
+// )
 
 setupConfig({
   swipeBackEnabled: false,
@@ -22,9 +23,7 @@ setupConfig({
 
 ReactDOM.render(
   <Provider store={store}>
-    <Suspense fallback={<LoadingScreen />}>
-      <App />
-    </Suspense>
+    <App />
   </Provider>,
   document.getElementById("root")
 )
