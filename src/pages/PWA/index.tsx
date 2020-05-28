@@ -4,7 +4,6 @@ import React, {
   memo,
   Fragment,
   useEffect,
-  useContext,
   useCallback,
 } from "react"
 import {
@@ -25,17 +24,12 @@ import {
   IonLabel,
   IonNote,
 } from "@ionic/react"
-import { getPWA, postRating } from "../../data/dataApi"
-import { setHasReadInstall as setHasReadInstallData } from "../../redux/User/actions"
+import { postRating } from "../../data/dataApi"
 import { thunkGetPWAFromName } from "../../redux/PWAs/actions"
 import { RouteComponentProps, withRouter } from "react-router"
-import {
-  PWA as PWAType,
-  Rating as RatingType,
-  NewRating,
-} from "../../util/types"
-import { connect } from "../../data/connect"
+import { Rating as RatingType, NewRating } from "../../util/types"
 import { ScreenshotSlider, Rating, PWAInfo, RatingItem } from "../../components"
+import { thunkSetHasReadInstall } from "../../redux/User/actions"
 import { RouteMap } from "../../routes"
 import ReactGA from "react-ga"
 import { ReduxCombinedState } from "../../redux/RootReducer"
@@ -70,8 +64,7 @@ const PWA: React.FC<OwnProps> = ({
   )
   const dispatch = useDispatch()
   const setHasReadInstall = useCallback(
-    (value: "true" | "false") =>
-      dispatch(setHasReadInstallData(value.toString())),
+    (hasRead: boolean) => dispatch(thunkSetHasReadInstall(hasRead)),
     [dispatch]
   )
   const addPWA = useCallback(
@@ -220,13 +213,13 @@ const PWA: React.FC<OwnProps> = ({
           {
             text: "Close",
             handler: () => {
-              setHasReadInstall("true")
+              setHasReadInstall(true)
             },
           },
           {
             text: "Learn",
             handler: () => {
-              setHasReadInstall("true")
+              setHasReadInstall(true)
               history.push(RouteMap.ABOUT)
             },
           },

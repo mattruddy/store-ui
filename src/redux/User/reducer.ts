@@ -1,19 +1,15 @@
 import {
   UserState,
-  USER_SET,
   UserActionTypes,
   USER_SET_LOADING,
   USER_SET_DATA,
   USER_SET_PWAS,
-  USER_SET_USERNAME,
-  USER_SET_EMAIL,
   USER_REPLACE_APP,
   USER_ADD_APP,
   USER_REMOVE_APP,
+  USER_HAS_READ_INSTALL,
 } from "./types"
 import { AppActionTypes, REDUX_RESET } from "../App/types"
-import { act } from "react-dom/test-utils"
-import { pwasReducer } from "../PWAs/reducer"
 
 const DEFAULT_STATE_USER: UserState = {
   token: "",
@@ -23,6 +19,9 @@ const DEFAULT_STATE_USER: UserState = {
   pwas: [],
   username: "",
   email: "",
+  darkMode: false,
+  isLoggedIn: false,
+  error: undefined,
 }
 
 const userReducer = (
@@ -30,15 +29,6 @@ const userReducer = (
   action: UserActionTypes | AppActionTypes
 ): UserState => {
   switch (action.type) {
-    case USER_SET:
-      return {
-        ...state,
-        ...action.payload,
-        updating: false,
-        updated: true,
-        error: null,
-      }
-
     case USER_SET_LOADING:
       return {
         ...state,
@@ -55,18 +45,6 @@ const userReducer = (
       return {
         ...state,
         pwas: action.payload,
-      }
-
-    case USER_SET_USERNAME:
-      return {
-        ...state,
-        username: action.payload,
-      }
-
-    case USER_SET_EMAIL:
-      return {
-        ...state,
-        email: action.payload,
       }
 
     case USER_REPLACE_APP:
@@ -88,6 +66,12 @@ const userReducer = (
       return {
         ...state,
         pwas: [...state.pwas.filter((x) => x.appId !== action.payload)],
+      }
+
+    case USER_HAS_READ_INSTALL:
+      return {
+        ...state,
+        hasRead: action.payload,
       }
 
     case REDUX_RESET:

@@ -85,9 +85,7 @@ const thunkGetPWAs = (
 
 const thunkGetPWAFromName = (
   name: string
-): ThunkAction<void, ReduxCombinedState, null, Action<string>> => async (
-  dispatch
-) => {
+): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
   dispatch(loadingPWAs)
   try {
     const url = `/public/pwa/${name}`

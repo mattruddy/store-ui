@@ -10,36 +10,58 @@ const { API_URL } = vars().env
 const TOKEN = "token"
 const HAS_LOGGED_IN = "hasLoggedIn"
 const HAS_READ = "hasRead"
+const DARK_MODE = "darkMode"
+const USERNAME = "username"
+const EMAIL = "email"
 
 const getUserData = async () => {
   const response = await Promise.all([
     Storage.get({ key: HAS_LOGGED_IN }),
     Storage.get({ key: TOKEN }),
     Storage.get({ key: HAS_READ }),
+    Storage.get({ key: DARK_MODE }),
+    Storage.get({ key: USERNAME }),
+    Storage.get({ key: EMAIL }),
   ])
   const isLoggedIn = response[0].value === "true"
   const token = response[1].value || undefined
-  let hasRead = response[2].value || undefined
-  if (hasRead === undefined) {
-    // this is the toast that gets displayed to checkout
-    // install instructions
-    await setHasReadInstallData("false")
-    hasRead = "false"
-  }
+  const hasRead = response[2].value === "true"
+  const darkMode = response[3].value === "true"
+  const username = response[4].value || undefined
+  const email = response[5].value || undefined
   const data = {
     isLoggedIn,
     token,
     hasRead,
+    darkMode,
+    username,
+    email,
   }
   return data
 }
 
-const setHasReadInstallData = async (hasRead?: string) => {
-  if (hasRead === undefined) {
-    await Storage.set({ key: HAS_READ, value: "false" })
-  } else {
-    await Storage.set({ key: HAS_READ, value: hasRead })
-  }
+const setHasReadInstallStorage = async (hasRead: "false" | "true") => {
+  await Storage.set({ key: HAS_READ, value: hasRead })
+}
+
+const setTokenStorage = async (token: string) => {
+  await Storage.set({ key: TOKEN, value: token })
+}
+
+const setDarkModeStorage = async (darkMode: "true" | "false") => {
+  await Storage.set({ key: DARK_MODE, value: darkMode })
+}
+
+const setIsLoggedInStorage = async (isLoggedIn: "true" | "false") => {
+  await Storage.set({ key: HAS_LOGGED_IN, value: isLoggedIn })
+}
+
+const setUsernameStorage = async (username: string) => {
+  await Storage.set({ key: USERNAME, value: username })
+}
+
+const setEmailStorage = async (email: string) => {
+  await Storage.set({ key: USERNAME, value: email })
 }
 
 const base = {
@@ -92,4 +114,13 @@ const Axios = async (responseType: "json" = "json"): Promise<AxiosInstance> => {
   } as AxiosCustomRequestConfig)
 }
 
-export { Axios }
+export {
+  Axios,
+  getUserData,
+  setHasReadInstallStorage,
+  setDarkModeStorage,
+  setIsLoggedInStorage,
+  setTokenStorage,
+  setEmailStorage,
+  setUsernameStorage,
+}
