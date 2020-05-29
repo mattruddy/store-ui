@@ -59,7 +59,7 @@ export const thunkLogin = (
     await setTokenStorage(token)
     await setUsernameStorage(username)
     await setIsLoggedInStorage("true")
-    dispatch(setAlert({ message: "Succuess", timeout: 3000, show: true }))
+    dispatch(setAlert({ message: "Success", timeout: 3000, show: true }))
   } catch (e) {
     dispatch(
       setAlert({
@@ -75,10 +75,16 @@ export const thunkLogin = (
   }
 }
 
-export const thunkLoadProfile = (
-  token: string
-): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
+export const thunkLoadProfile = (): ThunkAction<
+  void,
+  ReduxCombinedState,
+  null,
+  Action
+> => async (dispatch, getState) => {
   dispatch(setLoading(true))
+  const {
+    user: { token },
+  } = getState()
   try {
     const url = `secure/profile`
     const resp = await (await Axios()).get(url, {
@@ -87,13 +93,13 @@ export const thunkLoadProfile = (
       },
     })
     const {
-      data: { username, pwas, email },
+      data: { username, pageResponses, email },
     } = resp
     dispatch(
       setData({
         email,
         username,
-        pwas,
+        pwas: pageResponses as PWA[],
       })
     )
     await setEmailStorage(email)
@@ -199,6 +205,150 @@ export const removeApp = (appId: number) =>
     type: USER_REMOVE_APP,
     payload: appId,
   } as const)
+
+export const thunkAddPWA = (
+  name: string,
+  description: string,
+  url: string,
+  category: string,
+  icon: File,
+  screenshots: File[],
+  tags: string[]
+): ThunkAction<void, ReduxCombinedState, null, Action> => async (
+  dispatch,
+  getState
+) => {
+  dispatch(setLoading(true))
+  const {
+    user: { token },
+  } = getState()
+  try {
+    const requestData = {
+      name: name,
+      description: description,
+      link: url,
+      category: category,
+      tags: tags,
+    }
+    const formData = new FormData()
+    formData.append("icon", icon)
+    screenshots.forEach((screenshot) =>
+      formData.append("screenshots", screenshot)
+    )
+    formData.append("info", JSON.stringify(requestData))
+    const requestUrl = `secure/pwas`
+    const response = await (await Axios()).post(requestUrl, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: formData,
+    })
+    const { data } = response
+    dispatch(addApp(data as PWA))
+    setAlert({
+      message: `${name} is submitted!`,
+      apiResponseStatus: response.status,
+      timeout: 3000,
+      show: true,
+    })
+    return data
+  } catch (e) {
+    setAlert({
+      message: e.response.message,
+      apiResponseStatus: e.response.status,
+      timeout: 3000,
+      show: true,
+    })
+    return console.log(e)
+  } finally {
+    dispatch(setLoading(false))
+  }
+}
+
+export const thunkDeletePWA = (
+  pwa: PWA
+): ThunkAction<void, ReduxCombinedState, null, Action> => async (
+  dispatch,
+  getState
+) => {
+  dispatch(setLoading(true))
+  const {
+    user: { token },
+  } = getState()
+
+  try {
+    const requestUrl = `secure/pwas/${pwa.appId}`
+    const response = await (await Axios()).delete(requestUrl, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    dispatch(removeApp(pwa.appId))
+    setAlert({
+      message: `${pwa.name} was removed`,
+      apiResponseStatus: response.status,
+      timeout: 3000,
+      show: true,
+    })
+  } catch (e) {
+    setAlert({
+      message: e.response.message,
+      apiResponseStatus: e.response.status,
+      timeout: 3000,
+      show: true,
+    })
+    return console.log(e)
+  } finally {
+    dispatch(setLoading(false))
+  }
+}
+
+export const thunkUpdateApp = (
+  name: string,
+  description: string,
+  category: string,
+  appId: number,
+  tags: string[]
+): ThunkAction<void, ReduxCombinedState, null, Action> => async (
+  dispatch,
+  getState
+) => {
+  dispatch(setLoading(true))
+  const {
+    user: { token },
+  } = getState()
+  try {
+    const requestUrl = `secure/pwas/${appId}`
+    const response = await (await Axios()).put(requestUrl, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: name,
+      description: description,
+      category: category,
+      tags: tags,
+    })
+    const { data } = response
+    dispatch(replaceApp(data as PWA))
+    setAlert({
+      message: `${name} is updated!`,
+      apiResponseStatus: response.status,
+      timeout: 3000,
+      show: true,
+    })
+    return data
+  } catch (e) {
+    setAlert({
+      message: e.response.message,
+      apiResponseStatus: e.response.status,
+      timeout: 3000,
+      show: true,
+    })
+    return console.log(e)
+  } finally {
+    dispatch(setLoading(false))
+  }
+}
 
 export const thunkSetHasReadInstall = (
   hasReadInstall: boolean

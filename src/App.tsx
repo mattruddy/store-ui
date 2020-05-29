@@ -53,20 +53,14 @@ const App: React.FC = () => {
 
 const IonicApp: React.FC = () => {
   const dispatch = useDispatch()
-  // TODO: Remove other load user and rename this.
   const loadUserData = useCallback(() => dispatch(thunkLoadUserData()), [
     dispatch,
   ])
-
-  // TODO: Remove other load profile and rename this.
-  const loadProfile = useCallback(
-    (token: string) => dispatch(thunkLoadProfile(token)),
-    [dispatch]
-  )
-
+  const loadProfile = useCallback(() => dispatch(thunkLoadProfile()), [
+    dispatch,
+  ])
   const clearAlert = useCallback(() => dispatch(clearAlerts()), [dispatch])
 
-  // TODO: Remove other state and rename vars
   const { isLoggedIn, token, alerts } = useSelector(
     ({ user: { isLoggedIn, token }, alerts }: ReduxCombinedState) => ({
       isLoggedIn: isLoggedIn,
@@ -81,7 +75,7 @@ const IonicApp: React.FC = () => {
 
   useEffect(() => {
     if (isLoggedIn && token) {
-      loadProfile(token)
+      loadProfile()
     }
   }, [isLoggedIn, token])
 
