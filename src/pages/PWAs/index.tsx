@@ -107,6 +107,7 @@ const PWAs: React.FC<PWAsProps> = () => {
       }
       reloadPwas(newCat)
       setCat(newCat)
+      setShowSearch(false)
       setScrollDisabled(false)
       ReactGA.pageview(`PWAs ${newCat}`)
       content.current != null && content.current.scrollToTop(0)

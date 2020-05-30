@@ -205,7 +205,7 @@ export const thunkLogout = (): ThunkAction<
   dispatch(setLoading(false))
 }
 
-export const setEmail = (
+export const thunkSetEmail = (
   email: string
 ): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
   dispatch(setData({ email }))
