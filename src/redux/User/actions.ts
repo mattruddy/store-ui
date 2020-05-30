@@ -6,7 +6,6 @@ import {
   USER_REPLACE_APP,
   USER_ADD_APP,
   USER_REMOVE_APP,
-  USER_HAS_READ_INSTALL,
   UserRole,
 } from "./types"
 import { PWA } from "../../util/types"
@@ -21,6 +20,7 @@ import {
   setUsernameStorage,
   setIsLoggedInStorage,
   Axios,
+  AxiosForm,
   setRoleStorage,
 } from "../Actions"
 import { setAlert } from "../Alerts/actions"
@@ -54,7 +54,7 @@ export const thunkLogin = (
     if (username === "mattruddy") {
       role = UserRole.Admin
     }
-    dispatch(setData({ token, username, isLoggedIn: true }))
+    dispatch(setData({ token, username, isLoggedIn: true, role }))
     await setRoleStorage(UserRole.Admin.toString())
     await setTokenStorage(token)
     await setUsernameStorage(username)
@@ -80,18 +80,11 @@ export const thunkLoadProfile = (): ThunkAction<
   ReduxCombinedState,
   null,
   Action
-> => async (dispatch, getState) => {
+> => async (dispatch) => {
   dispatch(setLoading(true))
-  const {
-    user: { token },
-  } = getState()
   try {
     const url = `secure/profile`
-    const resp = await (await Axios()).get(url, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    const resp = await (await Axios()).get(url)
     const {
       data: { username, pageResponses, email },
     } = resp
@@ -214,52 +207,44 @@ export const thunkAddPWA = (
   icon: File,
   screenshots: File[],
   tags: string[]
-): ThunkAction<void, ReduxCombinedState, null, Action> => async (
-  dispatch,
-  getState
-) => {
+): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
   dispatch(setLoading(true))
-  const {
-    user: { token },
-  } = getState()
   try {
-    const requestData = {
+    const info = {
       name: name,
       description: description,
       link: url,
       category: category,
       tags: tags,
     }
-    const formData = new FormData()
-    formData.append("icon", icon)
-    screenshots.forEach((screenshot) =>
-      formData.append("screenshots", screenshot)
-    )
-    formData.append("info", JSON.stringify(requestData))
+
+    const fd = new FormData()
+    fd.append("icon", icon)
+    screenshots.forEach((screenshot) => fd.append("screenshots", screenshot))
+    fd.append("info", JSON.stringify(info))
+
     const requestUrl = `secure/pwas`
-    const response = await (await Axios()).post(requestUrl, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      data: formData,
-    })
+    const response = await (await AxiosForm(fd)).post(requestUrl, fd)
     const { data } = response
     dispatch(addApp(data as PWA))
-    setAlert({
-      message: `${name} is submitted!`,
-      apiResponseStatus: response.status,
-      timeout: 3000,
-      show: true,
-    })
-    return data
+    dispatch(
+      setAlert({
+        message: `${name} was submitted`,
+        timeout: 3000,
+        show: true,
+        status: "success",
+      })
+    )
+    //return data
   } catch (e) {
-    setAlert({
-      message: e.response.message,
-      apiResponseStatus: e.response.status,
-      timeout: 3000,
-      show: true,
-    })
-    return console.log(e)
+    dispatch(
+      setAlert({
+        message: e.response.message,
+        apiResponseStatus: e.response.status,
+        timeout: 3000,
+        show: true,
+      })
+    )
   } finally {
     dispatch(setLoading(false))
   }
@@ -267,36 +252,29 @@ export const thunkAddPWA = (
 
 export const thunkDeletePWA = (
   pwa: PWA
-): ThunkAction<void, ReduxCombinedState, null, Action> => async (
-  dispatch,
-  getState
-) => {
+): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
   dispatch(setLoading(true))
-  const {
-    user: { token },
-  } = getState()
-
   try {
     const requestUrl = `secure/pwas/${pwa.appId}`
-    const response = await (await Axios()).delete(requestUrl, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    const response = await (await Axios()).delete(requestUrl)
     dispatch(removeApp(pwa.appId))
-    setAlert({
-      message: `${pwa.name} was removed`,
-      apiResponseStatus: response.status,
-      timeout: 3000,
-      show: true,
-    })
+    dispatch(
+      setAlert({
+        message: `${pwa.name} was removed`,
+        apiResponseStatus: response.status,
+        timeout: 3000,
+        show: true,
+      })
+    )
   } catch (e) {
-    setAlert({
-      message: e.response.message,
-      apiResponseStatus: e.response.status,
-      timeout: 3000,
-      show: true,
-    })
+    dispatch(
+      setAlert({
+        message: e.response.message,
+        apiResponseStatus: e.response.status,
+        timeout: 3000,
+        show: true,
+      })
+    )
     return console.log(e)
   } finally {
     dispatch(setLoading(false))
@@ -309,41 +287,33 @@ export const thunkUpdateApp = (
   category: string,
   appId: number,
   tags: string[]
-): ThunkAction<void, ReduxCombinedState, null, Action> => async (
-  dispatch,
-  getState
-) => {
+): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
   dispatch(setLoading(true))
-  const {
-    user: { token },
-  } = getState()
   try {
     const requestUrl = `secure/pwas/${appId}`
     const response = await (await Axios()).put(requestUrl, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      data: name,
-      description: description,
-      category: category,
-      tags: tags,
+      data: { name, description: description, category: category, tags: tags },
     })
     const { data } = response
     dispatch(replaceApp(data as PWA))
-    setAlert({
-      message: `${name} is updated!`,
-      apiResponseStatus: response.status,
-      timeout: 3000,
-      show: true,
-    })
+    dispatch(
+      setAlert({
+        message: `${name} was updated`,
+        apiResponseStatus: response.status,
+        timeout: 3000,
+        show: true,
+      })
+    )
     return data
   } catch (e) {
-    setAlert({
-      message: e.response.message,
-      apiResponseStatus: e.response.status,
-      timeout: 3000,
-      show: true,
-    })
+    dispatch(
+      setAlert({
+        message: e.response.message,
+        apiResponseStatus: e.response.status,
+        timeout: 3000,
+        show: true,
+      })
+    )
     return console.log(e)
   } finally {
     dispatch(setLoading(false))

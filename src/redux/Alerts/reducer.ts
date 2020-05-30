@@ -15,6 +15,7 @@ const DEFAULT_STATE_ALERTS: AlertsState = {
   timeout: 3000,
   show: false,
   serviceWorkerRegistration: "",
+  status: undefined,
 }
 
 const alertsReducer = (

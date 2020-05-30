@@ -4,6 +4,7 @@ import React, {
   memo,
   useCallback,
   useMemo,
+  useRef,
   Fragment,
 } from "react"
 import {
@@ -99,21 +100,23 @@ const Profile: React.FC = () => {
   const [tagError, setTagError] = useState<boolean>(false)
   const history = useHistory()
 
-  const { pwas, username, isLoading, isLoggedIn } = useSelector(
+  const { pwas, username, isLoading, isLoggedIn, status } = useSelector(
     ({
       user: { pwas, username, loading, isLoggedIn },
+      alerts: { status },
     }: ReduxCombinedState) => ({
       pwas: pwas,
       username: username,
       isLoading: loading,
       isLoggedIn: isLoggedIn,
+      status: status,
     })
   )
 
   const dispatch = useDispatch()
-  const logout = useCallback(() => dispatch(thunkLogout), [dispatch])
+  const logout = useCallback(() => dispatch(thunkLogout()), [dispatch])
   const addApp = useCallback(
-    (
+    async (
       name: string,
       description: string,
       url: string,
@@ -121,10 +124,11 @@ const Profile: React.FC = () => {
       icon: File,
       screenshots: File[],
       tags: string[]
-    ) =>
+    ) => {
       dispatch(
         thunkAddPWA(name, description, url, category, icon, screenshots, tags)
-      ),
+      )
+    },
     [dispatch]
   )
 
@@ -133,6 +137,18 @@ const Profile: React.FC = () => {
       history.push(RouteMap.LOGIN)
     }
   }, [isLoggedIn])
+
+  useEffect(() => {
+    if (status === "success" && showModal) {
+      setShowModal(false)
+      setName("")
+      setDesc("")
+      setCat("")
+      setUrl("")
+      setIcon(undefined)
+      setScreenshots(undefined)
+    }
+  }, [status])
 
   const onCatPress = (option: string) => {
     setCatError(undefined)
@@ -199,12 +215,11 @@ const Profile: React.FC = () => {
     }
 
     if (check === 0) {
-      addApp(name, desc, url, cat, icon!, screenshots!, tags)
+      await addApp(name, desc, url, cat, icon!, screenshots!, tags)
     }
     setIsSubmit(false)
   }
 
-  // TODO: use memo to load pwas sections
   const loadPwas = (filter: string) => {
     if (pwas) {
       const filteredPwas = pwas.filter((pwa) => pwa.status === filter)
@@ -298,36 +313,6 @@ const Profile: React.FC = () => {
     }
 
     setLightHouseLoading(false)
-  }
-
-  // TODO: Get this working without CORS errors.
-  const getIcon = async (url: string) => {
-    try {
-      const inputURL = new URL(url)
-      const response = await getManifest(inputURL.origin)
-      if (response.status === 200) {
-        const { data } = response
-        const manifest = data.manifest
-        if (manifest.icons) {
-          const size512 = manifest.icons.find(
-            (x: { sizes: string }) => x.sizes === "512x512"
-          )
-          const imageResponse = await getImage(
-            `${inputURL.origin}/${
-              size512 ? size512.src : manifest.icons[0].src
-            }`
-          )
-          console.log(imageResponse)
-          return imageResponse.data
-        } else {
-          console.error(`Missing icons in manifest`)
-        }
-      } else {
-        console.error(`Error getting manifest: ${response}`)
-      }
-    } catch (e) {
-      console.error(`Could not get the icon: ${e}`)
-    }
   }
 
   const renderAppsSections: JSX.Element = useMemo(

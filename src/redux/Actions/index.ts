@@ -131,32 +131,35 @@ const base = {
   Accept: "application/json",
 }
 
+const baseFormHeaders = (payload: FormData) => ({
+  ...base,
+  "Accept-Language": "en-US,en;q=0.8",
+  // @ts-ignore
+  "Content-Type": `multipart/form-data; boundary=${payload._boundary}`,
+})
+
 const baseHeaders = {
   ...base,
   "Cache-Control": "no-cache",
   "Content-Type": "application/json",
 }
 
-/*
-Axios request response : https://kapeli.com/cheat_sheets/Axios.docset/Contents/Resources/Documents/index
-{
-  // `data` is the response that was provided by the server
-  data: {},
-  // `status` is the HTTP status code from the server response
-  status: 200,
-  // `statusText` is the HTTP status message from the server response
-  statusText: 'OK',
-  // `headers` the headers that the server responded with
-  // All header names are lower cased
-  headers: {},
-  // `config` is the config that was provided to `axios` for the request
-  config: {},
-  // `request` is the request that generated this response
-  // It is the last ClientRequest instance in node.js (in redirects)
-  // and an XMLHttpRequest instance the browser
-  request: {}
+const AxiosForm = async (payload: FormData): Promise<AxiosInstance> => {
+  const response = await getUserData()
+  const { isLoggedIn, token, hasRead } = response
+
+  return axios.create({
+    baseURL: API_URL,
+    // timeout: 25000,
+    responseType: "json",
+    headers: token
+      ? {
+          Authorization: `Bearer ${token}`,
+          ...baseFormHeaders(payload),
+        }
+      : baseFormHeaders(payload),
+  })
 }
-*/
 
 const Axios = async (responseType: "json" = "json"): Promise<AxiosInstance> => {
   const response = await getUserData()
@@ -170,7 +173,7 @@ const Axios = async (responseType: "json" = "json"): Promise<AxiosInstance> => {
     responseType,
     headers: token
       ? {
-          Authorization: `Token ${token}`,
+          Authorization: `Bearer ${token}`,
           ...baseHeaders,
         }
       : baseHeaders,
@@ -178,6 +181,7 @@ const Axios = async (responseType: "json" = "json"): Promise<AxiosInstance> => {
 }
 
 export {
+  AxiosForm,
   Axios,
   getUserData,
   setHasReadInstallStorage,

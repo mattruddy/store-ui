@@ -5,6 +5,7 @@ export interface AlertsState {
   timeout: number
   show: boolean
   serviceWorkerRegistration: string
+  status: "success" | "fail" | undefined
 }
 
 export const ALERTS_SET_API_RESPONSE_STATUS = "ALERTS_SET_API_RESPONSE_STATUS"
