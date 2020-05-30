@@ -24,6 +24,7 @@ import {
   setRoleStorage,
 } from "../Actions"
 import { setAlert } from "../Alerts/actions"
+import ReactGA from "react-ga"
 
 export const thunkLoadUserData = (): ThunkAction<
   void,
@@ -35,6 +36,54 @@ export const thunkLoadUserData = (): ThunkAction<
   const data = await getUserData()
   dispatch(setData(data))
   dispatch(setLoading(false))
+}
+
+export const thunkSignUp = (
+  username: string,
+  password: string,
+  email: string
+): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
+  dispatch(setLoading(true))
+  try {
+    const url = `public/signup`
+    const response = await (await Axios()).post(url, {
+      username,
+      password,
+      email,
+    })
+    const {
+      data: { token },
+    } = response
+
+    // TODO: do this in the api.
+    var role = UserRole.Dev
+    if (username === "mattruddy") {
+      role = UserRole.Admin
+    }
+    dispatch(setData({ token, username, isLoggedIn: true, role }))
+    await setRoleStorage(UserRole.Admin.toString())
+    await setTokenStorage(token)
+    await setUsernameStorage(username)
+    await setEmailStorage(email)
+    await setIsLoggedInStorage("true")
+    ReactGA.event({
+      category: "sign up",
+      action: "User signed up!",
+    })
+    dispatch(setAlert({ message: "Signed Up!", timeout: 3000, show: true }))
+  } catch (e) {
+    dispatch(
+      setAlert({
+        message: e.response.message,
+        apiResponseStatus: e.response.status,
+        timeout: 3000,
+        show: true,
+      })
+    )
+    return console.log(e)
+  } finally {
+    dispatch(setLoading(false))
+  }
 }
 
 export const thunkLogin = (

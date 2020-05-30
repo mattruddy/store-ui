@@ -13,6 +13,7 @@ import {
   IonIcon,
   IonGrid,
   IonImg,
+  IonSpinner,
 } from "@ionic/react"
 import {
   setToken,
@@ -32,6 +33,7 @@ import { RouteMap } from "../../routes"
 import { useDispatch, useSelector } from "react-redux"
 import { thunkLogin } from "../../redux/User/actions"
 import { ReduxCombinedState } from "../../redux/RootReducer"
+import ReactGA from "react-ga"
 
 const LogIn: React.FC = () => {
   const [username, setUsername] = useState("")
@@ -40,8 +42,6 @@ const LogIn: React.FC = () => {
   const [usernameError, setUsernameError] = useState(false)
   const [passwordError, setPasswordError] = useState(false)
   const [validationError, setValidationError] = useState(false)
-  const [toastMessage, setToastMessage] = useState<string>()
-  const [showToast, setShowToast] = useState<boolean>(false)
   const location = useLocation()
 
   const history = useHistory()
@@ -78,6 +78,10 @@ const LogIn: React.FC = () => {
         if (key && auth && endpoint) {
           await postDevice(key, auth, endpoint)
         }
+        ReactGA.event({
+          category: "github login",
+          action: "User logged in with github",
+        })
       }
       thirdPartyLogin()
     }
@@ -180,6 +184,7 @@ const LogIn: React.FC = () => {
               <IonCol size="6">
                 <IonButton type="submit" expand="block">
                   Log In
+                  {isLoading && <IonSpinner />}
                 </IonButton>
               </IonCol>
               <IonCol size="6">
@@ -200,15 +205,6 @@ const LogIn: React.FC = () => {
           </form>
         </IonGrid>
       </IonContent>
-      <IonToast
-        isOpen={showToast}
-        message={toastMessage}
-        duration={3000}
-        onDidDismiss={() => {
-          setShowToast(false)
-          setToastMessage("")
-        }}
-      />
     </IonPage>
   )
 }
