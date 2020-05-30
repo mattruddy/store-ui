@@ -102,8 +102,8 @@ const PWAInfo: React.FC<ContainerProps> = ({
         <ShareUrl title={pwa.name} />
       </div>
       <div style={{ padding: "10px" }}>
-        {tags.map((x) => (
-          <IonChip>
+        {tags.map((x, i) => (
+          <IonChip key={i}>
             <IonLabel>{x}</IonLabel>
           </IonChip>
         ))}

@@ -244,14 +244,16 @@ const PWAs: React.FC<PWAsProps> = () => {
             <IonRow>{renderPwaList}</IonRow>
           </IonCol>
         </IonRow>
-        <IonInfiniteScroll
-          ref={scrollEl}
-          threshold="100px"
-          disabled={scrollDisabled}
-          onIonInfinite={loadMorePwas}
-        >
-          <IonInfiniteScrollContent />
-        </IonInfiniteScroll>
+        {cat !== undefined && cat.toLowerCase() !== "trending" && (
+          <IonInfiniteScroll
+            ref={scrollEl}
+            threshold="100px"
+            disabled={scrollDisabled}
+            onIonInfinite={loadMorePwas}
+          >
+            <IonInfiniteScrollContent />
+          </IonInfiniteScroll>
+        )}
       </IonContent>
     </IonPage>
   )
