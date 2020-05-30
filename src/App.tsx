@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react"
+import React, { useEffect, useCallback } from "react"
 import { Redirect, Route } from "react-router-dom"
 import {
   IonApp,
@@ -15,7 +15,6 @@ import {
   person,
   home,
   logIn,
-  bandage,
   informationCircle,
   albumsOutline,
 } from "ionicons/icons"
@@ -31,12 +30,9 @@ import {
   Admin,
   Categories,
 } from "./pages"
-import { loadUserData, loadProfile } from "./data/user/user.actions"
-import { connect } from "./data/connect"
 import { AppContextProvider } from "./data/AppContext"
 import { RouteMap } from "./routes"
 import ReactGA from "react-ga"
-import { SideBar } from "./components"
 import Home from "./pages/Home"
 import { useDispatch, useSelector } from "react-redux"
 import { thunkLoadUserData, thunkLoadProfile } from "./redux/User/actions"

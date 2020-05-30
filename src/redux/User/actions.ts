@@ -201,6 +201,7 @@ export const thunkLogout = (): ThunkAction<
   await setEmailStorage("")
   await setTokenStorage("")
   await setUsernameStorage("")
+  await setRoleStorage("")
   await setIsLoggedInStorage("false")
   dispatch(setLoading(false))
 }

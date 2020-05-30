@@ -27,12 +27,15 @@ const Admin: React.FC = () => {
   const [status, setStatus] = useState<string | undefined>()
   const [reason, setReason] = useState<string | undefined>()
 
-  const { role } = useSelector(({ user: { role } }: ReduxCombinedState) => ({
-    role: role,
-  }))
+  const { role, isLoggedIn } = useSelector(
+    ({ user: { role, isLoggedIn } }: ReduxCombinedState) => ({
+      role: role,
+      isLoggedIn: isLoggedIn,
+    })
+  )
 
   useEffect(() => {
-    if (role === UserRole.Admin) {
+    if (role === UserRole.Admin && isLoggedIn) {
       ;(async () => {
         const resp = await getAllPending()
         if (resp.data) {
@@ -40,12 +43,12 @@ const Admin: React.FC = () => {
         }
       })()
     }
-  }, [role])
+  }, [role, isLoggedIn])
 
   const renderAdmin = useMemo(
     () => (
       <Fragment>
-        {role === UserRole.Admin ? (
+        {role === UserRole.Admin && isLoggedIn ? (
           pwas &&
           pwas.map((pwa, idx) => {
             return (
