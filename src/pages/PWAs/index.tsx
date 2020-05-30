@@ -70,16 +70,18 @@ const PWAs: React.FC<PWAsProps> = () => {
   )
 
   const sectionPwas = useMemo(() => {
-    const section = pwasSections
-      .filter(
-        (section) =>
-          section.page <= page &&
-          section.category.toLowerCase() ===
-            (category ? category : "").toLowerCase()
-      )
-      .flatMap((section) => section.appId)
-      .map((id) => pwas.find((i) => i.appId === id) as PWA)
-    return section
+    const newpwasSections = pwasSections.filter(
+      (section) =>
+        section.page <= page &&
+        section.category.toLowerCase() ===
+          (category ? category : "").toLowerCase()
+    )
+    if (newpwasSections.length > 0) {
+      return newpwasSections
+        .flatMap((section) => section.appId)
+        .map((id) => pwas.find((i) => i.appId === id) as PWA)
+    }
+    return undefined
   }, [pwasSections, category, page, pwas])
 
   const scrollEl = useRef<HTMLIonInfiniteScrollElement>(null)
@@ -103,8 +105,8 @@ const PWAs: React.FC<PWAsProps> = () => {
       ) {
         newCat = category.toUpperCase()
       }
-      setCat(newCat)
       reloadPwas(newCat)
+      setCat(newCat)
       setScrollDisabled(false)
       ReactGA.pageview(`PWAs ${newCat}`)
       content.current != null && content.current.scrollToTop(0)
@@ -134,7 +136,6 @@ const PWAs: React.FC<PWAsProps> = () => {
 
   const reloadPwas = (option?: string) => {
     setPage(0)
-
     getPWAs(
       0,
       option || option === "" ? option : cat && cat !== "" ? cat : undefined
@@ -170,7 +171,7 @@ const PWAs: React.FC<PWAsProps> = () => {
           </IonCol>
         ))
       : streamPWAs &&
-          streamPWAs.map((pwa, i) => (
+          streamPWAs!.map((pwa, i) => (
             <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
               <PWACard url="/pwa" pwa={pwa} />
             </IonCol>
