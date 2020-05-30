@@ -1,66 +1,52 @@
-import React, { useState, memo } from "react"
+import React, { useState, memo, useEffect, useMemo, Fragment } from "react"
 import {
   IonContent,
   IonHeader,
   IonPage,
-  useIonViewWillEnter,
   IonToolbar,
   IonTitle,
-  IonBackButton,
-  useIonViewDidEnter,
   IonSelect,
   IonSelectOption,
   IonButton,
-  IonItemDivider,
   IonItem,
   IonLabel,
   IonTextarea,
   IonImg,
+  IonRow,
+  IonCol,
 } from "@ionic/react"
-import { RouteComponentProps, withRouter } from "react-router"
+import { withRouter, useHistory } from "react-router"
 import { getAllPending, postStatus } from "../../data/dataApi"
 import { PWA } from "../../util/types"
+import { useSelector } from "react-redux"
+import { ReduxCombinedState } from "../../redux/RootReducer"
+import { UserRole } from "../../redux/User/types"
 
-interface MatchParams {
-  id: string | undefined
-}
-
-interface OwnProps extends RouteComponentProps<MatchParams> {}
-
-interface StateProps {}
-
-interface DispatchProps {}
-
-type AdminProps = OwnProps & StateProps & DispatchProps
-
-const Admin: React.FC<AdminProps> = ({ history }) => {
+const Admin: React.FC = () => {
   const [pwas, setPwas] = useState<PWA[]>([])
   const [status, setStatus] = useState<string | undefined>()
   const [reason, setReason] = useState<string | undefined>()
 
-  useIonViewWillEnter(() => {
-    const me = localStorage.getItem("me")
-    if (!me || me !== "mattruddy") {
-      history.goBack()
-    }
-  })
+  const { role } = useSelector(({ user: { role } }: ReduxCombinedState) => ({
+    role: role,
+  }))
 
-  useIonViewDidEnter(async () => {
-    const resp = await getAllPending()
-    if (resp.data) {
-      setPwas(resp.data)
+  useEffect(() => {
+    if (role === UserRole.Admin) {
+      ;(async () => {
+        const resp = await getAllPending()
+        if (resp.data) {
+          setPwas(resp.data)
+        }
+      })()
     }
-  })
+  }, [role])
 
-  return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Admin</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent>
-        {pwas &&
+  const renderAdmin = useMemo(
+    () => (
+      <Fragment>
+        {role === UserRole.Admin ? (
+          pwas &&
           pwas.map((pwa, idx) => {
             return (
               <div key={idx} style={{ padding: "30px" }}>
@@ -136,8 +122,27 @@ const Admin: React.FC<AdminProps> = ({ history }) => {
                 </div>
               </div>
             )
-          })}
-      </IonContent>
+          })
+        ) : (
+          <IonRow>
+            <IonCol sizeMd="8" className="HomeCardListCol">
+              <h1 className="HomeCardsHeader">Page Not Found</h1>
+            </IonCol>
+          </IonRow>
+        )}
+      </Fragment>
+    ),
+    [role, pwas]
+  )
+
+  return (
+    <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>Admin</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent>{renderAdmin}</IonContent>
     </IonPage>
   )
 }

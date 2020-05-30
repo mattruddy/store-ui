@@ -28,7 +28,7 @@ import { thunkGetHomeData } from "../../redux/PWAs/actions"
 import { useSelector, useDispatch, shallowEqual } from "react-redux"
 import PWACardPlaceholder from "../../components/PWACardPlaceholder"
 
-const Home: React.FC<RouteComponentProps> = () => {
+const Home: React.FC = () => {
   const history = useHistory()
   const [pwaSearchResults, setPwaSearchResults] = useState<PWA[]>([])
   const [showSearch, setShowSearch] = useState<boolean>(false)

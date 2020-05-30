@@ -71,7 +71,7 @@ const setEmailStorage = async (email: string) => {
 }
 
 const setRoleStorage = async (role: string) => {
-  await Storage.set({ key: USERNAME, value: role })
+  await Storage.set({ key: ROLE, value: role })
 }
 
 export const UploadScreenshots = async (
