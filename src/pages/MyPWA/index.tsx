@@ -1,4 +1,11 @@
-import React, { useState, useRef, memo, useEffect } from "react"
+import React, {
+  useState,
+  useRef,
+  memo,
+  useEffect,
+  useCallback,
+  useMemo,
+} from "react"
 import {
   IonContent,
   IonHeader,
@@ -7,7 +14,6 @@ import {
   IonButton,
   IonSlides,
   IonSlide,
-  useIonViewDidEnter,
   IonFab,
   IonFabButton,
   IonIcon,
@@ -15,8 +21,6 @@ import {
   IonTextarea,
   IonInput,
   IonAlert,
-  useIonViewDidLeave,
-  useIonViewWillLeave,
   IonButtons,
   IonBackButton,
   IonText,
@@ -27,17 +31,12 @@ import {
   IonProgressBar,
   IonChip,
   IonLabel,
+  IonCol,
+  IonRow,
 } from "@ionic/react"
 import ImageUploader from "react-images-upload"
-import {
-  putApp,
-  deleteScreenshot,
-  postAddScreenshots,
-  deleteApp,
-} from "../../data/dataApi"
-import { RouteComponentProps, withRouter } from "react-router"
-import * as selectors from "../../data/selectors"
-import { PWA as PWAType, Image, PWA } from "../../util/types"
+import { withRouter, useParams, useHistory } from "react-router"
+import { Image, PWA } from "../../util/types"
 import {
   pencil,
   options,
@@ -51,29 +50,14 @@ import { CategoryOptions, RatingItem } from "../../components"
 import { RouteMap, GetMyPWADetailUrl } from "../../routes"
 //@ts-ignore
 import StarRatings from "react-star-ratings"
-import { connect } from "../../data/connect"
-import { replaceApp, removeApp } from "../../data/user/user.actions"
 import ReactTagInput from "@pathofdev/react-tag-input"
 import "@pathofdev/react-tag-input/build/index.css"
+import { ReduxCombinedState } from "../../redux/RootReducer"
+import { useSelector, useDispatch } from "react-redux"
+import { thunkDeletePWA, thunkUpdateApp } from "../../redux/User/actions"
+import "./styles.css"
 
-interface MatchParams {
-  id: string | undefined
-}
-
-interface OwnProps extends RouteComponentProps<MatchParams> {}
-
-interface StateProps {
-  pwa?: PWA
-}
-
-interface DispatchProps {
-  replaceApp: typeof replaceApp
-  removeApp: typeof removeApp
-}
-
-type PWAProps = OwnProps & StateProps & DispatchProps
-
-const MyPWA: React.FC<PWAProps> = ({ history, pwa, removeApp, replaceApp }) => {
+const MyPWA: React.FC = () => {
   const [screenshots, setScreenshots] = useState<Image[]>()
   const [isEdit, setIsEdit] = useState<boolean>(false)
   const [name, setName] = useState<string | undefined>(undefined)
@@ -83,30 +67,73 @@ const MyPWA: React.FC<PWAProps> = ({ history, pwa, removeApp, replaceApp }) => {
   const [cat, setCat] = useState<string | undefined>(undefined)
   const [catError, setCatError] = useState<string | undefined>(undefined)
   const [link, setLink] = useState<string | undefined>(undefined)
-  const [images, setImages] = useState<File[] | undefined>(undefined)
+  const [addedImages, setAddedImages] = useState<File[]>([])
+  const [removedImagesIds, setRemovedImagesIds] = useState<number[]>([])
   const [tags, setTags] = useState<string[]>([])
   const [tagError, setTagError] = useState<boolean>(false)
   const [showDeleteAlert, setShowDeleteAlter] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(true)
   const [toastText, setToastText] = useState<string>()
   const [showToast, setShowToast] = useState<boolean>(false)
-  const slides = useRef<any>()
+  const { id } = useParams()
+  const history = useHistory()
+
+  const { pwa, status } = useSelector(
+    ({ user: { pwas }, alerts: { status } }: ReduxCombinedState) => ({
+      pwa: (() => {
+        const removeDashName = id!.replace(/-/g, " ")
+        return pwas.find(
+          (x) => x.name.toLowerCase() === removeDashName.toLowerCase()
+        ) as PWA
+      })(),
+      status: status,
+    })
+  )
+
+  const dispatch = useDispatch()
+  const removeApp = useCallback((pwa: PWA) => dispatch(thunkDeletePWA(pwa)), [
+    dispatch,
+  ])
+
+  const UpdateApp = useCallback(
+    (
+      name: string,
+      description: string,
+      category: string,
+      appId: number,
+      tags: string[],
+      newScreenshots: File[],
+      deletedScreenshotIds: number[]
+    ) =>
+      dispatch(
+        thunkUpdateApp(
+          name,
+          description,
+          category,
+          appId,
+          tags,
+          newScreenshots,
+          deletedScreenshotIds
+        )
+      ),
+    [dispatch]
+  )
 
   useEffect(() => {
     load()
   }, [pwa])
 
-  useIonViewDidLeave(() => {
-    setScreenshots(undefined)
-  })
-
-  useIonViewWillLeave(() => {
-    setIsLoading(true)
-  })
+  useEffect(() => {
+    if (status === "success") {
+      if (isEdit) {
+        setIsEdit(false)
+      }
+    }
+  }, [status, pwa])
 
   const onFileChange = async (files: File[]) => {
     const fixedFiles = (await fixFilesRotation(files)) as File[]
-    setImages(fixedFiles)
+    setAddedImages(fixedFiles)
   }
 
   const load = async () => {
@@ -118,6 +145,8 @@ const MyPWA: React.FC<PWAProps> = ({ history, pwa, removeApp, replaceApp }) => {
       setDesc(pwa.description)
       setLink(pwa.link)
       setTags(pwa.tags)
+      setAddedImages([])
+      setRemovedImagesIds([])
     } else {
       setIsLoading(true)
     }
@@ -151,63 +180,76 @@ const MyPWA: React.FC<PWAProps> = ({ history, pwa, removeApp, replaceApp }) => {
         count++
       }
 
-      let addedImage = false
-      if (images && images.length > 0) {
-        addImages()
-        addedImage = true
-      }
-
       if (
         name === pwa.name &&
         desc === pwa.description &&
         cat === pwa.category &&
-        tags === pwa.tags
+        tags === pwa.tags &&
+        addedImages.length < 1 &&
+        removedImagesIds.length < 1
       ) {
         setIsEdit(false)
         return
       }
-
+      const isNameChange = name !== pwa.name
       if (count === 0) {
-        if (images && images.length > 0 && !addedImage) {
-          await postAddScreenshots(images as File[], pwa.appId)
+        UpdateApp(
+          name!,
+          desc!,
+          cat!,
+          pwa.appId,
+          tags,
+          addedImages,
+          removedImagesIds
+        )
+        if (isNameChange) {
+          history.replace(GetMyPWADetailUrl(name!.replace(/ /g, "-")))
         }
-        const resp = await putApp(name!, desc!, cat!, pwa.appId, tags)
-        if (resp?.status === 200) {
-          replaceApp(resp.data)
-          setScreenshots(resp.data.screenshots)
-          setToastText("Success")
-          setShowToast(true)
-          history.replace(GetMyPWADetailUrl(name?.replace(/ /g, "-")))
-        }
-        setIsEdit(false)
       }
     }
   }
 
   const removeImage = async (imageId: number) => {
-    const resp = await deleteScreenshot(imageId)
-    if (resp && resp.status === 200) {
-      replaceApp(resp.data as PWA)
-      slides.current.update()
-    }
+    //const resp = await DeleteScreenshot(imageId)
+    setScreenshots(
+      (previous) => previous && previous.filter((x) => x.imageId !== imageId)
+    )
+    setRemovedImagesIds((previous) => [...previous, imageId])
   }
 
-  const addImages = async () => {
-    if (pwa) {
-      const resp = await postAddScreenshots(
-        images as File[],
-        pwa.appId as number
-      )
-      if (resp.length > 0) {
-        const newScreenshots = screenshots!.concat(resp)
-        setScreenshots(newScreenshots)
-        pwa.screenshots = newScreenshots
-        replaceApp(pwa)
-        slides.current.update()
-        setImages(undefined)
-      }
-    }
-  }
+  const renderScreenshots = useMemo(() => {
+    const shownScreenshots = isEdit ? screenshots : pwa && pwa.screenshots
+    return (
+      <IonRow className="ScreenshotRow">
+        {shownScreenshots &&
+          shownScreenshots.map((shot, idx) => (
+            <IonCol key={idx} sizeXs="10" sizeSm="10" sizeMd="7" sizeLg="4">
+              {isEdit && (
+                <IonButton
+                  shape="round"
+                  size="small"
+                  style={{
+                    position: "absolute",
+                    bottom: "90%",
+                    left: "80%",
+                    zIndex: "100",
+                  }}
+                  color="inherit"
+                  onClick={() => removeImage(shot.imageId)}
+                >
+                  <IonIcon color="danger" icon={trash} />
+                </IonButton>
+              )}
+              <IonImg
+                alt="screenshot"
+                style={{ height: "400px", maxWidth: "93%" }}
+                src={shot.url}
+              />
+            </IonCol>
+          ))}
+      </IonRow>
+    )
+  }, [pwa, screenshots, isEdit])
 
   return (
     <IonPage>
@@ -317,6 +359,7 @@ const MyPWA: React.FC<PWAProps> = ({ history, pwa, removeApp, replaceApp }) => {
               <IonFabButton
                 type="button"
                 onClick={() => {
+                  load()
                   setIsEdit(false)
                 }}
               >
@@ -413,44 +456,7 @@ const MyPWA: React.FC<PWAProps> = ({ history, pwa, removeApp, replaceApp }) => {
           </div>
         )}
         {!isLoading && <h2 style={{ paddingLeft: "10px" }}>Screenshots</h2>}
-        {screenshots && (
-          <IonSlides
-            className="slider"
-            ref={slides}
-            key={screenshots.map((shot) => shot.imageId).join("_")}
-            pager={true}
-            options={{ initialSlide: 0, speed: 400 }}
-          >
-            {screenshots.map((shot, idx) => (
-              <IonSlide
-                key={idx}
-                style={{ position: "relative", height: "500px" }}
-              >
-                {isEdit && (
-                  <IonButton
-                    shape="round"
-                    size="small"
-                    style={{
-                      position: "absolute",
-                      bottom: "90%",
-                      left: "80%",
-                      zIndex: "100",
-                    }}
-                    color="inherit"
-                    onClick={() => removeImage(shot.imageId)}
-                  >
-                    <IonIcon color="danger" icon={trash} />
-                  </IonButton>
-                )}
-                <IonImg
-                  alt="screenshot"
-                  style={{ height: "400px", maxWidth: "93%" }}
-                  src={shot.url}
-                />
-              </IonSlide>
-            ))}
-          </IonSlides>
-        )}
+        {renderScreenshots}
         {isEdit && (
           <form>
             <ImageUploader
@@ -490,11 +496,8 @@ const MyPWA: React.FC<PWAProps> = ({ history, pwa, removeApp, replaceApp }) => {
           {
             text: "Delete",
             handler: async () => {
-              const resp = await deleteApp(pwa?.appId!)
-              if (resp?.status === 200) {
-                removeApp(pwa?.appId!)
-                history.push(RouteMap.PROFILE)
-              }
+              removeApp(pwa!)
+              history.push(RouteMap.PROFILE)
             },
           },
         ]}
@@ -512,15 +515,4 @@ const MyPWA: React.FC<PWAProps> = ({ history, pwa, removeApp, replaceApp }) => {
   )
 }
 
-export default connect<OwnProps, StateProps, DispatchProps>({
-  mapStateToProps: (state, OwnProps) => ({
-    pwa: selectors.getPwa(state, OwnProps),
-  }),
-
-  mapDispatchToProps: {
-    replaceApp,
-    removeApp,
-  },
-
-  component: withRouter(memo(MyPWA)),
-})
+export default withRouter(memo(MyPWA))

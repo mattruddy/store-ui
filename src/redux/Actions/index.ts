@@ -74,21 +74,15 @@ const setRoleStorage = async (role: string) => {
   await Storage.set({ key: ROLE, value: role })
 }
 
-export const UploadScreenshots = async (
-  screenshots: File[],
-  appId: number,
-  token: string
-) => {
+export const UploadScreenshots = async (screenshots: File[], appId: number) => {
   try {
     const formData = new FormData()
     screenshots.forEach((shot) => formData.append("screenshots", shot))
-    const requestUrl = `secure/pwas/${appId}`
-    const response = await (await Axios()).post(requestUrl, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      data: formData,
-    })
+    const requestUrl = `secure/screenshot/${appId}`
+    const response = await (await AxiosForm(formData)).post(
+      requestUrl,
+      formData
+    )
     const { data } = response
     return data as Image[]
   } catch (e) {
@@ -103,19 +97,16 @@ export const UploadScreenshots = async (
   }
 }
 
-export const DeleteScreenshot = async (imageId: number, token: string) => {
+export const DeleteScreenshot = async (imageId: number) => {
   try {
-    const requestUrl = `secure/pwas/${imageId}`
-    await (await Axios()).post(requestUrl, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    const requestUrl = `secure/screenshot/${imageId}`
+    const response = await (await Axios()).delete(requestUrl)
     setAlert({
       message: `Image removed.`,
       timeout: 3000,
       show: true,
     })
+    return response
   } catch (e) {
     setAlert({
       message: e.response.message,
@@ -123,7 +114,7 @@ export const DeleteScreenshot = async (imageId: number, token: string) => {
       timeout: 3000,
       show: true,
     })
-    console.log(e)
+    return console.log(e)
   }
 }
 

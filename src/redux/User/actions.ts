@@ -22,6 +22,8 @@ import {
   Axios,
   AxiosForm,
   setRoleStorage,
+  UploadScreenshots,
+  DeleteScreenshot,
 } from "../Actions"
 import { setAlert } from "../Alerts/actions"
 import ReactGA from "react-ga"
@@ -70,7 +72,14 @@ export const thunkSignUp = (
       category: "sign up",
       action: "User signed up!",
     })
-    dispatch(setAlert({ message: "Signed Up!", timeout: 3000, show: true }))
+    dispatch(
+      setAlert({
+        message: "Signed Up!",
+        timeout: 3000,
+        show: true,
+        status: "success",
+      })
+    )
   } catch (e) {
     dispatch(
       setAlert({
@@ -78,6 +87,7 @@ export const thunkSignUp = (
         apiResponseStatus: e.response.status,
         timeout: 3000,
         show: true,
+        status: "fail",
       })
     )
     return console.log(e)
@@ -108,7 +118,14 @@ export const thunkLogin = (
     await setTokenStorage(token)
     await setUsernameStorage(username)
     await setIsLoggedInStorage("true")
-    dispatch(setAlert({ message: "Success", timeout: 3000, show: true }))
+    dispatch(
+      setAlert({
+        message: "Success",
+        timeout: 3000,
+        show: true,
+        status: "success",
+      })
+    )
   } catch (e) {
     dispatch(
       setAlert({
@@ -116,6 +133,7 @@ export const thunkLogin = (
         apiResponseStatus: e.response.status,
         timeout: 3000,
         show: true,
+        status: "fail",
       })
     )
     return console.log(e)
@@ -293,6 +311,7 @@ export const thunkAddPWA = (
         apiResponseStatus: e.response.status,
         timeout: 3000,
         show: true,
+        status: "fail",
       })
     )
   } finally {
@@ -314,6 +333,7 @@ export const thunkDeletePWA = (
         apiResponseStatus: response.status,
         timeout: 3000,
         show: true,
+        status: "success",
       })
     )
   } catch (e) {
@@ -323,6 +343,7 @@ export const thunkDeletePWA = (
         apiResponseStatus: e.response.status,
         timeout: 3000,
         show: true,
+        status: "fail",
       })
     )
     return console.log(e)
@@ -336,13 +357,23 @@ export const thunkUpdateApp = (
   description: string,
   category: string,
   appId: number,
-  tags: string[]
+  tags: string[],
+  newScreenshots: File[],
+  deletedScreenshotIds: number[]
 ): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
   dispatch(setLoading(true))
   try {
+    if (newScreenshots.length > 0)
+      await UploadScreenshots(newScreenshots, appId)
+    await Promise.all(
+      deletedScreenshotIds.map(async (x) => await DeleteScreenshot(x))
+    )
     const requestUrl = `secure/pwas/${appId}`
     const response = await (await Axios()).put(requestUrl, {
-      data: { name, description: description, category: category, tags: tags },
+      name,
+      description: description,
+      category: category,
+      tags: tags,
     })
     const { data } = response
     dispatch(replaceApp(data as PWA))
@@ -352,16 +383,19 @@ export const thunkUpdateApp = (
         apiResponseStatus: response.status,
         timeout: 3000,
         show: true,
+        status: "success",
       })
     )
     return data
   } catch (e) {
+    console.log(e)
     dispatch(
       setAlert({
-        message: e.response.message,
+        message: e,
         apiResponseStatus: e.response.status,
         timeout: 3000,
         show: true,
+        status: "fail",
       })
     )
     return console.log(e)
