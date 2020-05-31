@@ -26,7 +26,6 @@ import {
   useDispatch,
 } from "react-redux"
 import { DebouncedSearch, PWACard, SideBar } from "../../components"
-import { getSearchApp } from "../../data/dataApi"
 import { PWA, HomePWAs } from "../../util/types"
 import { RouteComponentProps, useParams } from "react-router"
 
@@ -145,8 +144,9 @@ const PWAs: React.FC<PWAsProps> = () => {
 
   const handleOnSearchChange = useCallback(async (appName: string) => {
     if (appName) {
-      const results = await getSearchApp(appName)
-      setPwaSearchResults(results)
+      //todo:
+      // const results = await getSearchApp(appName)
+      // setPwaSearchResults(results)
     } else {
       setPwaSearchResults([])
     }

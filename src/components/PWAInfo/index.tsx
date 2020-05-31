@@ -9,7 +9,6 @@ import {
 } from "@ionic/react"
 import { ShareUrl } from "../"
 import { PWA, Rating } from "../../util/types"
-import { postScore } from "../../data/dataApi"
 import ReactGA from "react-ga"
 
 //@ts-ignore
@@ -69,7 +68,7 @@ const PWAInfo: React.FC<ContainerProps> = ({
           class="button"
           style={{ marginRight: "10px", marginLeft: "10px" }}
           onClick={() => {
-            postScore(appId)
+            //todo: postScore(appId)
             ReactGA.outboundLink(
               {
                 label: `Installed ${pwa.name}`,

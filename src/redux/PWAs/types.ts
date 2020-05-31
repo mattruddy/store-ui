@@ -1,4 +1,4 @@
-import { PWA, HomePWAs } from "../../util/types"
+import { PWA, HomePWAs, Rating } from "../../util/types"
 
 export interface PWASection {
   category: string
@@ -16,10 +16,14 @@ export interface PWAsState {
   error: ""
   search: string
   home: HomePWAs
+  isRatingsPending: boolean
 }
 
 export const PWAS_PENDING = "PWAS_PENDING"
 export const PWAS_COMPLETE = "PWAS_COMPLETE"
+export const RATINGS_PENDING = "RATINGS_PENDING"
+export const RATINGS_COMPLETE = "RATINGS_COMPLETE"
+export const RATINGS_ADD = "RATINGS_ADD"
 export const PWAS_SECTION_ADD = "PWAS_SECTION_ADD"
 export const PWAS_SECTION_REPLACE = "PWAS_SECTION_REPLACE"
 export const HOME_SET = "HOME_SET"
@@ -44,8 +48,21 @@ export interface CompletePWAsAction {
   type: typeof PWAS_COMPLETE
 }
 
+export interface AddRatingsAction {
+  type: typeof RATINGS_ADD
+  payload: { ratings: Rating[]; appId: number }
+}
+
 export interface LoadingPWAsAction {
   type: typeof PWAS_PENDING
+}
+
+export interface CompleteRatingsAction {
+  type: typeof RATINGS_COMPLETE
+}
+
+export interface LoadingRatingsAction {
+  type: typeof RATINGS_PENDING
 }
 
 export interface SetHomeDataAction {
@@ -60,3 +77,6 @@ export type PWAsActionTypes =
   | LoadingPWAsAction
   | SetHomeDataAction
   | AddPWAsAction
+  | CompleteRatingsAction
+  | LoadingRatingsAction
+  | AddRatingsAction

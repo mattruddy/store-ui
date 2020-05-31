@@ -6,16 +6,28 @@ import {
   PWASection,
   PWAS_SECTION_ADD,
   PWAS_SECTION_REPLACE,
+  RATINGS_PENDING,
+  RATINGS_COMPLETE,
+  RATINGS_ADD,
 } from "./types"
 import { Axios } from "../Actions"
 import { Action } from "redux"
 import { ThunkAction } from "redux-thunk"
-import { PWA, HomePWAs } from "../../util/types"
+import { PWA, HomePWAs, Rating } from "../../util/types"
 import { ReduxCombinedState } from "../RootReducer"
 
 const loadingPWAs = () => ({ type: PWAS_PENDING })
 
 const completePWAs = () => ({ type: PWAS_COMPLETE })
+
+const loadingRatings = () => ({ type: RATINGS_PENDING })
+
+const completeRatings = () => ({ type: RATINGS_COMPLETE })
+
+const AddRatings = (ratings: Rating[], appId: number) => ({
+  type: RATINGS_ADD,
+  payload: { ratings: ratings, appId: appId },
+})
 
 const addPWASection = (data: PWASection) => ({
   type: PWAS_SECTION_ADD,
@@ -103,6 +115,28 @@ const thunkGetPWAFromName = (
   }
 }
 
+const thunkGetRatings = (
+  appId: number
+): ThunkAction<void, ReduxCombinedState, null, Action<string>> => async (
+  dispatch,
+  getState
+) => {
+  dispatch(loadingRatings)
+  try {
+    const url = `/public/pwa/${appId}/ratings`
+    const axiosInstance = await Axios()
+    const response = await axiosInstance.get(url)
+    const data: Rating[] = response.data
+    dispatch(AddRatings(data, appId))
+    return data
+  } catch (e) {
+    console.error(e)
+    return undefined
+  } finally {
+    dispatch(completeRatings())
+  }
+}
+
 const thunkGetHomeData = (
   reload: boolean = false
 ): ThunkAction<void, ReduxCombinedState, null, Action<string>> => async (
@@ -143,4 +177,4 @@ const thunkGetHomeData = (
   }
 }
 
-export { thunkGetPWAs, thunkGetHomeData, thunkGetPWAFromName }
+export { thunkGetPWAs, thunkGetHomeData, thunkGetPWAFromName, thunkGetRatings }

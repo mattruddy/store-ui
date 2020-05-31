@@ -35,26 +35,11 @@ import {
   IonSpinner,
   IonProgressBar,
 } from "@ionic/react"
-import {
-  getProfile,
-  postApp,
-  getLighthouseReport,
-  getManifest,
-  getImage,
-} from "../../data/dataApi"
 import { RouteComponentProps, withRouter, useHistory } from "react-router"
 import ImageUploader from "react-images-upload"
-import { connect } from "../../data/connect"
 import { CategoryOptions, Lighthouse, PWACard } from ".."
 import { UserProfile, PWA } from "../../util/types"
 import { add, menu, logOut, contractSharp } from "ionicons/icons"
-import {
-  setToken,
-  setIsLoggedIn,
-  addApp,
-  setProfile,
-  setUsername,
-} from "../../data/user/user.actions"
 import { RouteMap } from "../../routes"
 import { noSpecialChars } from "../../util"
 import "./styles.css"
@@ -262,40 +247,40 @@ const Profile: React.FC = () => {
   const getLightHouseData = async (url: string) => {
     try {
       setLightHouseLoading(true)
-      const response = await getLighthouseReport(url)
-      if (response.status === 200) {
-        if (response.data) {
-          if (response.data.lighthouseResult) {
-            const data = response.data
-            const lightHouseData = data.lighthouseResult
-            const iosIconTest =
-              lightHouseData.audits["apple-touch-icon"].score > 0 ? true : false
-            const installableTest =
-              lightHouseData.audits["installable-manifest"].score > 0
-                ? true
-                : false
-            const worksOfflineTest =
-              lightHouseData.audits["works-offline"].score > 0 ? true : false
-            setLightHouseTests([
-              {
-                pass:
-                  iosIconTest &&
-                  worksOfflineTest &&
-                  (installableTest as boolean),
-                url: url,
-                iosIcon: iosIconTest,
-                installable: installableTest,
-                worksOffline: worksOfflineTest,
-                error: false,
-              } as LighthouseTest,
-              ...lightHouseTests.filter((x) => x.url !== url),
-            ])
-            //passed all tests.
-          } else {
-            console.error(`No lighthouse result`)
-          }
-        }
-      }
+      //todo: const response = await getLighthouseReport(url)
+      // if (response.status === 200) {
+      //   if (response.data) {
+      //     if (response.data.lighthouseResult) {
+      //       const data = response.data
+      //       const lightHouseData = data.lighthouseResult
+      //       const iosIconTest =
+      //         lightHouseData.audits["apple-touch-icon"].score > 0 ? true : false
+      //       const installableTest =
+      //         lightHouseData.audits["installable-manifest"].score > 0
+      //           ? true
+      //           : false
+      //       const worksOfflineTest =
+      //         lightHouseData.audits["works-offline"].score > 0 ? true : false
+      //       setLightHouseTests([
+      //         {
+      //           pass:
+      //             iosIconTest &&
+      //             worksOfflineTest &&
+      //             (installableTest as boolean),
+      //           url: url,
+      //           iosIcon: iosIconTest,
+      //           installable: installableTest,
+      //           worksOffline: worksOfflineTest,
+      //           error: false,
+      //         } as LighthouseTest,
+      //         ...lightHouseTests.filter((x) => x.url !== url),
+      //       ])
+      //       //passed all tests.
+      //     } else {
+      //       console.error(`No lighthouse result`)
+      //     }
+      //   }
+      // }
     } catch (e) {
       console.error(`Issue getting lighthouse data: ${JSON.stringify(e.data)}`)
 

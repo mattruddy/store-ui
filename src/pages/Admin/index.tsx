@@ -16,7 +16,6 @@ import {
   IonCol,
 } from "@ionic/react"
 import { withRouter, useHistory } from "react-router"
-import { getAllPending, postStatus } from "../../data/dataApi"
 import { PWA } from "../../util/types"
 import { useSelector } from "react-redux"
 import { ReduxCombinedState } from "../../redux/RootReducer"
@@ -37,10 +36,10 @@ const Admin: React.FC = () => {
   useEffect(() => {
     if (role === UserRole.Admin && isLoggedIn) {
       ;(async () => {
-        const resp = await getAllPending()
-        if (resp.data) {
-          setPwas(resp.data)
-        }
+        // todo: const resp = await getAllPending()
+        // if (resp.data) {
+        //   setPwas(resp.data)
+        // }
       })()
     }
   }, [role, isLoggedIn])
@@ -112,12 +111,14 @@ const Admin: React.FC = () => {
                   )}
                   <IonButton
                     onClick={async () => {
-                      const resp = await postStatus(status!, pwa.appId, reason)
-                      if (resp.status === 200) {
-                        setStatus(undefined)
-                        setReason(undefined)
-                        setPwas(pwas.filter((app) => app.appId !== pwa.appId))
-                      }
+                      return
+                      // todo: const resp = await postStatus(status!, pwa.appId, reason)
+                      // if (resp.status === 200) {
+                      //   setStatus(undefined)
+                      //   setReason(undefined)
+                      //   setPwas(pwas.filter((app) => app.appId !== pwa.appId))
+                      // }
+                      //}
                     }}
                   >
                     Submit

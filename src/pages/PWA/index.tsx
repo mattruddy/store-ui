@@ -23,9 +23,9 @@ import {
   IonCol,
   IonLabel,
   IonNote,
+  IonSpinner,
 } from "@ionic/react"
-import { postRating } from "../../data/dataApi"
-import { thunkGetPWAFromName } from "../../redux/PWAs/actions"
+import { thunkGetPWAFromName, thunkGetRatings } from "../../redux/PWAs/actions"
 import { RouteComponentProps, withRouter } from "react-router"
 import { Rating as RatingType, NewRating } from "../../util/types"
 import { ScreenshotSlider, Rating, PWAInfo, RatingItem } from "../../components"
@@ -54,11 +54,13 @@ const PWA: React.FC<OwnProps> = ({
   const [currentStar, setCurrentStar] = useState<number>()
   const [starCount, setStarCount] = useState<number>()
   const [notFound, setNotFound] = useState<boolean>(false)
+  const [hasFetchedRatings, setHasFetchedRatings] = useState<boolean>(false)
 
-  const { pwa, hasRead } = useSelector(
-    ({ pwas, user }: ReduxCombinedState) => ({
-      pwa: pwas.pwas.find((x) => pwaName.replace(/-/g, " ") === x.name),
+  const { pwa, hasRead, isRatingsLoading } = useSelector(
+    ({ pwas: { pwas, isRatingsPending }, user }: ReduxCombinedState) => ({
+      pwa: pwas.find((x) => pwaName.replace(/-/g, " ") === x.name),
       hasRead: user.hasRead,
+      isRatingsLoading: isRatingsPending,
     }),
     shallowEqual
   )
@@ -69,6 +71,10 @@ const PWA: React.FC<OwnProps> = ({
   )
   const addPWA = useCallback(
     async (name: string) => dispatch(thunkGetPWAFromName(name)),
+    [dispatch]
+  )
+  const getRatings = useCallback(
+    async (appId: number) => dispatch(thunkGetRatings(appId)),
     [dispatch]
   )
 
@@ -112,49 +118,56 @@ const PWA: React.FC<OwnProps> = ({
   }
 
   const onRatingSubmit = async (star: number, comment?: string) => {
-    if (pwa) {
-      const starVal = stars[star - 1]
-      const response = (await postRating(
-        starVal,
-        pwa?.appId,
-        comment
-      )) as NewRating
-      if (response && response.rating) {
-        if (response.rating.comment) {
-          ReactGA.event({
-            category: "comment",
-            action: `User added comment for ${pwa.name}`,
-          })
-          setRatings([response.rating, ...ratings])
-        }
-        setCurrentStar(response.averageStar)
-        setStarCount(response.ratingCount)
-        ReactGA.event({
-          category: "rating",
-          action: `User added rating for ${pwa.name}`,
-        })
-      }
-    }
+    // if (pwa) {
+    //   const starVal = stars[star - 1]
+    //   const response = (await postRating(
+    //     starVal,
+    //     pwa?.appId,
+    //     comment
+    //   )) as NewRating
+    //   if (response && response.rating) {
+    //     if (response.rating.comment) {
+    //       ReactGA.event({
+    //         category: "comment",
+    //         action: `User added comment for ${pwa.name}`,
+    //       })
+    //       setRatings([response.rating, ...ratings])
+    //     }
+    //     setCurrentStar(response.averageStar)
+    //     setStarCount(response.ratingCount)
+    //     ReactGA.event({
+    //       category: "rating",
+    //       action: `User added rating for ${pwa.name}`,
+    //     })
+    //   }
+    // }
   }
 
-  const renderRatings = useMemo(
-    () =>
-      ratings && ratings.length > 0 ? (
-        ratings.map((rating, i) => <RatingItem key={i} rating={rating} />)
-      ) : (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          <p>
-            <i>No Reviews Yet</i>
-          </p>
-        </div>
-      ),
-    [ratings]
-  )
+  const renderRatings = useMemo(() => {
+    if (!pwa) return
+    else if (!hasFetchedRatings && pwa.ratings.length < 1) {
+      setHasFetchedRatings(true)
+      console.log(`loading ratings: ${pwa.ratings}`)
+      getRatings(pwa.appId)
+    }
+
+    return isRatingsLoading ? (
+      <IonSpinner />
+    ) : pwa.ratings.length > 0 ? (
+      pwa.ratings.map((rating, i) => <RatingItem key={i} rating={rating} />)
+    ) : (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <p>
+          <i>No Reviews Yet</i>
+        </p>
+      </div>
+    )
+  }, [pwa, isRatingsLoading, hasFetchedRatings])
 
   return (
     <IonPage>

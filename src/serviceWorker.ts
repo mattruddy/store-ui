@@ -2,7 +2,6 @@
 // register() is not called by default.
 
 import { vars } from "./data/env"
-import { postDevice } from "./data/dataApi"
 
 // This lets the app load faster on subsequent visits in production, and gives
 // it offline capabilities. However, it also means that developers (and users)
@@ -164,7 +163,7 @@ function subscribeUser(registration: ServiceWorkerRegistration) {
       // If the user is logged in, add the device.
       // Otherwise store in local storage and add after login.
       if (token) {
-        postDevice(key, auth, endpoint)
+        //todo:postDevice(key, auth, endpoint)
       }
       localStorage.setItem("push_key", key)
       localStorage.setItem("push_auth", auth)

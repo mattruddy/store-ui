@@ -15,7 +15,6 @@ import {
   IonNote,
 } from "@ionic/react"
 import { PWACard, SideBar, DebouncedSearch } from "../../components"
-import { getSearchApp } from "../../data/dataApi"
 import { PWA } from "../../util/types"
 import { RouteComponentProps, useHistory } from "react-router"
 import "./styles.css"
@@ -73,8 +72,8 @@ const Home: React.FC = () => {
 
   const handleOnSearchChange = useCallback(async (appName: string) => {
     if (appName) {
-      const results = await getSearchApp(appName)
-      setPwaSearchResults(results)
+      // todo: const results = await getSearchApp(appName)
+      //setPwaSearchResults(results)
     } else {
       setPwaSearchResults([])
     }

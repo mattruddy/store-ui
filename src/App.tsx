@@ -30,7 +30,6 @@ import {
   Admin,
   Categories,
 } from "./pages"
-import { AppContextProvider } from "./data/AppContext"
 import { RouteMap } from "./routes"
 import ReactGA from "react-ga"
 import Home from "./pages/Home"
@@ -40,11 +39,7 @@ import { ReduxCombinedState } from "./redux/RootReducer"
 import { clearAlerts } from "./redux/Alerts/actions"
 
 const App: React.FC = () => {
-  return (
-    <AppContextProvider>
-      <IonicApp />
-    </AppContextProvider>
-  )
+  return <IonicApp />
 }
 
 const IonicApp: React.FC = () => {

@@ -14,10 +14,7 @@ import {
   IonBackButton,
   IonNote,
 } from "@ionic/react"
-import { postEmail } from "../../data/dataApi"
 import { RouteMap } from "../../routes"
-import { connect } from "../../data/connect"
-import { setEmail } from "../../data/user/user.actions"
 import { validEmail } from "../../util/index"
 import { useHistory } from "react-router"
 import { ReduxCombinedState } from "../../redux/RootReducer"
@@ -50,7 +47,8 @@ const Support: React.FC = () => {
 
   const submitSupport = async () => {
     if (!text || !fromEmail || !validEmail(fromEmail)) return
-    await postEmail(text!, fromEmail)
+    // todo:
+    // await postEmail(text!, fromEmail)
     setEmail(fromEmail)
     setText("")
     setToastText("Sent. You will hear from us shortly")

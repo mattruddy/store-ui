@@ -15,18 +15,6 @@ import {
   IonImg,
   IonSpinner,
 } from "@ionic/react"
-import {
-  setToken,
-  setIsLoggedIn,
-  loadProfile,
-} from "../../data/user/user.actions"
-import {
-  postLogin,
-  postDevice,
-  setTokenData,
-  setIsLoggedInData,
-} from "../../data/dataApi"
-import { connect } from "../../data/connect"
 import queryString from "query-string"
 import { logoGithub } from "ionicons/icons"
 import { RouteMap } from "../../routes"
@@ -53,14 +41,15 @@ const LogIn: React.FC = () => {
     })
   )
   const dispatch = useDispatch()
-  const setToken = useCallback(
-    (token: string) => dispatch(setTokenData(token)),
-    [dispatch]
-  )
-  const setIsLoggedin = useCallback(
-    (isLoggedIn: boolean) => dispatch(setIsLoggedInData(isLoggedIn)),
-    [dispatch]
-  )
+  // todo:
+  // const setToken = useCallback(
+  //   (token: string) => dispatch(setTokenData(token)),
+  //   [dispatch]
+  // )
+  // const setIsLoggedin = useCallback(
+  //   (isLoggedIn: boolean) => dispatch(setIsLoggedInData(isLoggedIn)),
+  //   [dispatch]
+  // )
   const login = useCallback(
     async (username: string, password: string) =>
       dispatch(thunkLogin(username, password)),
@@ -70,13 +59,13 @@ const LogIn: React.FC = () => {
   useEffect(() => {
     if (location && queryString.parse(location.search).token) {
       const thirdPartyLogin = async () => {
-        setToken(queryString.parse(location.search).token as string)
-        setIsLoggedin(true)
+        //todo: setToken(queryString.parse(location.search).token as string)
+        //todo: setIsLoggedin(true)
         const key = localStorage.getItem("push_key")
         const auth = localStorage.getItem("push_auth")
         const endpoint = localStorage.getItem("push_endpoint")
         if (key && auth && endpoint) {
-          await postDevice(key, auth, endpoint)
+          // todo: await postDevice(key, auth, endpoint)
         }
         ReactGA.event({
           category: "github login",

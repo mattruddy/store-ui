@@ -1,5 +1,5 @@
 import React, { useState, memo, useEffect, useCallback } from "react"
-import { RouteComponentProps } from "react-router"
+import { RouteComponentProps, useHistory } from "react-router"
 import {
   IonContent,
   IonPage,
@@ -13,26 +13,13 @@ import {
   IonImg,
   IonSpinner,
 } from "@ionic/react"
-import { setToken, setIsLoggedIn } from "../../data/user/user.actions"
-import { connect } from "../../data/connect"
 import { RouteMap } from "../../routes"
 import ReactGA from "react-ga"
 import { thunkSignUp } from "../../redux/User/actions"
 import { useDispatch, useSelector } from "react-redux"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 
-interface OwnProps extends RouteComponentProps {}
-
-interface DispatchProps {
-  setToken: typeof setToken
-  setIsLoggedIn: typeof setIsLoggedIn
-}
-
-interface StateProps {}
-
-interface SignIn extends OwnProps, DispatchProps, StateProps {}
-
-const SignUp: React.FC<SignIn> = ({ history }) => {
+const SignUp: React.FC = () => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [email, setEmail] = useState("")
@@ -41,6 +28,7 @@ const SignUp: React.FC<SignIn> = ({ history }) => {
   const [emailError, setEmailError] = useState(false)
   const [passwordError, setPasswordError] = useState(false)
   const [isValidPW, setIsValidPW] = useState<boolean>(false)
+  const history = useHistory()
 
   const { isLoading, token } = useSelector(
     ({ user: { loading, token } }: ReduxCombinedState) => ({
@@ -193,10 +181,4 @@ const SignUp: React.FC<SignIn> = ({ history }) => {
   )
 }
 
-export default connect<OwnProps, StateProps, DispatchProps>({
-  mapDispatchToProps: {
-    setToken,
-    setIsLoggedIn,
-  },
-  component: memo(SignUp),
-})
+export default memo(SignUp)
