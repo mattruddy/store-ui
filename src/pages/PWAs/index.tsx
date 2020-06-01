@@ -40,6 +40,7 @@ import { thunkGetPWAs } from "../../redux/PWAs/actions"
 import { PWASection, PWAsActionTypes } from "../../redux/PWAs/types"
 import "./styles.css"
 import PWACardPlaceholder from "../../components/PWACardPlaceholder"
+import { Axios } from "../../redux/Actions"
 
 type PWAsProps = RouteComponentProps
 
@@ -144,9 +145,8 @@ const PWAs: React.FC<PWAsProps> = () => {
 
   const handleOnSearchChange = useCallback(async (appName: string) => {
     if (appName) {
-      //todo:
-      // const results = await getSearchApp(appName)
-      // setPwaSearchResults(results)
+      const { data } = await (await Axios()).get(`public/search/${appName}`)
+      setPwaSearchResults(data)
     } else {
       setPwaSearchResults([])
     }

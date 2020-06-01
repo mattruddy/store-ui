@@ -267,6 +267,12 @@ export const removeApp = (appId: number) =>
     payload: appId,
   } as const)
 
+export const thunkThirdPartyLogin = (
+  token: string
+): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
+  dispatch(setData({ token: token, isLoggedIn: true }))
+}
+
 export const thunkAddPWA = (
   name: string,
   description: string,

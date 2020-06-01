@@ -14,6 +14,7 @@ import ReactGA from "react-ga"
 //@ts-ignore
 import StarRatings from "react-star-ratings"
 import { openOutline } from "ionicons/icons"
+import { Axios } from "../../redux/Actions"
 
 interface ContainerProps {
   pwa: PWA
@@ -68,7 +69,7 @@ const PWAInfo: React.FC<ContainerProps> = ({
           class="button"
           style={{ marginRight: "10px", marginLeft: "10px" }}
           onClick={() => {
-            //todo: postScore(appId)
+            ;(async () => await (await Axios()).post(`public/pwa/${appId}`))()
             ReactGA.outboundLink(
               {
                 label: `Installed ${pwa.name}`,

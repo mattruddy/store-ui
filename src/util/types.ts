@@ -56,6 +56,12 @@ export interface Search {
   appId: number
 }
 
+export interface Push {
+  key: string
+  auth: string
+  endpoint: string
+}
+
 export interface AxiosCustomRequestConfig extends AxiosRequestConfig {
   crossDomain?: boolean
 }

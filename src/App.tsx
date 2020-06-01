@@ -9,6 +9,7 @@ import {
   IonTabButton,
   IonTabs,
   IonToast,
+  getPlatforms,
 } from "@ionic/react"
 import { IonReactRouter } from "@ionic/react-router"
 import {
@@ -37,6 +38,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { thunkLoadUserData, thunkLoadProfile } from "./redux/User/actions"
 import { ReduxCombinedState } from "./redux/RootReducer"
 import { clearAlerts } from "./redux/Alerts/actions"
+import { Axios } from "./redux/Actions"
 
 const App: React.FC = () => {
   return <IonicApp />
@@ -52,11 +54,12 @@ const IonicApp: React.FC = () => {
   ])
   const clearAlert = useCallback(() => dispatch(clearAlerts()), [dispatch])
 
-  const { isLoggedIn, token, alerts } = useSelector(
-    ({ user: { isLoggedIn, token }, alerts }: ReduxCombinedState) => ({
+  const { isLoggedIn, token, alerts, push } = useSelector(
+    ({ user: { isLoggedIn, token, push }, alerts }: ReduxCombinedState) => ({
       isLoggedIn: isLoggedIn,
       token: token,
       alerts: alerts,
+      push: push,
     })
   )
 
@@ -69,6 +72,29 @@ const IonicApp: React.FC = () => {
       loadProfile()
     }
   }, [isLoggedIn, token])
+
+  useEffect(() => {
+    ;(async () => {
+      if (isLoggedIn && token && push) {
+        let deviceType
+        const platforms = getPlatforms()
+        if (platforms.includes("ios")) {
+          deviceType = "IOS"
+        } else if (platforms.includes("android")) {
+          deviceType = "ANDROID"
+        } else {
+          deviceType = "DESKTOP"
+        }
+        const data = {
+          auth: push.auth,
+          key: push.key,
+          endPoint: push.key,
+          deviceType: deviceType,
+        }
+        await (await Axios()).post(`secure/device/add`, data)
+      }
+    })()
+  }, [isLoggedIn, token, push])
 
   useEffect(() => {
     ReactGA.initialize("UA-165324521-1")

@@ -48,6 +48,7 @@ import "@pathofdev/react-tag-input/build/index.css"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { useSelector, useDispatch } from "react-redux"
 import { thunkLogout, thunkAddPWA } from "../../redux/User/actions"
+import { Axios } from "../../redux/Actions"
 
 interface LighthouseTest {
   pass: boolean
@@ -247,41 +248,42 @@ const Profile: React.FC = () => {
   const getLightHouseData = async (url: string) => {
     try {
       setLightHouseLoading(true)
-      // todo:
-      // const response = await getLighthouseReport(url)
-      // if (response.status === 200) {
-      //   if (response.data) {
-      //     if (response.data.lighthouseResult) {
-      //       const data = response.data
-      //       const lightHouseData = data.lighthouseResult
-      //       const iosIconTest =
-      //         lightHouseData.audits["apple-touch-icon"].score > 0 ? true : false
-      //       const installableTest =
-      //         lightHouseData.audits["installable-manifest"].score > 0
-      //           ? true
-      //           : false
-      //       const worksOfflineTest =
-      //         lightHouseData.audits["works-offline"].score > 0 ? true : false
-      //       setLightHouseTests([
-      //         {
-      //           pass:
-      //             iosIconTest &&
-      //             worksOfflineTest &&
-      //             (installableTest as boolean),
-      //           url: url,
-      //           iosIcon: iosIconTest,
-      //           installable: installableTest,
-      //           worksOffline: worksOfflineTest,
-      //           error: false,
-      //         } as LighthouseTest,
-      //         ...lightHouseTests.filter((x) => x.url !== url),
-      //       ])
-      //       //passed all tests.
-      //     } else {
-      //       console.error(`No lighthouse result`)
-      //     }
-      //   }
-      // }
+      const response = await (await Axios()).get(
+        `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${url}&category=PWA`
+      )
+      if (response.status === 200) {
+        if (response.data) {
+          if (response.data.lighthouseResult) {
+            const data = response.data
+            const lightHouseData = data.lighthouseResult
+            const iosIconTest =
+              lightHouseData.audits["apple-touch-icon"].score > 0 ? true : false
+            const installableTest =
+              lightHouseData.audits["installable-manifest"].score > 0
+                ? true
+                : false
+            const worksOfflineTest =
+              lightHouseData.audits["works-offline"].score > 0 ? true : false
+            setLightHouseTests([
+              {
+                pass:
+                  iosIconTest &&
+                  worksOfflineTest &&
+                  (installableTest as boolean),
+                url: url,
+                iosIcon: iosIconTest,
+                installable: installableTest,
+                worksOffline: worksOfflineTest,
+                error: false,
+              } as LighthouseTest,
+              ...lightHouseTests.filter((x) => x.url !== url),
+            ])
+            //passed all tests.
+          } else {
+            console.error(`No lighthouse result`)
+          }
+        }
+      }
     } catch (e) {
       console.error(`Issue getting lighthouse data: ${JSON.stringify(e.data)}`)
 

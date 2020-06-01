@@ -19,7 +19,7 @@ import queryString from "query-string"
 import { logoGithub } from "ionicons/icons"
 import { RouteMap } from "../../routes"
 import { useDispatch, useSelector } from "react-redux"
-import { thunkLogin } from "../../redux/User/actions"
+import { thunkLogin, thunkThirdPartyLogin } from "../../redux/User/actions"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import ReactGA from "react-ga"
 
@@ -41,15 +41,11 @@ const LogIn: React.FC = () => {
     })
   )
   const dispatch = useDispatch()
-  // todo:
-  // const setToken = useCallback(
-  //   (token: string) => dispatch(setTokenData(token)),
-  //   [dispatch]
-  // )
-  // const setIsLoggedin = useCallback(
-  //   (isLoggedIn: boolean) => dispatch(setIsLoggedInData(isLoggedIn)),
-  //   [dispatch]
-  // )
+  const setThirdPartyLogin = useCallback(
+    (token: string) => dispatch(thunkThirdPartyLogin(token)),
+    [dispatch]
+  )
+
   const login = useCallback(
     async (username: string, password: string) =>
       dispatch(thunkLogin(username, password)),
@@ -59,14 +55,7 @@ const LogIn: React.FC = () => {
   useEffect(() => {
     if (location && queryString.parse(location.search).token) {
       const thirdPartyLogin = async () => {
-        //todo: setToken(queryString.parse(location.search).token as string)
-        //todo: setIsLoggedin(true)
-        const key = localStorage.getItem("push_key")
-        const auth = localStorage.getItem("push_auth")
-        const endpoint = localStorage.getItem("push_endpoint")
-        if (key && auth && endpoint) {
-          // todo: await postDevice(key, auth, endpoint)
-        }
+        setThirdPartyLogin(queryString.parse(location.search).token as string)
         ReactGA.event({
           category: "github login",
           action: "User logged in with github",

@@ -25,7 +25,11 @@ import {
   IonNote,
   IonSpinner,
 } from "@ionic/react"
-import { thunkGetPWAFromName, thunkGetRatings } from "../../redux/PWAs/actions"
+import {
+  thunkGetPWAFromName,
+  thunkGetRatings,
+  thunkAddRating,
+} from "../../redux/PWAs/actions"
 import { RouteComponentProps, withRouter } from "react-router"
 import { Rating as RatingType, NewRating } from "../../util/types"
 import { ScreenshotSlider, Rating, PWAInfo, RatingItem } from "../../components"
@@ -50,9 +54,6 @@ const PWA: React.FC<OwnProps> = ({
   },
   history,
 }) => {
-  const [ratings, setRatings] = useState<RatingType[]>([])
-  const [currentStar, setCurrentStar] = useState<number>()
-  const [starCount, setStarCount] = useState<number>()
   const [notFound, setNotFound] = useState<boolean>(false)
   const [hasFetchedRatings, setHasFetchedRatings] = useState<boolean>(false)
 
@@ -77,6 +78,11 @@ const PWA: React.FC<OwnProps> = ({
     async (appId: number) => dispatch(thunkGetRatings(appId)),
     [dispatch]
   )
+  const addRating = useCallback(
+    async (appId: number, starValue: string, comment?: string) =>
+      dispatch(thunkAddRating(appId, starValue, comment)),
+    [dispatch]
+  )
 
   useEffect(() => {
     ;(async () => {
@@ -86,9 +92,6 @@ const PWA: React.FC<OwnProps> = ({
           if (!fetchedPwa) {
             setNotFound(true)
           }
-        } else {
-          setCurrentStar(pwa.averageRating)
-          setStarCount(pwa.ratingsCount)
         }
       } else {
         console.log("Show that the app doesn't exist")
@@ -97,60 +100,23 @@ const PWA: React.FC<OwnProps> = ({
   }, [pwa, notFound])
 
   useIonViewDidEnter(() => {
-    loadRatings(pwaName)
     ReactGA.pageview(pwaName)
   }, [])
 
-  useIonViewDidLeave(() => {
-    setRatings([])
-    setCurrentStar(undefined)
-    setStarCount(undefined)
-  }, [])
-
-  const loadRatings = async (name: string) => {
-    try {
-      const axios = await Axios()
-      const resp = await axios.get(`/public/pwa/${name}/ratings`)
-      setRatings(resp.data as RatingType[])
-    } catch (e) {
-      console.log(e)
-    }
-  }
-
   const onRatingSubmit = async (star: number, comment?: string) => {
-    // if (pwa) {
-    //   const starVal = stars[star - 1]
-    //   const response = (await postRating(
-    //     starVal,
-    //     pwa?.appId,
-    //     comment
-    //   )) as NewRating
-    //   if (response && response.rating) {
-    //     if (response.rating.comment) {
-    //       ReactGA.event({
-    //         category: "comment",
-    //         action: `User added comment for ${pwa.name}`,
-    //       })
-    //       setRatings([response.rating, ...ratings])
-    //     }
-    //     setCurrentStar(response.averageStar)
-    //     setStarCount(response.ratingCount)
-    //     ReactGA.event({
-    //       category: "rating",
-    //       action: `User added rating for ${pwa.name}`,
-    //     })
-    //   }
-    // }
+    if (pwa) {
+      const starVal = stars[star - 1]
+      addRating(pwa.appId, starVal, comment)
+    }
   }
 
   const renderRatings = useMemo(() => {
     if (!pwa) return
-    else if (!hasFetchedRatings && pwa.ratings.length < 1) {
+    if ((!hasFetchedRatings && !pwa.ratings) || pwa.ratings.length < 1) {
       setHasFetchedRatings(true)
-      console.log(`loading ratings: ${pwa.ratings}`)
       getRatings(pwa.appId)
     }
-
+    console.log(pwa.ratings)
     return isRatingsLoading ? (
       <IonSpinner />
     ) : pwa.ratings.length > 0 ? (
@@ -191,8 +157,8 @@ const PWA: React.FC<OwnProps> = ({
                   <PWAInfo
                     pwa={pwa}
                     appId={pwa.appId}
-                    currentStar={currentStar as number}
-                    starCount={starCount as number}
+                    currentStar={pwa.averageRating}
+                    starCount={pwa.ratingsCount}
                     tags={pwa.tags}
                   />
                 </IonCol>

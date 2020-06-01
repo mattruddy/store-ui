@@ -26,6 +26,7 @@ import { ReduxCombinedState } from "../../redux/RootReducer"
 import { thunkGetHomeData } from "../../redux/PWAs/actions"
 import { useSelector, useDispatch, shallowEqual } from "react-redux"
 import PWACardPlaceholder from "../../components/PWACardPlaceholder"
+import { Axios } from "../../redux/Actions"
 
 const Home: React.FC = () => {
   const history = useHistory()
@@ -72,8 +73,8 @@ const Home: React.FC = () => {
 
   const handleOnSearchChange = useCallback(async (appName: string) => {
     if (appName) {
-      // todo: const results = await getSearchApp(appName)
-      //setPwaSearchResults(results)
+      const { data } = await (await Axios()).get(`public/search/${appName}`)
+      setPwaSearchResults(data)
     } else {
       setPwaSearchResults([])
     }

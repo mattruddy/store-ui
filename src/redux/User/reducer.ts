@@ -23,6 +23,7 @@ const DEFAULT_STATE_USER: UserState = {
   darkMode: false,
   isLoggedIn: false,
   role: UserRole.Dev,
+  push: undefined,
 }
 
 const userReducer = (

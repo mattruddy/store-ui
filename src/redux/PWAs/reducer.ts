@@ -11,6 +11,8 @@ import {
   RATINGS_COMPLETE,
   RATINGS_PENDING,
   RATINGS_ADD,
+  PWAS_DATA,
+  RATING_ADD,
 } from "./types"
 import { AppActionTypes, REDUX_RESET } from "../App/types"
 import { HomePWAs, PWA } from "../../util/types"
@@ -33,6 +35,8 @@ const pwasReducer = (
   action: PWAsActionTypes | AppActionTypes
 ): PWAsState => {
   switch (action.type) {
+    case PWAS_DATA:
+      return { ...state, ...action.payload }
     case PWAS_PENDING:
       return { ...state, isPending: true }
 
@@ -43,16 +47,34 @@ const pwasReducer = (
       return { ...state, isRatingsPending: true }
     case RATINGS_ADD:
       const oldPwa = state.pwas.find((x) => x.appId === action.payload.appId)
+      console.log(oldPwa)
       if (!oldPwa) return state
       const newPwa = {
         ...oldPwa,
-        ratings: [...oldPwa.ratings, action.payload.ratings],
+        ratings: [...oldPwa.ratings, ...action.payload.ratings],
       } as PWA
+      console.log(newPwa)
       return {
         ...state,
         pwas: [
           ...state.pwas.filter((x) => x.appId !== action.payload.appId),
           newPwa,
+        ],
+      }
+    case RATING_ADD:
+      const oPwa = state.pwas.find((x) => x.appId === action.payload.appId)
+      if (!oPwa) return state
+      const nPwa = {
+        ...oPwa,
+        ratings: [...oPwa.ratings, action.payload.newRating.rating],
+        averageRating: action.payload.newRating.averageStar,
+        ratingsCount: action.payload.newRating.ratingCount,
+      } as PWA
+      return {
+        ...state,
+        pwas: [
+          ...state.pwas.filter((x) => x.appId !== action.payload.appId),
+          nPwa,
         ],
       }
     case RATINGS_COMPLETE:

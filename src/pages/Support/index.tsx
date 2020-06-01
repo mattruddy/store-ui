@@ -20,6 +20,7 @@ import { useHistory } from "react-router"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { useSelector, useDispatch } from "react-redux"
 import { thunkSetEmail } from "../../redux/User/actions"
+import { Axios } from "../../redux/Actions"
 
 const Support: React.FC = () => {
   const [text, setText] = useState<string>("")
@@ -47,8 +48,11 @@ const Support: React.FC = () => {
 
   const submitSupport = async () => {
     if (!text || !fromEmail || !validEmail(fromEmail)) return
-    // todo:
-    // await postEmail(text!, fromEmail)
+
+    await (await Axios()).post(`secure/support`, {
+      text: text!,
+      email: fromEmail,
+    })
     setEmail(fromEmail)
     setText("")
     setToastText("Sent. You will hear from us shortly")

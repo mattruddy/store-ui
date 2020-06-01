@@ -1,4 +1,4 @@
-import { PWA } from "../../util/types"
+import { PWA, Push } from "../../util/types"
 
 export interface UserState {
   token: string
@@ -11,6 +11,7 @@ export interface UserState {
   darkMode: boolean
   isLoggedIn: boolean
   role: UserRole
+  push: Push | undefined
 }
 
 export enum UserRole {

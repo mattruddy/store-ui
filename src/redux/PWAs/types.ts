@@ -1,4 +1,4 @@
-import { PWA, HomePWAs, Rating } from "../../util/types"
+import { PWA, HomePWAs, Rating, NewRating } from "../../util/types"
 
 export interface PWASection {
   category: string
@@ -28,6 +28,9 @@ export const PWAS_SECTION_ADD = "PWAS_SECTION_ADD"
 export const PWAS_SECTION_REPLACE = "PWAS_SECTION_REPLACE"
 export const HOME_SET = "HOME_SET"
 export const PWAS_ADD = "PWAS_ADD"
+export const PWA_REPLACE = "PWAS_REPLACE"
+export const PWAS_DATA = "PWAS_DATA"
+export const RATING_ADD = "RATING_ADD"
 
 export interface AddPWAsSectionAction {
   type: typeof PWAS_SECTION_ADD
@@ -37,6 +40,16 @@ export interface AddPWAsSectionAction {
 export interface AddPWAsAction {
   type: typeof PWAS_ADD
   payload: PWA[]
+}
+
+export interface AddPWAsAction {
+  type: typeof PWAS_ADD
+  payload: PWA[]
+}
+
+export interface PWASDataAction {
+  type: typeof PWAS_DATA
+  payload: Partial<PWAsState>
 }
 
 export interface ReplacePWAsSectionAction {
@@ -51,6 +64,11 @@ export interface CompletePWAsAction {
 export interface AddRatingsAction {
   type: typeof RATINGS_ADD
   payload: { ratings: Rating[]; appId: number }
+}
+
+export interface AddRatingAction {
+  type: typeof RATING_ADD
+  payload: { newRating: NewRating; appId: number }
 }
 
 export interface LoadingPWAsAction {
@@ -80,3 +98,5 @@ export type PWAsActionTypes =
   | CompleteRatingsAction
   | LoadingRatingsAction
   | AddRatingsAction
+  | PWASDataAction
+  | AddRatingAction
