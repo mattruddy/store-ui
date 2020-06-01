@@ -1,0 +1,5 @@
+{
+  "workbench.iconTheme": "theia-file-icons",
+  "prettier.semi": false,
+  "editor.formatOnSave": true
+}

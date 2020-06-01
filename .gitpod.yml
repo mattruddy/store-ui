@@ -1,0 +1,10 @@
+vscode:
+  extensions:
+    - esbenp.prettier-vscode@4.7.0:kgoYSh1LwTixKtJtQWtodQ==
+tasks:
+  - init: npm install
+    command: npm run start
+# Ports to expose on workspace startup (optional)
+ports:
+  - port: 3000
+    onOpen: open-preview
