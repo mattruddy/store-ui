@@ -23,7 +23,7 @@ function fixRotation(file: File) {
       (img, data) => {
         if (data && data.exif) {
           //@ts-ignorets
-          console.log(data.exif.get("Orientation"))
+          //console.log(data.exif.get("Orientation"))
         }
         ;(img as HTMLCanvasElement).toBlob((blob) => {
           resolve(blob)
@@ -62,14 +62,14 @@ const shareUrl = (url: string, title: string, text: string) => {
       text,
     })
     .then((response: any) => {
-      console.log("Successfully shared: ", response)
+      //console.log("Successfully shared: ", response)
       ReactGA.event({
         category: "Share Url",
         action: "User shared a url!",
       })
     })
     .catch((error: any) => {
-      console.log(error)
+      console.error(error)
     })
 }
 

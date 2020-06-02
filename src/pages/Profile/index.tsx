@@ -514,7 +514,6 @@ const Profile: React.FC = () => {
               onClick={() => {
                 if (url) {
                   getLightHouseData(url)
-                  console.log(lightHouseTests)
                 }
               }}
               disabled={lightHouseLoading}

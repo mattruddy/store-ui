@@ -93,8 +93,6 @@ const PWA: React.FC<OwnProps> = ({
             setNotFound(true)
           }
         }
-      } else {
-        console.log("Show that the app doesn't exist")
       }
     })()
   }, [pwa, notFound])
@@ -116,7 +114,6 @@ const PWA: React.FC<OwnProps> = ({
       setHasFetchedRatings(true)
       getRatings(pwa.appId)
     }
-    console.log(pwa.ratings)
     return isRatingsLoading ? (
       <IonSpinner />
     ) : pwa.ratings.length > 0 ? (

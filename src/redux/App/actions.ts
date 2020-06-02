@@ -46,7 +46,7 @@ const getAppVersion = (): ThunkAction<
       latestVersion: data,
     } as ComparableVersions
   } catch ({ response }) {
-    return console.log("ERROR: ", response)
+    return console.error("ERROR: ", response)
   }
 }
 

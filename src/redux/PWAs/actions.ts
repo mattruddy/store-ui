@@ -105,7 +105,7 @@ const thunkGetPWAs = (
       return newPwas
     }
   } catch (e) {
-    return console.log(e)
+    return console.error(e)
   } finally {
     dispatch(completePWAs())
   }
@@ -123,7 +123,6 @@ const thunkGetPWAFromName = (
     dispatch(addPWAs([data]))
     return data
   } catch (e) {
-    console.log("no pwa here")
     console.error(e)
     return undefined
   } finally {
@@ -191,7 +190,6 @@ const thunkAddRating = (
     )
     return data
   } catch (e) {
-    console.log(e.response)
     dispatch(
       setAlert({
         message: e.response.data.message,
@@ -240,7 +238,7 @@ const thunkGetHomeData = (
       return data
     }
   } catch (e) {
-    return console.log(e)
+    return console.error(e)
   } finally {
     dispatch(completePWAs())
   }

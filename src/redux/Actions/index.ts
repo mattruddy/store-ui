@@ -108,7 +108,7 @@ export const UploadScreenshots = async (screenshots: File[], appId: number) => {
       timeout: 3000,
       show: true,
     })
-    console.log(e)
+    console.error(e)
     return []
   }
 }
@@ -130,7 +130,7 @@ export const DeleteScreenshot = async (imageId: number) => {
       timeout: 3000,
       show: true,
     })
-    return console.log(e)
+    return console.error(e)
   }
 }
 

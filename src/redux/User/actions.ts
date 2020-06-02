@@ -98,7 +98,7 @@ export const thunkSignUp = (
         status: "fail",
       })
     )
-    return console.log(e)
+    return console.error(e)
   } finally {
     dispatch(setLoading(false))
   }
@@ -128,14 +128,14 @@ export const thunkLogin = (
     await setIsLoggedInStorage("true")
     dispatch(
       setAlert({
-        message: "Success",
+        message: "Logged In",
         timeout: 3000,
         show: true,
         status: "success",
       })
     )
   } catch (e) {
-    console.log(e.response)
+    console.error(e.response)
     dispatch(
       setAlert({
         message: e.response.data.message,
@@ -145,7 +145,7 @@ export const thunkLogin = (
         status: "fail",
       })
     )
-    return console.log(e)
+    return console.error(e)
   } finally {
     dispatch(setLoading(false))
   }
@@ -361,7 +361,7 @@ export const thunkDeletePWA = (
         status: "fail",
       })
     )
-    return console.log(e)
+    return console.error(e)
   } finally {
     dispatch(setLoading(false))
   }
@@ -403,7 +403,6 @@ export const thunkUpdateApp = (
     )
     return data
   } catch (e) {
-    console.log(e)
     dispatch(
       setAlert({
         message: e.response.data.message,
@@ -413,7 +412,7 @@ export const thunkUpdateApp = (
         status: "fail",
       })
     )
-    return console.log(e)
+    return console.error(e)
   } finally {
     dispatch(setLoading(false))
   }

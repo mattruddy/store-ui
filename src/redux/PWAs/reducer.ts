@@ -47,13 +47,11 @@ const pwasReducer = (
       return { ...state, isRatingsPending: true }
     case RATINGS_ADD:
       const oldPwa = state.pwas.find((x) => x.appId === action.payload.appId)
-      console.log(oldPwa)
       if (!oldPwa) return state
       const newPwa = {
         ...oldPwa,
         ratings: [...oldPwa.ratings, ...action.payload.ratings],
       } as PWA
-      console.log(newPwa)
       return {
         ...state,
         pwas: [
