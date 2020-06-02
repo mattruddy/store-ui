@@ -1,8 +1,7 @@
-import axios, { AxiosRequestConfig, AxiosInstance } from "axios"
+import axios, { AxiosInstance } from "axios"
 import { vars } from "../../data/env"
 import { Plugins } from "@capacitor/core"
 import { AxiosCustomRequestConfig, Image, Push } from "../../util/types"
-import { UserRole } from "../User/types"
 import { setAlert } from "../Alerts/actions"
 
 const { Storage } = Plugins
@@ -170,7 +169,7 @@ const AxiosForm = async (payload: FormData): Promise<AxiosInstance> => {
 
 const Axios = async (responseType: "json" = "json"): Promise<AxiosInstance> => {
   const response = await getUserData()
-  const { isLoggedIn, token, hasRead } = response
+  const { token } = response
 
   return axios.create({
     withCredentials: true,

@@ -13,7 +13,6 @@ import {
   IonTitle,
   IonToolbar,
   useIonViewDidEnter,
-  useIonViewDidLeave,
   IonBackButton,
   IonButtons,
   IonToast,
@@ -24,7 +23,6 @@ import {
   IonLabel,
   IonNote,
   IonSpinner,
-  IonImg,
 } from "@ionic/react"
 import {
   thunkGetPWAFromName,
@@ -32,14 +30,12 @@ import {
   thunkAddRating,
 } from "../../redux/PWAs/actions"
 import { RouteComponentProps, withRouter } from "react-router"
-import { Rating as RatingType, NewRating } from "../../util/types"
 import { ScreenshotSlider, Rating, PWAInfo, RatingItem } from "../../components"
 import { thunkSetHasReadInstall } from "../../redux/User/actions"
 import { RouteMap } from "../../routes"
 import ReactGA from "react-ga"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { useSelector, shallowEqual, useDispatch } from "react-redux"
-import { Axios } from "../../redux/Actions"
 
 const stars = ["ONE", "TWO", "THREE", "FOUR", "FIVE"]
 

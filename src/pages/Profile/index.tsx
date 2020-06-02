@@ -4,7 +4,6 @@ import React, {
   memo,
   useCallback,
   useMemo,
-  useRef,
   Fragment,
 } from "react"
 import {
@@ -21,7 +20,6 @@ import {
   IonInput,
   IonTextarea,
   IonText,
-  IonImg,
   IonGrid,
   IonRow,
   IonIcon,
@@ -35,10 +33,9 @@ import {
   IonSpinner,
   IonProgressBar,
 } from "@ionic/react"
-import { RouteComponentProps, withRouter, useHistory } from "react-router"
+import { withRouter, useHistory } from "react-router"
 import ImageUploader from "react-images-upload"
 import { CategoryOptions, Lighthouse, PWACard } from "../../components"
-import { UserProfile, PWA } from "../../util/types"
 import { add, menu, logOut, contractSharp } from "ionicons/icons"
 import { RouteMap } from "../../routes"
 import { noSpecialChars } from "../../util"
@@ -48,7 +45,7 @@ import "@pathofdev/react-tag-input/build/index.css"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { useSelector, useDispatch } from "react-redux"
 import { thunkLogout, thunkAddPWA } from "../../redux/User/actions"
-import { Axios } from "../../redux/Actions"
+import Axios from "axios"
 
 interface LighthouseTest {
   pass: boolean
@@ -244,13 +241,16 @@ const Profile: React.FC = () => {
     }
   }
 
-  // TODO: move to actions
   const getLightHouseData = async (url: string) => {
     try {
       setLightHouseLoading(true)
-      const response = await (await Axios()).get(
-        `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${url}&category=PWA`
-      )
+      const response = await Axios.request({
+        url: `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${url}&category=PWA`,
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+        },
+      })
       if (response.status === 200) {
         if (response.data) {
           if (response.data.lighthouseResult) {
