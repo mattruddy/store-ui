@@ -10,6 +10,13 @@
   justify-content: center;
 }
 
+.ScreenshotDeleteButton {
+  position: absolute;
+  bottom: 90%;
+  left: 80%;
+  z-index: 100000;
+}
+
 .ScreenshotSliderImage:hover {
   cursor: pointer;
   background-repeat: no-repeat;

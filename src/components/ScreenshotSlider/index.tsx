@@ -77,22 +77,12 @@ const ScreenshotSlider: React.FC<ContainerProps> = ({
           setPhotoIndex(i)
         }
         return (
-          <IonCol
-            className="ScreenshotCol"
-            key={i}
-            onClick={handleOnClick}
-            size="7"
-          >
+          <IonCol className="ScreenshotCol" key={i} size="7">
             {restOfProps.isEdit && (
               <IonButton
+                className="ScreenshotDeleteButton"
                 shape="round"
                 size="small"
-                style={{
-                  position: "absolute",
-                  bottom: "90%",
-                  left: "80%",
-                  zIndex: "100",
-                }}
                 color="inherit"
                 onClick={() =>
                   restOfProps.onDelete && restOfProps.onDelete(image.imageId)
@@ -104,6 +94,7 @@ const ScreenshotSlider: React.FC<ContainerProps> = ({
             <IonImg
               className="ScreenshotSliderImage"
               alt="screenshot"
+              onClick={handleOnClick}
               src={url}
             />
           </IonCol>
