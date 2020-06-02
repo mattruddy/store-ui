@@ -179,6 +179,7 @@ const MyPWA: React.FC = () => {
         return
       }
       const isNameChange = name !== pwa.name
+      console.log(count)
       if (count === 0) {
         UpdateApp(
           name!,

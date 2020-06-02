@@ -48,7 +48,7 @@ const ScreenshotSlider: React.FC<ContainerProps> = ({
       setImages(restOfProps.images || [])
     }
     mounted.current = true
-  }, [restOfProps.photoIndex, restOfProps.isOpen])
+  }, [restOfProps.photoIndex, restOfProps.isOpen, restOfProps.images])
 
   let mainSrc = ""
   let prevSrc = ""
@@ -77,34 +77,39 @@ const ScreenshotSlider: React.FC<ContainerProps> = ({
           setPhotoIndex(i)
         }
         return (
-          <IonCol className="ScreenshotCol" key={i} size="7">
-            {restOfProps.isEdit && (
-              <IonButton
-                className="ScreenshotDeleteButton"
-                shape="round"
-                size="small"
-                color="inherit"
-                onClick={() =>
-                  restOfProps.onDelete && restOfProps.onDelete(image.imageId)
-                }
-              >
-                <IonIcon color="danger" icon={trash} />
-              </IonButton>
-            )}
-            <IonImg
-              className="ScreenshotSliderImage"
-              alt="screenshot"
-              onClick={handleOnClick}
-              src={url}
-            />
-          </IonCol>
+          <div className="ScreenshotCol" key={i}>
+            <div>
+              {restOfProps.isEdit && (
+                <div className="DeleteButtonBlock">
+                  <IonButton
+                    className="ScreenshotDeleteButton"
+                    shape="round"
+                    size="small"
+                    color="inherit"
+                    onClick={() =>
+                      restOfProps.onDelete &&
+                      restOfProps.onDelete(image.imageId)
+                    }
+                  >
+                    <IonIcon color="danger" icon={trash} />
+                  </IonButton>
+                </div>
+              )}
+              <IonImg
+                className="ScreenshotSliderImage"
+                alt="screenshot"
+                onClick={handleOnClick}
+                src={url}
+              />
+            </div>
+          </div>
         )
       }),
     [images, restOfProps.isEdit, restOfProps.onDelete]
   )
 
   return (
-    <IonRow className="ScreenshotRow">
+    <div className="ScreenshotRow">
       {renderSlides}
       {isOpen && (
         <Lightbox
@@ -120,7 +125,7 @@ const ScreenshotSlider: React.FC<ContainerProps> = ({
           onMoveNextRequest={handleMoveNext}
         />
       )}
-    </IonRow>
+    </div>
   )
 }
 
