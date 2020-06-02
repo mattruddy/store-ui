@@ -13,10 +13,9 @@
 }
 
 .DeleteButtonBlock {
-  width: 100%;
-  height: 20px;
-  display: flex;
-  justify-content: flex-end;
+  position: relative;
+  left: 90%;
+  bottom: 53%;
 }
 
 .ScreenshotSliderImage {

@@ -78,30 +78,27 @@ const ScreenshotSlider: React.FC<ContainerProps> = ({
         }
         return (
           <div className="ScreenshotCol" key={i}>
-            <div>
-              {restOfProps.isEdit && (
-                <div className="DeleteButtonBlock">
-                  <IonButton
-                    className="ScreenshotDeleteButton"
-                    shape="round"
-                    size="small"
-                    color="inherit"
-                    onClick={() =>
-                      restOfProps.onDelete &&
-                      restOfProps.onDelete(image.imageId)
-                    }
-                  >
-                    <IonIcon color="danger" icon={trash} />
-                  </IonButton>
-                </div>
-              )}
-              <IonImg
-                className="ScreenshotSliderImage"
-                alt="screenshot"
-                onClick={handleOnClick}
-                src={url}
-              />
-            </div>
+            {restOfProps.isEdit && (
+              <div className="DeleteButtonBlock">
+                <IonButton
+                  className="ScreenshotDeleteButton"
+                  shape="round"
+                  size="small"
+                  color="light"
+                  onClick={() =>
+                    restOfProps.onDelete && restOfProps.onDelete(image.imageId)
+                  }
+                >
+                  <IonIcon color="danger" icon={trash} />
+                </IonButton>
+              </div>
+            )}
+            <IonImg
+              className="ScreenshotSliderImage"
+              alt="screenshot"
+              onClick={handleOnClick}
+              src={url}
+            />
           </div>
         )
       }),
