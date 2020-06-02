@@ -182,7 +182,7 @@ const thunkAddRating = (
     dispatch(addRating(data as NewRating, appId))
     dispatch(
       setAlert({
-        message: `Comment Added`,
+        message: `Review Added`,
         apiResponseStatus: response.status,
         timeout: 3000,
         show: true,
