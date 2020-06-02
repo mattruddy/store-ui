@@ -1,10 +1,13 @@
-.slider {
-  --bullet-background-active: var(--ion-color-primary);
+.ScreenshotRow {
+  height: 450px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  flex-wrap: nowrap;
 }
 
-.ScreenshotSliderImage {
-  height: 400px;
-  max-width: 93%;
+.ScreenshotCol {
+  display: flex;
+  justify-content: center;
 }
 
 .ScreenshotSliderImage:hover {

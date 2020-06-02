@@ -46,7 +46,7 @@ import {
   openOutline,
 } from "ionicons/icons"
 import { fixFilesRotation, noSpecialChars } from "../../util"
-import { CategoryOptions, RatingItem } from "../../components"
+import { CategoryOptions, RatingItem, ScreenshotSlider } from "../../components"
 import { RouteMap, GetMyPWADetailUrl } from "../../routes"
 //@ts-ignore
 import StarRatings from "react-star-ratings"
@@ -220,34 +220,11 @@ const MyPWA: React.FC = () => {
   const renderScreenshots = useMemo(() => {
     const shownScreenshots = isEdit ? screenshots : pwa && pwa.screenshots
     return (
-      <IonRow className="ScreenshotRow">
-        {shownScreenshots &&
-          shownScreenshots.map((shot, idx) => (
-            <IonCol key={idx} sizeXs="10" sizeSm="10" sizeMd="7" sizeLg="4">
-              {isEdit && (
-                <IonButton
-                  shape="round"
-                  size="small"
-                  style={{
-                    position: "absolute",
-                    bottom: "90%",
-                    left: "80%",
-                    zIndex: "100",
-                  }}
-                  color="inherit"
-                  onClick={() => removeImage(shot.imageId)}
-                >
-                  <IonIcon color="danger" icon={trash} />
-                </IonButton>
-              )}
-              <IonImg
-                alt="screenshot"
-                style={{ height: "400px", maxWidth: "93%" }}
-                src={shot.url}
-              />
-            </IonCol>
-          ))}
-      </IonRow>
+      <ScreenshotSlider
+        images={shownScreenshots}
+        isEdit={isEdit}
+        onDelete={removeImage}
+      />
     )
   }, [pwa, screenshots, isEdit])
 
