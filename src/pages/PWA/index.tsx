@@ -162,9 +162,7 @@ const PWA: React.FC<OwnProps> = ({
                 </IonCol>
                 <IonCol size="12" sizeMd="6" pushMd="6">
                   <h2 style={{ paddingLeft: "10px" }}>Screenshots</h2>
-                  <IonRow className="ScreenshotRow">
-                    <ScreenshotSlider images={pwa.screenshots} />
-                  </IonRow>
+                  <ScreenshotSlider images={pwa.screenshots} />
                 </IonCol>
                 <IonCol size="12" sizeMd="6" pullMd="6">
                   <h2 style={{ paddingLeft: "10px" }}>Reviews</h2>
