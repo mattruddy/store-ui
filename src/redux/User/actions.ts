@@ -279,7 +279,15 @@ export const removeApp = (appId: number) =>
 export const thunkThirdPartyLogin = (
   token: string
 ): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
-  dispatch(setData({ token: token, isLoggedIn: true }))
+  try {
+    dispatch(setLoading(true))
+    dispatch(setData({ token, isLoggedIn: true }))
+    await setRoleStorage(UserRole.Dev.toString())
+    await setTokenStorage(token)
+    await setIsLoggedInStorage("true")
+  } finally {
+    setLoading(false)
+  }
 }
 
 export const thunkAddPWA = (

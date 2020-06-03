@@ -68,7 +68,6 @@ const LogIn: React.FC = () => {
   useEffect(() => {
     if (token) {
       history.push(RouteMap.PROFILE, { direction: "back" })
-
       setPassword("")
       setUsername("")
     }
