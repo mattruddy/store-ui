@@ -15,7 +15,7 @@ import {
   IonRow,
   IonCol,
 } from "@ionic/react"
-import { withRouter, useHistory } from "react-router"
+import { withRouter } from "react-router"
 import { PWA } from "../../util/types"
 import { useSelector } from "react-redux"
 import { ReduxCombinedState } from "../../redux/RootReducer"
@@ -141,7 +141,7 @@ const Admin: React.FC = () => {
         )}
       </Fragment>
     ),
-    [role, pwas]
+    [role, pwas, status]
   )
 
   return (
