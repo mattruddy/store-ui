@@ -53,7 +53,7 @@ const LogIn: React.FC = () => {
   )
 
   useEffect(() => {
-    if (location && queryString.parse(location.search).token) {
+    if (!isLoading && location && queryString.parse(location.search).token) {
       const thirdPartyLogin = async () => {
         setThirdPartyLogin(queryString.parse(location.search).token as string)
         ReactGA.event({
@@ -63,7 +63,7 @@ const LogIn: React.FC = () => {
       }
       thirdPartyLogin()
     }
-  }, [location])
+  }, [location, isLoading])
 
   useEffect(() => {
     if (token) {
