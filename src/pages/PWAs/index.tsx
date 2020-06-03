@@ -1,11 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useCallback,
-  useMemo,
-  memo,
-} from "react"
+import React, { useState, useEffect, useRef, useCallback, useMemo } from "react"
 import {
   IonContent,
   IonHeader,
@@ -25,38 +18,77 @@ import {
   IonBackButton,
   IonNote,
 } from "@ionic/react"
+import {
+  connect as reduxConnector,
+  ConnectedProps,
+  useSelector,
+  shallowEqual,
+  useDispatch,
+} from "react-redux"
 import { DebouncedSearch, PWACard, SideBar } from "../../components"
-import { getPWAs, getSearchApp, getHome } from "../../data/dataApi"
 import { PWA, HomePWAs } from "../../util/types"
-import { RouteComponentProps, useParams, useHistory } from "react-router"
-import { setLoading } from "../../data/user/user.actions"
+import { RouteComponentProps, useParams } from "react-router"
 
-import "./styles.css"
 import ReactGA from "react-ga"
-import { capitalize } from "../../util"
+import { capitalize, stringMatch } from "../../util"
 import { search, closeOutline } from "ionicons/icons"
 import { categories } from "../../components/CategoryOptions"
 import { standardCategories } from "../../components/SideBar"
 import { RouteMap } from "../../routes"
+import { ReduxCombinedState } from "../../redux/RootReducer"
+import { thunkGetPWAs } from "../../redux/PWAs/actions"
+import { PWASection, PWAsActionTypes } from "../../redux/PWAs/types"
+import "./styles.css"
+import PWACardPlaceholder from "../../components/PWACardPlaceholder"
+import { Axios } from "../../redux/Actions"
 
-const PWAs: React.FC<RouteComponentProps> = () => {
+type PWAsProps = RouteComponentProps
+
+const PWAs: React.FC<PWAsProps> = () => {
   const { category } = useParams()
   const [page, setPage] = useState<number>(0)
   const [cat, setCat] = useState<string>("")
-  const [pwas, setPwas] = useState<PWA[]>([])
-  const [pwaSearchValue, setPwaSearchValue] = useState<string>("")
   const [pwaSearchResults, setPwaSearchResults] = useState<PWA[]>([])
-  const [homeResult, setHomeResult] = useState<HomePWAs>()
   const [showSearch, setShowSearch] = useState<boolean>(false)
   const [scrollDisabled, setScrollDisabled] = useState<boolean>(false)
+  const [loadingMore, setLoadingMore] = useState<boolean>(false)
 
-  const [isLoading, setIsLoading] = useState<boolean>(true)
-  const scrollEl = useRef<any>(undefined)
-  const content = useRef<any>()
+  const { pwasSections, isLoading, pwas } = useSelector(
+    ({ pwas }: ReduxCombinedState) => ({
+      pwasSections: pwas.pwaSections,
+      isLoading: pwas.isPending,
+      pwas: pwas.pwas,
+    }),
+    shallowEqual
+  )
+
+  const dispatch = useDispatch()
+  const getPWAs = useCallback(
+    async (page: number, category?: string) =>
+      dispatch(thunkGetPWAs(page, category)),
+    [dispatch]
+  )
+
+  const sectionPwas = useMemo(() => {
+    const newpwasSections = pwasSections.filter(
+      (section) =>
+        section.page <= page &&
+        section.category.toLowerCase() ===
+          (category ? category : "").toLowerCase()
+    )
+    if (newpwasSections.length > 0) {
+      return newpwasSections
+        .flatMap((section) => section.appId)
+        .map((id) => pwas.find((i) => i.appId === id) as PWA)
+    }
+    return undefined
+  }, [pwasSections, category, page, pwas])
+
+  const scrollEl = useRef<HTMLIonInfiniteScrollElement>(null)
+  const content = useRef<HTMLIonContentElement>(null)
 
   useEffect(() => {
     return () => {
-      setPwas([])
       setPage(0)
     }
   }, [])
@@ -73,68 +105,57 @@ const PWAs: React.FC<RouteComponentProps> = () => {
       ) {
         newCat = category.toUpperCase()
       }
-      setCat(newCat)
       reloadPwas(newCat)
+      setCat(newCat)
+      setShowSearch(false)
       setScrollDisabled(false)
-      content.current.scrollToTop()
       ReactGA.pageview(`PWAs ${newCat}`)
+      content.current != null && content.current.scrollToTop(0)
+    } catch {
     } finally {
-      setIsLoading(false)
     }
   }, [category])
 
   const loadMorePwas = async () => {
-    try {
-      if (cat !== "TRENDING") {
-        const nextPage = page + 1
-        const nextPwas = (await getPWAs(
-          nextPage,
-          cat && cat !== "" ? cat : undefined
-        )) as PWA[]
-        if (nextPwas && nextPwas.length > 0) {
-          setPwas((prev) => prev.concat(nextPwas))
-          setPage(nextPage)
-        } else {
-          setScrollDisabled(true)
-        }
-      }
-    } finally {
-      scrollEl.current.complete()
-    }
+    setLoadingMore(true)
+    const nextPage = page + 1
+    await getPWAs(nextPage, cat && cat !== "" ? cat : undefined)
+    setPage(nextPage)
+    scrollEl.current && scrollEl.current.complete()
+    setLoadingMore(false)
   }
 
   const toggleSearch = () => {
     const newShowSearch = !showSearch
     setShowSearch(newShowSearch)
     if (newShowSearch) {
-      content.current.scrollToTop()
+      content.current && content.current.scrollToTop()
     } else {
       setPwaSearchResults([])
     }
   }
 
-  const reloadPwas = async (option?: string) => {
+  const reloadPwas = (option?: string) => {
     setPage(0)
-    const resp = await getPWAs(
+    getPWAs(
       0,
       option || option === "" ? option : cat && cat !== "" ? cat : undefined
     )
-    setPwas(resp)
   }
 
   const handleOnSearchChange = useCallback(async (appName: string) => {
-    setPwaSearchValue(appName)
     if (appName) {
-      const results = await getSearchApp(appName)
-      setPwaSearchResults(results)
+      const { data } = await (await Axios()).get(`public/search/${appName}`)
+      setPwaSearchResults(data)
     } else {
       setPwaSearchResults([])
     }
   }, [])
 
   const renderPwaList = useMemo(() => {
-    const streamPWAs = showSearch ? pwaSearchResults : pwas
-    if (!isLoading && streamPWAs.length < 1) {
+    const streamPWAs = showSearch ? pwaSearchResults : sectionPwas
+
+    if (!isLoading && streamPWAs && streamPWAs.length < 1) {
       return (
         !showSearch && (
           <IonNote className="PWAsEmptyNote">
@@ -143,12 +164,20 @@ const PWAs: React.FC<RouteComponentProps> = () => {
         )
       )
     }
-    return streamPWAs.map((pwa, i) => (
-      <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
-        <PWACard url="/pwa" pwa={pwa} />
-      </IonCol>
-    ))
-  }, [pwas, pwaSearchValue, pwaSearchResults, showSearch])
+
+    return isLoading && !loadingMore
+      ? [...Array(10)].map((_e, i) => (
+          <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
+            <PWACardPlaceholder />
+          </IonCol>
+        ))
+      : streamPWAs &&
+          streamPWAs!.map((pwa, i) => (
+            <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
+              <PWACard url="/pwa" pwa={pwa} />
+            </IonCol>
+          ))
+  }, [sectionPwas, pwaSearchResults, showSearch, isLoading, loadingMore])
 
   return (
     <IonPage>
@@ -164,7 +193,7 @@ const PWAs: React.FC<RouteComponentProps> = () => {
           </IonButtons>
           <IonTitle
             onClick={() => {
-              content.current.scrollToTop()
+              content.current && content.current.scrollToTop()
             }}
           >
             <img
@@ -180,7 +209,7 @@ const PWAs: React.FC<RouteComponentProps> = () => {
           slot="fixed"
           onIonRefresh={async (event: any) => {
             try {
-              await reloadPwas()
+              reloadPwas()
             } finally {
               event.detail.complete()
             }
@@ -215,17 +244,19 @@ const PWAs: React.FC<RouteComponentProps> = () => {
             <IonRow>{renderPwaList}</IonRow>
           </IonCol>
         </IonRow>
-        <IonInfiniteScroll
-          ref={scrollEl}
-          threshold="100px"
-          disabled={scrollDisabled}
-          onIonInfinite={loadMorePwas}
-        >
-          <IonInfiniteScrollContent />
-        </IonInfiniteScroll>
+        {cat !== undefined && cat.toLowerCase() !== "trending" && (
+          <IonInfiniteScroll
+            ref={scrollEl}
+            threshold="100px"
+            disabled={scrollDisabled}
+            onIonInfinite={loadMorePwas}
+          >
+            <IonInfiniteScrollContent />
+          </IonInfiniteScroll>
+        )}
       </IonContent>
     </IonPage>
   )
 }
 
-export default memo(PWAs)
+export default PWAs

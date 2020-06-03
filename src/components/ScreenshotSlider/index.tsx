@@ -7,10 +7,19 @@ import React, {
   ReactChildren,
   Fragment,
 } from "react"
-import { IonSlides, IonSlide, IonImg } from "@ionic/react"
+import {
+  IonSlides,
+  IonSlide,
+  IonImg,
+  IonCol,
+  IonButton,
+  IonIcon,
+  IonRow,
+} from "@ionic/react"
 import Lightbox from "react-image-lightbox"
 import { Image } from "../../util/types"
 import "./styles.css"
+import { trash } from "ionicons/icons"
 
 interface ContainerProps {
   toolbarButtons?: []
@@ -18,6 +27,8 @@ interface ContainerProps {
   photoIndex?: number
   isOpen?: boolean
   children?: ReactChildren[]
+  isEdit?: boolean
+  onDelete?: (id: number) => void
 }
 
 const ScreenshotSlider: React.FC<ContainerProps> = ({
@@ -37,19 +48,14 @@ const ScreenshotSlider: React.FC<ContainerProps> = ({
       setImages(restOfProps.images || [])
     }
     mounted.current = true
-  }, [restOfProps.photoIndex, restOfProps.isOpen])
+  }, [restOfProps.photoIndex, restOfProps.isOpen, restOfProps.images])
 
   let mainSrc = ""
-
   let prevSrc = ""
-
   let nextSrc = ""
-
   if (images.length > 0) {
     mainSrc = images[photoIndex].url
-
     prevSrc = images[(photoIndex + images.length - 1) % images.length].url
-
     nextSrc = images[(photoIndex + 1) % images.length].url
   }
 
@@ -71,40 +77,37 @@ const ScreenshotSlider: React.FC<ContainerProps> = ({
           setPhotoIndex(i)
         }
         return (
-          <IonSlide key={i} style={{ height: "500px" }} onClick={handleOnClick}>
+          <div className="ScreenshotCol" key={i}>
+            {restOfProps.isEdit && (
+              <div className="DeleteButtonBlock">
+                <IonButton
+                  className="ScreenshotDeleteButton"
+                  shape="round"
+                  size="small"
+                  color="light"
+                  onClick={() =>
+                    restOfProps.onDelete && restOfProps.onDelete(image.imageId)
+                  }
+                >
+                  <IonIcon color="danger" icon={trash} />
+                </IonButton>
+              </div>
+            )}
             <IonImg
               className="ScreenshotSliderImage"
               alt="screenshot"
+              onClick={handleOnClick}
               src={url}
             />
-          </IonSlide>
+          </div>
         )
       }),
-    [images]
+    [images, restOfProps.isEdit, restOfProps.onDelete]
   )
 
-  // const toolBarImagesWithCallback = useMemo(
-  //   () =>
-  //     React.Children.map(toolbarButtons, child =>
-  //       React.cloneElement(child, {
-  //         onClick: () => child.props.onClick(state),
-  //       })
-  //     ),
-  //   [toolbarButtons]
-  // )
-
   return (
-    <Fragment>
-      <IonSlides
-        className="slider"
-        pager={true}
-        options={{
-          initialSlide: 0,
-          speed: 400,
-        }}
-      >
-        {renderSlides}
-      </IonSlides>
+    <div className="ScreenshotRow">
+      {renderSlides}
       {isOpen && (
         <Lightbox
           wrapperClassName="ScreenshotSliderLightbox"
@@ -117,10 +120,9 @@ const ScreenshotSlider: React.FC<ContainerProps> = ({
           onCloseRequest={handleClose}
           onMovePrevRequest={handleMovePrev}
           onMoveNextRequest={handleMoveNext}
-          // toolbarButtons={toolBarImagesWithCallback}
         />
       )}
-    </Fragment>
+    </div>
   )
 }
 

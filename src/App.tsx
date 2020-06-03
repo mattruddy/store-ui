@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useCallback } from "react"
 import { Redirect, Route } from "react-router-dom"
 import {
   IonApp,
@@ -8,13 +8,14 @@ import {
   IonTabBar,
   IonTabButton,
   IonTabs,
+  IonToast,
+  getPlatforms,
 } from "@ionic/react"
 import { IonReactRouter } from "@ionic/react-router"
 import {
   person,
   home,
   logIn,
-  bandage,
   informationCircle,
   albumsOutline,
 } from "ionicons/icons"
@@ -30,49 +31,70 @@ import {
   Admin,
   Categories,
 } from "./pages"
-import { loadUserData, loadProfile } from "./data/user/user.actions"
-import { connect } from "./data/connect"
-import { AppContextProvider } from "./data/AppContext"
 import { RouteMap } from "./routes"
 import ReactGA from "react-ga"
-import { SideBar } from "./components"
 import Home from "./pages/Home"
+import { useDispatch, useSelector } from "react-redux"
+import { thunkLoadUserData, thunkLoadProfile } from "./redux/User/actions"
+import { ReduxCombinedState } from "./redux/RootReducer"
+import { clearAlerts } from "./redux/Alerts/actions"
+import { Axios } from "./redux/Actions"
 
 const App: React.FC = () => {
-  return (
-    <AppContextProvider>
-      <IonicAppConnected />
-    </AppContextProvider>
+  return <IonicApp />
+}
+
+const IonicApp: React.FC = () => {
+  const dispatch = useDispatch()
+  const loadUserData = useCallback(() => dispatch(thunkLoadUserData()), [
+    dispatch,
+  ])
+  const loadProfile = useCallback(() => dispatch(thunkLoadProfile()), [
+    dispatch,
+  ])
+  const clearAlert = useCallback(() => dispatch(clearAlerts()), [dispatch])
+
+  const { isLoggedIn, token, alerts, push } = useSelector(
+    ({ user: { isLoggedIn, token, push }, alerts }: ReduxCombinedState) => ({
+      isLoggedIn: isLoggedIn,
+      token: token,
+      alerts: alerts,
+      push: push,
+    })
   )
-}
 
-interface StateProps {
-  token?: string
-  isLoggedIn: boolean
-}
-
-interface DispatchProps {
-  loadUserData: typeof loadUserData
-  loadProfile: typeof loadProfile
-}
-
-interface IonicAppProps extends StateProps, DispatchProps {}
-
-const IonicApp: React.FC<IonicAppProps> = ({
-  token,
-  isLoggedIn,
-  loadUserData,
-  loadProfile,
-}) => {
   useEffect(() => {
     loadUserData()
   }, [])
 
   useEffect(() => {
-    if (isLoggedIn) {
+    if (isLoggedIn && token) {
       loadProfile()
     }
-  }, [isLoggedIn])
+  }, [isLoggedIn, token])
+
+  useEffect(() => {
+    ;(async () => {
+      if (isLoggedIn && token && push) {
+        let deviceType
+        const platforms = getPlatforms()
+        if (platforms.includes("ios")) {
+          deviceType = "IOS"
+        } else if (platforms.includes("android")) {
+          deviceType = "ANDROID"
+        } else {
+          deviceType = "DESKTOP"
+        }
+        const data = {
+          auth: push.auth,
+          key: push.key,
+          endPoint: push.key,
+          deviceType: deviceType,
+        }
+        await (await Axios()).post(`secure/device/add`, data)
+      }
+    })()
+  }, [isLoggedIn, token, push])
 
   useEffect(() => {
     ReactGA.initialize("UA-165324521-1")
@@ -139,21 +161,24 @@ const IonicApp: React.FC<IonicAppProps> = ({
             </IonTabButton>
           </IonTabBar>
         </IonTabs>
+        <IonToast
+          isOpen={alerts.show}
+          message={alerts.message}
+          duration={alerts.timeout}
+          onDidDismiss={clearAlert}
+          buttons={[
+            {
+              side: "end",
+              text: "Dismiss",
+              handler: () => {
+                clearAlert()
+              },
+            },
+          ]}
+        />
       </IonReactRouter>
     </IonApp>
   )
 }
 
 export default App
-
-const IonicAppConnected = connect<{}, StateProps, DispatchProps>({
-  mapStateToProps: (state) => ({
-    token: state.user.token,
-    isLoggedIn: state.user.isLoggedIn,
-  }),
-  mapDispatchToProps: {
-    loadUserData,
-    loadProfile,
-  },
-  component: IonicApp,
-})

@@ -1,11 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useMemo,
-  memo,
-  useCallback,
-} from "react"
+import React, { useState, useEffect, useRef, useMemo, useCallback } from "react"
 import {
   IonContent,
   IonHeader,
@@ -20,27 +13,38 @@ import {
   IonButtons,
   IonIcon,
   IonNote,
-  IonFooter,
 } from "@ionic/react"
 import { PWACard, SideBar, DebouncedSearch } from "../../components"
-import { getHome, getSearchApp } from "../../data/dataApi"
-import { PWA, HomePWAs } from "../../util/types"
-import { RouteComponentProps, useParams, useHistory } from "react-router"
+import { PWA } from "../../util/types"
+import { RouteComponentProps, useHistory } from "react-router"
 import "./styles.css"
-import { RouteMap, GetPwaCategoryUrl } from "../../routes"
-import { closeOutline, search, logoTwitter } from "ionicons/icons"
+import { GetPwaCategoryUrl } from "../../routes"
+import { closeOutline, search } from "ionicons/icons"
 import Footer from "../../components/Footer"
 import ReactGA from "react-ga"
+import { ReduxCombinedState } from "../../redux/RootReducer"
+import { thunkGetHomeData } from "../../redux/PWAs/actions"
+import { useSelector, useDispatch, shallowEqual } from "react-redux"
+import PWACardPlaceholder from "../../components/PWACardPlaceholder"
+import { Axios } from "../../redux/Actions"
 
-const Home: React.FC<RouteComponentProps> = () => {
+const Home: React.FC = () => {
   const history = useHistory()
-  const [pwaSearchValue, setPwaSearchValue] = useState<string>("")
   const [pwaSearchResults, setPwaSearchResults] = useState<PWA[]>([])
-  const [homeResult, setHomeResult] = useState<HomePWAs>()
   const [showSearch, setShowSearch] = useState<boolean>(false)
-
-  const [isLoading, setIsLoading] = useState<boolean>(false)
   const content = useRef<any>()
+
+  const { homeData, isLoading } = useSelector(
+    ({ pwas }: ReduxCombinedState) => ({
+      homeData: pwas.home,
+      isLoading: pwas.isPending,
+    }),
+    shallowEqual
+  )
+  const dispatch = useDispatch()
+  const getHomeData = useCallback(() => dispatch(thunkGetHomeData()), [
+    dispatch,
+  ])
 
   useIonViewDidEnter(() => {
     loadHomeApps()
@@ -50,8 +54,8 @@ const Home: React.FC<RouteComponentProps> = () => {
     ReactGA.pageview(`Home`)
   }, [])
 
-  const loadHomeApps = async () => {
-    setHomeResult(await getHome())
+  const loadHomeApps = () => {
+    getHomeData()
   }
 
   const onPress = (category: string) =>
@@ -68,10 +72,9 @@ const Home: React.FC<RouteComponentProps> = () => {
   }
 
   const handleOnSearchChange = useCallback(async (appName: string) => {
-    setPwaSearchValue(appName)
     if (appName) {
-      const results = await getSearchApp(appName)
-      setPwaSearchResults(results)
+      const { data } = await (await Axios()).get(`public/search/${appName}`)
+      setPwaSearchResults(data)
     } else {
       setPwaSearchResults([])
     }
@@ -95,11 +98,17 @@ const Home: React.FC<RouteComponentProps> = () => {
           </IonButton>
         </div>
         <IonRow className="HomeRow">
-          {homeResult?.topApps.map((topApp, i) => (
-            <IonCol key={i} sizeXs="6.7" sizeSm="4" sizeMd="5" sizeLg="4">
-              <PWACard url="/pwa" pwa={topApp} />
-            </IonCol>
-          ))}
+          {isLoading
+            ? [...Array(5)].map((_e, i) => (
+                <IonCol key={i} sizeXs="6.7" sizeSm="4" sizeMd="5" sizeLg="4">
+                  <PWACardPlaceholder />
+                </IonCol>
+              ))
+            : homeData.topApps.map((topApp, i) => (
+                <IonCol key={i} sizeXs="6.7" sizeSm="4" sizeMd="5" sizeLg="4">
+                  <PWACard url="/pwa" pwa={topApp} />
+                </IonCol>
+              ))}
         </IonRow>
         <div className="HomeRowHeader">
           <h1>New</h1>
@@ -111,11 +120,17 @@ const Home: React.FC<RouteComponentProps> = () => {
           </IonButton>
         </div>
         <IonRow className="HomeRow">
-          {homeResult?.newApps.map((newApp, i) => (
-            <IonCol key={i} sizeXs="6.7" sizeSm="4" sizeMd="5" sizeLg="4">
-              <PWACard url="/pwa" pwa={newApp} />
-            </IonCol>
-          ))}
+          {isLoading
+            ? [...Array(5)].map((_e, i) => (
+                <IonCol key={i} sizeXs="6.7" sizeSm="4" sizeMd="5" sizeLg="4">
+                  <PWACardPlaceholder />
+                </IonCol>
+              ))
+            : homeData.newApps.map((newApp, i) => (
+                <IonCol key={i} sizeXs="6.7" sizeSm="4" sizeMd="5" sizeLg="4">
+                  <PWACard url="/pwa" pwa={newApp} />
+                </IonCol>
+              ))}
         </IonRow>
         <div className="HomeRowHeader">
           <h1>Discover</h1>
@@ -127,15 +142,27 @@ const Home: React.FC<RouteComponentProps> = () => {
           </IonButton>
         </div>
         <IonRow className="HomeRow">
-          {homeResult?.discoverApps.map((discoverApp, i) => (
-            <IonCol key={i} sizeXs="6.7" sizeSm="4" sizeMd="5" sizeLg="4">
-              <PWACard url="/pwa" pwa={discoverApp} />
-            </IonCol>
-          ))}
+          {isLoading
+            ? [...Array(5)].map((_e, i) => (
+                <IonCol key={i} sizeXs="6.7" sizeSm="4" sizeMd="5" sizeLg="4">
+                  <PWACardPlaceholder />
+                </IonCol>
+              ))
+            : homeData.discoverApps.map((discoverApp, i) => (
+                <IonCol key={i} sizeXs="6.7" sizeSm="4" sizeMd="5" sizeLg="4">
+                  <PWACard url="/pwa" pwa={discoverApp} />
+                </IonCol>
+              ))}
         </IonRow>
       </>
     )
-  }, [homeResult])
+  }, [
+    homeData.discoverApps,
+    homeData.newApps,
+    homeData.topApps,
+    isLoading,
+    onPress,
+  ])
 
   return (
     <IonPage>
@@ -186,4 +213,4 @@ const Home: React.FC<RouteComponentProps> = () => {
   )
 }
 
-export default memo(Home)
+export default Home

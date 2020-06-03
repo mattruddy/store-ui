@@ -1,4 +1,11 @@
-import React, { useEffect, useState, memo } from "react"
+import React, {
+  useEffect,
+  useState,
+  memo,
+  useCallback,
+  useMemo,
+  Fragment,
+} from "react"
 import {
   IonContent,
   IonHeader,
@@ -13,7 +20,6 @@ import {
   IonInput,
   IonTextarea,
   IonText,
-  IonImg,
   IonGrid,
   IonRow,
   IonIcon,
@@ -27,48 +33,19 @@ import {
   IonSpinner,
   IonProgressBar,
 } from "@ionic/react"
-import {
-  getProfile,
-  postApp,
-  getLighthouseReport,
-  getManifest,
-  getImage,
-} from "../../data/dataApi"
-import { RouteComponentProps, withRouter } from "react-router"
+import { withRouter, useHistory } from "react-router"
 import ImageUploader from "react-images-upload"
-import { connect } from "../../data/connect"
 import { CategoryOptions, Lighthouse, PWACard } from "../../components"
-import { UserProfile, PWA } from "../../util/types"
 import { add, menu, logOut, contractSharp } from "ionicons/icons"
-import {
-  setToken,
-  setIsLoggedIn,
-  addApp,
-  setProfile,
-  setUsername,
-} from "../../data/user/user.actions"
 import { RouteMap } from "../../routes"
 import { noSpecialChars } from "../../util"
 import "./styles.css"
 import ReactTagInput from "@pathofdev/react-tag-input"
 import "@pathofdev/react-tag-input/build/index.css"
-
-interface OwnProps extends RouteComponentProps {}
-
-interface DispatchProps {
-  setToken: typeof setToken
-  setIsLoggedIn: typeof setIsLoggedIn
-  addApp: typeof addApp
-  setProfile: typeof setProfile
-  setUsername: typeof setUsername
-}
-
-interface StateProps {
-  pwas?: PWA[]
-  username?: string
-}
-
-interface ProfileProps extends OwnProps, DispatchProps, StateProps {}
+import { ReduxCombinedState } from "../../redux/RootReducer"
+import { useSelector, useDispatch } from "react-redux"
+import { thunkLogout, thunkAddPWA } from "../../redux/User/actions"
+import Axios from "axios"
 
 interface LighthouseTest {
   pass: boolean
@@ -79,16 +56,7 @@ interface LighthouseTest {
   error: boolean
 }
 
-const Profile: React.FC<ProfileProps> = ({
-  history,
-  setToken,
-  setIsLoggedIn,
-  addApp,
-  setProfile,
-  setUsername,
-  pwas,
-  username,
-}) => {
+const Profile: React.FC = () => {
   const [url, setUrl] = useState<string>("")
   const [urlError, setUrlError] = useState<string | undefined>(undefined)
   const [name, setName] = useState<string>("")
@@ -106,7 +74,6 @@ const Profile: React.FC<ProfileProps> = ({
   const [showModal, setShowModal] = useState(false)
   const [showAlert, setShowAlert] = useState(false)
   const [isValidLink, setIsValidLink] = useState<boolean>(true)
-  const [isLoading, setIsLoading] = useState<boolean>(true)
   const [toastMessage, setToastMessage] = useState<string>()
   const [showToast, setShowToast] = useState<boolean>(false)
   const [isSubmit, setIsSubmit] = useState<boolean>(false)
@@ -114,16 +81,59 @@ const Profile: React.FC<ProfileProps> = ({
   const [lightHouseTests, setLightHouseTests] = useState<LighthouseTest[]>([])
   const [tags, setTags] = useState<string[]>([])
   const [tagError, setTagError] = useState<boolean>(false)
+  const history = useHistory()
+
+  const { pwas, username, isLoading, isLoggedIn, status } = useSelector(
+    ({
+      user: { pwas, username, loading, isLoggedIn },
+      alerts: { status },
+    }: ReduxCombinedState) => ({
+      pwas: pwas,
+      username: username,
+      isLoading: loading,
+      isLoggedIn: isLoggedIn,
+      status: status,
+    })
+  )
+
+  const dispatch = useDispatch()
+  const logout = useCallback(() => dispatch(thunkLogout()), [dispatch])
+  const addApp = useCallback(
+    async (
+      name: string,
+      description: string,
+      url: string,
+      category: string,
+      icon: File,
+      screenshots: File[],
+      tags: string[]
+    ) => {
+      dispatch(
+        thunkAddPWA(name, description, url, category, icon, screenshots, tags)
+      )
+    },
+    [dispatch]
+  )
 
   useEffect(() => {
-    if (pwas) {
-      setIsLoading(false)
-    } else {
-      setIsLoading(true)
+    if (!isLoggedIn) {
+      history.push(RouteMap.LOGIN)
     }
-  }, [pwas])
+  }, [isLoggedIn])
 
-  const onPress = (option: string) => {
+  useEffect(() => {
+    if (status === "success" && showModal) {
+      setShowModal(false)
+      setName("")
+      setDesc("")
+      setCat("")
+      setUrl("")
+      setIcon(undefined)
+      setScreenshots(undefined)
+    }
+  }, [status])
+
+  const onCatPress = (option: string) => {
     setCatError(undefined)
     setCat(option)
   }
@@ -188,30 +198,7 @@ const Profile: React.FC<ProfileProps> = ({
     }
 
     if (check === 0) {
-      const resp = await postApp(
-        name,
-        desc,
-        url,
-        cat,
-        icon as File,
-        screenshots as File[],
-        tags
-      )
-      if (resp && resp.data && resp.data.message) {
-        setToastMessage(resp.data.message)
-        setShowToast(true)
-      } else if (resp && resp.appId) {
-        addApp(resp as PWA)
-        setName("")
-        setDesc("")
-        setCat("")
-        setUrl("")
-        setIcon(undefined)
-        setScreenshots(undefined)
-        setShowModal(false)
-        setToastMessage("Success")
-        setShowToast(true)
-      }
+      await addApp(name, desc, url, cat, icon!, screenshots!, tags)
     }
     setIsSubmit(false)
   }
@@ -257,7 +244,13 @@ const Profile: React.FC<ProfileProps> = ({
   const getLightHouseData = async (url: string) => {
     try {
       setLightHouseLoading(true)
-      const response = await getLighthouseReport(url)
+      const response = await Axios.request({
+        url: `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${url}&category=PWA`,
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+        },
+      })
       if (response.status === 200) {
         if (response.data) {
           if (response.data.lighthouseResult) {
@@ -310,35 +303,23 @@ const Profile: React.FC<ProfileProps> = ({
     setLightHouseLoading(false)
   }
 
-  // TODO: Get this working without CORS errors.
-  const getIcon = async (url: string) => {
-    try {
-      const inputURL = new URL(url)
-      const response = await getManifest(inputURL.origin)
-      if (response.status === 200) {
-        const { data } = response
-        const manifest = data.manifest
-        if (manifest.icons) {
-          const size512 = manifest.icons.find(
-            (x: { sizes: string }) => x.sizes === "512x512"
-          )
-          const imageResponse = await getImage(
-            `${inputURL.origin}/${
-              size512 ? size512.src : manifest.icons[0].src
-            }`
-          )
-          console.log(imageResponse)
-          return imageResponse.data
-        } else {
-          console.error(`Missing icons in manifest`)
-        }
-      } else {
-        console.error(`Error getting manifest: ${response}`)
-      }
-    } catch (e) {
-      console.error(`Could not get the icon: ${e}`)
-    }
-  }
+  const renderAppsSections: JSX.Element = useMemo(
+    () => (
+      <Fragment>
+        {!isLoading && pwas && (
+          <Fragment>
+            <h2 style={{ marginLeft: "20px" }}>Approved</h2>
+            <IonRow>{loadPwas("APPROVED")}</IonRow>
+            <h2 style={{ marginLeft: "20px" }}>Pending</h2>
+            <IonRow>{loadPwas("PENDING")}</IonRow>
+            <h2 style={{ marginLeft: "20px" }}>Denied</h2>
+            <IonRow>{loadPwas("DENIED")}</IonRow>
+          </Fragment>
+        )}
+      </Fragment>
+    ),
+    [pwas, isLoading]
+  )
 
   return (
     <IonPage>
@@ -494,7 +475,7 @@ const Profile: React.FC<ProfileProps> = ({
               </IonItem>
               <IonItem>
                 <IonLabel position="stacked">Category</IonLabel>
-                <CategoryOptions onPress={onPress} initValue={cat} />
+                <CategoryOptions onPress={onCatPress} initValue={cat} />
                 {catError && (
                   <IonText color="danger">
                     <p>{catError}</p>
@@ -533,7 +514,6 @@ const Profile: React.FC<ProfileProps> = ({
               onClick={() => {
                 if (url) {
                   getLightHouseData(url)
-                  console.log(lightHouseTests)
                 }
               }}
               disabled={lightHouseLoading}
@@ -617,14 +597,7 @@ const Profile: React.FC<ProfileProps> = ({
             </IonFabButton>
           </IonFabList>
         </IonFab>
-        <IonGrid>
-          {!isLoading && <h2 style={{ marginLeft: "20px" }}>Approved</h2>}
-          <IonRow>{loadPwas("APPROVED")}</IonRow>
-          {!isLoading && <h2 style={{ marginLeft: "20px" }}>Pending</h2>}
-          <IonRow>{loadPwas("PENDING")}</IonRow>
-          {!isLoading && <h2 style={{ marginLeft: "20px" }}>Denied</h2>}
-          <IonRow>{loadPwas("DENIED")}</IonRow>
-        </IonGrid>
+        <IonGrid>{renderAppsSections}</IonGrid>
         <IonAlert
           isOpen={showAlert}
           onDidDismiss={() => setShowAlert(false)}
@@ -638,18 +611,11 @@ const Profile: React.FC<ProfileProps> = ({
             {
               text: "Logout",
               handler: () => {
-                setToken(undefined)
-                setIsLoggedIn(false)
                 setName("")
                 setDesc("")
                 setCat("")
                 setUrl("")
-                setIcon(undefined)
-                setScreenshots(undefined)
-                setShowModal(false)
-                setProfile(undefined)
-                setUsername(undefined)
-                history.push(RouteMap.LOGIN)
+                logout()
               },
             },
           ]}
@@ -666,18 +632,4 @@ const Profile: React.FC<ProfileProps> = ({
   )
 }
 
-export default connect<OwnProps, StateProps, DispatchProps>({
-  mapStateToProps: ({ user: { pwas, username } }) => ({
-    pwas,
-    username,
-  }),
-
-  mapDispatchToProps: {
-    setToken,
-    setIsLoggedIn,
-    addApp,
-    setProfile,
-    setUsername,
-  },
-  component: withRouter(memo(Profile)),
-})
+export default withRouter(memo(Profile))

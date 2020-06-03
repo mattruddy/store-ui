@@ -1,5 +1,5 @@
-import React, { useState, useEffect, memo } from "react"
-import { RouteComponentProps, useLocation } from "react-router"
+import React, { useState, useEffect, memo, useCallback } from "react"
+import { RouteComponentProps, useLocation, useHistory } from "react-router"
 import {
   IonPage,
   IonRow,
@@ -13,62 +13,68 @@ import {
   IonIcon,
   IonGrid,
   IonImg,
+  IonSpinner,
 } from "@ionic/react"
-import {
-  setToken,
-  setIsLoggedIn,
-  loadProfile,
-} from "../../data/user/user.actions"
-import { postLogin, postDevice } from "../../data/dataApi"
-import { connect } from "../../data/connect"
 import queryString from "query-string"
 import { logoGithub } from "ionicons/icons"
 import { RouteMap } from "../../routes"
+import { useDispatch, useSelector } from "react-redux"
+import { thunkLogin, thunkThirdPartyLogin } from "../../redux/User/actions"
+import { ReduxCombinedState } from "../../redux/RootReducer"
+import ReactGA from "react-ga"
 
-interface OwnProps extends RouteComponentProps {}
-
-interface DispatchProps {
-  setToken: typeof setToken
-  setIsLoggedIn: typeof setIsLoggedIn
-}
-
-interface StateProps {}
-
-interface LoginProps extends OwnProps, DispatchProps, StateProps {}
-
-const LogIn: React.FC<LoginProps> = ({
-  setToken: setTokenAction,
-  history,
-  setIsLoggedIn: setIsLoggedInAction,
-}) => {
+const LogIn: React.FC = () => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [formSubmitted, setFormSubmitted] = useState(false)
   const [usernameError, setUsernameError] = useState(false)
   const [passwordError, setPasswordError] = useState(false)
   const [validationError, setValidationError] = useState(false)
-  const [toastMessage, setToastMessage] = useState<string>()
-  const [showToast, setShowToast] = useState<boolean>(false)
   const location = useLocation()
+
+  const history = useHistory()
+
+  const { isLoading, token } = useSelector(
+    ({ user: { loading, token } }: ReduxCombinedState) => ({
+      isLoading: loading,
+      token: token,
+    })
+  )
+  const dispatch = useDispatch()
+  const setThirdPartyLogin = useCallback(
+    (token: string) => dispatch(thunkThirdPartyLogin(token)),
+    [dispatch]
+  )
+
+  const login = useCallback(
+    async (username: string, password: string) =>
+      dispatch(thunkLogin(username, password)),
+    [dispatch]
+  )
 
   useEffect(() => {
     if (location && queryString.parse(location.search).token) {
       const thirdPartyLogin = async () => {
-        setTokenAction(queryString.parse(location.search).token as string)
-        setIsLoggedInAction(true)
-        const key = localStorage.getItem("push_key")
-        const auth = localStorage.getItem("push_auth")
-        const endpoint = localStorage.getItem("push_endpoint")
-        if (key && auth && endpoint) {
-          await postDevice(key, auth, endpoint)
-        }
-        history.push(RouteMap.PROFILE, { direction: "back" })
+        setThirdPartyLogin(queryString.parse(location.search).token as string)
+        ReactGA.event({
+          category: "github login",
+          action: "User logged in with github",
+        })
       }
       thirdPartyLogin()
     }
   }, [location])
 
-  const signup = async (e: React.FormEvent) => {
+  useEffect(() => {
+    if (token) {
+      history.push(RouteMap.PROFILE, { direction: "back" })
+
+      setPassword("")
+      setUsername("")
+    }
+  }, [token])
+
+  const onLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setFormSubmitted(true)
     if (!username || username.length < 6) {
@@ -78,29 +84,7 @@ const LogIn: React.FC<LoginProps> = ({
       setPasswordError(true)
     }
 
-    if (username && password) {
-      try {
-        const data = await postLogin(username, password)
-        if (!data.token) {
-          throw "No Token data!"
-        }
-        setTokenAction(data.token)
-        setIsLoggedInAction(true)
-        setValidationError(false)
-        setToastMessage("Success")
-        setShowToast(true)
-        if (username === "mattruddy") {
-          localStorage.setItem("me", username)
-        }
-        setPassword("")
-        setUsername("")
-        history.push(RouteMap.PROFILE)
-      } catch (e) {
-        if (e.message === "Invalid Credentials") {
-          setValidationError(true)
-        }
-      }
-    }
+    await login(username, password)
   }
 
   return (
@@ -115,7 +99,7 @@ const LogIn: React.FC<LoginProps> = ({
             />
           </IonRow>
 
-          <form noValidate onSubmit={signup}>
+          <form noValidate onSubmit={onLogin}>
             <IonRow>
               {formSubmitted && validationError && (
                 <IonCol size="12">
@@ -178,6 +162,7 @@ const LogIn: React.FC<LoginProps> = ({
               <IonCol size="6">
                 <IonButton type="submit" expand="block">
                   Log In
+                  {isLoading && <IonSpinner />}
                 </IonButton>
               </IonCol>
               <IonCol size="6">
@@ -198,23 +183,8 @@ const LogIn: React.FC<LoginProps> = ({
           </form>
         </IonGrid>
       </IonContent>
-      <IonToast
-        isOpen={showToast}
-        message={toastMessage}
-        duration={3000}
-        onDidDismiss={() => {
-          setShowToast(false)
-          setToastMessage("")
-        }}
-      />
     </IonPage>
   )
 }
 
-export default connect<OwnProps, StateProps, DispatchProps>({
-  mapDispatchToProps: {
-    setToken,
-    setIsLoggedIn,
-  },
-  component: memo(LogIn),
-})
+export default memo(LogIn)

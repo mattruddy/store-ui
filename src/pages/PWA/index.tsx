@@ -1,4 +1,11 @@
-import React, { useState, useMemo, memo, Fragment } from "react"
+import React, {
+  useState,
+  useMemo,
+  memo,
+  Fragment,
+  useEffect,
+  useCallback,
+} from "react"
 import {
   IonContent,
   IonHeader,
@@ -6,7 +13,6 @@ import {
   IonTitle,
   IonToolbar,
   useIonViewDidEnter,
-  useIonViewDidLeave,
   IonBackButton,
   IonButtons,
   IonToast,
@@ -15,19 +21,21 @@ import {
   IonRow,
   IonCol,
   IonLabel,
+  IonNote,
+  IonSpinner,
 } from "@ionic/react"
-import { getPWA, postRating } from "../../data/dataApi"
-import { RouteComponentProps, withRouter } from "react-router"
 import {
-  PWA as PWAType,
-  Rating as RatingType,
-  NewRating,
-} from "../../util/types"
-import { connect } from "../../data/connect"
-import { setHasReadInstall } from "../../data/user/user.actions"
+  thunkGetPWAFromName,
+  thunkGetRatings,
+  thunkAddRating,
+} from "../../redux/PWAs/actions"
+import { RouteComponentProps, withRouter } from "react-router"
 import { ScreenshotSlider, Rating, PWAInfo, RatingItem } from "../../components"
+import { thunkSetHasReadInstall } from "../../redux/User/actions"
 import { RouteMap } from "../../routes"
 import ReactGA from "react-ga"
+import { ReduxCombinedState } from "../../redux/RootReducer"
+import { useSelector, shallowEqual, useDispatch } from "react-redux"
 
 const stars = ["ONE", "TWO", "THREE", "FOUR", "FIVE"]
 
@@ -37,118 +45,114 @@ interface MatchParams {
 
 interface OwnProps extends RouteComponentProps<MatchParams> {}
 
-interface StateProps {
-  hasRead?: string
-}
-
-interface DispatchProps {
-  setHasReadInstall: typeof setHasReadInstall
-}
-
-type PWAProps = OwnProps & StateProps & DispatchProps
-
-const PWA: React.FC<PWAProps> = ({
+const PWA: React.FC<OwnProps> = ({
   match: {
     params: { pwaName },
   },
   history,
-  hasRead,
-  setHasReadInstall,
 }) => {
-  const [pwa, setPwa] = useState<PWAType | undefined>(undefined)
-  const [ratings, setRatings] = useState<RatingType[]>([])
-  const [currentStar, setCurrentStar] = useState<number>()
-  const [starCount, setStarCount] = useState<number>()
+  const [notFound, setNotFound] = useState<boolean>(false)
+  const [hasFetchedRatings, setHasFetchedRatings] = useState<boolean>(false)
+
+  const { pwa, hasRead, isRatingsLoading } = useSelector(
+    ({ pwas: { pwas, isRatingsPending }, user }: ReduxCombinedState) => ({
+      pwa: pwas.find((x) => pwaName.replace(/-/g, " ") === x.name),
+      hasRead: user.hasRead,
+      isRatingsLoading: isRatingsPending,
+    }),
+    shallowEqual
+  )
+  const dispatch = useDispatch()
+  const setHasReadInstall = useCallback(
+    (hasRead: boolean) => dispatch(thunkSetHasReadInstall(hasRead)),
+    [dispatch]
+  )
+  const addPWA = useCallback(
+    async (name: string) => dispatch(thunkGetPWAFromName(name)),
+    [dispatch]
+  )
+  const getRatings = useCallback(
+    async (appId: number) => dispatch(thunkGetRatings(appId)),
+    [dispatch]
+  )
+  const addRating = useCallback(
+    async (appId: number, starValue: string, comment?: string) =>
+      dispatch(thunkAddRating(appId, starValue, comment)),
+    [dispatch]
+  )
+
+  useEffect(() => {
+    ;(async () => {
+      if (!notFound) {
+        if (!pwa) {
+          const fetchedPwa = await addPWA(pwaName)
+          if (!fetchedPwa) {
+            setNotFound(true)
+          }
+        }
+      }
+    })()
+  }, [pwa, notFound])
 
   useIonViewDidEnter(() => {
-    loadPWA(pwaName)
     ReactGA.pageview(pwaName)
   }, [])
-
-  useIonViewDidLeave(() => {
-    setPwa(undefined)
-    setRatings([])
-    setCurrentStar(undefined)
-    setStarCount(undefined)
-  }, [])
-
-  const loadPWA = async (name: string) => {
-    const resp = (await getPWA(name)) as PWAType
-    setPwa(resp)
-    setRatings(resp.ratings)
-    setCurrentStar(resp.averageRating)
-    setStarCount(resp.ratingsCount)
-  }
 
   const onRatingSubmit = async (star: number, comment?: string) => {
     if (pwa) {
       const starVal = stars[star - 1]
-      const response = (await postRating(
-        starVal,
-        pwa?.appId,
-        comment
-      )) as NewRating
-      if (response && response.rating) {
-        if (response.rating.comment) {
-          ReactGA.event({
-            category: "comment",
-            action: `User added comment for ${pwa.name}`,
-          })
-          setRatings([response.rating, ...ratings])
-        }
-        setCurrentStar(response.averageStar)
-        setStarCount(response.ratingCount)
-        ReactGA.event({
-          category: "rating",
-          action: `User added rating for ${pwa.name}`,
-        })
-      }
+      addRating(pwa.appId, starVal, comment)
     }
   }
 
-  const renderRatings = useMemo(
-    () =>
-      ratings && ratings.length > 0 ? (
-        ratings.map((rating, i) => <RatingItem key={i} rating={rating} />)
-      ) : (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          <p>
-            <i>No Reviews Yet</i>
-          </p>
-        </div>
-      ),
-    [ratings]
-  )
+  const renderRatings = useMemo(() => {
+    if (!pwa) return
+    if ((!hasFetchedRatings && !pwa.ratings) || pwa.ratings.length < 1) {
+      setHasFetchedRatings(true)
+      getRatings(pwa.appId)
+    }
+    return isRatingsLoading ? (
+      <IonSpinner />
+    ) : pwa.ratings.length > 0 ? (
+      pwa.ratings.map((rating, i) => <RatingItem key={i} rating={rating} />)
+    ) : (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <p>
+          <i>No Reviews Yet</i>
+        </p>
+      </div>
+    )
+  }, [pwa, isRatingsLoading, hasFetchedRatings])
 
   return (
     <IonPage>
-      {pwa && (
-        <Fragment>
-          <IonHeader>
-            <IonToolbar>
-              <IonButtons slot="start">
-                <IonBackButton defaultHref="/home" />
-              </IonButtons>
-              <IonLabel style={{ marginRight: "10px" }} slot="end">
-                PWA Store
-              </IonLabel>
-              <IonTitle>{pwa.name}</IonTitle>
-            </IonToolbar>
-          </IonHeader>
-          <IonContent class="content">
-            <IonGrid fixed>
-              <IonRow>
+      <IonHeader>
+        <IonToolbar>
+          <IonButtons slot="start">
+            <IonBackButton defaultHref="/home" />
+          </IonButtons>
+          <IonLabel style={{ marginRight: "10px" }} slot="end">
+            PWA Store
+          </IonLabel>
+          {pwa && <IonTitle>{pwa.name}</IonTitle>}
+        </IonToolbar>
+      </IonHeader>
+      <IonContent class="content">
+        <IonGrid fixed>
+          <IonRow>
+            {pwa ? (
+              <Fragment>
                 <IonCol size="12">
                   <PWAInfo
                     pwa={pwa}
                     appId={pwa.appId}
-                    currentStar={currentStar as number}
-                    starCount={starCount as number}
+                    currentStar={pwa.averageRating}
+                    starCount={pwa.ratingsCount}
                     tags={pwa.tags}
                   />
                 </IonCol>
@@ -161,42 +165,41 @@ const PWA: React.FC<PWAProps> = ({
                   <Rating onSubmit={onRatingSubmit} />
                   <IonList>{renderRatings}</IonList>
                 </IonCol>
-              </IonRow>
-            </IonGrid>
-          </IonContent>
-          <IonToast
-            isOpen={hasRead !== undefined && hasRead === "false"}
-            position="top"
-            color="dark"
-            message="Please click to learn how to install a PWA"
-            buttons={[
-              {
-                text: "Close",
-                handler: () => {
-                  setHasReadInstall("true")
-                },
-              },
-              {
-                text: "Learn",
-                handler: () => {
-                  setHasReadInstall("true")
-                  history.push(RouteMap.ABOUT)
-                },
-              },
-            ]}
-          />
-        </Fragment>
-      )}
+              </Fragment>
+            ) : (
+              notFound && (
+                <IonCol>
+                  <h1 className="HomeCardsHeader">PWA Store</h1>
+                  <IonNote color="danger">App not found</IonNote>
+                </IonCol>
+              )
+            )}
+          </IonRow>
+        </IonGrid>
+      </IonContent>
+      <IonToast
+        isOpen={!hasRead}
+        position="top"
+        color="dark"
+        message="Please click to learn how to install a PWA"
+        buttons={[
+          {
+            text: "Close",
+            handler: () => {
+              setHasReadInstall(true)
+            },
+          },
+          {
+            text: "Learn",
+            handler: () => {
+              setHasReadInstall(true)
+              history.push(RouteMap.ABOUT)
+            },
+          },
+        ]}
+      />
     </IonPage>
   )
 }
 
-export default connect<OwnProps, StateProps, DispatchProps>({
-  mapStateToProps: (state) => ({
-    hasRead: state.user.hasRead,
-  }),
-  mapDispatchToProps: {
-    setHasReadInstall,
-  },
-  component: withRouter(memo(PWA)),
-})
+export default withRouter(memo(PWA))

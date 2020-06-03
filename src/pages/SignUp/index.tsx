@@ -1,5 +1,5 @@
-import React, { useState, memo, useEffect } from "react"
-import { RouteComponentProps } from "react-router"
+import React, { useState, memo, useEffect, useCallback } from "react"
+import { RouteComponentProps, useHistory } from "react-router"
 import {
   IonContent,
   IonPage,
@@ -10,31 +10,16 @@ import {
   IonInput,
   IonButton,
   IonText,
-  IonToast,
   IonImg,
+  IonSpinner,
 } from "@ionic/react"
-import { setToken, setIsLoggedIn } from "../../data/user/user.actions"
-import { postSignup } from "../../data/dataApi"
-import { connect } from "../../data/connect"
 import { RouteMap } from "../../routes"
 import ReactGA from "react-ga"
+import { thunkSignUp } from "../../redux/User/actions"
+import { useDispatch, useSelector } from "react-redux"
+import { ReduxCombinedState } from "../../redux/RootReducer"
 
-interface OwnProps extends RouteComponentProps {}
-
-interface DispatchProps {
-  setToken: typeof setToken
-  setIsLoggedIn: typeof setIsLoggedIn
-}
-
-interface StateProps {}
-
-interface SignIn extends OwnProps, DispatchProps, StateProps {}
-
-const SignUp: React.FC<SignIn> = ({
-  setToken: setTokenAction,
-  history,
-  setIsLoggedIn: setIsLoggedInAction,
-}) => {
+const SignUp: React.FC = () => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [email, setEmail] = useState("")
@@ -42,9 +27,32 @@ const SignUp: React.FC<SignIn> = ({
   const [usernameError, setUsernameError] = useState(false)
   const [emailError, setEmailError] = useState(false)
   const [passwordError, setPasswordError] = useState(false)
-  const [toastMessage, setToastMessage] = useState<string>()
-  const [showToast, setShowToast] = useState<boolean>(false)
   const [isValidPW, setIsValidPW] = useState<boolean>(false)
+  const history = useHistory()
+
+  const { isLoading, token } = useSelector(
+    ({ user: { loading, token } }: ReduxCombinedState) => ({
+      isLoading: loading,
+      token: token,
+    })
+  )
+
+  const dispatch = useDispatch()
+  const signUp = useCallback(
+    (username: string, password: string, email: string) =>
+      dispatch(thunkSignUp(username, password, email)),
+    [dispatch]
+  )
+
+  useEffect(() => {
+    if (token) {
+      history.push(RouteMap.PROFILE, { direction: "back" })
+
+      setPassword("")
+      setUsername("")
+      setEmail("")
+    }
+  }, [token])
 
   const checkValidPW = (pw: string) => {
     return RegExp(
@@ -53,7 +61,7 @@ const SignUp: React.FC<SignIn> = ({
     ).test(pw)
   }
 
-  const signup = async (e: React.FormEvent) => {
+  const onSignup = async (e: React.FormEvent) => {
     e.preventDefault()
     setFormSubmitted(true)
     if (!username) {
@@ -67,30 +75,7 @@ const SignUp: React.FC<SignIn> = ({
     }
 
     if (username && password && email) {
-      try {
-        const data = await postSignup(username, password, email)
-        if (!data.token) {
-          if (data.data && data.data.message) {
-            setToastMessage(data.data.message)
-            setShowToast(true)
-          }
-          return
-        }
-        setTokenAction(data.token)
-        setIsLoggedInAction(true)
-        setToastMessage("Success")
-        setShowToast(true)
-        setUsername("")
-        setEmail("")
-        setPassword("")
-        ReactGA.event({
-          category: "sign up",
-          action: "User signed up!",
-        })
-        history.push(RouteMap.PROFILE)
-      } catch (e) {
-        console.log(`Error signing up: ${e}`)
-      }
+      await signUp(username, password, email)
     }
   }
 
@@ -110,7 +95,7 @@ const SignUp: React.FC<SignIn> = ({
             />
           </IonRow>
 
-          <form noValidate onSubmit={signup}>
+          <form noValidate onSubmit={onSignup}>
             <IonRow>
               <IonCol size="12" className="primary-input-container">
                 <IonLabel position="stacked">Username</IonLabel>
@@ -185,29 +170,15 @@ const SignUp: React.FC<SignIn> = ({
               <IonCol size="12">
                 <IonButton type="submit" expand="block" disabled={!isValidPW}>
                   Sign Up
+                  {isLoading && <IonSpinner />}
                 </IonButton>
               </IonCol>
             </IonRow>
           </form>
         </IonGrid>
       </IonContent>
-      <IonToast
-        isOpen={showToast}
-        message={toastMessage}
-        duration={3000}
-        onDidDismiss={() => {
-          setShowToast(false)
-          setToastMessage("")
-        }}
-      />
     </IonPage>
   )
 }
 
-export default connect<OwnProps, StateProps, DispatchProps>({
-  mapDispatchToProps: {
-    setToken,
-    setIsLoggedIn,
-  },
-  component: memo(SignUp),
-})
+export default memo(SignUp)

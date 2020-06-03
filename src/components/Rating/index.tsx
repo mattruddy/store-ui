@@ -22,8 +22,6 @@ const Rating: React.FC<ContainerProps> = ({ onSubmit }) => {
   const [comment, setComment] = useState<string | undefined>()
   const [commentError, setCommentError] = useState<string | undefined>()
   const [isSubmit, setIsSubmit] = useState<boolean>(false)
-  const [showToast, setShowToast] = useState<boolean>(false)
-  const [toastMessage, setToastMessage] = useState<string | undefined>()
 
   const handleSubmit = () => {
     try {
@@ -34,8 +32,6 @@ const Rating: React.FC<ContainerProps> = ({ onSubmit }) => {
       }
 
       onSubmit(star, comment)
-      setToastMessage("Success")
-      setShowToast(true)
       setComment("")
       setStar(0)
     } finally {
@@ -53,12 +49,6 @@ const Rating: React.FC<ContainerProps> = ({ onSubmit }) => {
     if (isUnMounting.current) return
     setCommentError(undefined)
     setComment(e.detail.value!)
-  }
-
-  const handleToastChange = () => {
-    if (isUnMounting.current) return
-    setShowToast(false)
-    setToastMessage(undefined)
   }
 
   return (
@@ -107,12 +97,6 @@ const Rating: React.FC<ContainerProps> = ({ onSubmit }) => {
           </IonButton>
         </div>
       </Collapsible>
-      <IonToast
-        isOpen={showToast}
-        message={toastMessage}
-        duration={2000}
-        onDidDismiss={handleToastChange}
-      />
     </Fragment>
   )
 }

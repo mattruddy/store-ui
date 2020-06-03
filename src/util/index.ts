@@ -23,7 +23,7 @@ function fixRotation(file: File) {
       (img, data) => {
         if (data && data.exif) {
           //@ts-ignorets
-          console.log(data.exif.get("Orientation"))
+          //console.log(data.exif.get("Orientation"))
         }
         ;(img as HTMLCanvasElement).toBlob((blob) => {
           resolve(blob)
@@ -62,14 +62,14 @@ const shareUrl = (url: string, title: string, text: string) => {
       text,
     })
     .then((response: any) => {
-      console.log("Successfully shared: ", response)
+      //console.log("Successfully shared: ", response)
       ReactGA.event({
         category: "Share Url",
         action: "User shared a url!",
       })
     })
     .catch((error: any) => {
-      console.log(error)
+      console.error(error)
     })
 }
 
@@ -121,6 +121,22 @@ const validEmail = (email: string): boolean => {
   return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
 }
 
+// $& means the whole matched string
+const escapeRegExp = (s: string) =>
+  s ? s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") : s
+
+const stringMatch = (
+  s1: string,
+  s2: string,
+  caseSensitive: boolean = false
+) => {
+  const flags = caseSensitive ? "g" : "gi"
+  const cleanString = escapeRegExp(s2)
+
+  const regexMatch = new RegExp(cleanString, flags)
+  return s1.match(regexMatch)
+}
+
 export {
   blobToFile,
   fixFilesRotation,
@@ -132,4 +148,5 @@ export {
   capitalize,
   noSpecialChars,
   validEmail,
+  stringMatch,
 }

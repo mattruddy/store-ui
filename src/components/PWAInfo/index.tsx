@@ -8,13 +8,13 @@ import {
   IonLabel,
 } from "@ionic/react"
 import { ShareUrl } from "../"
-import { PWA, Rating } from "../../util/types"
-import { postScore } from "../../data/dataApi"
+import { PWA } from "../../util/types"
 import ReactGA from "react-ga"
 
 //@ts-ignore
 import StarRatings from "react-star-ratings"
 import { openOutline } from "ionicons/icons"
+import { Axios } from "../../redux/Actions"
 
 interface ContainerProps {
   pwa: PWA
@@ -69,15 +69,12 @@ const PWAInfo: React.FC<ContainerProps> = ({
           class="button"
           style={{ marginRight: "10px", marginLeft: "10px" }}
           onClick={() => {
-            postScore(appId)
-            ReactGA.outboundLink(
-              {
-                label: `Installed ${pwa.name}`,
-              },
-              () => {
-                window.open(pwa.link, "_blank")
-              }
-            )
+            ;(async () => await (await Axios()).post(`public/pwa/${appId}`))()
+            ReactGA.event({
+              category: "installed",
+              action: pwa.name,
+            })
+            window.open(pwa.link, "_blank")
           }}
         >
           FREE <IonIcon style={{ marginLeft: "10px" }} icon={openOutline} />
@@ -102,8 +99,8 @@ const PWAInfo: React.FC<ContainerProps> = ({
         <ShareUrl title={pwa.name} />
       </div>
       <div style={{ padding: "10px" }}>
-        {tags.map((x) => (
-          <IonChip>
+        {tags.map((x, i) => (
+          <IonChip key={i}>
             <IonLabel>{x}</IonLabel>
           </IonChip>
         ))}

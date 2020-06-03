@@ -1,4 +1,4 @@
-import React, { useState, memo, useEffect } from "react"
+import React, { useState, memo, useCallback, useEffect } from "react"
 import {
   IonContent,
   IonHeader,
@@ -14,30 +14,31 @@ import {
   IonBackButton,
   IonNote,
 } from "@ionic/react"
-import { postEmail } from "../../data/dataApi"
 import { RouteMap } from "../../routes"
-import { connect } from "../../data/connect"
-import { setEmail } from "../../data/user/user.actions"
 import { validEmail } from "../../util/index"
-import { RouteComponentProps } from "react-router"
+import { useHistory } from "react-router"
+import { ReduxCombinedState } from "../../redux/RootReducer"
+import { useSelector, useDispatch } from "react-redux"
+import { thunkSetEmail } from "../../redux/User/actions"
+import { Axios } from "../../redux/Actions"
 
-interface OwnProps extends RouteComponentProps {}
-
-interface DispatchProps {
-  setEmail: typeof setEmail
-}
-
-interface StateProps {
-  email?: string
-}
-interface SupportProps extends OwnProps, DispatchProps, StateProps {}
-
-const Support: React.FC<SupportProps> = ({ history, email, setEmail }) => {
+const Support: React.FC = () => {
   const [text, setText] = useState<string>("")
   const [fromEmail, setFromEmail] = useState<string>("")
   const [emailError, setEmailError] = useState<string | undefined>(undefined)
   const [toastText, setToastText] = useState<string>()
   const [showToast, setShowToast] = useState<boolean>(false)
+  const history = useHistory()
+
+  const { email } = useSelector(({ user: { email } }: ReduxCombinedState) => ({
+    email: email,
+  }))
+
+  const dispatch = useDispatch()
+  const setEmail = useCallback(
+    (email: string) => dispatch(thunkSetEmail(email)),
+    [dispatch]
+  )
 
   useEffect(() => {
     if (email && validEmail(email) && !email.endsWith("@pwa.com")) {
@@ -47,7 +48,11 @@ const Support: React.FC<SupportProps> = ({ history, email, setEmail }) => {
 
   const submitSupport = async () => {
     if (!text || !fromEmail || !validEmail(fromEmail)) return
-    await postEmail(text!, fromEmail)
+
+    await (await Axios()).post(`secure/support`, {
+      text: text!,
+      email: fromEmail,
+    })
     setEmail(fromEmail)
     setText("")
     setToastText("Sent. You will hear from us shortly")
@@ -107,7 +112,7 @@ const Support: React.FC<SupportProps> = ({ history, email, setEmail }) => {
             style={{ width: "95%", marginTop: "15px", borderRadius: "5px" }}
             type="button"
             expand="full"
-            disabled={(!validEmail(fromEmail) || !text)}
+            disabled={!validEmail(fromEmail) || !text}
             onClick={submitSupport}
           >
             Submit
@@ -125,12 +130,4 @@ const Support: React.FC<SupportProps> = ({ history, email, setEmail }) => {
   )
 }
 
-export default connect<OwnProps, StateProps, DispatchProps>({
-  mapStateToProps: ({ user: { email } }) => ({
-    email,
-  }),
-  mapDispatchToProps: {
-    setEmail,
-  },
-  component: memo(Support),
-})
+export default memo(Support)

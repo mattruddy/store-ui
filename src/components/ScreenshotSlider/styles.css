@@ -1,10 +1,30 @@
-.slider {
-  --bullet-background-active: var(--ion-color-primary);
+.ScreenshotRow {
+  display: flex;
+  height: 450px;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.ScreenshotCol {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+}
+
+.DeleteButtonBlock {
+  position: relative;
+  left: 90%;
+  bottom: 53%;
 }
 
 .ScreenshotSliderImage {
-  height: 400px;
-  max-width: 93%;
+  width: 250px;
+}
+
+.ScreenshotDeleteButton {
+  position: absolute;
+  z-index: 100000;
 }
 
 .ScreenshotSliderImage:hover {
