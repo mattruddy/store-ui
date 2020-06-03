@@ -78,9 +78,11 @@ const LogIn: React.FC = () => {
     setFormSubmitted(true)
     if (!username || username.length < 6) {
       setUsernameError(true)
+      return
     }
     if (!password) {
       setPasswordError(true)
+      return
     }
 
     await login(username, password)
