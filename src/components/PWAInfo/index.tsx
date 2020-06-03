@@ -8,7 +8,7 @@ import {
   IonLabel,
 } from "@ionic/react"
 import { ShareUrl } from "../"
-import { PWA, Rating } from "../../util/types"
+import { PWA } from "../../util/types"
 import ReactGA from "react-ga"
 
 //@ts-ignore
@@ -70,14 +70,11 @@ const PWAInfo: React.FC<ContainerProps> = ({
           style={{ marginRight: "10px", marginLeft: "10px" }}
           onClick={() => {
             ;(async () => await (await Axios()).post(`public/pwa/${appId}`))()
-            ReactGA.outboundLink(
-              {
-                label: `Installed ${pwa.name}`,
-              },
-              () => {
-                window.open(pwa.link, "_blank")
-              }
-            )
+            ReactGA.event({
+              category: "installed",
+              action: pwa.name,
+            })
+            window.open(pwa.link, "_blank")
           }}
         >
           FREE <IonIcon style={{ marginLeft: "10px" }} icon={openOutline} />

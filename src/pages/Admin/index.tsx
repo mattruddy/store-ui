@@ -37,7 +37,7 @@ const Admin: React.FC = () => {
   useEffect(() => {
     if (role === UserRole.Admin && isLoggedIn) {
       ;(async () => {
-        const resp = await (await Axios()).get(`secure/admin/pwas`)
+        const resp = await (await Axios()).get(`admin/pwas`)
         if (resp.data) {
           setPwas(resp.data)
         }
@@ -112,12 +112,13 @@ const Admin: React.FC = () => {
                   )}
                   <IonButton
                     onClick={async () => {
-                      const resp = await (
-                        await Axios()
-                      ).post(`secure/admin/pwa/${pwa.appId}`, {
-                        code: status,
-                        reasone: reason,
-                      })
+                      const resp = await (await Axios()).put(
+                        `admin/pwa/${pwa.appId}`,
+                        {
+                          code: status,
+                          reasone: reason,
+                        }
+                      )
                       if (resp.status === 200) {
                         setStatus(undefined)
                         setReason(undefined)
