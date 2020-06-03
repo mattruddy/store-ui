@@ -286,7 +286,7 @@ export const thunkThirdPartyLogin = (
     await setTokenStorage(token)
     await setIsLoggedInStorage("true")
   } finally {
-    setLoading(false)
+    dispatch(setLoading(false))
   }
 }
 
