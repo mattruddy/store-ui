@@ -107,7 +107,7 @@ const PWA: React.FC<OwnProps> = ({
 
   const renderRatings = useMemo(() => {
     if (!pwa) return
-    if ((!hasFetchedRatings && !pwa.ratings) || pwa.ratings.length < 1) {
+    if (!hasFetchedRatings && pwa.ratings && pwa.ratings.length < 1) {
       setHasFetchedRatings(true)
       getRatings(pwa.appId)
     }
