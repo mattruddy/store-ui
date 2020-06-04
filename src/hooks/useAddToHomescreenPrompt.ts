@@ -30,6 +30,9 @@ export interface BeforeInstallPromptEvent extends Event {
   prompt(): Promise<void>
 }
 
+export type BeforeInstallPromptEventType = BeforeInstallPromptEvent | (() => Promise<void> | undefined) | undefined
+
+
 export const useAddToHomescreenPrompt = () => {
   const [prompt, setPrompt] = useState<BeforeInstallPromptEvent>()
 
@@ -37,12 +40,14 @@ export const useAddToHomescreenPrompt = () => {
     if (prompt) {
       return prompt.prompt()
     }
+
     return Promise.reject(
       new Error(
         'Tried installing before browser sent "beforeinstallprompt" event'
       )
     )
   }
+
   useEffect(() => {
     const ready = (e: any) => {
       e.preventDefault()
@@ -55,6 +60,6 @@ export const useAddToHomescreenPrompt = () => {
       window.removeEventListener("beforeinstallprompt", ready)
     }
   }, [])
-  
+
   return [prompt, promptToInstall]
 }
