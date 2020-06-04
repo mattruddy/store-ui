@@ -88,7 +88,7 @@ const IonicApp: React.FC = () => {
         const data = {
           auth: push.auth,
           key: push.key,
-          endPoint: push.key,
+          endPoint: push.endpoint,
           deviceType: deviceType,
         }
         await (await Axios()).post(`secure/device/add`, data)

@@ -156,11 +156,15 @@ const thunkAddRating = (
   starValue: string,
   comment?: string
 ): ThunkAction<void, ReduxCombinedState, null, Action<string>> => async (
-  dispatch
+  dispatch,
+  getState
 ) => {
+  const {
+    user: { isLoggedIn },
+  } = getState()
   dispatch(loadingRatings())
   try {
-    const url = `/public/pwa/rating/${appId}`
+    const url = `/${isLoggedIn ? "secure" : "public"}/pwa/rating/${appId}`
     const axiosInstance = await Axios()
     const requestData = comment
       ? { star: starValue, comment: comment }
