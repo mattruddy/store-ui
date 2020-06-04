@@ -32,6 +32,7 @@ export interface BeforeInstallPromptEvent extends Event {
 
 export const useAddToHomescreenPrompt = () => {
   const [prompt, setPrompt] = useState<BeforeInstallPromptEvent>()
+
   const promptToInstall = () => {
     if (prompt) {
       return prompt.prompt()
@@ -47,13 +48,13 @@ export const useAddToHomescreenPrompt = () => {
       e.preventDefault()
       setPrompt(e)
     }
+
     window.addEventListener("beforeinstallprompt", ready)
+
     return () => {
       window.removeEventListener("beforeinstallprompt", ready)
     }
   }, [])
+  
   return [prompt, promptToInstall]
 }
-
-
-export 

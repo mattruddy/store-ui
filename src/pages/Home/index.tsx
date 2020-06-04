@@ -14,7 +14,13 @@ import {
   IonIcon,
   IonNote,
 } from "@ionic/react"
-import { PWACard, SideBar, DebouncedSearch } from "../../components"
+import {
+  PWACard,
+  SideBar,
+  DebouncedSearch,
+  AddToHomeScreen,
+} from "../../components"
+import { useAddToHomescreenPrompt } from "../../hooks/useAddToHomescreenPrompt"
 import { PWA } from "../../util/types"
 import { RouteComponentProps, useHistory } from "react-router"
 import "./styles.css"
@@ -30,6 +36,8 @@ import { Axios } from "../../redux/Actions"
 
 const Home: React.FC = () => {
   const history = useHistory()
+  const [prompt, promptToInstall] = useAddToHomescreenPrompt()
+
   const [pwaSearchResults, setPwaSearchResults] = useState<PWA[]>([])
   const [showSearch, setShowSearch] = useState<boolean>(false)
   const content = useRef<any>()
@@ -172,6 +180,10 @@ const Home: React.FC = () => {
             <IonButton slot="end" onClick={toggleSearch}>
               <IonIcon icon={showSearch ? closeOutline : search} />
             </IonButton>
+            <AddToHomeScreen
+              prompt={prompt}
+              promptToInstall={promptToInstall}
+            />
           </IonButtons>
           <IonTitle>
             <img

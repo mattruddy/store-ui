@@ -2,7 +2,7 @@ import { getWindowDimensions, WindowDimensions } from "./utils"
 import { SET_WINDOW, WindowActionTypes, WindowState } from "./types"
 
 const DEFAULT_STATE_WINDOW: WindowState = {
-  dimensions: getWindowDimensions(),
+  ...getWindowDimensions(),
 }
 
 const windowReducer = (
@@ -11,7 +11,7 @@ const windowReducer = (
 ): WindowState => {
   switch (action.type) {
     case SET_WINDOW:
-      return { ...state, dimensions: getWindowDimensions() }
+      return { ...state, ...getWindowDimensions() }
 
     default:
       return state

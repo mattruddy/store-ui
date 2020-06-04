@@ -1,3 +1,4 @@
+export { default as AddToHomeScreen } from "./AddToHomeScreen"
 export { default as CategoryOptions } from "./CategoryOptions"
 export { default as DebouncedSearch } from "./DebouncedSearch"
 export { default as Lighthouse } from "./Lighthouse"

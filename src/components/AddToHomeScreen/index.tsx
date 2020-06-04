@@ -3,12 +3,12 @@ import { ReduxCombinedState } from "../../redux/RootReducer"
 import { useSelector } from "react-redux"
 import { IonButton } from "@ionic/react"
 import BrowserIcon from "./BrowserIcon"
-import { BeforeInstallPromptEvent } from "./prompt"
+import { BeforeInstallPromptEvent } from "../../hooks/useAddToHomescreenPrompt"
 
 interface AddToHomeScreenModalProps {
-  width: string
-  prompt: BeforeInstallPromptEvent
-  promptToInstall: Event
+  width?: string
+  prompt?: BeforeInstallPromptEvent
+  promptToInstall?: () => void
 }
 
 const AddToHomeScreenModal: React.FC<AddToHomeScreenModalProps> = ({
@@ -19,11 +19,9 @@ const AddToHomeScreenModal: React.FC<AddToHomeScreenModalProps> = ({
   const { isInStandalone, isOnMobileBrowser, userAgent } = useSelector(
     ({
       window: {
-        dimensions: {
-          isInStandalone,
-          isOnMobileBrowser,
-          navigator: { userAgent },
-        },
+        isInStandalone,
+        isOnMobileBrowser,
+        navigator: { userAgent },
       },
     }: ReduxCombinedState) => ({
       isInStandalone,
@@ -51,7 +49,7 @@ const AddToHomeScreenModal: React.FC<AddToHomeScreenModalProps> = ({
     >
       <BrowserIcon
         isOnMobileBrowser={isOnMobileBrowser}
-        userAgent={userAgent}
+        browserUserAgent={userAgent}
       />{" "}
       Install
     </IonButton>
