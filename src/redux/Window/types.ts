@@ -3,7 +3,7 @@ import { WindowDimensions } from "./utils"
 export const SET_WINDOW = "SET_WINDOW"
 
 export interface WindowState {
-  dimensions: WindowDimensions | undefined
+  dimensions: WindowDimensions
 }
 
 export interface SetWindowAction {
