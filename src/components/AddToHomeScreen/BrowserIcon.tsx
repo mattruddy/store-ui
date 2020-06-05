@@ -1,5 +1,13 @@
 import React, { memo } from "react"
 import { IonIcon } from "@ionic/react"
+import {
+  logoChrome,
+  logoFirefox,
+  logoEdge,
+  logoAndroid,
+  logoApple,
+  logoWindows,
+} from "ionicons/icons"
 
 interface GetBrowserIconProps {
   isOnMobileBrowser: boolean
@@ -13,10 +21,10 @@ const BrowserIcon: React.FC<GetBrowserIconProps> = ({
   if (!browserUserAgent) return <div>No Browser Agent Detected</div>
   if (!isOnMobileBrowser) {
     if (browserUserAgent.includes("Chrome")) {
-      return <IonIcon className="logo-chrome" />
+      return <IonIcon icon={logoChrome} />
     }
     if (browserUserAgent.includes("Firefox")) {
-      return <IonIcon className="logo-firefox" />
+      return <IonIcon icon={logoFirefox} />
     }
     // if (browserUserAgent.includes("Safari")) {
     //   return <IonIcon className="logo-chrome" />
@@ -25,17 +33,17 @@ const BrowserIcon: React.FC<GetBrowserIconProps> = ({
       browserUserAgent.includes("Edge") ||
       browserUserAgent.includes("Explorer")
     ) {
-      return <IonIcon className="logo-edge" />
+      return <IonIcon icon={logoEdge} />
     }
   } else {
     if (browserUserAgent.includes("Android")) {
-      return <IonIcon className="logo-android" />
+      return <IonIcon icon={logoAndroid} />
     }
     if (browserUserAgent.includes("iP")) {
-      return <IonIcon className="logo-apple" />
+      return <IonIcon icon={logoApple} />
     }
     if (browserUserAgent.includes("Windows")) {
-      return <IonIcon className="logo-windows" />
+      return <IonIcon className={logoWindows} />
     }
   }
   return <div>No Browser Detected</div>

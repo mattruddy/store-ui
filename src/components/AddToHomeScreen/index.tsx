@@ -42,19 +42,22 @@ const AddToHomeScreenModal: React.FC<AddToHomeScreenModalProps> = ({
     }
   }, [prompt])
 
-  return (
+  return !isInStandalone && !isDisabled ? (
     <IonButton
       style={styles}
-      color="success"
+      color="primary"
+      fill="outline"
       onClick={handlePromptToInstall}
-      disabled={isInStandalone || isDisabled}
     >
       <BrowserIcon
         isOnMobileBrowser={isOnMobileBrowser}
         browserUserAgent={userAgent}
-      />{" "}
+      />
+      {"  "}
       Install
     </IonButton>
+  ) : (
+    <></>
   )
 }
 

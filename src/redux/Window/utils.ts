@@ -1,5 +1,5 @@
 const isOnMobileBrowser = (userAgent: string) =>
-  /iPhone|iPad|iPod|Android|Windows/i.test(userAgent)
+  /iPhone|iPad|iPod|Android/i.test(userAgent)
 
 const getConnectionProps = ({
   downlink,
@@ -114,9 +114,9 @@ const getWindowDimensions = () => {
     navigator,
     performance,
   } = window
-
+  console.log(navigator)
   const isMobile = innerWidth < 768
-
+  console.log(window)
   return {
     innerHeight,
     innerWidth,
@@ -130,7 +130,7 @@ const getWindowDimensions = () => {
     isInStandalone: matchMedia("(display-mode: standalone)").matches,
     isOnMobileBrowser: isOnMobileBrowser(window.navigator.userAgent),
   } as WindowDimensions
-}  
+}
 
 export interface WindowDimensions {
   innerHeight: number

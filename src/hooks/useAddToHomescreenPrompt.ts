@@ -27,18 +27,20 @@ export interface BeforeInstallPromptEvent extends Event {
    * Allows a developer to show the install prompt at a time of their own choosing.
    * This method returns a Promise.
    */
-  prompt(): Promise<void>
+  prompt: () => Promise<void>
 }
 
-export type BeforeInstallPromptEventType = BeforeInstallPromptEvent | (() => Promise<void> | undefined) | undefined
-
+export type BeforeInstallPromptEventType =
+  | BeforeInstallPromptEvent
+  | (() => Promise<void> | undefined)
+  | undefined
 
 export const useAddToHomescreenPrompt = () => {
-  const [prompt, setPrompt] = useState<BeforeInstallPromptEvent>()
+  const [displayPrompt, setDisplayPrompt] = useState<BeforeInstallPromptEvent>()
 
   const promptToInstall = () => {
-    if (prompt) {
-      return prompt.prompt()
+    if (displayPrompt) {
+      return displayPrompt.prompt()
     }
 
     return Promise.reject(
@@ -49,9 +51,9 @@ export const useAddToHomescreenPrompt = () => {
   }
 
   useEffect(() => {
-    const ready = (e: any) => {
-      e.preventDefault()
-      setPrompt(e)
+    const ready = (prompt: any) => {
+      prompt.preventDefault()
+      setDisplayPrompt(prompt)
     }
 
     window.addEventListener("beforeinstallprompt", ready)
@@ -61,5 +63,5 @@ export const useAddToHomescreenPrompt = () => {
     }
   }, [])
 
-  return [prompt, promptToInstall]
+  return [displayPrompt, promptToInstall]
 }
