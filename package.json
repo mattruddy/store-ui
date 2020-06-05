@@ -45,7 +45,8 @@
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
-    "typescript": "3.7.4"
+    "typescript": "3.7.4",
+    "victory": "^34.3.9"
   },
   "scripts": {
     "start": "react-scripts start",

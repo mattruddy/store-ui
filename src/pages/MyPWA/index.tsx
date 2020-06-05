@@ -22,6 +22,8 @@ import {
   IonChip,
   IonLabel,
   IonGrid,
+  IonRow,
+  IonCol,
 } from "@ionic/react"
 import ImageUploader from "react-images-upload"
 import { withRouter, useParams, useHistory } from "react-router"
@@ -45,6 +47,7 @@ import { ReduxCombinedState } from "../../redux/RootReducer"
 import { useSelector, useDispatch } from "react-redux"
 import { thunkDeletePWA, thunkUpdateApp } from "../../redux/User/actions"
 import "./styles.css"
+import Stats from "../../components/Stats"
 
 const MyPWA: React.FC = () => {
   const [screenshots, setScreenshots] = useState<Image[]>()
@@ -273,182 +276,207 @@ const MyPWA: React.FC = () => {
           )}
         </IonFab>
         <IonGrid fixed>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <div style={{ display: "flex", alignItems: "center" }}>
-              {pwa && (
-                <IonImg
-                  alt="icon"
-                  style={{
-                    height: "80px",
-                    width: "80px",
-                    borderRadius: "5px",
-                    margin: "10px",
-                  }}
-                  src={pwa.icon}
-                />
-              )}
-              {pwa && (
-                <div
-                  style={{
-                    paddingLeft: "10px",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-around",
-                    height: "70px",
-                  }}
-                >
-                  {isEdit ? (
-                    <>
-                      <IonInput
-                        style={{ padding: "0", boxShadow: "0 0 3px #ccc" }}
-                        maxlength={25}
-                        value={name}
-                        onIonChange={(e) => {
-                          setNameError(undefined)
-                          setName(e.detail.value!)
-                        }}
-                      />
-                      {nameError && (
-                        <IonText color="danger">
-                          <p>{nameError}</p>
-                        </IonText>
-                      )}
-                    </>
-                  ) : (
-                    <p style={{ margin: "0", fontSize: "20px" }}>{pwa.name}</p>
-                  )}
-                  {isEdit ? (
-                    <>
-                      <CategoryOptions onPress={onCatChange} initValue={cat} />
-                      {catError && (
-                        <IonText color="danger">
-                          <p>{catError}</p>
-                        </IonText>
-                      )}
-                    </>
-                  ) : (
-                    <small>{pwa.category}</small>
-                  )}
-                </div>
-              )}
-            </div>
-            {pwa && (
-              <IonButton
-                style={{ marginRight: "10px", marginLeft: "10px" }}
-                onClick={() => {
-                  window.open(link, "_blank")
+          <IonRow>
+            <IonCol size="12">{pwa && <Stats appId={pwa.appId} />}</IonCol>
+            <IonCol size="12">
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
                 }}
               >
-                FREE{" "}
-                <IonIcon style={{ marginLeft: "10px" }} icon={openOutline} />
-              </IonButton>
-            )}
-          </div>
-          {pwa && (
-            <div style={{ marginLeft: "10px" }}>
-              <StarRatings
-                rating={pwa.averageRating}
-                starDimension="20px"
-                starSpacing="2px"
-              />
-              <span style={{ marginLeft: "5px" }}>({pwa.ratingsCount})</span>
-            </div>
-          )}
-          {!isLoading && (
-            <h2 style={{ paddingTop: "10px", paddingLeft: "10px" }}>Tags</h2>
-          )}
-          {isEdit ? (
-            <>
-              <div style={{ paddingLeft: "10px", paddingRight: "10px" }}>
-                <ReactTagInput
-                  tags={tags}
-                  onChange={(newTags) => setTags(newTags)}
-                  validator={(tag) => {
-                    const valid = tag.length <= 30
-                    setTagError(!valid)
-                    return valid
-                  }}
-                  removeOnBackspace={true}
-                  maxTags={5}
-                  placeholder="Add tags"
-                />
-                {tagError && (
-                  <IonText color="danger">
-                    <p>Must be less than 30 characters</p>
-                  </IonText>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  {pwa && (
+                    <IonImg
+                      alt="icon"
+                      style={{
+                        height: "80px",
+                        width: "80px",
+                        borderRadius: "5px",
+                        margin: "10px",
+                      }}
+                      src={pwa.icon}
+                    />
+                  )}
+                  {pwa && (
+                    <div
+                      style={{
+                        paddingLeft: "10px",
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "space-around",
+                        height: "70px",
+                      }}
+                    >
+                      {isEdit ? (
+                        <>
+                          <IonInput
+                            style={{ padding: "0", boxShadow: "0 0 3px #ccc" }}
+                            maxlength={25}
+                            value={name}
+                            onIonChange={(e) => {
+                              setNameError(undefined)
+                              setName(e.detail.value!)
+                            }}
+                          />
+                          {nameError && (
+                            <IonText color="danger">
+                              <p>{nameError}</p>
+                            </IonText>
+                          )}
+                        </>
+                      ) : (
+                        <p style={{ margin: "0", fontSize: "20px" }}>
+                          {pwa.name}
+                        </p>
+                      )}
+                      {isEdit ? (
+                        <>
+                          <CategoryOptions
+                            onPress={onCatChange}
+                            initValue={cat}
+                          />
+                          {catError && (
+                            <IonText color="danger">
+                              <p>{catError}</p>
+                            </IonText>
+                          )}
+                        </>
+                      ) : (
+                        <small>{pwa.category}</small>
+                      )}
+                    </div>
+                  )}
+                </div>
+                {pwa && (
+                  <IonButton
+                    style={{ marginRight: "10px", marginLeft: "10px" }}
+                    onClick={() => {
+                      window.open(link, "_blank")
+                    }}
+                  >
+                    FREE{" "}
+                    <IonIcon
+                      style={{ marginLeft: "10px" }}
+                      icon={openOutline}
+                    />
+                  </IonButton>
                 )}
               </div>
-            </>
-          ) : (
-            <div style={{ paddingLeft: "10px", paddingRight: "10px" }}>
-              {pwa &&
-                pwa.tags.map((x, i) => (
-                  <IonChip key={i}>
-                    <IonLabel>{x}</IonLabel>
-                  </IonChip>
-                ))}
-            </div>
-          )}
-          {!isLoading && (
-            <h2 style={{ paddingTop: "10px", paddingLeft: "10px" }}>About</h2>
-          )}
-          {isEdit ? (
-            <>
-              <IonTextarea
-                style={{ margin: "10px", boxShadow: "0 0 3px #ccc" }}
-                rows={10}
-                value={desc}
-                onIonChange={(e) => {
-                  setDescError(undefined)
-                  setDesc(e.detail.value!)
-                }}
-              />
-              {descError && (
-                <IonText color="danger">
-                  <p>{descError}</p>
-                </IonText>
+              {pwa && (
+                <div style={{ marginLeft: "10px" }}>
+                  <StarRatings
+                    rating={pwa.averageRating}
+                    starDimension="20px"
+                    starSpacing="2px"
+                  />
+                  <span style={{ marginLeft: "5px" }}>
+                    ({pwa.ratingsCount})
+                  </span>
+                </div>
               )}
-            </>
-          ) : (
-            <div
-              style={{ height: "200px", padding: "15px", overflowY: "scroll" }}
-            >
-              {pwa && pwa.description}
-            </div>
-          )}
-          {!isLoading && <h2 style={{ paddingLeft: "10px" }}>Screenshots</h2>}
-          {renderScreenshots}
-          {isEdit && (
-            <form>
-              <ImageUploader
-                fileContainerStyle={{
-                  boxShadow: "none",
-                }}
-                withPreview={true}
-                withLabel={false}
-                singleImage={false}
-                withIcon={false}
-                onChange={onFileChange}
-                buttonText="Add screenshots"
-                imgExtension={[".jpg", ".png", ".jpeg"]}
-                maxFileSize={5242880}
-              />
-            </form>
-          )}
-          {!isEdit && <h2 style={{ paddingLeft: "10px" }}>Reviews</h2>}
-          {!isEdit && pwa && pwa.ratings && (
-            <IonList>
-              {pwa.ratings.map((rating, idx) => (
-                <RatingItem key={idx} rating={rating} />
-              ))}
-            </IonList>
-          )}
+              {!isLoading && (
+                <h2 style={{ paddingTop: "10px", paddingLeft: "10px" }}>
+                  Tags
+                </h2>
+              )}
+              {isEdit ? (
+                <>
+                  <div style={{ paddingLeft: "10px", paddingRight: "10px" }}>
+                    <ReactTagInput
+                      tags={tags}
+                      onChange={(newTags) => setTags(newTags)}
+                      validator={(tag) => {
+                        const valid = tag.length <= 30
+                        setTagError(!valid)
+                        return valid
+                      }}
+                      removeOnBackspace={true}
+                      maxTags={5}
+                      placeholder="Add tags"
+                    />
+                    {tagError && (
+                      <IonText color="danger">
+                        <p>Must be less than 30 characters</p>
+                      </IonText>
+                    )}
+                  </div>
+                </>
+              ) : (
+                <div style={{ paddingLeft: "10px", paddingRight: "10px" }}>
+                  {pwa &&
+                    pwa.tags.map((x, i) => (
+                      <IonChip key={i}>
+                        <IonLabel>{x}</IonLabel>
+                      </IonChip>
+                    ))}
+                </div>
+              )}
+              {!isLoading && (
+                <h2 style={{ paddingTop: "10px", paddingLeft: "10px" }}>
+                  About
+                </h2>
+              )}
+              {isEdit ? (
+                <>
+                  <IonTextarea
+                    style={{ margin: "10px", boxShadow: "0 0 3px #ccc" }}
+                    rows={10}
+                    value={desc}
+                    onIonChange={(e) => {
+                      setDescError(undefined)
+                      setDesc(e.detail.value!)
+                    }}
+                  />
+                  {descError && (
+                    <IonText color="danger">
+                      <p>{descError}</p>
+                    </IonText>
+                  )}
+                </>
+              ) : (
+                <div
+                  style={{
+                    height: "200px",
+                    padding: "15px",
+                    overflowY: "scroll",
+                  }}
+                >
+                  {pwa && pwa.description}
+                </div>
+              )}
+              {!isLoading && (
+                <h2 style={{ paddingLeft: "10px" }}>Screenshots</h2>
+              )}
+              {renderScreenshots}
+              {isEdit && (
+                <form>
+                  <ImageUploader
+                    fileContainerStyle={{
+                      boxShadow: "none",
+                    }}
+                    withPreview={true}
+                    withLabel={false}
+                    singleImage={false}
+                    withIcon={false}
+                    onChange={onFileChange}
+                    buttonText="Add screenshots"
+                    imgExtension={[".jpg", ".png", ".jpeg"]}
+                    maxFileSize={5242880}
+                  />
+                </form>
+              )}
+              {!isEdit && <h2 style={{ paddingLeft: "10px" }}>Reviews</h2>}
+              {!isEdit && pwa && pwa.ratings && (
+                <IonList>
+                  {pwa.ratings.map((rating, idx) => (
+                    <RatingItem key={idx} rating={rating} />
+                  ))}
+                </IonList>
+              )}
+            </IonCol>
+          </IonRow>
         </IonGrid>
       </IonContent>
       <IonAlert
