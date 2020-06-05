@@ -227,24 +227,64 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-light-shade: #1e2023;
   --ion-color-light-tint: #383a3e;
   --ion-background-color: #121212;
+  --starRatedColor: #eeeeee;
 }
 
 .dark-theme .content,
-.dark-theme .SideBarCategory {
+.dark-theme {
   --background: #121212 !important;
 }
-.dark-theme strong,
-h2 {
-  color: rgb(201, 200, 200);
+
+.dark-theme .SideBarCategory {
+  --background: #161616 !important;
 }
+
+.dark-theme .SideBar {
+  background: #161616 !important;
+}
+
+.dark-theme h2 {
+  color: #eeeeee !important;
+}
+
+.dark-theme .RatingCommentBackground {
+  background: #161616;
+}
+
+.dark-theme .RatingCommentTextArea {
+  background: #161616;
+}
+
+.dark-theme .SideBarCategory {
+  color: #eeeeee !important;
+}
+
+.dark-theme .CategoriesItemIcon {
+  color: #eeeeee !important;
+}
+
+.dark-theme .StandardCategoriesItemIcon {
+  color: #eeeeee !important;
+}
+
+.dark-theme .PWACardTitle {
+  color: #eeeeee !important;
+}
+
+/* StarRatedColor.dark-theme {
+  color: #eeeeee !important;
+} */
 
 /*iOS dark-theme */
 
 .ios .dark-theme {
-  --ion-background-color: #1e2023;
-  --ion-text-color: rgb(201, 200, 200);
-  --ion-color-step-50: #1e2023;
-  --ion-toolbar-background: #1e2023;
+  --ion-background-color: #121212;
+  --ion-text-color: #eeeeee;
+  --ion-title-color: #eeeeee;
+  --ion-color-step-50: #121212;
+  --ion-toolbar-background: #161616;
+  --color: #eeeeee !important;
+  --ion-tab-bar-background: #161616 !important;
 }
 
 /*material design dark-theme */
@@ -253,6 +293,7 @@ h2 {
   --ion-text-color: #eeeeee;
   --ion-title-color: #eeeeee;
   --ion-color-step-50: #121212;
-  --ion-toolbar-background: #121212;
-  --color: #eeeeee;
+  --ion-toolbar-background: #161616;
+  --color: #eeeeee !important;
+  --ion-tab-bar-background: #161616 !important;
 }

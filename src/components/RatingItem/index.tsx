@@ -26,13 +26,7 @@ const RatingItem: React.FC<ContainerProps> = ({ rating }) => {
             starSpacing="2px"
           />
         </div>
-        <div
-          style={{
-            minHeight: "200px",
-            background: "rgb(248,248,248)",
-            borderRadius: "30px",
-          }}
-        >
+        <div className="RatingCommentBackground">
           <p style={{ margin: "20px" }}>{rating.comment}</p>
         </div>
         <div

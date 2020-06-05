@@ -189,6 +189,7 @@ const Home: React.FC = () => {
           </IonButtons>
           <IonTitle>
             <img
+              className="HeaderLogo"
               alt="icon"
               style={{ height: 40, width: 40 }}
               src="assets/icon/logo.png"
@@ -197,12 +198,14 @@ const Home: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent className="content" ref={content}>
-        <IonRow>
-          <IonProgressBar
-            type={isLoading ? "indeterminate" : "determinate"}
-            color="primary"
-          />
-        </IonRow>
+        {isLoading && (
+          <IonRow>
+            <IonProgressBar
+              type={isLoading ? "indeterminate" : "determinate"}
+              color="primary"
+            />
+          </IonRow>
+        )}
         <IonRow>
           <SideBar category={"home"} />
           {showSearch && (
