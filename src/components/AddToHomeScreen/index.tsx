@@ -30,7 +30,11 @@ const AddToHomeScreenModal: React.FC<AddToHomeScreenModalProps> = ({
     })
   )
 
-  const handlePromptToInstall = () => promptToInstall
+  const handlePromptToInstall = () => {
+    if (promptToInstall && promptToInstall instanceof Function) {
+      promptToInstall()
+    }
+  }
 
   const [isDisabled, setDisabledState] = useState(true)
 
