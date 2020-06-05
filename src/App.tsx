@@ -36,6 +36,7 @@ import ReactGA from "react-ga"
 import Home from "./pages/Home"
 import { useDispatch, useSelector } from "react-redux"
 import { thunkLoadUserData, thunkLoadProfile } from "./redux/User/actions"
+import { SetWindow } from "./redux/Window/actions"
 import { ReduxCombinedState } from "./redux/RootReducer"
 import { clearAlerts } from "./redux/Alerts/actions"
 import { Axios } from "./redux/Actions"
@@ -54,6 +55,8 @@ const IonicApp: React.FC = () => {
   ])
   const clearAlert = useCallback(() => dispatch(clearAlerts()), [dispatch])
 
+  const handleResize = useCallback(() => dispatch(SetWindow()), [dispatch])
+
   const { isLoggedIn, token, alerts, push } = useSelector(
     ({ user: { isLoggedIn, token, push }, alerts }: ReduxCombinedState) => ({
       isLoggedIn: isLoggedIn,
@@ -62,6 +65,15 @@ const IonicApp: React.FC = () => {
       push: push,
     })
   )
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize)
+    handleResize()
+
+    return () => {
+      window.removeEventListener("resize", handleResize)
+    }
+  }, [])
 
   useEffect(() => {
     loadUserData()
