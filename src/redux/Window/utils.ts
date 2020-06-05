@@ -114,9 +114,8 @@ const getWindowDimensions = () => {
     navigator,
     performance,
   } = window
-  console.log(navigator)
   const isMobile = innerWidth < 768
-  console.log(window)
+
   return {
     innerHeight,
     innerWidth,

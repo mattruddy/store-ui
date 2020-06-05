@@ -4,14 +4,15 @@ import { useSelector } from "react-redux"
 import { IonButton } from "@ionic/react"
 import BrowserIcon from "./BrowserIcon"
 import { BeforeInstallPromptEventType } from "../../hooks/useAddToHomescreenPrompt"
+import AddToHomeScreenModal from "./AddToHomeScreenModal"
 
-interface AddToHomeScreenModalProps {
+interface AddToHomeScreenProps {
   width?: string
   prompt: BeforeInstallPromptEventType
   promptToInstall: BeforeInstallPromptEventType
 }
 
-const AddToHomeScreenModal: React.FC<AddToHomeScreenModalProps> = ({
+const AddToHomeScreen: React.FC<AddToHomeScreenProps> = ({
   width = "auto",
   prompt,
   promptToInstall,
@@ -31,12 +32,15 @@ const AddToHomeScreenModal: React.FC<AddToHomeScreenModalProps> = ({
   )
 
   const handlePromptToInstall = () => {
-    if (promptToInstall && promptToInstall instanceof Function) {
-      promptToInstall()
+    if (!isInStandalone && !isDisabled && promptToInstall instanceof Function) {
+      return promptToInstall()
+    } else {
+      return setIsOpen(true)
     }
   }
 
   const [isDisabled, setDisabledState] = useState(true)
+  const [isOpen, setIsOpen] = useState<boolean>(false)
 
   const styles = { width }
 
@@ -46,23 +50,26 @@ const AddToHomeScreenModal: React.FC<AddToHomeScreenModalProps> = ({
     }
   }, [prompt])
 
-  return !isInStandalone && !isDisabled ? (
-    <IonButton
-      style={styles}
-      color="primary"
-      fill="outline"
-      onClick={handlePromptToInstall}
-    >
-      <BrowserIcon
-        isOnMobileBrowser={isOnMobileBrowser}
-        browserUserAgent={userAgent}
-      />
-      {"  "}
-      Install
-    </IonButton>
-  ) : (
-    <></>
+  const handleCloseModal = () => setIsOpen(false)
+
+  return (
+    <>
+      <IonButton
+        style={styles}
+        color="primary"
+        fill="outline"
+        onClick={handlePromptToInstall}
+      >
+        <BrowserIcon
+          isOnMobileBrowser={isOnMobileBrowser}
+          browserUserAgent={userAgent}
+        />
+        {"  "}
+        Install
+      </IonButton>
+      <AddToHomeScreenModal isOpen={isOpen} onClose={handleCloseModal} />
+    </>
   )
 }
 
-export default memo(AddToHomeScreenModal)
+export default memo(AddToHomeScreen)
