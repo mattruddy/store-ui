@@ -13,6 +13,7 @@ import {
   IonButtons,
   IonIcon,
   IonNote,
+  IonToggle,
 } from "@ionic/react"
 import { PWACard, SideBar, DebouncedSearch } from "../../components"
 import { PWA } from "../../util/types"
@@ -27,6 +28,7 @@ import { thunkGetHomeData } from "../../redux/PWAs/actions"
 import { useSelector, useDispatch, shallowEqual } from "react-redux"
 import PWACardPlaceholder from "../../components/PWACardPlaceholder"
 import { Axios } from "../../redux/Actions"
+import { thunkSetDarkMode } from "../../redux/User/actions"
 
 const Home: React.FC = () => {
   const history = useHistory()
@@ -34,10 +36,14 @@ const Home: React.FC = () => {
   const [showSearch, setShowSearch] = useState<boolean>(false)
   const content = useRef<any>()
 
-  const { homeData, isLoading } = useSelector(
-    ({ pwas }: ReduxCombinedState) => ({
-      homeData: pwas.home,
-      isLoading: pwas.isPending,
+  const { homeData, isLoading, darkMode } = useSelector(
+    ({
+      pwas: { home, isPending },
+      user: { darkMode },
+    }: ReduxCombinedState) => ({
+      homeData: home,
+      isLoading: isPending,
+      darkMode,
     }),
     shallowEqual
   )
@@ -45,6 +51,10 @@ const Home: React.FC = () => {
   const getHomeData = useCallback(() => dispatch(thunkGetHomeData()), [
     dispatch,
   ])
+  const setDarkmode = useCallback(
+    (active: boolean) => dispatch(thunkSetDarkMode(active)),
+    [dispatch]
+  )
 
   useIonViewDidEnter(() => {
     loadHomeApps()
@@ -169,6 +179,10 @@ const Home: React.FC = () => {
       <IonHeader>
         <IonToolbar className="header">
           <IonButtons slot="end">
+            <IonToggle
+              checked={darkMode}
+              onIonChange={(e) => setDarkmode(!darkMode)}
+            />
             <IonButton slot="end" onClick={toggleSearch}>
               <IonIcon icon={showSearch ? closeOutline : search} />
             </IonButton>
