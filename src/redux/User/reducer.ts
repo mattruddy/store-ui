@@ -9,8 +9,10 @@ import {
   USER_REMOVE_APP,
   USER_HAS_READ_INSTALL,
   UserRole,
+  USER_SET_DARKMODE,
 } from "./types"
 import { AppActionTypes, REDUX_RESET } from "../App/types"
+import { act } from "react-dom/test-utils"
 
 const DEFAULT_STATE_USER: UserState = {
   token: "",
@@ -31,6 +33,12 @@ const userReducer = (
   action: UserActionTypes | AppActionTypes
 ): UserState => {
   switch (action.type) {
+    case USER_SET_DARKMODE:
+      return {
+        ...state,
+        darkMode: action.payload,
+      }
+
     case USER_SET_LOADING:
       return {
         ...state,

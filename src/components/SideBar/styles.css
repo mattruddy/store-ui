@@ -1,5 +1,5 @@
 .SideBar {
-  background: rgb(248, 248, 248);
+  --background: rgb(248, 248, 248);
   height: calc(100vh - 118px);
   overflow-y: auto;
   position: fixed;

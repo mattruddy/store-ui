@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react"
+import React, { useEffect, useCallback, useState } from "react"
 import { Redirect, Route } from "react-router-dom"
 import {
   IonApp,
@@ -35,7 +35,11 @@ import { RouteMap } from "./routes"
 import ReactGA from "react-ga"
 import Home from "./pages/Home"
 import { useDispatch, useSelector } from "react-redux"
-import { thunkLoadUserData, thunkLoadProfile } from "./redux/User/actions"
+import {
+  thunkLoadUserData,
+  thunkLoadProfile,
+  thunkSetDarkMode,
+} from "./redux/User/actions"
 import { ReduxCombinedState } from "./redux/RootReducer"
 import { clearAlerts } from "./redux/Alerts/actions"
 import { Axios } from "./redux/Actions"
@@ -53,18 +57,36 @@ const IonicApp: React.FC = () => {
     dispatch,
   ])
   const clearAlert = useCallback(() => dispatch(clearAlerts()), [dispatch])
+  const setDarkMode = useCallback(
+    (prefersDarkMode: boolean) => dispatch(thunkSetDarkMode(prefersDarkMode)),
+    [dispatch]
+  )
 
-  const { isLoggedIn, token, alerts, push } = useSelector(
-    ({ user: { isLoggedIn, token, push }, alerts }: ReduxCombinedState) => ({
+  const { isLoggedIn, token, alerts, push, darkMode } = useSelector(
+    ({
+      user: { isLoggedIn, token, push, darkMode },
+      alerts,
+    }: ReduxCombinedState) => ({
       isLoggedIn: isLoggedIn,
       token: token,
       alerts: alerts,
       push: push,
+      darkMode,
     })
   )
 
+  const handleTheme = (): void => {
+    const prefersDark: MediaQueryList = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    )
+    console.log(prefersDark)
+    setDarkMode(prefersDark.matches)
+  }
+
+  console.log(darkMode)
   useEffect(() => {
     loadUserData()
+    handleTheme()
   }, [])
 
   useEffect(() => {
@@ -101,7 +123,7 @@ const IonicApp: React.FC = () => {
   }, [])
 
   return (
-    <IonApp>
+    <IonApp className={`${darkMode ? "dark-theme" : ""}`}>
       <IonReactRouter>
         <IonTabs>
           <IonRouterOutlet animated={false}>

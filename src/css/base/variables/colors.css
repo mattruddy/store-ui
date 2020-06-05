@@ -142,3 +142,53 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-base: #0e76a8;
   --ion-color-contrast: #ffffff;
 }
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ion-background-color: #1e2023;
+    --ion-text-color: rgb(201, 200, 200);
+  }
+  .content {
+    --background: #1e2023 !important;
+  }
+  .SideBarCategory {
+    --background: #1e2023 !important;
+  }
+  strong,
+  h2,
+  .PWACardTitle {
+    color: rgb(201, 200, 200) !important;
+  }
+}
+
+/* Fall back */
+.dark-theme {
+  --ion-background-color: #1e2023;
+  --ion-text-color: rgb(201, 200, 200);
+}
+.dark-theme .content,
+.dark-theme .SideBarCategory {
+  --background: #1e2023 !important;
+}
+.dark-theme strong,
+h2 {
+  color: rgb(201, 200, 200);
+}
+
+/*iOS dark-theme */
+
+.ios .dark-theme {
+  --ion-background-color: #1e2023;
+  --ion-text-color: rgb(201, 200, 200);
+  --ion-color-step-50: #1e2023;
+  --ion-toolbar-background: #1e2023;
+}
+
+/*material design dark-theme */
+.md .dark-theme {
+  --ion-background-color: #1e2023;
+  --ion-text-color: rgb(201, 200, 200);
+  --ion-color-step-50: #1e2023;
+  --ion-toolbar-background: #1e2023;
+}
