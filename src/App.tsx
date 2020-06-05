@@ -79,11 +79,9 @@ const IonicApp: React.FC = () => {
     const prefersDark: MediaQueryList = window.matchMedia(
       "(prefers-color-scheme: dark)"
     )
-    console.log(prefersDark)
     setDarkMode(prefersDark.matches)
   }
 
-  console.log(darkMode)
   useEffect(() => {
     loadUserData()
     handleTheme()
