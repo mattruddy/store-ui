@@ -46,22 +46,19 @@ const Stats: React.FC<ComponentProps> = ({ appId }) => {
 
   const calculateData = (data: Date[]) => {
     const moments = analytics.installDates.map((d) => moment(d.toString()))
-    console.log(moments)
     let dates: Moment[] = []
     if (data.length > 0) {
       const minDate = moment.min(moments)
       const maxDate = moment.max(moments)
       let currentDate = minDate
       while (currentDate.isBefore(maxDate)) {
-        console.log(currentDate.toDate().toString())
         dates = [...dates, moment(currentDate.toDate().toString())]
-        console.log(dates.map((x) => x.toDate().toString()))
         currentDate.add(timeDelta, "second")
-        console.log(currentDate.toDate().toString())
       }
+      currentDate.add(timeDelta, "second")
+      dates = [...dates, moment(currentDate.toDate().toString())]
 
       const datesReduce = (prev: Moment, curr: Moment, arr: Moment[]) => {
-        console.log({ prev, curr, arr })
         return arr.reduce<number>(
           (acc, c) => acc + (c.isBetween(prev, curr) ? 1 : 0),
           0
@@ -70,7 +67,6 @@ const Stats: React.FC<ComponentProps> = ({ appId }) => {
 
       const sums = dates
         .reduce<SumAcc[]>((sumsAcc, currentDate) => {
-          console.log({ sumsAcc, currentDate })
           return [
             ...sumsAcc,
             {
@@ -86,7 +82,6 @@ const Stats: React.FC<ComponentProps> = ({ appId }) => {
           ]
         }, [])
         .map((x) => x.sum)
-      console.log(sums)
 
       const finalData = dates.map((date, i) => ({
         x: date.toDate().toLocaleString(),
