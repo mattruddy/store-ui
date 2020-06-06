@@ -13,6 +13,7 @@ import StarRatings from "react-star-ratings"
 import { PWA } from "../../util/types"
 import "./styles.css"
 import { useHistory } from "react-router"
+import { Axios } from "../../redux/Actions"
 
 interface ContainerProps {
   pwa: PWA
@@ -23,7 +24,10 @@ const PWACard: React.FC<ContainerProps> = ({ pwa, url }) => {
   const history = useHistory()
   const href = `${url}/${pwa.name.replace(/ /g, "-")}`
 
-  const onPress = () => history.push(href)
+  const onPress = async () => {
+    history.push(href)
+    await (await Axios()).post(`public/pwa/view/${pwa.appId}`)
+  }
 
   return (
     <IonCard className="PWACard fade-in" button onClick={onPress}>
