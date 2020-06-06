@@ -4,6 +4,7 @@ import React from "react"
 import { VictoryChart, VictoryArea, VictoryAxis, VictoryLine } from "victory"
 import { Axios } from "../../redux/Actions"
 import moment, { Moment } from "moment"
+import { time } from "ionicons/icons"
 
 interface ComponentProps {
   appId: number
@@ -48,14 +49,12 @@ const Stats: React.FC<ComponentProps> = ({ appId }) => {
     let dates: Moment[] = []
     if (data.length > 0) {
       const minDate = moment.min(moments)
-      const maxDate = moment.max(moments)
+      const maxDate = moment.max(moments).add(timeDelta, "second")
       let currentDate = minDate
       while (currentDate.isBefore(maxDate)) {
         dates = [...dates, moment(currentDate.toDate().toString())]
         currentDate.add(timeDelta, "second")
       }
-      currentDate.add(timeDelta, "second")
-      dates = [...dates, moment(currentDate.toDate().toString())]
 
       const datesReduce = (prev: Moment, curr: Moment, arr: Moment[]) => {
         return arr.reduce<number>(
@@ -86,6 +85,7 @@ const Stats: React.FC<ComponentProps> = ({ appId }) => {
         x: date.toDate().toLocaleString(),
         y: sums[i],
       }))
+      console.log(finalData)
       return finalData
     }
     return []
