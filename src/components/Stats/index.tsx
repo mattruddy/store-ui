@@ -34,7 +34,6 @@ const Stats: React.FC<ComponentProps> = ({ appId }) => {
   const getData = async () => {
     const resp = await (await Axios()).get(`secure/pwas/stats/${appId}`)
     const { data } = resp
-    console.log(data)
     setAnalytics(data as AppAnalytics)
   }
 
@@ -87,7 +86,6 @@ const Stats: React.FC<ComponentProps> = ({ appId }) => {
         x: date.toDate().toLocaleString(),
         y: sums[i],
       }))
-      console.log(finalData)
       return finalData
     }
     return []
