@@ -85,7 +85,6 @@ const Stats: React.FC<ComponentProps> = ({ appId }) => {
         x: date.toDate().toLocaleString(),
         y: sums[i],
       }))
-      console.log(finalData)
       return finalData
     }
     return []
