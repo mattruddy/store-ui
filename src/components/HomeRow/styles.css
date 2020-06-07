@@ -1,0 +1,24 @@
+.HomeRow {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.13);
+  height: 250px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  flex-wrap: nowrap;
+}
+
+.HomeRowHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.HomeRowHeaderTitle {
+  margin-left: 16px;
+}
+
+.HomeViewMoreButton {
+  --background: transparent;
+  --box-shadow: none;
+  --color: var(--ion-color-primary);
+}

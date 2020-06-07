@@ -1,25 +1,13 @@
-.PWAsBackButton {
+.PWAsHeader {
   display: none;
-}
-
-.select {
-  display: none;
-}
-
-.side {
-  height: 100vh;
-  padding: 0;
 }
 
 .PWAsEmptyNote {
   margin-left: 32px;
 }
 
-.HomeRow {
-  height: 250px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  flex-wrap: nowrap;
+.PWAsTitle {
+  margin-left: 20px;
 }
 
 .CatTabButton {
@@ -27,20 +15,12 @@
 }
 
 @media screen and (max-width: 768px) {
-  .PWAsBackButton {
+  .PWAsHeader {
     display: inline;
   }
 
-  .side {
+  .PWAsTitle {
     display: none;
-  }
-
-  .select {
-    display: inline;
-  }
-
-  .seg {
-    display: flex;
   }
 
   .CatTabButton {

@@ -136,7 +136,6 @@ const PWA: React.FC<OwnProps> = ({
           <IonButtons slot="start">
             <IonBackButton defaultHref="/home" />
           </IonButtons>
-          {pwa && <IonTitle>{pwa.name}</IonTitle>}
         </IonToolbar>
       </IonHeader>
       <IonContent class="content">

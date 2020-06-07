@@ -1,21 +1,14 @@
-.HomeRowHeader {
+.HomeHeader {
+  margin-left: 16px;
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
   align-items: center;
 }
 
-.HomeCardListCol {
-  padding: 30px;
+.HomeHeader h1 {
+  font-size: 35px;
 }
 
-.HomeCardsHeader {
-  font-size: 40px;
-  margin: 0;
-}
-
-.HomeViewMoreButton {
-  --background: transparent;
-  --box-shadow: none;
-  --color: var(--ion-color-primary);
+.HomeInstallButton {
+  margin-right: 16px;
 }

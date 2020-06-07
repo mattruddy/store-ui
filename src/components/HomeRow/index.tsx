@@ -1,8 +1,10 @@
 import React, { memo, Fragment } from "react"
-import { IonButton, IonRow, IonCol } from "@ionic/react"
+import { IonButton, IonRow, IonCol, IonIcon } from "@ionic/react"
 import { PWA } from "../../util/types"
 import PWACardPlaceholder from "../PWACardPlaceholder"
 import { PWACard } from ".."
+import { arrowForward } from "ionicons/icons"
+import "./styles.css"
 
 interface ContainerProps {
   pwas: PWA[]
@@ -22,12 +24,12 @@ const HomeRow: React.FC<ContainerProps> = ({
   return (
     <Fragment>
       <div className="HomeRowHeader">
-        <h1>{title}</h1>
+        <h1 className="HomeRowHeaderTitle">{title}</h1>
         <IonButton
           className="HomeViewMoreButton"
           onClick={() => onPressCallback(linkTo)}
         >
-          More
+          <IonIcon icon={arrowForward} />
         </IonButton>
       </div>
       <IonRow className="HomeRow">

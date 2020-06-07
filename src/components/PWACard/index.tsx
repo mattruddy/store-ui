@@ -28,7 +28,7 @@ const PWACard: React.FC<ContainerProps> = ({ pwa, url }) => {
   return (
     <IonCard className="PWACard" button onClick={onPress}>
       <IonCardHeader className="PWACardHeader PWACardContent">
-        <IonImg alt="icon" className="PWACardImage" src={pwa.icon} />
+        <img alt="icon" className="PWACardImage" src={pwa.icon} />
       </IonCardHeader>
       <IonCardContent>
         <div className="PWACardContent">

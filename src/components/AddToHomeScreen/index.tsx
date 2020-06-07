@@ -2,7 +2,6 @@ import React, { useState, useEffect, memo } from "react"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { useSelector } from "react-redux"
 import { IonButton } from "@ionic/react"
-import BrowserIcon from "./BrowserIcon"
 import { BeforeInstallPromptEventType } from "../../hooks/useAddToHomescreenPrompt"
 import AddToHomeScreenModal from "./AddToHomeScreenModal"
 
@@ -54,17 +53,7 @@ const AddToHomeScreen: React.FC<AddToHomeScreenProps> = ({
 
   return (
     <>
-      <IonButton
-        style={styles}
-        color="primary"
-        fill="outline"
-        onClick={handlePromptToInstall}
-      >
-        <BrowserIcon
-          isOnMobileBrowser={isOnMobileBrowser}
-          browserUserAgent={userAgent}
-        />
-        {"  "}
+      <IonButton style={styles} fill="clear" onClick={handlePromptToInstall}>
         Install
       </IonButton>
       <AddToHomeScreenModal isOpen={isOpen} onClose={handleCloseModal} />

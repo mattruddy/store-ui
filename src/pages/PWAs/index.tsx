@@ -137,14 +137,22 @@ const PWAs: React.FC<RouteComponentProps> = () => {
 
   return (
     <IonPage>
+      <IonHeader className="PWAsHeader ion-no-border">
+        <IonToolbar>
+          <IonButtons slot="start">
+            <IonBackButton defaultHref="/home" />
+          </IonButtons>
+          <IonTitle>
+            {capitalize(
+              cat === "" ? "TOP" : cat === "TRENDING" ? "DISCOVER" : cat
+            )}
+          </IonTitle>
+        </IonToolbar>
+      </IonHeader>
       <IonContent className="content" ref={content}>
         <IonRow>
           <IonCol className="CardListCol">
-            <h1
-              style={{
-                marginLeft: "20px",
-              }}
-            >
+            <h1 className="PWAsTitle">
               {capitalize(
                 cat === "" ? "TOP" : cat === "TRENDING" ? "DISCOVER" : cat
               )}
