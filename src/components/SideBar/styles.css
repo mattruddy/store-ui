@@ -1,5 +1,6 @@
 .side {
-  --side-max-width: 100px;
+  --side-max-width: 220px;
+  --side-min-width: 220px;
 }
 
 .SideBar {
