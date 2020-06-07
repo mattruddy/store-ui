@@ -1,9 +1,9 @@
+.side {
+  --side-max-width: 100px;
+}
+
 .SideBar {
   background: rgb(248, 248, 248);
-  height: calc(100vh - 118px);
-  overflow-y: auto;
-  position: fixed;
-  width: 190px;
 }
 
 .SideBarCategory {

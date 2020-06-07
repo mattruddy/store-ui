@@ -6,7 +6,7 @@ import {
   IonItemGroup,
   IonLabel,
   IonIcon,
-  IonCol,
+  IonContent,
 } from "@ionic/react"
 import { categories } from "../CategoryOptions"
 import { capitalize } from "../../util"
@@ -15,35 +15,40 @@ import {
   ribbonOutline,
   calendarOutline,
   home,
+  search,
 } from "ionicons/icons"
-import { useHistory } from "react-router"
+import { useHistory, useLocation } from "react-router"
 import { GetPwaCategoryUrl, RouteMap } from "../../routes"
 import "./styles.css"
 
 export const standardCategories = [
+  { category: "SEARCH", value: "search", icon: search },
   { category: "HOME", value: "home", icon: home },
   { category: "TOP", value: "", icon: ribbonOutline },
   { category: "NEW", value: "NEW", icon: calendarOutline },
   { category: "DISCOVER", value: "TRENDING", icon: flashlightOutline },
 ]
 
-interface ContainerProps {
-  category: string | undefined
-}
-
-const SideBar: React.FC<ContainerProps> = ({ category }) => {
+const SideBar: React.FC = () => {
   const history = useHistory()
+  const location = useLocation()
 
   const onPress = (category: string) => {
     if (category.toLowerCase() === "home") {
       history.push(RouteMap.HOME)
+    } else if (category.toLowerCase() === "search") {
+      history.push(RouteMap.SEARCH)
     } else {
       history.push(GetPwaCategoryUrl(category.toLowerCase()))
     }
   }
 
   const selected = (cat: string) => {
-    return !category ? cat === "" : cat.toLowerCase() === category.toLowerCase()
+    const pathname = location.pathname
+    return (
+      pathname.includes("pwas") &&
+      pathname.toLocaleLowerCase().includes(cat.toLowerCase())
+    )
   }
 
   const renderStandardCategories = useMemo(
@@ -66,7 +71,7 @@ const SideBar: React.FC<ContainerProps> = ({ category }) => {
           {capitalize(cat.category)}
         </IonItem>
       )),
-    [category]
+    [location]
   )
 
   const renderCategories = useMemo(
@@ -88,10 +93,10 @@ const SideBar: React.FC<ContainerProps> = ({ category }) => {
           {capitalize(cat.category)}
         </IonItem>
       )),
-    [category]
+    [location]
   )
   return (
-    <IonCol size="2.8" className="side">
+    <IonContent className="side">
       <IonList className="SideBar">
         <IonItemGroup>{renderStandardCategories}</IonItemGroup>
         <IonListHeader>
@@ -99,7 +104,7 @@ const SideBar: React.FC<ContainerProps> = ({ category }) => {
         </IonListHeader>
         <IonItemGroup>{renderCategories}</IonItemGroup>
       </IonList>
-    </IonCol>
+    </IonContent>
   )
 }
 

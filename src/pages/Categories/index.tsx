@@ -25,6 +25,8 @@ const Categories: React.FC = () => {
   const onPress = (category: string) => {
     if (category.toLowerCase() === "home") {
       history.push(RouteMap.HOME)
+    } else if (category.toLowerCase() === "search") {
+      history.push(RouteMap.SEARCH)
     } else {
       history.push(GetPwaCategoryUrl(category.toLowerCase()))
     }

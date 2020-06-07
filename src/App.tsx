@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react"
+import React, { useEffect, useCallback, Fragment } from "react"
 import { Redirect, Route } from "react-router-dom"
 import {
   IonApp,
@@ -10,6 +10,7 @@ import {
   IonTabs,
   IonToast,
   getPlatforms,
+  IonSplitPane,
 } from "@ionic/react"
 import { IonReactRouter } from "@ionic/react-router"
 import {
@@ -40,6 +41,8 @@ import { SetWindow } from "./redux/Window/actions"
 import { ReduxCombinedState } from "./redux/RootReducer"
 import { clearAlerts } from "./redux/Alerts/actions"
 import { Axios } from "./redux/Actions"
+import { SideBar } from "./components"
+import Search from "./pages/Search"
 
 const App: React.FC = () => {
   return <IonicApp />
@@ -115,79 +118,98 @@ const IonicApp: React.FC = () => {
   return (
     <IonApp>
       <IonReactRouter>
-        <IonTabs>
-          <IonRouterOutlet animated={false}>
-            <Route path={[RouteMap.PWA_DETAIL]} component={PWA} exact={false} />
-            <Route path={[RouteMap.SUPPORT]} component={Support} exact={true} />
-            <Route path={RouteMap.SIGNUP} component={SignUp} />
-            <Route path={RouteMap.LOGIN} component={Login} />
-            <Route path={RouteMap.PROFILE} component={Profile} />
-            <Route path={RouteMap.MY_PWA_DETAIL} component={MyPWA} />
-            <Route path={RouteMap.ABOUT} component={About} />
-            <Route path={RouteMap.ADMIN} component={Admin} exact />
-            <Route path={RouteMap.CATEGORIES} component={Categories} exact />
-            <Route path={[RouteMap.PWAS]} component={PWAs} exact />
-            <Route path="/home" component={Home} />
-            <Route
-              path={RouteMap.ROOT}
-              render={() => <Redirect to={RouteMap.HOME} />}
-              exact={true}
-            />
-          </IonRouterOutlet>
-          <IonTabBar slot="bottom">
-            <IonTabButton className="tab" tab="home" href={RouteMap.HOME}>
-              <IonIcon icon={home} />
-              <IonLabel>Home</IonLabel>
-            </IonTabButton>
-            <IonTabButton
-              className="CatTabButton"
-              tab="categories"
-              href={RouteMap.CATEGORIES}
-            >
-              <IonIcon icon={albumsOutline} />
-              <IonLabel>Categories</IonLabel>
-            </IonTabButton>
-            <IonTabButton className="tab" tab="about" href={RouteMap.ABOUT}>
-              <IonIcon icon={informationCircle} />
-              <IonLabel>About</IonLabel>
-            </IonTabButton>
-            <IonTabButton
-              className="tab"
-              tab="login"
-              href={RouteMap.LOGIN}
-              disabled={isLoggedIn}
-              hidden={isLoggedIn}
-            >
-              <IonIcon icon={logIn} />
-              <IonLabel>Log In</IonLabel>
-            </IonTabButton>
-            <IonTabButton
-              className="tab"
-              tab="profile"
-              href={RouteMap.PROFILE}
-              disabled={!isLoggedIn}
-              hidden={!isLoggedIn}
-            >
-              <IonIcon icon={person} />
-              <IonLabel>Profile</IonLabel>
-            </IonTabButton>
-          </IonTabBar>
-        </IonTabs>
-        <IonToast
-          isOpen={alerts.show}
-          message={alerts.message}
-          duration={alerts.timeout}
-          onDidDismiss={clearAlert}
-          buttons={[
-            {
-              side: "end",
-              text: "Dismiss",
-              handler: () => {
-                clearAlert()
-              },
-            },
-          ]}
-        />
+        <IonSplitPane contentId="main" when="md">
+          <SideBar />
+          <div id="main">
+            <IonTabs>
+              <IonRouterOutlet animated={false}>
+                <Route
+                  path={[RouteMap.PWA_DETAIL]}
+                  component={PWA}
+                  exact={false}
+                />
+                <Route
+                  path={[RouteMap.SUPPORT]}
+                  component={Support}
+                  exact={true}
+                />
+                <Route path={RouteMap.SIGNUP} component={SignUp} />
+                <Route path={RouteMap.LOGIN} component={Login} />
+                <Route path={RouteMap.PROFILE} component={Profile} />
+                <Route path={RouteMap.MY_PWA_DETAIL} component={MyPWA} />
+                <Route path={RouteMap.ABOUT} component={About} />
+                <Route path={RouteMap.ADMIN} component={Admin} exact />
+                <Route
+                  path={RouteMap.CATEGORIES}
+                  component={Categories}
+                  exact
+                />
+                <Route path={RouteMap.PWAS} component={PWAs} exact />
+                <Route path={RouteMap.HOME} component={Home} />
+                <Route path={RouteMap.SEARCH} component={Search} />
+                <Route
+                  path={RouteMap.ROOT}
+                  render={() => <Redirect to={RouteMap.HOME} />}
+                  exact={true}
+                />
+              </IonRouterOutlet>
+
+              <IonTabBar slot="bottom">
+                <IonTabButton className="tab" tab="home" href={RouteMap.HOME}>
+                  <IonIcon icon={home} />
+                  <IonLabel>Home</IonLabel>
+                </IonTabButton>
+                <IonTabButton
+                  className="CatTabButton"
+                  tab="categories"
+                  href={RouteMap.CATEGORIES}
+                >
+                  <IonIcon icon={albumsOutline} />
+                  <IonLabel>Categories</IonLabel>
+                </IonTabButton>
+                <IonTabButton className="tab" tab="about" href={RouteMap.ABOUT}>
+                  <IonIcon icon={informationCircle} />
+                  <IonLabel>About</IonLabel>
+                </IonTabButton>
+                <IonTabButton
+                  className="tab"
+                  tab="login"
+                  href={RouteMap.LOGIN}
+                  disabled={isLoggedIn}
+                  hidden={isLoggedIn}
+                >
+                  <IonIcon icon={logIn} />
+                  <IonLabel>Log In</IonLabel>
+                </IonTabButton>
+                <IonTabButton
+                  className="tab"
+                  tab="profile"
+                  href={RouteMap.PROFILE}
+                  disabled={!isLoggedIn}
+                  hidden={!isLoggedIn}
+                >
+                  <IonIcon icon={person} />
+                  <IonLabel>Profile</IonLabel>
+                </IonTabButton>
+              </IonTabBar>
+              <IonToast
+                isOpen={alerts.show}
+                message={alerts.message}
+                duration={alerts.timeout}
+                onDidDismiss={clearAlert}
+                buttons={[
+                  {
+                    side: "end",
+                    text: "Dismiss",
+                    handler: () => {
+                      clearAlert()
+                    },
+                  },
+                ]}
+              />
+            </IonTabs>
+          </div>
+        </IonSplitPane>
       </IonReactRouter>
     </IonApp>
   )
