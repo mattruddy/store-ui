@@ -26,7 +26,7 @@ const PWACard: React.FC<ContainerProps> = ({ pwa, url }) => {
   const onPress = () => history.push(href)
 
   return (
-    <IonCard className="PWACard fade-in" button onClick={onPress}>
+    <IonCard className="PWACard" button onClick={onPress}>
       <IonCardHeader className="PWACardHeader PWACardContent">
         <IonImg alt="icon" className="PWACardImage" src={pwa.icon} />
       </IonCardHeader>
