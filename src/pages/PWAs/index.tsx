@@ -9,8 +9,6 @@ import {
   IonCol,
   IonInfiniteScroll,
   IonInfiniteScrollContent,
-  IonRefresher,
-  IonRefresherContent,
   IonButtons,
   IonBackButton,
   IonNote,
@@ -140,18 +138,6 @@ const PWAs: React.FC<RouteComponentProps> = () => {
   return (
     <IonPage>
       <IonContent className="content" ref={content}>
-        <IonRefresher
-          slot="fixed"
-          onIonRefresh={async (event: any) => {
-            try {
-              reloadPwas()
-            } finally {
-              event.detail.complete()
-            }
-          }}
-        >
-          <IonRefresherContent />
-        </IonRefresher>
         <IonRow>
           <IonCol className="CardListCol">
             <h1
