@@ -45,10 +45,9 @@ const SideBar: React.FC = () => {
 
   const selected = (cat: string) => {
     const pathname = location.pathname
-    return (
-      pathname.includes("pwas") &&
-      pathname.toLocaleLowerCase().includes(cat.toLowerCase())
-    )
+    return cat === ""
+      ? pathname.includes("pwas")
+      : pathname.toLocaleLowerCase().includes(cat.toLowerCase())
   }
 
   const renderStandardCategories = useMemo(

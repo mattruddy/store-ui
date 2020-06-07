@@ -136,9 +136,6 @@ const PWA: React.FC<OwnProps> = ({
           <IonButtons slot="start">
             <IonBackButton defaultHref="/home" />
           </IonButtons>
-          <IonLabel style={{ marginRight: "10px" }} slot="end">
-            PWA Store
-          </IonLabel>
           {pwa && <IonTitle>{pwa.name}</IonTitle>}
         </IonToolbar>
       </IonHeader>

@@ -100,6 +100,8 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-light-contrast-rgb: 0, 0, 0;
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #74b9ff;
+
+  --ion-toolbar-background: rgb(248, 248, 248);
 }
 
 .ion-color-twitter {
