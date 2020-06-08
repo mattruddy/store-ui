@@ -13,6 +13,7 @@ export type Store = typeof store
 
 setupConfig({
   swipeBackEnabled: false,
+  rippleEffect: false,
 })
 
 ReactDOM.render(
