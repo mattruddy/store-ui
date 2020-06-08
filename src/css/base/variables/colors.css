@@ -267,6 +267,10 @@ http://ionicframework.com/docs/theming/ */
   color: #eeeeee !important;
 }
 
+.dark-theme .HeaderLogo {
+  filter: invert(100%) !important;
+}
+
 .dark-theme .PWACardTitle {
   color: #eeeeee !important;
 }
