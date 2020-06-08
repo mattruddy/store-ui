@@ -5,17 +5,8 @@ import React, {
   useMemo,
   memo,
   ReactChildren,
-  Fragment,
 } from "react"
-import {
-  IonSlides,
-  IonSlide,
-  IonImg,
-  IonCol,
-  IonButton,
-  IonIcon,
-  IonRow,
-} from "@ionic/react"
+import { IonImg, IonButton, IonIcon } from "@ionic/react"
 import Lightbox from "react-image-lightbox"
 import { Image } from "../../util/types"
 import "./styles.css"

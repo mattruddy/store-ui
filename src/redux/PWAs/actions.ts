@@ -19,7 +19,6 @@ import { ThunkAction } from "redux-thunk"
 import { PWA, HomePWAs, Rating, NewRating } from "../../util/types"
 import { ReduxCombinedState } from "../RootReducer"
 import ReactGA from "react-ga"
-import { useState } from "react"
 import { setAlert } from "../Alerts/actions"
 
 const loadingPWAs = () => ({ type: PWAS_PENDING })
@@ -47,11 +46,6 @@ const addPWASection = (data: PWASection) => ({
 
 const replacePWASection = (data: PWASection) => ({
   type: PWAS_SECTION_REPLACE,
-  payload: data,
-})
-
-const pwasData = (data: Partial<PWAsState>) => ({
-  type: PWAS_DATA,
   payload: data,
 })
 

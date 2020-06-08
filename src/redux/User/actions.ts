@@ -14,7 +14,6 @@ import { Action } from "redux"
 import { ThunkAction } from "redux-thunk"
 import {
   getUserData,
-  setHasReadInstallStorage,
   setEmailStorage,
   setTokenStorage,
   setUsernameStorage,
@@ -424,11 +423,4 @@ export const thunkUpdateApp = (
   } finally {
     dispatch(setLoading(false))
   }
-}
-
-export const thunkSetHasReadInstall = (
-  hasReadInstall: boolean
-): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
-  await setHasReadInstallStorage(hasReadInstall ? "true" : "false")
-  dispatch(setData({ hasRead: hasReadInstall }))
 }

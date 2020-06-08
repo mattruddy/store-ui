@@ -1,5 +1,5 @@
 import React, { useState, useEffect, memo, useCallback } from "react"
-import { RouteComponentProps, useLocation, useHistory } from "react-router"
+import { useLocation, useHistory } from "react-router"
 import {
   IonPage,
   IonRow,
@@ -9,11 +9,9 @@ import {
   IonButton,
   IonText,
   IonContent,
-  IonToast,
   IonIcon,
   IonGrid,
   IonImg,
-  IonSpinner,
 } from "@ionic/react"
 import queryString from "query-string"
 import { logoGithub } from "ionicons/icons"
@@ -116,7 +114,6 @@ const LogIn: React.FC = () => {
                 <IonInput
                   name="username"
                   type="text"
-                  // placeholder="Username"
                   spellCheck={false}
                   maxlength={30}
                   value={username}
@@ -141,7 +138,6 @@ const LogIn: React.FC = () => {
                 <IonInput
                   name="password"
                   type="password"
-                  // placeholder="Password"
                   spellCheck={false}
                   maxlength={80}
                   value={password}
@@ -163,7 +159,6 @@ const LogIn: React.FC = () => {
               <IonCol size="6">
                 <IonButton type="submit" expand="block">
                   Log In
-                  {isLoading && <IonSpinner />}
                 </IonButton>
               </IonCol>
               <IonCol size="6">

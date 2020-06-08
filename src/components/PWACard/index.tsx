@@ -3,7 +3,6 @@ import {
   IonCard,
   IonCardContent,
   IonRippleEffect,
-  IonImg,
   IonCardHeader,
   IonCardTitle,
   IonCardSubtitle,

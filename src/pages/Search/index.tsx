@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo, useCallback } from "react"
+import React, { useState, useMemo, useCallback } from "react"
 import { IonContent, IonPage, IonCol, IonRow } from "@ionic/react"
 import { PWACard, DebouncedSearch } from "../../components"
 import { PWA } from "../../util/types"

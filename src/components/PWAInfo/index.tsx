@@ -1,12 +1,5 @@
 import React, { memo } from "react"
-import {
-  IonButton,
-  IonIcon,
-  IonImg,
-  IonTextarea,
-  IonChip,
-  IonLabel,
-} from "@ionic/react"
+import { IonButton, IonIcon, IonImg, IonChip, IonLabel } from "@ionic/react"
 import { ShareUrl } from "../"
 import { PWA } from "../../util/types"
 import ReactGA from "react-ga"

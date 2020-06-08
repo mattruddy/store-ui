@@ -1,5 +1,5 @@
 import React, { useState, memo, useEffect, useCallback } from "react"
-import { RouteComponentProps, useHistory } from "react-router"
+import { useHistory } from "react-router"
 import {
   IonContent,
   IonPage,

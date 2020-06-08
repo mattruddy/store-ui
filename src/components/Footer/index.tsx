@@ -2,7 +2,7 @@ import { memo } from "react"
 import React from "react"
 import "./styles.css"
 import { IonIcon } from "@ionic/react"
-import { logoTwitter, logoLinkedin, logoGithub } from "ionicons/icons"
+import { logoTwitter } from "ionicons/icons"
 
 const Footer: React.FC = () => {
   return (

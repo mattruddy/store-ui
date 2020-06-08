@@ -17,8 +17,6 @@ import {
   airplaneOutline,
   cartOutline,
 } from "ionicons/icons"
-import { useHistory } from "react-router"
-import { GetPwaCategoryUrl } from "../../routes"
 import { capitalize } from "../../util"
 
 export const categories = [

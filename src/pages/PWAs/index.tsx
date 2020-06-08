@@ -1,10 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from "react"
 import {
   IonContent,
-  IonHeader,
   IonPage,
-  IonTitle,
-  IonToolbar,
   IonRow,
   IonCol,
   IonInfiniteScroll,
@@ -27,7 +24,6 @@ import ReactGA from "react-ga"
 import { capitalize } from "../../util"
 import { categories } from "../../components/CategoryOptions"
 import { standardCategories } from "../../components/SideBar"
-import { RouteMap } from "../../routes"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { thunkGetPWAs } from "../../redux/PWAs/actions"
 import "./styles.css"

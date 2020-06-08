@@ -62,7 +62,6 @@ const shareUrl = (url: string, title: string, text: string) => {
       text,
     })
     .then((response: any) => {
-      //console.log("Successfully shared: ", response)
       ReactGA.event({
         category: "Share Url",
         action: "User shared a url!",
@@ -73,39 +72,13 @@ const shareUrl = (url: string, title: string, text: string) => {
     })
 }
 
-// export const shareFile = (file) => {
-//   let filesArray = [file]
-//   if (!navigator.canShare || !navigator.canShare({ files: filesArray })) return
-//   navigator
-//     .share({
-//       files: filesArray,
-//       title: "My File",
-//       text: "Here, Sharing my files. Keep it safe",
-//     })
-//     .then(() => {
-//       console.log("Share was successful.")
-//       ReactGA.event({
-//         category: "Share File",
-//         action: "User shared a file!",
-//       })
-//     })
-//     .catch((error) => console.log("Sharing failed", error))
-// }
-
 const copyStringToClipboard = (s: string) => {
-  // Create new element
   let el = document.createElement("textarea")
-  // Set value (string to be copied)
   el.value = s
-  // Set non-editable to avoid focus and move outside of view
   el.setAttribute("readonly", "")
-
   document.body.appendChild(el)
-  // Select text inside element
   el.select()
-  // Copy text to clipboard
   document.execCommand("copy")
-  // Remove temporary element
   document.body.removeChild(el)
 }
 
