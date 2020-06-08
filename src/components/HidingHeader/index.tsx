@@ -18,7 +18,7 @@ const HidingHeader: React.FC<ContainerProps> = ({ scrollYDelta, children }) => {
     () => (
       <IonHeader
         className={`ion-no-border bottom-line-border ${
-          showHeader ? "fade-in" : "fade-out"
+          !showHeader && "fade-out"
         }`}
       >
         <IonToolbar>{children}</IonToolbar>

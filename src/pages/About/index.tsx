@@ -37,7 +37,7 @@ const About: React.FC = () => (
         <IonTitle>About</IonTitle>
       </IonToolbar>
     </IonHeader>
-    <IonContent>
+    <IonContent className="content">
       <IonGrid fixed>
         <IonRow>
           <p>
