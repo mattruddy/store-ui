@@ -1,12 +1,9 @@
 .HomeHeader {
   margin-left: 16px;
+  margin-bottom: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.HomeHeader h1 {
-  font-size: 35px;
 }
 
 .HomeInstallButton {

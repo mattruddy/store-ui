@@ -15,6 +15,10 @@
   --color: black;
 }
 
+.bottom-line-border {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.13);
+}
+
 .fab {
   --color: black;
   --color-activated: black;

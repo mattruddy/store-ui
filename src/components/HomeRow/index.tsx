@@ -29,10 +29,10 @@ const HomeRow: React.FC<ContainerProps> = ({
           className="HomeViewMoreButton"
           onClick={() => onPressCallback(linkTo)}
         >
-          <IonIcon icon={arrowForward} />
+          <IonIcon color="dark" icon={arrowForward} />
         </IonButton>
       </div>
-      <IonRow className="HomeRow">
+      <IonRow className="HomeRow bottom-line-border">
         {isLoading
           ? [...Array(5)].map((_e, i) => (
               <IonCol key={i} sizeXs="6.7" sizeSm="4" sizeMd="5" sizeLg="4">

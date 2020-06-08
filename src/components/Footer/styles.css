@@ -1,5 +1,5 @@
 .Footer {
-  height: 40px;
+  height: 80px;
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -7,9 +7,10 @@
 }
 
 .FooterLeft {
-  font-size: 11px;
+  font-size: 12px;
+  margin: 16px;
 }
 
-.FooterRightIcon {
-  margin-right: 10px;
+.FooterRight {
+  margin: 16px;
 }

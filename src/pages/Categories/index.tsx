@@ -34,12 +34,12 @@ const Categories: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader className="ion-no-border">
+      <IonHeader className="ion-no-border bottom-line-border">
         <IonToolbar>
           <IonTitle>Categories</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
+      <IonContent className="content">
         <IonList>
           <IonItemGroup>
             {standardCategories

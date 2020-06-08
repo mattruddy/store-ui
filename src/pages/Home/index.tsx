@@ -7,6 +7,8 @@ import {
   useIonViewDidEnter,
   IonNote,
   IonButton,
+  IonHeader,
+  IonToolbar,
 } from "@ionic/react"
 import { useHistory } from "react-router"
 import { GetPwaCategoryUrl } from "../../routes"
@@ -78,19 +80,23 @@ const Home: React.FC = () => {
 
   return (
     <IonPage>
+      <IonHeader className="ion-no-border bottom-line-border">
+        <IonToolbar>
+          <div className="HomeHeader">
+            <div>
+              <h1>PWA Store</h1>
+              <IonNote>Progressive Web App Discovery</IonNote>
+            </div>
+            <div>
+              <AddToHomeScreen
+                prompt={prompt}
+                promptToInstall={promptToInstall}
+              />
+            </div>
+          </div>
+        </IonToolbar>
+      </IonHeader>
       <IonContent className="content" ref={content}>
-        <div className="HomeHeader">
-          <div>
-            <h1>PWA Store</h1>
-            <IonNote>Progressive Web App Discovery</IonNote>
-          </div>
-          <div>
-            <AddToHomeScreen
-              prompt={prompt}
-              promptToInstall={promptToInstall}
-            />
-          </div>
-        </div>
         {renderHomeList}
         <Footer />
       </IonContent>

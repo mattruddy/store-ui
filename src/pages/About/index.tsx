@@ -32,7 +32,7 @@ const styles = {
 
 const About: React.FC = () => (
   <IonPage>
-    <IonHeader className="ion-no-border">
+    <IonHeader className="ion-no-border bottom-line-border">
       <IonToolbar>
         <IonTitle>About</IonTitle>
       </IonToolbar>
