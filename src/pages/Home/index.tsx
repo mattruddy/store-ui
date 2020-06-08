@@ -48,6 +48,7 @@ const Home: React.FC = () => {
         <HomeRow
           pwas={homeData.topApps}
           title="Top"
+          subtitle="Most popular"
           linkTo=""
           onPressCallback={onPress}
           isLoading={isLoading}
@@ -55,6 +56,7 @@ const Home: React.FC = () => {
         <HomeRow
           pwas={homeData.discoverApps}
           title="Discover"
+          subtitle="Currently trending"
           linkTo="trending"
           onPressCallback={onPress}
           isLoading={isLoading}
@@ -62,6 +64,7 @@ const Home: React.FC = () => {
         <HomeRow
           pwas={homeData.newApps}
           title="New"
+          subtitle="The fresh new uploads"
           linkTo="new"
           onPressCallback={onPress}
           isLoading={isLoading}

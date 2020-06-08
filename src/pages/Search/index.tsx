@@ -1,5 +1,14 @@
 import React, { useState, useMemo, useCallback } from "react"
-import { IonContent, IonPage, IonCol, IonRow } from "@ionic/react"
+import {
+  IonContent,
+  IonPage,
+  IonCol,
+  IonRow,
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonBackButton,
+} from "@ionic/react"
 import { PWACard, DebouncedSearch } from "../../components"
 import { PWA } from "../../util/types"
 import "./styles.css"
@@ -27,6 +36,14 @@ const Search: React.FC = () => {
 
   return (
     <IonPage>
+      <IonHeader className="ion-no-border bottom-line-border">
+        <IonToolbar>
+          <IonButtons className="PWAsBackbutton" slot="start">
+            <IonBackButton defaultHref="/home" />
+          </IonButtons>
+          <h1 className="PWAsH1">Search</h1>{" "}
+        </IonToolbar>
+      </IonHeader>
       <IonContent className="content">
         <DebouncedSearch onChangeCallback={handleOnSearchChange} />
         <IonRow>{renderSearchResults}</IonRow>

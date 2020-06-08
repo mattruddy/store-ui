@@ -39,3 +39,7 @@
 .primary-input-container:focus-within ion-label {
   color: var(--ion-color-primary);
 }
+
+.sc-ion-searchbar-md-h {
+  --box-shadow: none;
+}

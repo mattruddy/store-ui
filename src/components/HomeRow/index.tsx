@@ -1,5 +1,5 @@
 import React, { memo, Fragment } from "react"
-import { IonButton, IonRow, IonCol, IonIcon } from "@ionic/react"
+import { IonButton, IonRow, IonCol, IonIcon, IonNote } from "@ionic/react"
 import { PWA } from "../../util/types"
 import PWACardPlaceholder from "../PWACardPlaceholder"
 import { PWACard } from ".."
@@ -11,6 +11,7 @@ interface ContainerProps {
   linkTo: string
   isLoading: boolean
   title: string
+  subtitle: string
   onPressCallback: (value: string) => void
 }
 
@@ -19,6 +20,7 @@ const HomeRow: React.FC<ContainerProps> = ({
   linkTo,
   isLoading,
   title,
+  subtitle,
   onPressCallback,
 }) => {
   return (
@@ -32,6 +34,7 @@ const HomeRow: React.FC<ContainerProps> = ({
           <IonIcon color="dark" icon={arrowForward} />
         </IonButton>
       </div>
+      <IonNote className="HomeRowHeaderSubTitle">{subtitle}</IonNote>
       <IonRow className="HomeRow bottom-line-border">
         {isLoading
           ? [...Array(5)].map((_e, i) => (
