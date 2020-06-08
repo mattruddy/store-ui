@@ -9,7 +9,8 @@
 .PWAsH1 {
   margin-top: 0;
   margin-bottom: 0;
-  font-size: 2em;
+  margin-left: 16px;
+  font-size: 1.6em;
 }
 
 .CatTabButton {
@@ -27,6 +28,13 @@
 
   .PWAsBackbutton {
     display: inline;
+  }
+
+  .PWAsH1 {
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 16px;
+    font-size: 1.3em;
   }
 
   .CatTabButton {

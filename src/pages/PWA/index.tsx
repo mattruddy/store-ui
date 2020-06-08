@@ -20,6 +20,7 @@ import {
   IonCol,
   IonNote,
   IonSpinner,
+  IonTitle,
 } from "@ionic/react"
 import {
   thunkGetPWAFromName,
@@ -101,9 +102,7 @@ const PWA: React.FC<OwnProps> = ({
       setHasFetchedRatings(true)
       getRatings(pwa.appId)
     }
-    return isRatingsLoading ? (
-      <IonSpinner />
-    ) : pwa.ratings.length > 0 ? (
+    return pwa.ratings.length > 0 ? (
       pwa.ratings.map((rating, i) => <RatingItem key={i} rating={rating} />)
     ) : (
       <div
@@ -117,7 +116,7 @@ const PWA: React.FC<OwnProps> = ({
         </p>
       </div>
     )
-  }, [pwa, isRatingsLoading, hasFetchedRatings])
+  }, [pwa, hasFetchedRatings])
 
   return (
     <IonPage>
@@ -126,6 +125,7 @@ const PWA: React.FC<OwnProps> = ({
           <IonButtons slot="start">
             <IonBackButton defaultHref="/home" />
           </IonButtons>
+          {pwa && <IonTitle>{pwa.name}</IonTitle>}
         </IonToolbar>
       </IonHeader>
       <IonContent class="content">
