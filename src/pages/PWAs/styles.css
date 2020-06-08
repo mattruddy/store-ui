@@ -6,11 +6,17 @@
   margin-left: 32px;
 }
 
-.PWAsTitle {
-  margin-left: 20px;
+.PWAsH1 {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-size: 2em;
 }
 
 .CatTabButton {
+  display: none;
+}
+
+.PWAsBackbutton {
   display: none;
 }
 
@@ -19,8 +25,8 @@
     display: inline;
   }
 
-  .PWAsTitle {
-    display: none;
+  .PWAsBackbutton {
+    display: inline;
   }
 
   .CatTabButton {

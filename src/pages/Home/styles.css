@@ -9,3 +9,7 @@
 .HomeInstallButton {
   margin-right: 16px;
 }
+
+.HomeHeaderHide {
+  display: none;
+}

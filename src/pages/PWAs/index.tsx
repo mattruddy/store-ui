@@ -32,6 +32,7 @@ import { ReduxCombinedState } from "../../redux/RootReducer"
 import { thunkGetPWAs } from "../../redux/PWAs/actions"
 import "./styles.css"
 import PWACardPlaceholder from "../../components/PWACardPlaceholder"
+import HidingHeader from "../../components/HidingHeader"
 
 const PWAs: React.FC<RouteComponentProps> = () => {
   const { category } = useParams()
@@ -41,6 +42,7 @@ const PWAs: React.FC<RouteComponentProps> = () => {
   const [loadingMore, setLoadingMore] = useState<boolean>(false)
   const scrollEl = useRef<HTMLIonInfiniteScrollElement>(null)
   const content = useRef<HTMLIonContentElement>(null)
+  const [scrollYDelta, setScrollYDelta] = useState<number>(0)
 
   const { pwasSections, isLoading, pwas } = useSelector(
     ({ pwas }: ReduxCombinedState) => ({
@@ -137,26 +139,25 @@ const PWAs: React.FC<RouteComponentProps> = () => {
 
   return (
     <IonPage>
-      <IonHeader className="PWAsHeader ion-no-border">
-        <IonToolbar>
-          <IonButtons slot="start">
-            <IonBackButton defaultHref="/home" />
-          </IonButtons>
-          <IonTitle>
-            {capitalize(
-              cat === "" ? "TOP" : cat === "TRENDING" ? "DISCOVER" : cat
-            )}
-          </IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent className="content" ref={content}>
+      <HidingHeader scrollYDelta={scrollYDelta}>
+        <IonButtons className="PWAsBackbutton" slot="start">
+          <IonBackButton defaultHref="/home" />
+        </IonButtons>
+        <h1 className="PWAsH1">
+          {capitalize(
+            cat === "" ? "TOP" : cat === "TRENDING" ? "DISCOVER" : cat
+          )}
+        </h1>
+      </HidingHeader>
+      <IonContent
+        fullscreen={true}
+        className="content"
+        scrollEvents={true}
+        onIonScroll={(e) => setScrollYDelta(e.detail.deltaY)}
+        ref={content}
+      >
         <IonRow>
           <IonCol className="CardListCol">
-            <h1 className="PWAsTitle">
-              {capitalize(
-                cat === "" ? "TOP" : cat === "TRENDING" ? "DISCOVER" : cat
-              )}
-            </h1>
             <IonRow>{renderPwaList}</IonRow>
           </IonCol>
         </IonRow>
