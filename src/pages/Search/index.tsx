@@ -8,10 +8,10 @@ import {
   IonToolbar,
   IonButtons,
   IonBackButton,
+  IonTitle,
 } from "@ionic/react"
 import { PWACard, DebouncedSearch } from "../../components"
 import { PWA } from "../../util/types"
-import "./styles.css"
 import { Axios } from "../../redux/Actions"
 
 const Search: React.FC = () => {
@@ -41,7 +41,7 @@ const Search: React.FC = () => {
           <IonButtons className="PWAsBackbutton" slot="start">
             <IonBackButton defaultHref="/home" />
           </IonButtons>
-          <h1 className="PWAsH1">Search</h1>{" "}
+          <IonTitle>Search</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent className="content">

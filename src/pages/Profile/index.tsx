@@ -39,7 +39,6 @@ import { CategoryOptions, Lighthouse, PWACard } from "../../components"
 import { add, menu, logOut, contractSharp } from "ionicons/icons"
 import { RouteMap } from "../../routes"
 import { noSpecialChars } from "../../util"
-import "./styles.css"
 import ReactTagInput from "@pathofdev/react-tag-input"
 import "@pathofdev/react-tag-input/build/index.css"
 import { ReduxCombinedState } from "../../redux/RootReducer"
@@ -332,7 +331,7 @@ const Profile: React.FC = () => {
           setScreenshots(undefined)
         }}
       >
-        <IonHeader>
+        <IonHeader className="ion-no-border bottom-line-border">
           <IonToolbar>
             <IonButtons slot="end">
               <IonButton onClick={() => setShowModal(false)}>Close</IonButton>
@@ -340,7 +339,7 @@ const Profile: React.FC = () => {
             <IonTitle>PWA</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IonContent style={{ overflow: "hidden" }}>
+        <IonContent>
           <form>
             <IonList>
               <IonItem>
@@ -564,11 +563,11 @@ const Profile: React.FC = () => {
             </IonRow>
           ))}
       </IonModal>
-      <IonHeader>
+      <IonHeader className="ion-no-border bottom-line-border">
         <IonToolbar>
           <IonButtons slot="end">
             <IonButton
-              className="ProfileSupportButton"
+              fill="clear"
               onClick={() => history.push(RouteMap.SUPPORT)}
             >
               SUPPORT
