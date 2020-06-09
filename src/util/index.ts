@@ -110,6 +110,13 @@ const stringMatch = (
   return s1.match(regexMatch)
 }
 
+const checkValidPW = (pw: string) => {
+  return RegExp(
+    "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
+    "g"
+  ).test(pw)
+}
+
 export {
   blobToFile,
   fixFilesRotation,
@@ -122,4 +129,5 @@ export {
   noSpecialChars,
   validEmail,
   stringMatch,
+  checkValidPW,
 }

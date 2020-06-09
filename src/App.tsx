@@ -13,13 +13,7 @@ import {
   IonSplitPane,
 } from "@ionic/react"
 import { IonReactRouter } from "@ionic/react-router"
-import {
-  person,
-  home,
-  logIn,
-  informationCircle,
-  albumsOutline,
-} from "ionicons/icons"
+import { person, home, logIn, informationCircle, search } from "ionicons/icons"
 import {
   PWAs,
   SignUp,
@@ -164,7 +158,7 @@ const IonicApp: React.FC = () => {
                   tab="categories"
                   href={RouteMap.CATEGORIES}
                 >
-                  <IonIcon icon={albumsOutline} />
+                  <IonIcon icon={search} />
                   <IonLabel>Search</IonLabel>
                 </IonTabButton>
                 <IonTabButton className="tab" tab="about" href={RouteMap.ABOUT}>

@@ -157,12 +157,21 @@ const LogIn: React.FC = () => {
 
             <IonRow>
               <IonCol size="6">
-                <IonButton type="submit" expand="block">
+                <IonButton
+                  className="button-no-shadow"
+                  type="submit"
+                  expand="block"
+                >
                   Log In
                 </IonButton>
               </IonCol>
               <IonCol size="6">
-                <IonButton routerLink="/signup" color="light" expand="block">
+                <IonButton
+                  className="button-no-shadow button-border"
+                  routerLink="/signup"
+                  color="light"
+                  expand="block"
+                >
                   Signup
                 </IonButton>
               </IonCol>
@@ -171,7 +180,12 @@ const LogIn: React.FC = () => {
           <form action="/api/signin/github" method="POST">
             <IonRow>
               <IonCol size="12">
-                <IonButton color="github" expand="full" type="submit">
+                <IonButton
+                  className="button-no-shadow button-border"
+                  color="github"
+                  expand="full"
+                  type="submit"
+                >
                   Sign In with GitHub <IonIcon icon={logoGithub} />
                 </IonButton>
               </IonCol>

@@ -18,6 +18,7 @@ import ReactGA from "react-ga"
 import { thunkSignUp } from "../../redux/User/actions"
 import { useDispatch, useSelector } from "react-redux"
 import { ReduxCombinedState } from "../../redux/RootReducer"
+import { checkValidPW } from "../../util"
 
 const SignUp: React.FC = () => {
   const [username, setUsername] = useState("")
@@ -53,13 +54,6 @@ const SignUp: React.FC = () => {
       setEmail("")
     }
   }, [token])
-
-  const checkValidPW = (pw: string) => {
-    return RegExp(
-      "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
-      "g"
-    ).test(pw)
-  }
 
   const onSignup = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -168,7 +162,12 @@ const SignUp: React.FC = () => {
             </IonRow>
             <IonRow>
               <IonCol size="12">
-                <IonButton type="submit" expand="block" disabled={!isValidPW}>
+                <IonButton
+                  className="button-no-shadow"
+                  type="submit"
+                  expand="block"
+                  disabled={!isValidPW}
+                >
                   Sign Up
                   {isLoading && <IonSpinner />}
                 </IonButton>
