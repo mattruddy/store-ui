@@ -3,15 +3,10 @@ import { useHistory } from "react-router"
 import {
   IonContent,
   IonPage,
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonLabel,
-  IonInput,
   IonButton,
-  IonText,
   IonImg,
-  IonSpinner,
+  IonHeader,
+  IonToolbar,
 } from "@ionic/react"
 import { RouteMap } from "../../routes"
 import ReactGA from "react-ga"
@@ -19,24 +14,19 @@ import { thunkSignUp } from "../../redux/User/actions"
 import { useDispatch, useSelector } from "react-redux"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { checkValidPW } from "../../util"
+import "./styles.css"
+import FormItem from "../../components/FormItem"
 
 const SignUp: React.FC = () => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [email, setEmail] = useState("")
-  const [formSubmitted, setFormSubmitted] = useState(false)
-  const [usernameError, setUsernameError] = useState(false)
-  const [emailError, setEmailError] = useState(false)
-  const [passwordError, setPasswordError] = useState(false)
-  const [isValidPW, setIsValidPW] = useState<boolean>(false)
+  const [hasSubmit, setHasSubmit] = useState<boolean>(false)
   const history = useHistory()
 
-  const { isLoading, token } = useSelector(
-    ({ user: { loading, token } }: ReduxCombinedState) => ({
-      isLoading: loading,
-      token: token,
-    })
-  )
+  const { token } = useSelector(({ user: { token } }: ReduxCombinedState) => ({
+    token: token,
+  }))
 
   const dispatch = useDispatch()
   const signUp = useCallback(
@@ -48,28 +38,18 @@ const SignUp: React.FC = () => {
   useEffect(() => {
     if (token) {
       history.push(RouteMap.PROFILE, { direction: "back" })
-
       setPassword("")
       setUsername("")
       setEmail("")
+      setHasSubmit(false)
     }
   }, [token])
 
   const onSignup = async (e: React.FormEvent) => {
     e.preventDefault()
-    setFormSubmitted(true)
-    if (!username) {
-      setUsernameError(true)
-    }
-    if (!password) {
-      setPasswordError(true)
-    }
-    if (!email) {
-      setEmailError(true)
-    }
-
-    if (username && password && email) {
-      await signUp(username, password, email)
+    setHasSubmit(true)
+    if (username && email && checkValidPW(password)) {
+      signUp(username, password, email)
     }
   }
 
@@ -79,102 +59,58 @@ const SignUp: React.FC = () => {
 
   return (
     <IonPage>
-      <IonContent className="content">
-        <IonGrid fixed>
-          <IonRow style={{ display: "flex", justifyContent: "center" }}>
+      <IonHeader className="ion-no-border">
+        <IonToolbar>
+          <div className="center">
             <IonImg
               alt="logo"
               style={{ height: "100px", width: "100px" }}
               src="/assets/icon/logo.png"
             />
-          </IonRow>
-
-          <form noValidate onSubmit={onSignup}>
-            <IonRow>
-              <IonCol size="12" className="primary-input-container">
-                <IonLabel position="stacked">Username</IonLabel>
-                <IonInput
-                  name="username"
-                  type="text"
-                  spellCheck={false}
-                  maxlength={30}
-                  value={username}
-                  onIonChange={(e) => {
-                    setUsername(e.detail.value!)
-                    setUsernameError(false)
-                  }}
-                  required
-                />
-              </IonCol>
-              {formSubmitted && usernameError && (
-                <IonText color="danger">
-                  <p className="ion-padding-start">Username is required</p>
-                </IonText>
-              )}
-              <IonCol size="12" className="primary-input-container">
-                <IonLabel position="stacked">Email</IonLabel>
-                <IonInput
-                  name="email"
-                  type="text"
-                  spellCheck={false}
-                  maxlength={50}
-                  value={email}
-                  onIonChange={(e) => {
-                    setEmail(e.detail.value!)
-                    setEmailError(false)
-                  }}
-                  required
-                />
-              </IonCol>
-              {formSubmitted && emailError && (
-                <IonText color="danger">
-                  <p className="ion-padding-start">Email is required</p>
-                </IonText>
-              )}
-              <IonCol size="12" className="primary-input-container">
-                <IonLabel position="stacked">Password</IonLabel>
-                <IonInput
-                  name="password"
-                  type="password"
-                  spellCheck={false}
-                  value={password}
-                  maxlength={80}
-                  onIonChange={(e) => {
-                    setPassword(e.detail.value!)
-                    setPasswordError(false)
-                    setIsValidPW(checkValidPW(e.detail.value as string))
-                  }}
-                  required
-                />
-              </IonCol>
-              {password !== "" && !isValidPW && (
-                <IonText color="danger">
-                  <p className="ion-padding-start">
-                    Password must contain a capital letter, number and symbol
-                  </p>
-                </IonText>
-              )}
-              {formSubmitted && passwordError && (
-                <IonText color="danger">
-                  <p className="ion-padding-start">Password is required</p>
-                </IonText>
-              )}
-            </IonRow>
-            <IonRow>
-              <IonCol size="12">
-                <IonButton
-                  className="button-no-shadow"
-                  type="submit"
-                  expand="block"
-                  disabled={!isValidPW}
-                >
-                  Sign Up
-                  {isLoading && <IonSpinner />}
-                </IonButton>
-              </IonCol>
-            </IonRow>
-          </form>
-        </IonGrid>
+          </div>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent className="content">
+        <form noValidate onSubmit={onSignup}>
+          <FormItem
+            name="Username"
+            type="text"
+            spellCheck={false}
+            maxLength={50}
+            value={username}
+            onChange={(e) => setUsername(e.detail!.value)}
+            errorMessage="Username is required"
+            showError={hasSubmit && username === ""}
+          />
+          <FormItem
+            name="Email"
+            type="text"
+            spellCheck={false}
+            maxLength={50}
+            value={email}
+            onChange={(e) => setEmail(e.detail.value!)}
+            errorMessage="Email is required"
+            showError={hasSubmit && email === ""}
+          />
+          <FormItem
+            name="password"
+            type="password"
+            spellCheck={false}
+            value={password}
+            maxLength={80}
+            onChange={(e) => setPassword(e.detail.value!)}
+            errorMessage="Min 8 characters, include capital letter, number and special character"
+            showError={password !== "" && !checkValidPW(password)}
+          />
+          <IonButton
+            className="button-no-shadow"
+            type="submit"
+            expand="block"
+            disabled={!checkValidPW(password)}
+          >
+            Sign Up
+          </IonButton>
+        </form>
       </IonContent>
     </IonPage>
   )

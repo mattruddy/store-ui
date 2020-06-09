@@ -11,6 +11,11 @@
   --background: rgb(248, 248, 248);
 }
 
+.center {
+  display: flex;
+  justify-content: center;
+}
+
 .button {
   --color: black;
 }
