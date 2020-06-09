@@ -63,8 +63,8 @@ const SignUp: React.FC = () => {
         <IonToolbar>
           <div className="center">
             <IonImg
+              className="main-logo-size"
               alt="logo"
-              style={{ height: "100px", width: "100px" }}
               src="/assets/icon/logo.png"
             />
           </div>

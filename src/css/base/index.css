@@ -16,6 +16,11 @@
   justify-content: center;
 }
 
+.main-logo-size {
+  height: 100px;
+  width: 100px;
+}
+
 .button {
   --color: black;
 }
