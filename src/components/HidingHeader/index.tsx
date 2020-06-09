@@ -1,22 +1,45 @@
 import { IonHeader, IonToolbar } from "@ionic/react"
-import React, { memo, useEffect, useMemo, useState } from "react"
+import React, { memo, useEffect, useMemo, useState, useRef } from "react"
 
 interface ContainerProps {
   children: any
-  scrollYDelta: number
+  showHeader: boolean
+  // number between 0 and 1
+  heightPrecentage: number
 }
 
-const HidingHeader: React.FC<ContainerProps> = ({ scrollYDelta, children }) => {
-  const [showHeader, setShowHeader] = useState<boolean>(true)
+const HidingHeader: React.FC<ContainerProps> = ({
+  showHeader,
+  heightPrecentage,
+  children,
+}) => {
+  const header = useRef<any>(null)
+  let [height, setHeight] = useState<number>(0)
+  let [intialized, setIntialized] = useState<boolean>(false)
+  const styles = useMemo(() => {
+    if (!intialized) {
+      if (header.current && header.current.clientHeight !== 0) {
+        setIntialized(true)
+        setHeight(header.current.clientHeight)
+        console.log({ height, intialized })
+      } else {
+        return {}
+      }
+    } else {
+      return {
+        marginTop: `${-heightPrecentage * 100}px`,
+        marginBottom: `${heightPrecentage * 100}px`,
+      }
+    }
+  }, [heightPrecentage, intialized, height])
 
-  useEffect(() => {
-    const show = scrollYDelta < 3 ? true : false
-    show != showHeader && setShowHeader(show)
-  }, [scrollYDelta])
+  console.log(height)
 
   return useMemo(
     () => (
       <IonHeader
+        ref={header}
+        style={styles}
         className={`ion-no-border bottom-line-border ${
           !showHeader && "fade-out"
         }`}
@@ -24,7 +47,7 @@ const HidingHeader: React.FC<ContainerProps> = ({ scrollYDelta, children }) => {
         <IonToolbar>{children}</IonToolbar>
       </IonHeader>
     ),
-    [showHeader, children]
+    [showHeader, children, heightPrecentage]
   )
 }
 

@@ -1,5 +1,12 @@
 import { IonContent, IonNote, IonPage, useIonViewDidEnter } from "@ionic/react"
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  memo,
+} from "react"
 import ReactGA from "react-ga"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
 import { useHistory } from "react-router"
@@ -12,12 +19,13 @@ import { thunkGetHomeData } from "../../redux/PWAs/actions"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { GetPwaCategoryUrl } from "../../routes"
 import "./styles.css"
+import { useHidingHeader } from "../../hooks/useHidingHeader"
 
 const Home: React.FC = () => {
   const history = useHistory()
   const content = useRef<any>()
   const [prompt, promptToInstall] = useAddToHomescreenPrompt()
-  const [scrollYDelta, setScrollYDelta] = useState<number>(0)
+  const [showHeader, heightPercentage, setScrollYCurrent] = useHidingHeader(50)
 
   const { homeData, isLoading } = useSelector(
     ({ pwas }: ReduxCombinedState) => ({
@@ -73,9 +81,9 @@ const Home: React.FC = () => {
     )
   }, [homeData, isLoading, onPress])
 
-  return (
-    <IonPage>
-      <HidingHeader scrollYDelta={scrollYDelta}>
+  const renderHeader = useMemo(
+    () => (
+      <HidingHeader showHeader={showHeader} heightPrecentage={heightPercentage}>
         <div className="HomeHeader">
           <div>
             <h1>PWA Store</h1>
@@ -89,10 +97,17 @@ const Home: React.FC = () => {
           </div>
         </div>
       </HidingHeader>
+    ),
+    [showHeader, heightPercentage]
+  )
+
+  return (
+    <IonPage>
+      {renderHeader}
       <IonContent
         fullscreen={true}
         scrollEvents={true}
-        onIonScroll={(e) => setScrollYDelta(e.detail.deltaY)}
+        onIonScroll={(e) => setScrollYCurrent(e.detail.scrollTop)}
         className="content"
         ref={content}
       >
@@ -103,4 +118,4 @@ const Home: React.FC = () => {
   )
 }
 
-export default Home
+export default memo(Home)
