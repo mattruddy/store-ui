@@ -14,7 +14,6 @@ import { thunkSignUp } from "../../redux/User/actions"
 import { useDispatch, useSelector } from "react-redux"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { checkValidPW } from "../../util"
-import "./styles.css"
 import FormItem from "../../components/FormItem"
 
 const SignUp: React.FC = () => {
@@ -93,7 +92,7 @@ const SignUp: React.FC = () => {
             showError={hasSubmit && email === ""}
           />
           <FormItem
-            name="password"
+            name="Password"
             type="password"
             spellCheck={false}
             value={password}

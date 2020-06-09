@@ -186,24 +186,24 @@ const IonicApp: React.FC = () => {
                   <IonLabel>Profile</IonLabel>
                 </IonTabButton>
               </IonTabBar>
-              <IonToast
-                isOpen={alerts.show}
-                message={alerts.message}
-                duration={alerts.timeout}
-                onDidDismiss={clearAlert}
-                buttons={[
-                  {
-                    side: "end",
-                    text: "Dismiss",
-                    handler: () => {
-                      clearAlert()
-                    },
-                  },
-                ]}
-              />
             </IonTabs>
           </div>
         </IonSplitPane>
+        <IonToast
+          isOpen={alerts.show}
+          message={alerts.message}
+          duration={alerts.timeout}
+          onDidDismiss={clearAlert}
+          buttons={[
+            {
+              side: "end",
+              text: "Dismiss",
+              handler: () => {
+                clearAlert()
+              },
+            },
+          ]}
+        />
       </IonReactRouter>
     </IonApp>
   )

@@ -144,11 +144,10 @@ const baseHeaders = {
 
 const AxiosForm = async (payload: FormData): Promise<AxiosInstance> => {
   const response = await getUserData()
-  const { isLoggedIn, token } = response
+  const { token } = response
 
   return axios.create({
     baseURL: API_URL,
-    // timeout: 25000,
     responseType: "json",
     headers: token
       ? {
@@ -166,7 +165,6 @@ const Axios = async (responseType: "json" = "json"): Promise<AxiosInstance> => {
   return axios.create({
     withCredentials: true,
     baseURL: API_URL,
-    // timeout: 25000,
     crossDomain: true,
     responseType,
     headers: token
