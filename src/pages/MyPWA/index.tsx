@@ -217,7 +217,7 @@ const MyPWA: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader className="ion-no-border">
+      <IonHeader className="ion-no-border bottom-line-border">
         <IonToolbar>
           <IonButtons slot="start">
             <IonBackButton defaultHref={RouteMap.PROFILE} />
@@ -225,7 +225,7 @@ const MyPWA: React.FC = () => {
           {pwa && <IonTitle>{pwa.name}</IonTitle>}
         </IonToolbar>
       </IonHeader>
-      <IonContent className="content" style={{ overflow: "hidden" }}>
+      <IonContent className="content">
         {isLoading && (
           <IonProgressBar
             type={isLoading ? "indeterminate" : "determinate"}

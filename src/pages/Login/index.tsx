@@ -88,7 +88,7 @@ const LogIn: React.FC = () => {
 
   return (
     <IonPage>
-      <IonContent style={{ overflow: "hidden" }}>
+      <IonContent className="content">
         <IonGrid fixed>
           <IonRow style={{ display: "flex", justifyContent: "center" }}>
             <IonImg
