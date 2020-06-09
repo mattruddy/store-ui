@@ -165,7 +165,7 @@ const IonicApp: React.FC = () => {
                   href={RouteMap.CATEGORIES}
                 >
                   <IonIcon icon={albumsOutline} />
-                  <IonLabel>Categories</IonLabel>
+                  <IonLabel>Search</IonLabel>
                 </IonTabButton>
                 <IonTabButton className="tab" tab="about" href={RouteMap.ABOUT}>
                   <IonIcon icon={informationCircle} />

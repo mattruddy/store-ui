@@ -9,6 +9,7 @@ import {
   IonButtons,
   IonBackButton,
   IonNote,
+  IonTitle,
 } from "@ionic/react"
 import {
   connect as reduxConnector,
@@ -139,11 +140,11 @@ const PWAs: React.FC<RouteComponentProps> = () => {
         <IonButtons className="PWAsBackbutton" slot="start">
           <IonBackButton defaultHref="/home" />
         </IonButtons>
-        <h1 className="PWAsH1">
+        <IonTitle>
           {capitalize(
             cat === "" ? "TOP" : cat === "TRENDING" ? "DISCOVER" : cat
           )}
-        </h1>
+        </IonTitle>
       </HidingHeader>
       <IonContent
         fullscreen={true}
