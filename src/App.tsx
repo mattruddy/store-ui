@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from "react"
+import React, { useEffect, useCallback } from "react"
 import { Redirect, Route } from "react-router-dom"
 import {
   IonApp,
@@ -79,12 +79,15 @@ const IonicApp: React.FC = () => {
     const prefersDark: MediaQueryList = window.matchMedia(
       "(prefers-color-scheme: dark)"
     )
-    setDarkMode(prefersDark.matches)
+
+    if (prefersDark.matches) {
+      setDarkMode(true)
+    }
   }
 
   useEffect(() => {
     loadUserData()
-    handleTheme()
+    //handleTheme()
   }, [])
 
   useEffect(() => {

@@ -144,23 +144,6 @@ http://ionicframework.com/docs/theming/ */
 }
 
 /* Dark mode */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --ion-background-color: #1e2023;
-    --ion-text-color: rgb(201, 200, 200);
-  }
-  .content {
-    --background: #1e2023 !important;
-  }
-  .SideBarCategory {
-    --background: #1e2023 !important;
-  }
-  strong,
-  h2,
-  .PWACardTitle {
-    color: rgb(201, 200, 200) !important;
-  }
-}
 
 /* Fall back */
 .dark-theme {
@@ -243,7 +226,8 @@ http://ionicframework.com/docs/theming/ */
   background: #161616 !important;
 }
 
-.dark-theme h2 {
+.dark-theme h2,
+.dark-theme strong {
   color: #eeeeee !important;
 }
 
