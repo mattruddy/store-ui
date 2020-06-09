@@ -30,6 +30,7 @@ import { thunkGetPWAs } from "../../redux/PWAs/actions"
 import "./styles.css"
 import PWACardPlaceholder from "../../components/PWACardPlaceholder"
 import HidingHeader from "../../components/HidingHeader"
+import { useHidingHeader } from "../../hooks/useHidingHeader"
 
 const PWAs: React.FC<RouteComponentProps> = () => {
   const { category } = useParams()
@@ -39,7 +40,7 @@ const PWAs: React.FC<RouteComponentProps> = () => {
   const [loadingMore, setLoadingMore] = useState<boolean>(false)
   const scrollEl = useRef<HTMLIonInfiniteScrollElement>(null)
   const content = useRef<HTMLIonContentElement>(null)
-  const [scrollYDelta, setScrollYDelta] = useState<number>(0)
+  const [showHeader, heightPercentage, setScrollYCurrent] = useHidingHeader(50)
 
   const { pwasSections, isLoading, pwas } = useSelector(
     ({ pwas }: ReduxCombinedState) => ({
@@ -134,9 +135,9 @@ const PWAs: React.FC<RouteComponentProps> = () => {
           ))
   }, [sectionPwas, isLoading, loadingMore])
 
-  return (
-    <IonPage>
-      <HidingHeader scrollYDelta={scrollYDelta}>
+  const renderHeader = useMemo(
+    () => (
+      <HidingHeader showHeader={showHeader} heightPrecentage={heightPercentage}>
         <IonButtons className="PWAsBackbutton" slot="start">
           <IonBackButton defaultHref="/home" />
         </IonButtons>
@@ -146,11 +147,18 @@ const PWAs: React.FC<RouteComponentProps> = () => {
           )}
         </IonTitle>
       </HidingHeader>
+    ),
+    [showHeader, heightPercentage]
+  )
+
+  return (
+    <IonPage>
+      {renderHeader}
       <IonContent
         fullscreen={true}
         className="content"
         scrollEvents={true}
-        onIonScroll={(e) => setScrollYDelta(e.detail.deltaY)}
+        onIonScroll={(e) => setScrollYCurrent(e.detail.scrollTop)}
         ref={content}
       >
         <IonRow>
