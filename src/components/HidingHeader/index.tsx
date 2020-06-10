@@ -21,7 +21,6 @@ const HidingHeader: React.FC<ContainerProps> = ({
       if (header.current && header.current.clientHeight !== 0) {
         setIntialized(true)
         setHeight(header.current.clientHeight)
-        console.log({ height, intialized })
       } else {
         return {}
       }
@@ -32,8 +31,6 @@ const HidingHeader: React.FC<ContainerProps> = ({
       }
     }
   }, [heightPrecentage, intialized, height])
-
-  console.log(height)
 
   return useMemo(
     () => (
