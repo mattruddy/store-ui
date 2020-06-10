@@ -1,5 +1,5 @@
 import "./css/index.css"
-import React, { Suspense, lazy } from "react"
+import React from "react"
 import ReactDOM from "react-dom"
 import storeFactory from "./redux"
 import { Provider } from "react-redux"

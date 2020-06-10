@@ -1,5 +1,5 @@
 import React, { memo, Fragment } from "react"
-import { IonItem, IonLabel, IonInput, IonText, IonNote } from "@ionic/react"
+import { IonItem, IonLabel, IonInput, IonNote } from "@ionic/react"
 
 interface ContainerProps {
   name: string

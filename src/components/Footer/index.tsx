@@ -13,6 +13,7 @@ const Footer: React.FC = () => {
           className="FooterRightIcon"
           href="https://twitter.com/PWAStore1"
           target="_blank"
+          rel="noopener noreferrer"
         >
           <IonIcon className="ion-color-twitter" icon={logoTwitter} />
         </a>

@@ -1,12 +1,5 @@
 import { IonContent, IonNote, IonPage, useIonViewDidEnter } from "@ionic/react"
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  memo,
-} from "react"
+import React, { useCallback, useEffect, useMemo, useRef, memo } from "react"
 import ReactGA from "react-ga"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
 import { useHistory } from "react-router"
@@ -47,8 +40,10 @@ const Home: React.FC = () => {
     ReactGA.pageview(`Home`)
   }, [])
 
-  const onPress = (category: string) =>
-    history.push(GetPwaCategoryUrl(category))
+  const onPress = useCallback(
+    (category: string) => history.push(GetPwaCategoryUrl(category)),
+    [history]
+  )
 
   const renderHomeList = useMemo(() => {
     return (

@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, Fragment } from "react"
+import React, { useEffect, useCallback } from "react"
 import { Redirect, Route } from "react-router-dom"
 import {
   IonApp,
@@ -37,7 +37,6 @@ import { clearAlerts } from "./redux/Alerts/actions"
 import { Axios } from "./redux/Actions"
 import { SideBar } from "./components"
 import Search from "./pages/Search"
-import { CombinedState } from "redux"
 
 const App: React.FC = () => {
   return <IonicApp />

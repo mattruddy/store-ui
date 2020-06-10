@@ -11,12 +11,7 @@ import {
   IonNote,
   IonTitle,
 } from "@ionic/react"
-import {
-  connect as reduxConnector,
-  useSelector,
-  shallowEqual,
-  useDispatch,
-} from "react-redux"
+import { useSelector, shallowEqual, useDispatch } from "react-redux"
 import { PWACard } from "../../components"
 import { PWA } from "../../util/types"
 import { RouteComponentProps, useParams } from "react-router"

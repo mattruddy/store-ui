@@ -9,8 +9,6 @@ import {
   RATINGS_PENDING,
   RATINGS_COMPLETE,
   RATINGS_ADD,
-  PWAsState,
-  PWAS_DATA,
   RATING_ADD,
 } from "./types"
 import { Axios } from "../Actions"

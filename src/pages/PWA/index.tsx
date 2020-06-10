@@ -19,7 +19,6 @@ import {
   IonRow,
   IonCol,
   IonNote,
-  IonSpinner,
   IonTitle,
 } from "@ionic/react"
 import {
@@ -50,10 +49,9 @@ const PWA: React.FC<OwnProps> = ({
   const [notFound, setNotFound] = useState<boolean>(false)
   const [hasFetchedRatings, setHasFetchedRatings] = useState<boolean>(false)
 
-  const { pwa, isRatingsLoading } = useSelector(
+  const { pwa } = useSelector(
     ({ pwas: { pwas, isRatingsPending }, user }: ReduxCombinedState) => ({
       pwa: pwas.find((x) => pwaName.replace(/-/g, " ") === x.name),
-      isRatingsLoading: isRatingsPending,
     }),
     shallowEqual
   )

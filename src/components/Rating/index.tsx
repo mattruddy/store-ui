@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState, memo, Fragment } from "react"
 //@ts-ignore
 import StarRatings from "react-star-ratings"
 import Collapsible from "react-collapsible"
-import { IonTextarea, IonButton, IonText, IonToast } from "@ionic/react"
+import { IonTextarea, IonButton, IonText } from "@ionic/react"
 
 interface ContainerProps {
   onSubmit: (star: number, comment?: string) => {}

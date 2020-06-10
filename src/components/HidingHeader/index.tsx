@@ -1,5 +1,5 @@
 import { IonHeader, IonToolbar } from "@ionic/react"
-import React, { memo, useEffect, useMemo, useState, useRef } from "react"
+import React, { memo, useMemo, useState, useRef } from "react"
 
 interface ContainerProps {
   children: any

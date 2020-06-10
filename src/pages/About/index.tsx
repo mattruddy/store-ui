@@ -46,6 +46,7 @@ const About: React.FC = () => (
               href="https://twitter.com/PWAStore1"
               target="_blank"
               style={{ color: "#1DA1F2" }}
+              rel="noopener noreferrer"
             >
               Twitter
               <IonIcon icon={logoTwitter} style={{ marginLeft: 1 }} />
@@ -159,6 +160,7 @@ const About: React.FC = () => (
                 style={{ color: "rgb(153, 153, 153)" }}
                 href="https://developers.google.com/web/tools/lighthouse"
                 target="_blank"
+                rel="noopener noreferrer"
               >
                 Lighthouse Report
               </a>{" "}
