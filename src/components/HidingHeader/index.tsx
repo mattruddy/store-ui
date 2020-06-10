@@ -34,7 +34,7 @@ const HidingHeader: React.FC<ContainerProps> = ({
         <IonToolbar>{children}</IonToolbar>
       </IonHeader>
     ),
-    [showHeader, children, heightPrecentage, styles]
+    [showHeader, children, styles]
   )
 }
 

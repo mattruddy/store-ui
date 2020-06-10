@@ -49,7 +49,7 @@ const CategoryOptions: React.FC<ContainerProps> = ({ onPress, initValue }) => {
           {capitalize(cat.category)}
         </IonSelectOption>
       )),
-    [categories]
+    []
   )
 
   return (
