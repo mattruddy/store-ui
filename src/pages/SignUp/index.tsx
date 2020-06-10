@@ -70,7 +70,7 @@ const SignUp: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent className="content">
-        <form noValidate onSubmit={onSignup}>
+        <form onSubmit={onSignup}>
           <FormItem
             name="Username"
             type="text"

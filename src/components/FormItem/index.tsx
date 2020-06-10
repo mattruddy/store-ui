@@ -1,15 +1,16 @@
 import React, { memo, Fragment } from "react"
-import { IonItem, IonLabel, IonInput, IonText } from "@ionic/react"
+import { IonItem, IonLabel, IonInput, IonText, IonNote } from "@ionic/react"
 
 interface ContainerProps {
   name: string
-  type: "text" | "password"
-  spellCheck: boolean
-  maxLength: number
-  value: string
-  onChange: (e: CustomEvent) => void
+  type?: "text" | "password"
+  spellCheck?: boolean
+  maxLength?: number
+  value?: string
+  onChange?: (e: CustomEvent) => void
   errorMessage: string
-  showError?: boolean
+  showError: boolean
+  children?: any
 }
 
 const FormItem: React.FC<ContainerProps> = ({
@@ -21,25 +22,26 @@ const FormItem: React.FC<ContainerProps> = ({
   onChange,
   errorMessage,
   showError = false,
+  children,
 }) => {
   return (
     <Fragment>
       <IonItem className="content">
         <IonLabel position="stacked">{name}</IonLabel>
-        <IonInput
-          name={name}
-          type={type}
-          value={value}
-          spellCheck={spellCheck}
-          maxlength={maxLength}
-          onIonChange={onChange}
-        />
+        {children ? (
+          children
+        ) : (
+          <IonInput
+            name={name}
+            type={type}
+            value={value}
+            spellCheck={spellCheck}
+            maxlength={maxLength}
+            onIonChange={onChange}
+          />
+        )}
       </IonItem>
-      {showError && (
-        <IonText color="danger">
-          <p className="ion-padding-start">{errorMessage}</p>
-        </IonText>
-      )}
+      {showError && <IonNote color="danger"> {errorMessage}</IonNote>}
     </Fragment>
   )
 }

@@ -83,7 +83,7 @@ const LogIn: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent className="content">
-        <form noValidate onSubmit={onLogin}>
+        <form onSubmit={onLogin}>
           <FormItem
             name="Username"
             type="text"
