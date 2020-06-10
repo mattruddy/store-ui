@@ -135,7 +135,7 @@ const Admin: React.FC = () => {
           })
         ) : (
           <IonRow>
-            <IonCol sizeMd="8" className="HomeCardListCol">
+            <IonCol sizeMd="8">
               <h1 className="HomeCardsHeader">Page Not Found</h1>
             </IonCol>
           </IonRow>

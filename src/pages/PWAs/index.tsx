@@ -1,4 +1,11 @@
-import React, { useState, useEffect, useRef, useCallback, useMemo } from "react"
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+  memo,
+} from "react"
 import {
   IonContent,
   IonPage,
@@ -17,9 +24,7 @@ import { PWA } from "../../util/types"
 import { RouteComponentProps, useParams } from "react-router"
 
 import ReactGA from "react-ga"
-import { capitalize } from "../../util"
-import { categories } from "../../components/CategoryOptions"
-import { standardCategories } from "../../components/SideBar"
+import { capitalize, normalizeCategory } from "../../util"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { thunkGetPWAs } from "../../redux/PWAs/actions"
 import "./styles.css"
@@ -30,8 +35,6 @@ import { useHidingHeader } from "../../hooks/useHidingHeader"
 const PWAs: React.FC<RouteComponentProps> = () => {
   const { category } = useParams()
   const [page, setPage] = useState<number>(0)
-  const [cat, setCat] = useState<string>("")
-  const [scrollDisabled, setScrollDisabled] = useState<boolean>(false)
   const [loadingMore, setLoadingMore] = useState<boolean>(false)
   const scrollEl = useRef<HTMLIonInfiniteScrollElement>(null)
   const content = useRef<HTMLIonContentElement>(null)
@@ -69,42 +72,19 @@ const PWAs: React.FC<RouteComponentProps> = () => {
   }, [pwasSections, category, page, pwas])
 
   useEffect(() => {
-    return () => {
-      setPage(0)
-    }
-  }, [])
-
-  useEffect(() => {
-    let newCat = ""
-    if (
-      category &&
-      (categories.find((cat) => cat.category === category.toUpperCase()) ||
-        standardCategories.find((cat) => cat.value === category.toUpperCase()))
-    ) {
-      newCat = category.toUpperCase()
-    }
-    reloadPwas(newCat)
-    setCat(newCat)
-    setScrollDisabled(false)
-    ReactGA.pageview(`PWAs ${newCat}`)
+    setPage(0)
+    getPWAs(0, category?.toUpperCase())
+    ReactGA.pageview(`PWAs ${category?.toUpperCase()}`)
     content.current?.scrollToTop && content.current.scrollToTop(0)
   }, [category])
 
   const loadMorePwas = async () => {
     setLoadingMore(true)
     const nextPage = page + 1
-    await getPWAs(nextPage, cat && cat !== "" ? cat : undefined)
+    await getPWAs(nextPage, category?.toUpperCase())
     setPage(nextPage)
     scrollEl.current && scrollEl.current.complete()
     setLoadingMore(false)
-  }
-
-  const reloadPwas = (option?: string) => {
-    setPage(0)
-    getPWAs(
-      0,
-      option || option === "" ? option : cat && cat !== "" ? cat : undefined
-    )
   }
 
   const renderPwaList = useMemo(() => {
@@ -136,14 +116,10 @@ const PWAs: React.FC<RouteComponentProps> = () => {
         <IonButtons className="PWAsBackbutton" slot="start">
           <IonBackButton defaultHref="/home" />
         </IonButtons>
-        <IonTitle>
-          {capitalize(
-            cat === "" ? "TOP" : cat === "TRENDING" ? "DISCOVER" : cat
-          )}
-        </IonTitle>
+        <IonTitle>{capitalize(normalizeCategory(category))}</IonTitle>
       </HidingHeader>
     ),
-    [showHeader, heightPercentage, cat]
+    [showHeader, heightPercentage, category]
   )
 
   return (
@@ -157,15 +133,14 @@ const PWAs: React.FC<RouteComponentProps> = () => {
         ref={content}
       >
         <IonRow>
-          <IonCol className="CardListCol">
+          <IonCol>
             <IonRow>{renderPwaList}</IonRow>
           </IonCol>
         </IonRow>
-        {cat !== undefined && cat.toLowerCase() !== "trending" && (
+        {category?.toLowerCase() !== "trending" && (
           <IonInfiniteScroll
             ref={scrollEl}
             threshold="100px"
-            disabled={scrollDisabled}
             onIonInfinite={loadMorePwas}
           >
             <IonInfiniteScrollContent />
@@ -176,4 +151,4 @@ const PWAs: React.FC<RouteComponentProps> = () => {
   )
 }
 
-export default PWAs
+export default memo(PWAs)

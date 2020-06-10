@@ -67,7 +67,7 @@ const Home: React.FC = () => {
         <HomeRow
           pwas={homeData.newApps}
           title="New"
-          subtitle="The fresh new uploads"
+          subtitle="Fresh new uploads"
           linkTo="new"
           onPressCallback={onPress}
           isLoading={isLoading}

@@ -140,6 +140,14 @@ const validAppUpload = (
   return false
 }
 
+const normalizeCategory = (category: string | undefined): string => {
+  return category === undefined
+    ? "TOP"
+    : category === "TRENDING"
+    ? "DISCOVER"
+    : category
+}
+
 export {
   blobToFile,
   fixFilesRotation,
@@ -154,4 +162,5 @@ export {
   stringMatch,
   checkValidPW,
   validAppUpload,
+  normalizeCategory,
 }

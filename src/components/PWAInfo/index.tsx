@@ -59,9 +59,8 @@ const PWAInfo: React.FC<ContainerProps> = ({
           </div>
         </div>
         <IonButton
-          class="button"
+          color="dark"
           fill="outline"
-          style={{ marginRight: "10px", marginLeft: "10px" }}
           onClick={() => {
             ;(async () => await (await Axios()).post(`public/pwa/${appId}`))()
             ReactGA.event({

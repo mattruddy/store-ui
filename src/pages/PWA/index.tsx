@@ -120,7 +120,7 @@ const PWA: React.FC<OwnProps> = ({
 
   return (
     <IonPage>
-      <IonHeader className="ion-no-border">
+      <IonHeader className="ion-no-border bottom-line-border">
         <IonToolbar>
           <IonButtons slot="start">
             <IonBackButton defaultHref="/home" />

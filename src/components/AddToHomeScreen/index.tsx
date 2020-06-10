@@ -21,7 +21,7 @@ const AddToHomeScreen: React.FC<AddToHomeScreenProps> = ({
     return (
       <>
         {prompt && (
-          <IonButton fill="clear" onClick={handlePromptToInstall}>
+          <IonButton fill="outline" onClick={handlePromptToInstall}>
             Install
           </IonButton>
         )}
