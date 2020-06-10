@@ -14,13 +14,11 @@ const HidingHeader: React.FC<ContainerProps> = ({
   children,
 }) => {
   const header = useRef<any>(null)
-  let [height, setHeight] = useState<number>(0)
   let [intialized, setIntialized] = useState<boolean>(false)
   const styles = useMemo(() => {
     if (!intialized) {
       if (header.current && header.current.clientHeight !== 0) {
         setIntialized(true)
-        setHeight(header.current.clientHeight)
       } else {
         return {}
       }
@@ -44,7 +42,7 @@ const HidingHeader: React.FC<ContainerProps> = ({
         <IonToolbar>{children}</IonToolbar>
       </IonHeader>
     ),
-    [showHeader, children, heightPrecentage, styles]
+    [showHeader, children, styles]
   )
 }
 
