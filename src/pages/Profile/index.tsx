@@ -42,7 +42,7 @@ import { noSpecialChars } from "../../util"
 import ReactTagInput from "@pathofdev/react-tag-input"
 import "@pathofdev/react-tag-input/build/index.css"
 import { ReduxCombinedState } from "../../redux/RootReducer"
-import { useSelector, useDispatch } from "react-redux"
+import { useSelector, useDispatch, shallowEqual } from "react-redux"
 import { thunkLogout, thunkAddPWA } from "../../redux/User/actions"
 import Axios from "axios"
 
@@ -92,7 +92,8 @@ const Profile: React.FC = () => {
       isLoading: loading,
       isLoggedIn: isLoggedIn,
       status: status,
-    })
+    }),
+    shallowEqual
   )
 
   const dispatch = useDispatch()

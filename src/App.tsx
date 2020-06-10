@@ -29,7 +29,7 @@ import {
 import { RouteMap } from "./routes"
 import ReactGA from "react-ga"
 import Home from "./pages/Home"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch, useSelector, shallowEqual } from "react-redux"
 import { thunkLoadUserData, thunkLoadProfile } from "./redux/User/actions"
 import { SetWindow } from "./redux/Window/actions"
 import { ReduxCombinedState } from "./redux/RootReducer"
@@ -37,6 +37,7 @@ import { clearAlerts } from "./redux/Alerts/actions"
 import { Axios } from "./redux/Actions"
 import { SideBar } from "./components"
 import Search from "./pages/Search"
+import { CombinedState } from "redux"
 
 const App: React.FC = () => {
   return <IonicApp />
@@ -60,7 +61,8 @@ const IonicApp: React.FC = () => {
       token: token,
       alerts: alerts,
       push: push,
-    })
+    }),
+    shallowEqual
   )
 
   useEffect(() => {

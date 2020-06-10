@@ -17,7 +17,7 @@ import {
 } from "@ionic/react"
 import { withRouter } from "react-router"
 import { PWA } from "../../util/types"
-import { useSelector } from "react-redux"
+import { useSelector, shallowEqual } from "react-redux"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { UserRole } from "../../redux/User/types"
 import { Axios } from "../../redux/Actions"
@@ -31,7 +31,8 @@ const Admin: React.FC = () => {
     ({ user: { role, isLoggedIn } }: ReduxCombinedState) => ({
       role: role,
       isLoggedIn: isLoggedIn,
-    })
+    }),
+    shallowEqual
   )
 
   useEffect(() => {

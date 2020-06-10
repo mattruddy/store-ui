@@ -18,7 +18,7 @@ import { RouteMap } from "../../routes"
 import { validEmail } from "../../util/index"
 import { useHistory } from "react-router"
 import { ReduxCombinedState } from "../../redux/RootReducer"
-import { useSelector, useDispatch } from "react-redux"
+import { useSelector, useDispatch, shallowEqual } from "react-redux"
 import { thunkSetEmail } from "../../redux/User/actions"
 import { Axios } from "../../redux/Actions"
 
@@ -30,9 +30,12 @@ const Support: React.FC = () => {
   const [showToast, setShowToast] = useState<boolean>(false)
   const history = useHistory()
 
-  const { email } = useSelector(({ user: { email } }: ReduxCombinedState) => ({
-    email: email,
-  }))
+  const { email } = useSelector(
+    ({ user: { email } }: ReduxCombinedState) => ({
+      email: email,
+    }),
+    shallowEqual
+  )
 
   const dispatch = useDispatch()
   const setEmail = useCallback(
