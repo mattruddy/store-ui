@@ -117,7 +117,7 @@ const Admin: React.FC = () => {
                         `admin/pwa/${pwa.appId}`,
                         {
                           code: status,
-                          reasone: reason,
+                          reason: reason,
                         }
                       )
                       if (resp.status === 200) {
@@ -142,7 +142,7 @@ const Admin: React.FC = () => {
         )}
       </Fragment>
     ),
-    [role, pwas, status]
+    [role, pwas, status, reason]
   )
 
   return (

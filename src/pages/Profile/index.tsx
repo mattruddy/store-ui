@@ -22,6 +22,7 @@ import {
   IonFabList,
   IonAlert,
   IonCol,
+  IonProgressBar,
 } from "@ionic/react"
 import { useHistory } from "react-router"
 import { PWACard } from "../../components"
@@ -123,7 +124,7 @@ const Profile: React.FC = () => {
   const renderAppsSections: JSX.Element = useMemo(
     () => (
       <Fragment>
-        {!isLoading && pwas && (
+        {!isLoading && pwas ? (
           <Fragment>
             <h2 style={{ marginLeft: "20px" }}>Approved</h2>
             <IonRow>{loadPwas("APPROVED")}</IonRow>
@@ -132,6 +133,8 @@ const Profile: React.FC = () => {
             <h2 style={{ marginLeft: "20px" }}>Denied</h2>
             <IonRow>{loadPwas("DENIED")}</IonRow>
           </Fragment>
+        ) : (
+          <IonProgressBar type="indeterminate" />
         )}
       </Fragment>
     ),

@@ -62,6 +62,7 @@ const SubmitAppModal: React.FC<ContainerProps> = ({
       setIcon(undefined)
       setScreenshots(undefined)
       setTags([])
+      closeModal()
     }
   }
 
