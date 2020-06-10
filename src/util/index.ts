@@ -110,11 +110,34 @@ const stringMatch = (
   return s1.match(regexMatch)
 }
 
-const checkValidPW = (pw: string) => {
+const checkValidPW = (pw: string): boolean => {
   return RegExp(
     "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
     "g"
   ).test(pw)
+}
+
+const validAppUpload = (
+  name: string,
+  description: string,
+  url: string,
+  category: string,
+  icon: File | undefined,
+  screenshots: File[] | undefined
+): boolean => {
+  if (
+    name &&
+    noSpecialChars(name) &&
+    icon &&
+    /^((https))/.test(url) &&
+    description &&
+    category &&
+    screenshots &&
+    screenshots.length <= 6
+  ) {
+    return true
+  }
+  return false
 }
 
 export {
@@ -130,4 +153,5 @@ export {
   validEmail,
   stringMatch,
   checkValidPW,
+  validAppUpload,
 }

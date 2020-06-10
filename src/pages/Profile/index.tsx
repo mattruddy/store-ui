@@ -13,13 +13,6 @@ import {
   IonTitle,
   IonToolbar,
   IonButton,
-  IonItem,
-  IonLabel,
-  IonModal,
-  IonList,
-  IonInput,
-  IonTextarea,
-  IonText,
   IonGrid,
   IonRow,
   IonIcon,
@@ -29,36 +22,19 @@ import {
   IonFabList,
   IonAlert,
   IonCol,
-  IonSpinner,
-  IonProgressBar,
 } from "@ionic/react"
-import { withRouter, useHistory } from "react-router"
-import { Lighthouse, PWACard } from "../../components"
-import { add, menu, logOut, contractSharp } from "ionicons/icons"
+import { useHistory } from "react-router"
+import { PWACard } from "../../components"
+import { add, menu, logOut } from "ionicons/icons"
 import { RouteMap } from "../../routes"
-import { noSpecialChars } from "../../util"
-import "@pathofdev/react-tag-input/build/index.css"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { useSelector, useDispatch } from "react-redux"
 import { thunkLogout, thunkAddPWA } from "../../redux/User/actions"
-import Axios from "axios"
 import SumbitAppModal from "../../components/SumbitAppModal"
-
-interface LighthouseTest {
-  pass: boolean
-  url: string
-  iosIcon: boolean
-  installable: boolean
-  worksOffline: boolean
-  error: boolean
-}
 
 const Profile: React.FC = () => {
   const [showModal, setShowModal] = useState(false)
   const [showAlert, setShowAlert] = useState(false)
-  const [isSubmit, setIsSubmit] = useState<boolean>(false)
-  const [lightHouseLoading, setLightHouseLoading] = useState<boolean>(false)
-  const [lightHouseTests, setLightHouseTests] = useState<LighthouseTest[]>([])
   const history = useHistory()
 
   const { pwas, username, isLoading, isLoggedIn, status } = useSelector(
@@ -105,52 +81,6 @@ const Profile: React.FC = () => {
     }
   }, [status])
 
-  // const onAddPWA = (e: React.FormEvent) => {
-  //   e.preventDefault()
-  //   setIsSubmit(true)
-  //   let check = 0
-  //   if (!name) {
-  //     check++
-  //   }
-
-  //   if (!noSpecialChars(name)) {
-  //     check++
-  //   }
-
-  //   if (!icon) {
-  //     check++
-  //   }
-
-  //   if (!url) {
-  //     check++
-  //   }
-
-  //   if (!/^((https))/.test(url)) {
-  //     check++
-  //   }
-
-  //   if (!desc) {
-  //     check++
-  //   }
-
-  //   if (!cat) {
-  //     check++
-  //   }
-
-  //   if (!screenshots) {
-  //     check++
-  //   }
-
-  //   if (screenshots && screenshots.length > 6) {
-  //     check++
-  //   }
-
-  //   if (check === 0) {
-  //     addApp(name, desc, url, cat, icon!, screenshots!, tags)
-  //   }
-  //   setIsSubmit(false)
-  // }
-
   const loadPwas = (filter: string) => {
     if (pwas) {
       const filteredPwas = pwas.filter((pwa) => pwa.status === filter)
@@ -189,68 +119,6 @@ const Profile: React.FC = () => {
     }
   }
 
-  const getLightHouseData = async (url: string) => {
-    try {
-      setLightHouseLoading(true)
-      const response = await Axios.request({
-        url: `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${url}&category=PWA`,
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-        },
-      })
-      if (response.status === 200) {
-        if (response.data) {
-          if (response.data.lighthouseResult) {
-            const data = response.data
-            const lightHouseData = data.lighthouseResult
-            const iosIconTest =
-              lightHouseData.audits["apple-touch-icon"].score > 0 ? true : false
-            const installableTest =
-              lightHouseData.audits["installable-manifest"].score > 0
-                ? true
-                : false
-            const worksOfflineTest =
-              lightHouseData.audits["works-offline"].score > 0 ? true : false
-            setLightHouseTests([
-              {
-                pass:
-                  iosIconTest &&
-                  worksOfflineTest &&
-                  (installableTest as boolean),
-                url: url,
-                iosIcon: iosIconTest,
-                installable: installableTest,
-                worksOffline: worksOfflineTest,
-                error: false,
-              } as LighthouseTest,
-              ...lightHouseTests.filter((x) => x.url !== url),
-            ])
-            //passed all tests.
-          } else {
-            console.error(`No lighthouse result`)
-          }
-        }
-      }
-    } catch (e) {
-      console.error(`Issue getting lighthouse data: ${JSON.stringify(e.data)}`)
-
-      setLightHouseTests([
-        {
-          pass: false,
-          url: url,
-          iosIcon: false,
-          installable: false,
-          worksOffline: false,
-          error: true,
-        } as LighthouseTest,
-        ...lightHouseTests.filter((x) => x.url !== url),
-      ])
-    }
-
-    setLightHouseLoading(false)
-  }
-
   const renderAppsSections: JSX.Element = useMemo(
     () => (
       <Fragment>
@@ -273,61 +141,9 @@ const Profile: React.FC = () => {
     <IonPage>
       <SumbitAppModal
         isOpen={showModal}
-        toggle={() => setShowModal(!showModal)}
+        closeModal={() => setShowModal(false)}
         onSubmit={addApp}
       />
-      {/* {isValidLink &&
-        url !== "" &&
-        !lightHouseTests.some((x) => x.url === url && x.pass) && (
-          <IonButton
-            expand="block"
-            onClick={() => {
-              if (url) {
-                getLightHouseData(url)
-              }
-            }}
-            disabled={lightHouseLoading}
-          >
-            {lightHouseLoading ? (
-              <IonSpinner />
-            ) : (
-              <p>Run Lighthouse PWA Check</p>
-            )}
-          </IonButton>
-        )}
-      {lightHouseTests.some((x) => x.url === url && !x.error) && (
-        <Lighthouse
-          installable={lightHouseTests.find((x) => x.url === url)!.installable}
-          iosIcon={lightHouseTests.find((x) => x.url === url)!.iosIcon}
-          runsOffline={lightHouseTests.find((x) => x.url === url)!.worksOffline}
-        />
-      )}
-      {lightHouseTests.some((x) => x.url === true && x.error) && (
-        <IonRow>
-          <IonCol>
-            <IonText color="danger">
-              <p>
-                There was an error running your site through Lighthouse. Please
-                contact support if you think this is a problem with the store.
-              </p>
-            </IonText>
-          </IonCol>
-        </IonRow>
-      )}
-      {lightHouseTests.some((x) => x.url === url && !x.error) &&
-        (lightHouseTests.some((x) => x.url === url && x.pass) ? (
-          <IonButton expand="block" onClick={onAddPWA} disabled={isSubmit}>
-            Submit
-          </IonButton>
-        ) : (
-          <IonRow>
-            <IonCol>
-              <IonText color="danger">
-                <p>Your app has not passed the proper tests on Lighthouse.</p>
-              </IonText>
-            </IonCol>
-          </IonRow>
-        ))} */}
       <IonHeader className="ion-no-border bottom-line-border">
         <IonToolbar>
           <IonButtons slot="end">
@@ -355,7 +171,7 @@ const Profile: React.FC = () => {
             </IonFabButton>
           </IonFabList>
         </IonFab>
-        <IonGrid>{renderAppsSections}</IonGrid>
+        <IonGrid fixed>{renderAppsSections}</IonGrid>
         <IonAlert
           isOpen={showAlert}
           onDidDismiss={() => setShowAlert(false)}
@@ -379,4 +195,4 @@ const Profile: React.FC = () => {
   )
 }
 
-export default withRouter(memo(Profile))
+export default memo(Profile)

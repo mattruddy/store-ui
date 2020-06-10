@@ -41,7 +41,12 @@ const FormItem: React.FC<ContainerProps> = ({
           />
         )}
       </IonItem>
-      {showError && <IonNote color="danger"> {errorMessage}</IonNote>}
+      {showError && (
+        <IonNote color="danger" style={{ padding: "15px" }}>
+          {" "}
+          {errorMessage}
+        </IonNote>
+      )}
     </Fragment>
   )
 }

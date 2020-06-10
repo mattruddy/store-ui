@@ -308,6 +308,7 @@ export const thunkAddPWA = (
       tags: tags,
     }
 
+    console.log(info)
     const fd = new FormData()
     fd.append("icon", icon)
     screenshots.forEach((screenshot) => fd.append("screenshots", screenshot))
