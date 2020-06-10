@@ -13,7 +13,7 @@ export const useHidingHeader: BooleanDispatchType = (threshold: number) => {
   const [scrollYPrevious, setScrollYPrevious] = useState<number>(0)
 
   useEffect(() => {
-    if (scrollYCurrent === 0) {
+    if (scrollYCurrent <= 0) {
       setShowHeader(true)
       setHeightPercentage(0)
       setInitialChange(1)
