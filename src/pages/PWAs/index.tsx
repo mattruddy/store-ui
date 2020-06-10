@@ -143,7 +143,7 @@ const PWAs: React.FC<RouteComponentProps> = () => {
         </IonTitle>
       </HidingHeader>
     ),
-    [showHeader, heightPercentage]
+    [showHeader, heightPercentage, cat]
   )
 
   return (

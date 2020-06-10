@@ -93,7 +93,7 @@ const Home: React.FC = () => {
         </div>
       </HidingHeader>
     ),
-    [showHeader, heightPercentage]
+    [showHeader, heightPercentage, prompt, promptToInstall]
   )
 
   return (

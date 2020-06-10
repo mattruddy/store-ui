@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from "react"
+import React, { useState, useMemo, useCallback, memo } from "react"
 import {
   IonContent,
   IonPage,
@@ -17,14 +17,17 @@ import { Axios } from "../../redux/Actions"
 const Search: React.FC = () => {
   const [pwaSearchResults, setPwaSearchResults] = useState<PWA[]>([])
 
-  const handleOnSearchChange = useCallback(async (appName: string) => {
-    if (appName) {
-      const { data } = await (await Axios()).get(`public/search/${appName}`)
-      setPwaSearchResults(data)
-    } else {
-      setPwaSearchResults([])
-    }
-  }, [])
+  const handleOnSearchChange = useCallback(
+    async (appName: string) => {
+      if (appName) {
+        const { data } = await (await Axios()).get(`public/search/${appName}`)
+        setPwaSearchResults(data)
+      } else {
+        setPwaSearchResults([])
+      }
+    },
+    [pwaSearchResults]
+  )
 
   const renderSearchResults = useMemo(() => {
     return pwaSearchResults.map((pwa, i) => (
@@ -52,4 +55,4 @@ const Search: React.FC = () => {
   )
 }
 
-export default Search
+export default memo(Search)

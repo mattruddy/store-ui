@@ -50,8 +50,10 @@ const PWA: React.FC<OwnProps> = ({
   const [hasFetchedRatings, setHasFetchedRatings] = useState<boolean>(false)
 
   const { pwa } = useSelector(
-    ({ pwas: { pwas, isRatingsPending }, user }: ReduxCombinedState) => ({
-      pwa: pwas.find((x) => pwaName.replace(/-/g, " ") === x.name),
+    ({ pwas: { pwas }, user }: ReduxCombinedState) => ({
+      pwa: pwas.find((x) => {
+        return pwaName.replace(/-/g, " ").toLowerCase() === x.name.toLowerCase()
+      }),
     }),
     shallowEqual
   )

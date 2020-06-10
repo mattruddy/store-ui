@@ -30,7 +30,7 @@ const HidingHeader: React.FC<ContainerProps> = ({
         marginBottom: `${heightPrecentage * 100}px`,
       }
     }
-  }, [heightPrecentage, intialized, height])
+  }, [heightPrecentage, intialized])
 
   return useMemo(
     () => (
@@ -44,7 +44,7 @@ const HidingHeader: React.FC<ContainerProps> = ({
         <IonToolbar>{children}</IonToolbar>
       </IonHeader>
     ),
-    [showHeader, children, heightPrecentage]
+    [showHeader, children, heightPrecentage, styles]
   )
 }
 
