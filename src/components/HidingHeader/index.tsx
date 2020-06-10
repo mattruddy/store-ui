@@ -14,23 +14,13 @@ const HidingHeader: React.FC<ContainerProps> = ({
   children,
 }) => {
   const header = useRef<any>(null)
-  let [height, setHeight] = useState<number>(0)
-  let [intialized, setIntialized] = useState<boolean>(false)
-  const styles = useMemo(() => {
-    if (!intialized) {
-      if (header.current && header.current.clientHeight !== 0) {
-        setIntialized(true)
-        setHeight(header.current.clientHeight)
-      } else {
-        return {}
-      }
-    } else {
-      return {
-        marginTop: `${-heightPrecentage * 100}px`,
-        marginBottom: `${heightPrecentage * 100}px`,
-      }
-    }
-  }, [heightPrecentage, intialized])
+  const styles = useMemo(
+    () => ({
+      marginTop: `${-heightPrecentage * 100}px`,
+      marginBottom: `${heightPrecentage * 100}px`,
+    }),
+    [heightPrecentage]
+  )
 
   return useMemo(
     () => (
