@@ -28,7 +28,7 @@ import { PWACard } from "../../components"
 import { add, menu, logOut } from "ionicons/icons"
 import { RouteMap } from "../../routes"
 import { ReduxCombinedState } from "../../redux/RootReducer"
-import { useSelector, useDispatch } from "react-redux"
+import { useSelector, useDispatch, shallowEqual } from "react-redux"
 import { thunkLogout, thunkAddPWA } from "../../redux/User/actions"
 import SumbitAppModal from "../../components/SumbitAppModal"
 
@@ -47,7 +47,8 @@ const Profile: React.FC = () => {
       isLoading: loading,
       isLoggedIn: isLoggedIn,
       status: status,
-    })
+    }),
+    shallowEqual
   )
 
   const dispatch = useDispatch()

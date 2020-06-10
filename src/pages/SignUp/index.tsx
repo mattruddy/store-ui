@@ -11,7 +11,7 @@ import {
 import { RouteMap } from "../../routes"
 import ReactGA from "react-ga"
 import { thunkSignUp } from "../../redux/User/actions"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch, useSelector, shallowEqual } from "react-redux"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { checkValidPW } from "../../util"
 import FormItem from "../../components/FormItem"
@@ -23,9 +23,12 @@ const SignUp: React.FC = () => {
   const [hasSubmit, setHasSubmit] = useState<boolean>(false)
   const history = useHistory()
 
-  const { token } = useSelector(({ user: { token } }: ReduxCombinedState) => ({
-    token: token,
-  }))
+  const { token } = useSelector(
+    ({ user: { token } }: ReduxCombinedState) => ({
+      token: token,
+    }),
+    shallowEqual
+  )
 
   const dispatch = useDispatch()
   const signUp = useCallback(

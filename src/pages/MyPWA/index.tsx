@@ -42,7 +42,7 @@ import StarRatings from "react-star-ratings"
 import ReactTagInput from "@pathofdev/react-tag-input"
 import "@pathofdev/react-tag-input/build/index.css"
 import { ReduxCombinedState } from "../../redux/RootReducer"
-import { useSelector, useDispatch } from "react-redux"
+import { useSelector, useDispatch, shallowEqual } from "react-redux"
 import { thunkDeletePWA, thunkUpdateApp } from "../../redux/User/actions"
 import "./styles.css"
 
@@ -74,7 +74,8 @@ const MyPWA: React.FC = () => {
         ) as PWA
       })(),
       status: status,
-    })
+    }),
+    shallowEqual
   )
 
   const dispatch = useDispatch()

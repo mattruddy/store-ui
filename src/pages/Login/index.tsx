@@ -14,7 +14,7 @@ import {
 import queryString from "query-string"
 import { logoGithub } from "ionicons/icons"
 import { RouteMap } from "../../routes"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch, useSelector, shallowEqual } from "react-redux"
 import { thunkLogin, thunkThirdPartyLogin } from "../../redux/User/actions"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import FormItem from "../../components/FormItem"
@@ -30,7 +30,8 @@ const LogIn: React.FC = () => {
     ({ user: { loading, token } }: ReduxCombinedState) => ({
       isLoading: loading,
       token: token,
-    })
+    }),
+    shallowEqual
   )
   const dispatch = useDispatch()
   const setThirdPartyLogin = useCallback(
