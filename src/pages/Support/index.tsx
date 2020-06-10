@@ -7,12 +7,8 @@ import {
   IonToolbar,
   IonTextarea,
   IonButton,
-  IonInput,
-  IonLabel,
-  IonToast,
   IonButtons,
   IonBackButton,
-  IonNote,
 } from "@ionic/react"
 import { RouteMap } from "../../routes"
 import { validEmail } from "../../util/index"
@@ -21,13 +17,11 @@ import { ReduxCombinedState } from "../../redux/RootReducer"
 import { useSelector, useDispatch, shallowEqual } from "react-redux"
 import { thunkSetEmail } from "../../redux/User/actions"
 import { Axios } from "../../redux/Actions"
+import { FormItem } from "../../components"
 
 const Support: React.FC = () => {
   const [text, setText] = useState<string>("")
   const [fromEmail, setFromEmail] = useState<string>("")
-  const [emailError, setEmailError] = useState<string | undefined>(undefined)
-  const [toastText, setToastText] = useState<string>()
-  const [showToast, setShowToast] = useState<boolean>(false)
   const history = useHistory()
 
   const { email } = useSelector(
@@ -58,14 +52,12 @@ const Support: React.FC = () => {
     })
     setEmail(fromEmail)
     setText("")
-    setToastText("Sent. You will hear from us shortly")
-    setShowToast(true)
     history.goBack()
   }
 
   return (
     <IonPage>
-      <IonHeader>
+      <IonHeader className="ion-no-border bottom-line-border">
         <IonToolbar>
           <IonButtons slot="start">
             <IonBackButton defaultHref={RouteMap.PROFILE} />
@@ -73,62 +65,35 @@ const Support: React.FC = () => {
           <IonTitle>Support</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
-        <div
-          style={{
-            width: "100%",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <div style={{ width: "100%", padding: "15px" }}>
-            <IonLabel style={{ marginLeft: "30px" }}>Support Request</IonLabel>
-          </div>
-          <IonInput
-            style={{ boxShadow: "0 0 3px #ccc", width: "95%" }}
-            value={fromEmail}
-            placeholder="Email"
-            maxlength={50}
-            onIonChange={(e) => {
-              const newEmail = e.detail.value!
-              if (!validEmail(newEmail)) {
-                setEmailError("Invalid email")
-              } else {
-                setEmailError(undefined)
-              }
-              setFromEmail(newEmail)
-            }}
-          />
-          <IonNote color="danger">{emailError && <p>{emailError}</p>}</IonNote>
+      <IonContent className="content">
+        <FormItem
+          name="Email"
+          value={fromEmail}
+          maxLength={50}
+          onChange={(e) => setFromEmail(e.detail.value!)}
+          showError={!validEmail(fromEmail)}
+          errorMessage={"Invalid email"}
+        />
+        <FormItem name="Body" showError={false} errorMessage="">
           <IonTextarea
-            style={{ boxShadow: "0 0 3px #ccc", width: "95%" }}
             value={text}
             rows={10}
             maxlength={1000}
-            placeholder="Please add a message"
             onIonChange={(e) => {
               setText(e.detail.value!)
             }}
           />
-          <IonButton
-            style={{ width: "95%", marginTop: "15px", borderRadius: "5px" }}
-            type="button"
-            expand="full"
-            disabled={!validEmail(fromEmail) || !text}
-            onClick={submitSupport}
-          >
-            Submit
-          </IonButton>
-        </div>
+        </FormItem>
+        <IonButton
+          className="button-no-shadow"
+          type="button"
+          expand="full"
+          disabled={!validEmail(fromEmail) || !text}
+          onClick={submitSupport}
+        >
+          Submit
+        </IonButton>
       </IonContent>
-      <IonToast
-        position="top"
-        isOpen={showToast}
-        duration={10000}
-        message={toastText}
-        onDidDismiss={() => setShowToast(false)}
-      />
     </IonPage>
   )
 }

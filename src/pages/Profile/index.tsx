@@ -32,6 +32,7 @@ import { ReduxCombinedState } from "../../redux/RootReducer"
 import { useSelector, useDispatch, shallowEqual } from "react-redux"
 import { thunkLogout, thunkAddPWA } from "../../redux/User/actions"
 import SumbitAppModal from "../../components/SumbitAppModal"
+import "./styles.css"
 
 const Profile: React.FC = () => {
   const [showModal, setShowModal] = useState(false)
@@ -102,19 +103,8 @@ const Profile: React.FC = () => {
         ))
       } else {
         return (
-          <IonCol
-            style={{
-              width: "100%",
-              margin: "20px",
-              height: "50px",
-              display: "flex",
-              alignItems: "center",
-              boxShadow: "0 0 3px #ccc",
-            }}
-          >
-            <small
-              style={{ paddingLeft: "15px", color: "rgb(115, 115, 115)" }}
-            >{`No ${filter.toLowerCase()} apps yet`}</small>
+          <IonCol>
+            <small className="NoAppsNote">{`No ${filter.toLowerCase()} apps yet`}</small>
           </IonCol>
         )
       }
@@ -152,7 +142,7 @@ const Profile: React.FC = () => {
         <IonToolbar>
           <IonButtons slot="end">
             <IonButton
-              fill="clear"
+              fill="outline"
               onClick={() => history.push(RouteMap.SUPPORT)}
             >
               SUPPORT
