@@ -2,7 +2,7 @@ import { memo } from "react"
 import React from "react"
 import "./styles.css"
 import { IonIcon } from "@ionic/react"
-import { logoTwitter, logoLinkedin, logoGithub } from "ionicons/icons"
+import { logoTwitter } from "ionicons/icons"
 
 const Footer: React.FC = () => {
   return (
@@ -13,6 +13,7 @@ const Footer: React.FC = () => {
           className="FooterRightIcon"
           href="https://twitter.com/PWAStore1"
           target="_blank"
+          rel="noopener noreferrer"
         >
           <IonIcon className="ion-color-twitter" icon={logoTwitter} />
         </a>

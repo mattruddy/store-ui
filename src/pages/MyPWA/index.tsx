@@ -42,7 +42,7 @@ import StarRatings from "react-star-ratings"
 import ReactTagInput from "@pathofdev/react-tag-input"
 import "@pathofdev/react-tag-input/build/index.css"
 import { ReduxCombinedState } from "../../redux/RootReducer"
-import { useSelector, useDispatch } from "react-redux"
+import { useSelector, useDispatch, shallowEqual } from "react-redux"
 import { thunkDeletePWA, thunkUpdateApp } from "../../redux/User/actions"
 import "./styles.css"
 
@@ -74,7 +74,8 @@ const MyPWA: React.FC = () => {
         ) as PWA
       })(),
       status: status,
-    })
+    }),
+    shallowEqual
   )
 
   const dispatch = useDispatch()
@@ -179,7 +180,6 @@ const MyPWA: React.FC = () => {
         return
       }
       const isNameChange = name !== pwa.name
-      console.log(count)
       if (count === 0) {
         UpdateApp(
           name!,
@@ -218,7 +218,7 @@ const MyPWA: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
+      <IonHeader className="ion-no-border bottom-line-border">
         <IonToolbar>
           <IonButtons slot="start">
             <IonBackButton defaultHref={RouteMap.PROFILE} />
@@ -226,7 +226,7 @@ const MyPWA: React.FC = () => {
           {pwa && <IonTitle>{pwa.name}</IonTitle>}
         </IonToolbar>
       </IonHeader>
-      <IonContent className="content" style={{ overflow: "hidden" }}>
+      <IonContent className="content">
         {isLoading && (
           <IonProgressBar
             type={isLoading ? "indeterminate" : "determinate"}

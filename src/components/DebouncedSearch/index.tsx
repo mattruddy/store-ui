@@ -11,10 +11,10 @@ const DebouncedSearch: React.FC<ContainerProps> = ({
   delay = 400,
   onChangeCallback,
 }) => {
-  let ref = useRef<any>(null)
+  let ref = useRef<any>(undefined)
 
   useEffect(() => {
-    if (ref) {
+    if (ref && ref.current.getInputElement) {
       ref.current.getInputElement().then((input: any) => {
         ref.current.setFocus()
       })

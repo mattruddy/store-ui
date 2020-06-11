@@ -11,8 +11,31 @@
   --background: rgb(248, 248, 248);
 }
 
+.center {
+  display: flex;
+  justify-content: center;
+}
+
+.main-logo-size {
+  height: 100px;
+  width: 100px;
+}
+
 .button {
   --color: black;
+}
+
+.button-no-shadow {
+  --box-shadow: none;
+}
+
+.button-border {
+  border: 1px solid rgba(0, 0, 0, 0.13);
+  border-radius: 5px;
+}
+
+.bottom-line-border {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.13);
 }
 
 .fab {
@@ -36,32 +59,6 @@
   color: var(--ion-color-primary);
 }
 
-::-webkit-scrollbar {
-  width: 7px;
-  height: 7px;
-}
-
-::-webkit-scrollbar:window-inactive {
-  width: 0px;
-  height: 0px;
-}
-
-::-webkit-scrollbar-track {
-  -webkit-border-radius: 5px;
-  border-radius: 5px;
-  background: rgba(0, 0, 0, 0);
-}
-
-::-webkit-scrollbar-thumb {
-  -webkit-border-radius: 5px;
-  border-radius: 5px;
-  background: rgba(0, 0, 0, 0.2);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.3);
-}
-
-::-webkit-scrollbar-thumb:window-inactive {
-  background: rgba(0, 0, 0, 0.05);
+.sc-ion-searchbar-md-h {
+  --box-shadow: none;
 }

@@ -1,5 +1,5 @@
 const isOnMobileBrowser = (userAgent: string) =>
-  /iPhone|iPad|iPod|Android|Windows/i.test(userAgent)
+  /iPhone|iPad|iPod|Android/i.test(userAgent)
 
 const getConnectionProps = ({
   downlink,
@@ -106,8 +106,6 @@ const getNavigatorProps = ({
 })
 
 const getWindowDimensions = () => {
-  const isClient = typeof window === "object"
-  if (!isClient) return undefined
   const {
     innerHeight,
     innerWidth,
@@ -116,7 +114,6 @@ const getWindowDimensions = () => {
     navigator,
     performance,
   } = window
-
   const isMobile = innerWidth < 768
 
   return {

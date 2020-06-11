@@ -1,7 +1,7 @@
 export const vars = () => ({
   env: {
     //local
-    //API_URL: "https://dev.progressiveapp.store/api",
+    // API_URL: "https://dev.progressiveapp.store/api",
     //prod
     API_URL: "/api",
     APP_SERVER_KEY:

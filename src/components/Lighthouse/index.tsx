@@ -6,7 +6,7 @@ import {
   IonListHeader,
   IonIcon,
 } from "@ionic/react"
-import { checkmarkDone, checkbox, checkmark, close } from "ionicons/icons"
+import { checkmark, close } from "ionicons/icons"
 
 interface LighthouseProps {
   installable: boolean

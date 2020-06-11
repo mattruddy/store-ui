@@ -1,57 +1,42 @@
-import React, { useState, useEffect, useRef, useCallback, useMemo } from "react"
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+  memo,
+} from "react"
 import {
   IonContent,
-  IonHeader,
   IonPage,
-  IonTitle,
-  IonToolbar,
   IonRow,
   IonCol,
   IonInfiniteScroll,
   IonInfiniteScrollContent,
-  IonProgressBar,
-  IonRefresher,
-  IonRefresherContent,
   IonButtons,
-  IonIcon,
-  IonButton,
   IonBackButton,
   IonNote,
+  IonTitle,
 } from "@ionic/react"
-import {
-  connect as reduxConnector,
-  ConnectedProps,
-  useSelector,
-  shallowEqual,
-  useDispatch,
-} from "react-redux"
-import { DebouncedSearch, PWACard, SideBar } from "../../components"
-import { PWA, HomePWAs } from "../../util/types"
+import { useSelector, shallowEqual, useDispatch } from "react-redux"
+import { PWACard } from "../../components"
+import { PWA } from "../../util/types"
 import { RouteComponentProps, useParams } from "react-router"
 
 import ReactGA from "react-ga"
-import { capitalize, stringMatch } from "../../util"
-import { search, closeOutline } from "ionicons/icons"
-import { categories } from "../../components/CategoryOptions"
-import { standardCategories } from "../../components/SideBar"
-import { RouteMap } from "../../routes"
+import { capitalize, normalizeCategory } from "../../util"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { thunkGetPWAs } from "../../redux/PWAs/actions"
-import { PWASection, PWAsActionTypes } from "../../redux/PWAs/types"
 import "./styles.css"
-import PWACardPlaceholder from "../../components/PWACardPlaceholder"
-import { Axios } from "../../redux/Actions"
+import HidingHeader from "../../components/HidingHeader"
+import { useHidingHeader } from "../../hooks/useHidingHeader"
 
-type PWAsProps = RouteComponentProps
-
-const PWAs: React.FC<PWAsProps> = () => {
+const PWAs: React.FC<RouteComponentProps> = () => {
   const { category } = useParams()
   const [page, setPage] = useState<number>(0)
-  const [cat, setCat] = useState<string>("")
-  const [pwaSearchResults, setPwaSearchResults] = useState<PWA[]>([])
-  const [showSearch, setShowSearch] = useState<boolean>(false)
-  const [scrollDisabled, setScrollDisabled] = useState<boolean>(false)
-  const [loadingMore, setLoadingMore] = useState<boolean>(false)
+  const scrollEl = useRef<HTMLIonInfiniteScrollElement>(null)
+  const content = useRef<HTMLIonContentElement>(null)
+  const [showHeader, heightPercentage, setScrollYCurrent] = useHidingHeader(50)
 
   const { pwasSections, isLoading, pwas } = useSelector(
     ({ pwas }: ReduxCombinedState) => ({
@@ -84,171 +69,67 @@ const PWAs: React.FC<PWAsProps> = () => {
     return undefined
   }, [pwasSections, category, page, pwas])
 
-  const scrollEl = useRef<HTMLIonInfiniteScrollElement>(null)
-  const content = useRef<HTMLIonContentElement>(null)
-
   useEffect(() => {
-    return () => {
-      setPage(0)
-    }
-  }, [])
-
-  useEffect(() => {
-    try {
-      let newCat = ""
-      if (
-        category &&
-        (categories.find((cat) => cat.category === category.toUpperCase()) ||
-          standardCategories.find(
-            (cat) => cat.value === category.toUpperCase()
-          ))
-      ) {
-        newCat = category.toUpperCase()
-      }
-      reloadPwas(newCat)
-      setCat(newCat)
-      setShowSearch(false)
-      setScrollDisabled(false)
-      ReactGA.pageview(`PWAs ${newCat}`)
-      content.current != null && content.current.scrollToTop(0)
-    } catch {
-    } finally {
-    }
+    setPage(0)
+    getPWAs(0, category?.toUpperCase())
+    ReactGA.pageview(`PWAs ${category?.toUpperCase()}`)
+    content.current?.scrollToTop && content.current.scrollToTop(0)
   }, [category])
 
   const loadMorePwas = async () => {
-    setLoadingMore(true)
     const nextPage = page + 1
-    await getPWAs(nextPage, cat && cat !== "" ? cat : undefined)
+    await getPWAs(nextPage, category?.toUpperCase())
     setPage(nextPage)
     scrollEl.current && scrollEl.current.complete()
-    setLoadingMore(false)
   }
-
-  const toggleSearch = () => {
-    const newShowSearch = !showSearch
-    setShowSearch(newShowSearch)
-    if (newShowSearch) {
-      content.current && content.current.scrollToTop()
-    } else {
-      setPwaSearchResults([])
-    }
-  }
-
-  const reloadPwas = (option?: string) => {
-    setPage(0)
-    getPWAs(
-      0,
-      option || option === "" ? option : cat && cat !== "" ? cat : undefined
-    )
-  }
-
-  const handleOnSearchChange = useCallback(async (appName: string) => {
-    if (appName) {
-      const { data } = await (await Axios()).get(`public/search/${appName}`)
-      setPwaSearchResults(data)
-    } else {
-      setPwaSearchResults([])
-    }
-  }, [])
 
   const renderPwaList = useMemo(() => {
-    const streamPWAs = showSearch ? pwaSearchResults : sectionPwas
-
-    if (!isLoading && streamPWAs && streamPWAs.length < 1) {
+    if (!isLoading && sectionPwas && sectionPwas.length < 1) {
       return (
-        !showSearch && (
-          <IonNote className="PWAsEmptyNote">
-            No PWAs in the following category
-          </IonNote>
-        )
+        <IonNote className="PWAsEmptyNote">
+          No PWAs in the following category
+        </IonNote>
       )
     }
 
-    return isLoading && !loadingMore
-      ? [...Array(10)].map((_e, i) => (
-          <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
-            <PWACardPlaceholder />
-          </IonCol>
-        ))
-      : streamPWAs &&
-          streamPWAs!.map((pwa, i) => (
-            <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
-              <PWACard url="/pwa" pwa={pwa} />
-            </IonCol>
-          ))
-  }, [sectionPwas, pwaSearchResults, showSearch, isLoading, loadingMore])
+    return sectionPwas?.map((pwa, i) => (
+      <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
+        <PWACard url="/pwa" pwa={pwa} />
+      </IonCol>
+    ))
+  }, [sectionPwas, isLoading])
+
+  const renderHeader = useMemo(
+    () => (
+      <HidingHeader showHeader={showHeader} heightPrecentage={heightPercentage}>
+        <IonButtons className="PWAsBackbutton" slot="start">
+          <IonBackButton defaultHref="/home" />
+        </IonButtons>
+        <IonTitle>{capitalize(normalizeCategory(category))}</IonTitle>
+      </HidingHeader>
+    ),
+    [showHeader, heightPercentage, category]
+  )
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar className="header">
-          <IonButtons className="PWAsBackButton" slot="start">
-            <IonBackButton defaultHref={RouteMap.CATEGORIES} />
-          </IonButtons>
-          <IonButtons slot="end">
-            <IonButton slot="end" onClick={toggleSearch}>
-              <IonIcon icon={showSearch ? closeOutline : search} />
-            </IonButton>
-          </IonButtons>
-          <IonTitle
-            onClick={() => {
-              content.current && content.current.scrollToTop()
-            }}
-          >
-            <img
-              alt="icon"
-              style={{ height: 40, width: 40 }}
-              src="assets/icon/logo.png"
-            />
-          </IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent className="content" ref={content}>
-        <IonRefresher
-          slot="fixed"
-          onIonRefresh={async (event: any) => {
-            try {
-              reloadPwas()
-            } finally {
-              event.detail.complete()
-            }
-          }}
-        >
-          <IonRefresherContent />
-        </IonRefresher>
+      {renderHeader}
+      <IonContent
+        fullscreen={true}
+        className="content"
+        scrollEvents={true}
+        onIonScroll={(e) => setScrollYCurrent(e.detail.scrollTop)}
+        ref={content}
+      >
         <IonRow>
-          <IonProgressBar
-            type={isLoading ? "indeterminate" : "determinate"}
-            color="primary"
-          />
-        </IonRow>
-        <IonRow>
-          <SideBar category={category ? category : ""} />
-          <IonCol className="CardListCol">
-            {!showSearch ? (
-              <h1
-                style={{
-                  marginLeft: "20px",
-                }}
-              >
-                {capitalize(
-                  cat === "" ? "TOP" : cat === "TRENDING" ? "DISCOVER" : cat
-                )}
-              </h1>
-            ) : (
-              <IonRow>
-                <DebouncedSearch onChangeCallback={handleOnSearchChange} />
-              </IonRow>
-            )}
+          <IonCol>
             <IonRow>{renderPwaList}</IonRow>
           </IonCol>
         </IonRow>
-        {cat !== undefined && cat.toLowerCase() !== "trending" && (
+        {category?.toLowerCase() !== "trending" && (
           <IonInfiniteScroll
             ref={scrollEl}
             threshold="100px"
-            disabled={scrollDisabled}
             onIonInfinite={loadMorePwas}
           >
             <IonInfiniteScrollContent />
@@ -259,4 +140,4 @@ const PWAs: React.FC<PWAsProps> = () => {
   )
 }
 
-export default PWAs
+export default memo(PWAs)

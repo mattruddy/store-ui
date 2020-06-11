@@ -25,6 +25,8 @@ const Categories: React.FC = () => {
   const onPress = (category: string) => {
     if (category.toLowerCase() === "home") {
       history.push(RouteMap.HOME)
+    } else if (category.toLowerCase() === "search") {
+      history.push(RouteMap.SEARCH)
     } else {
       history.push(GetPwaCategoryUrl(category.toLowerCase()))
     }
@@ -32,12 +34,12 @@ const Categories: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
+      <IonHeader className="ion-no-border bottom-line-border">
         <IonToolbar>
           <IonTitle>Categories</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
+      <IonContent className="content">
         <IonList>
           <IonItemGroup>
             {standardCategories

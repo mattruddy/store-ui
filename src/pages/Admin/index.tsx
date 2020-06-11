@@ -17,7 +17,7 @@ import {
 } from "@ionic/react"
 import { withRouter } from "react-router"
 import { PWA } from "../../util/types"
-import { useSelector } from "react-redux"
+import { useSelector, shallowEqual } from "react-redux"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { UserRole } from "../../redux/User/types"
 import { Axios } from "../../redux/Actions"
@@ -31,7 +31,8 @@ const Admin: React.FC = () => {
     ({ user: { role, isLoggedIn } }: ReduxCombinedState) => ({
       role: role,
       isLoggedIn: isLoggedIn,
-    })
+    }),
+    shallowEqual
   )
 
   useEffect(() => {
@@ -116,7 +117,7 @@ const Admin: React.FC = () => {
                         `admin/pwa/${pwa.appId}`,
                         {
                           code: status,
-                          reasone: reason,
+                          reason: reason,
                         }
                       )
                       if (resp.status === 200) {
@@ -134,14 +135,14 @@ const Admin: React.FC = () => {
           })
         ) : (
           <IonRow>
-            <IonCol sizeMd="8" className="HomeCardListCol">
+            <IonCol sizeMd="8">
               <h1 className="HomeCardsHeader">Page Not Found</h1>
             </IonCol>
           </IonRow>
         )}
       </Fragment>
     ),
-    [role, pwas, status]
+    [role, pwas, status, reason]
   )
 
   return (

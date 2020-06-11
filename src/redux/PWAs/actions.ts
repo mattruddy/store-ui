@@ -9,8 +9,6 @@ import {
   RATINGS_PENDING,
   RATINGS_COMPLETE,
   RATINGS_ADD,
-  PWAsState,
-  PWAS_DATA,
   RATING_ADD,
 } from "./types"
 import { Axios } from "../Actions"
@@ -19,7 +17,6 @@ import { ThunkAction } from "redux-thunk"
 import { PWA, HomePWAs, Rating, NewRating } from "../../util/types"
 import { ReduxCombinedState } from "../RootReducer"
 import ReactGA from "react-ga"
-import { useState } from "react"
 import { setAlert } from "../Alerts/actions"
 
 const loadingPWAs = () => ({ type: PWAS_PENDING })
@@ -47,11 +44,6 @@ const addPWASection = (data: PWASection) => ({
 
 const replacePWASection = (data: PWASection) => ({
   type: PWAS_SECTION_REPLACE,
-  payload: data,
-})
-
-const pwasData = (data: Partial<PWAsState>) => ({
-  type: PWAS_DATA,
   payload: data,
 })
 
@@ -156,11 +148,15 @@ const thunkAddRating = (
   starValue: string,
   comment?: string
 ): ThunkAction<void, ReduxCombinedState, null, Action<string>> => async (
-  dispatch
+  dispatch,
+  getState
 ) => {
+  const {
+    user: { isLoggedIn },
+  } = getState()
   dispatch(loadingRatings())
   try {
-    const url = `/public/pwa/rating/${appId}`
+    const url = `/${isLoggedIn ? "secure" : "public"}/pwa/rating/${appId}`
     const axiosInstance = await Axios()
     const requestData = comment
       ? { star: starValue, comment: comment }

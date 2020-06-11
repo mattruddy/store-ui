@@ -1,12 +1,5 @@
 import React, { memo } from "react"
-import {
-  IonButton,
-  IonIcon,
-  IonImg,
-  IonTextarea,
-  IonChip,
-  IonLabel,
-} from "@ionic/react"
+import { IonButton, IonIcon, IonImg, IonChip, IonLabel } from "@ionic/react"
 import { ShareUrl } from "../"
 import { PWA } from "../../util/types"
 import ReactGA from "react-ga"
@@ -66,8 +59,8 @@ const PWAInfo: React.FC<ContainerProps> = ({
           </div>
         </div>
         <IonButton
-          class="button"
-          style={{ marginRight: "10px", marginLeft: "10px" }}
+          color="dark"
+          fill="outline"
           onClick={() => {
             ;(async () => await (await Axios()).post(`public/pwa/${appId}`))()
             ReactGA.event({

@@ -11,6 +11,7 @@ const RouteMap = {
   CATEGORIES: "/categories",
   PWAS: "/pwas/:category?",
   HOME: "/home",
+  SEARCH: "/search",
 }
 
 const getPwaName = (name: string) => name.replace(/ /g, "-")

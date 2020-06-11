@@ -1,24 +1,23 @@
 import { PWA, Push } from "../../util/types"
 
 export interface UserState {
-    token: string
-    id: number
-    loading: boolean
-    hasRead: boolean
-    pwas: PWA[]
-    username: string
-    email: string
-    darkMode: boolean
-    isLoggedIn: boolean
-    role: UserRole
-    push: Push | undefined
+  token: string
+  id: number
+  loading: boolean
+  pwas: PWA[]
+  username: string
+  email: string
+  darkMode: boolean
+  isLoggedIn: boolean
+  role: UserRole
+  push: Push | undefined
 }
 
 export enum UserRole {
-    User = 0,
-    Dev = 1,
-    Mod = 2,
-    Admin = 3,
+  User = 0,
+  Dev = 1,
+  Mod = 2,
+  Admin = 3,
 }
 
 export const USER_SET_LOADING = "USER_SET_LOADING"
@@ -31,52 +30,46 @@ export const USER_REMOVE_APP = "USER_REMOVE_APP"
 export const USER_HAS_READ_INSTALL = "USER_HAS_READ_INSTALL"
 
 export interface SetUserAction {
-    type: typeof USER_SET
-    payload: string
+  type: typeof USER_SET
+  payload: string
 }
 
 export interface SetLoadingAction {
-    type: typeof USER_SET_LOADING
-    payload: boolean
+  type: typeof USER_SET_LOADING
+  payload: boolean
 }
 
 export interface SetDataAction {
-    type: typeof USER_SET_DATA
-    payload: Partial<UserState>
+  type: typeof USER_SET_DATA
+  payload: Partial<UserState>
 }
 
 export interface SetPWAsAction {
-    type: typeof USER_SET_PWAS
-    payload: PWA[]
+  type: typeof USER_SET_PWAS
+  payload: PWA[]
 }
 
 export interface ReplaceAppAction {
-    type: typeof USER_REPLACE_APP
-    payload: PWA
+  type: typeof USER_REPLACE_APP
+  payload: PWA
 }
 
 export interface AddAppAction {
-    type: typeof USER_ADD_APP
-    payload: PWA
+  type: typeof USER_ADD_APP
+  payload: PWA
 }
 
 export interface RemoveAppAction {
-    type: typeof USER_REMOVE_APP
-    payload: number
-}
-
-export interface SetHasReadInstallAction {
-    type: typeof USER_HAS_READ_INSTALL
-    payload: boolean
+  type: typeof USER_REMOVE_APP
+  payload: number
 }
 
 export type UserActionTypes =
-    | SetLoadingAction
-    | SetDataAction
-    | SetPWAsAction
-    | RemoveAppAction
-    | AddAppAction
-    | ReplaceAppAction
-    | SetLoadingAction
-    | SetHasReadInstallAction
-    | SetUserAction
+  | SetLoadingAction
+  | SetDataAction
+  | SetPWAsAction
+  | RemoveAppAction
+  | AddAppAction
+  | ReplaceAppAction
+  | SetLoadingAction
+  | SetUserAction
