@@ -77,8 +77,7 @@ const Home: React.FC = () => {
   }, [homeData, isLoading, onPress])
 
   const renderHeader = useMemo(() => {
-    console.log(hideDecimal)
-    return (
+\    return (
       <HidingHeader hideDecimal={hideDecimal}>
         <div className="HomeHeader">
           <div>
