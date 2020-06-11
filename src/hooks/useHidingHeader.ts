@@ -5,7 +5,7 @@ type NumberDispatchType = (
 ) => [number, React.Dispatch<React.SetStateAction<number>>]
 
 export const useHidingHeader: NumberDispatchType = (threshold: number) => {
-  const [initialChange, setInitialChange] = useState<number>(1)
+  const [initialChange, setInitialChange] = useState<number>(0)
   const [scrollYCurrent, setScrollYCurrent] = useState<number>(0)
   // number between 0 and 1
   const [hideDecimal, setHideDecimal] = useState<number>(0)
