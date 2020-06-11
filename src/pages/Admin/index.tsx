@@ -19,7 +19,6 @@ import { withRouter } from "react-router"
 import { PWA } from "../../util/types"
 import { useSelector, shallowEqual } from "react-redux"
 import { ReduxCombinedState } from "../../redux/RootReducer"
-import { UserRole } from "../../redux/User/types"
 import { Axios } from "../../redux/Actions"
 
 const Admin: React.FC = () => {
@@ -27,16 +26,15 @@ const Admin: React.FC = () => {
   const [status, setStatus] = useState<string | undefined>()
   const [reason, setReason] = useState<string | undefined>()
 
-  const { role, isLoggedIn } = useSelector(
-    ({ user: { role, isLoggedIn } }: ReduxCombinedState) => ({
-      role: role,
+  const { isLoggedIn } = useSelector(
+    ({ user: { isLoggedIn } }: ReduxCombinedState) => ({
       isLoggedIn: isLoggedIn,
     }),
     shallowEqual
   )
 
   useEffect(() => {
-    if (role === UserRole.Admin && isLoggedIn) {
+    if (isLoggedIn) {
       ;(async () => {
         const resp = await (await Axios()).get(`admin/pwas`)
         if (resp.data) {
@@ -44,12 +42,12 @@ const Admin: React.FC = () => {
         }
       })()
     }
-  }, [role, isLoggedIn])
+  }, [isLoggedIn])
 
   const renderAdmin = useMemo(
     () => (
       <Fragment>
-        {role === UserRole.Admin && isLoggedIn ? (
+        {isLoggedIn ? (
           pwas &&
           pwas.map((pwa, idx) => {
             return (
@@ -142,7 +140,7 @@ const Admin: React.FC = () => {
         )}
       </Fragment>
     ),
-    [role, pwas, status, reason]
+    [pwas, status, reason]
   )
 
   return (

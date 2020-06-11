@@ -30,12 +30,12 @@ export interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>
 }
 
-export type BeforeInstallPromptEventType =
-  | BeforeInstallPromptEvent
-  | (() => Promise<void> | undefined)
-  | undefined
+type BeforeInstallPromptEventType = () => [
+  BeforeInstallPromptEvent | undefined,
+  () => Promise<void> | undefined
+]
 
-export const useAddToHomescreenPrompt = () => {
+export const useAddToHomescreenPrompt: BeforeInstallPromptEventType = () => {
   const [displayPrompt, setDisplayPrompt] = useState<BeforeInstallPromptEvent>()
 
   const promptToInstall = () => {

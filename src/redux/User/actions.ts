@@ -64,13 +64,7 @@ export const thunkSignUp = (
       data: { token },
     } = response
 
-    // TODO: do this in the api.
-    var role = UserRole.Dev
-    if (username === "mattruddy") {
-      role = UserRole.Admin
-    }
-    dispatch(setData({ token, username, isLoggedIn: true, role }))
-    await setRoleStorage(UserRole.Admin.toString())
+    dispatch(setData({ token, username, isLoggedIn: true }))
     await setTokenStorage(token)
     await setUsernameStorage(username)
     await setEmailStorage(email)
@@ -114,14 +108,7 @@ export const thunkLogin = (
     const {
       data: { token },
     } = response
-
-    // TODO: do this in the api.
-    var role = UserRole.Dev
-    if (username === "mattruddy") {
-      role = UserRole.Admin
-    }
-    dispatch(setData({ token, username, isLoggedIn: true, role }))
-    await setRoleStorage(UserRole.Admin.toString())
+    dispatch(setData({ token, username, isLoggedIn: true }))
     await setTokenStorage(token)
     await setUsernameStorage(username)
     await setIsLoggedInStorage("true")
@@ -308,7 +295,6 @@ export const thunkAddPWA = (
       tags: tags,
     }
 
-    console.log(info)
     const fd = new FormData()
     fd.append("icon", icon)
     screenshots.forEach((screenshot) => fd.append("screenshots", screenshot))

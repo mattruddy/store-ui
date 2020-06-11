@@ -2,7 +2,6 @@ import React, { memo } from "react"
 import {
   IonCard,
   IonCardContent,
-  IonRippleEffect,
   IonCardHeader,
   IonCardTitle,
   IonCardSubtitle,
@@ -49,7 +48,6 @@ const PWACard: React.FC<ContainerProps> = ({ pwa, url }) => {
           />
         </div>
       </IonCardContent>
-      <IonRippleEffect />
     </IonCard>
   )
 }
