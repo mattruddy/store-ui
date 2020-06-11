@@ -1,7 +1,6 @@
 import React, { memo, Fragment } from "react"
 import { IonButton, IonRow, IonCol, IonIcon, IonNote } from "@ionic/react"
 import { PWA } from "../../util/types"
-import PWACardPlaceholder from "../PWACardPlaceholder"
 import { PWACard } from ".."
 import { arrowForward } from "ionicons/icons"
 import "./styles.css"
@@ -18,7 +17,6 @@ interface ContainerProps {
 const HomeRow: React.FC<ContainerProps> = ({
   pwas,
   linkTo,
-  isLoading,
   title,
   subtitle,
   onPressCallback,
@@ -36,17 +34,11 @@ const HomeRow: React.FC<ContainerProps> = ({
       </div>
       <IonNote className="HomeRowHeaderSubTitle">{subtitle}</IonNote>
       <IonRow className="HomeRow bottom-line-border">
-        {isLoading
-          ? [...Array(5)].map((_e, i) => (
-              <IonCol key={i} sizeXs="6.7" sizeSm="4" sizeMd="5" sizeLg="4">
-                <PWACardPlaceholder />
-              </IonCol>
-            ))
-          : pwas.map((topApp, i) => (
-              <IonCol key={i} sizeXs="6.7" sizeSm="4" sizeMd="5" sizeLg="4">
-                <PWACard url="/pwa" pwa={topApp} />
-              </IonCol>
-            ))}
+        {pwas.map((topApp, i) => (
+          <IonCol key={i} sizeXs="6.7" sizeSm="4" sizeMd="5" sizeLg="4">
+            <PWACard url="/pwa" pwa={topApp} />
+          </IonCol>
+        ))}
       </IonRow>
     </Fragment>
   )

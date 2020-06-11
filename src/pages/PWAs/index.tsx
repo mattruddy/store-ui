@@ -28,14 +28,12 @@ import { capitalize, normalizeCategory } from "../../util"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { thunkGetPWAs } from "../../redux/PWAs/actions"
 import "./styles.css"
-import PWACardPlaceholder from "../../components/PWACardPlaceholder"
 import HidingHeader from "../../components/HidingHeader"
 import { useHidingHeader } from "../../hooks/useHidingHeader"
 
 const PWAs: React.FC<RouteComponentProps> = () => {
   const { category } = useParams()
   const [page, setPage] = useState<number>(0)
-  const [loadingMore, setLoadingMore] = useState<boolean>(false)
   const scrollEl = useRef<HTMLIonInfiniteScrollElement>(null)
   const content = useRef<HTMLIonContentElement>(null)
   const [showHeader, heightPercentage, setScrollYCurrent] = useHidingHeader(50)
@@ -79,12 +77,10 @@ const PWAs: React.FC<RouteComponentProps> = () => {
   }, [category])
 
   const loadMorePwas = async () => {
-    setLoadingMore(true)
     const nextPage = page + 1
     await getPWAs(nextPage, category?.toUpperCase())
     setPage(nextPage)
     scrollEl.current && scrollEl.current.complete()
-    setLoadingMore(false)
   }
 
   const renderPwaList = useMemo(() => {
@@ -96,19 +92,12 @@ const PWAs: React.FC<RouteComponentProps> = () => {
       )
     }
 
-    return isLoading && !loadingMore
-      ? [...Array(10)].map((_e, i) => (
-          <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
-            <PWACardPlaceholder />
-          </IonCol>
-        ))
-      : sectionPwas &&
-          sectionPwas!.map((pwa, i) => (
-            <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
-              <PWACard url="/pwa" pwa={pwa} />
-            </IonCol>
-          ))
-  }, [sectionPwas, isLoading, loadingMore])
+    return sectionPwas?.map((pwa, i) => (
+      <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
+        <PWACard url="/pwa" pwa={pwa} />
+      </IonCol>
+    ))
+  }, [sectionPwas, isLoading])
 
   const renderHeader = useMemo(
     () => (

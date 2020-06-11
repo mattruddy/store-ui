@@ -27,7 +27,7 @@ import { RouteMap } from "../../routes"
 const styles = {
   row: { color: "rgb(153, 153, 153)" },
   label: { fontSize: "30px", color: "black" },
-  divider: { padding: 0 },
+  divider: { padding: 0, background: "inherit" },
 }
 
 const About: React.FC = () => (

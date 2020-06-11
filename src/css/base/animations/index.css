@@ -3,8 +3,8 @@
 @import "./spin.css";
 
 .fade-in {
-  -webkit-animation: fade-in 0.3s linear forwards;
-  animation: fade-in 0.3s linear forwards;
+  -webkit-animation: fade-in 0.1s linear forwards;
+  animation: fade-in 0.1s linear forwards;
   opacity: 0;
 }
 
