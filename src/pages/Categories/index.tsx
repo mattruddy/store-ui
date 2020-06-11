@@ -40,13 +40,13 @@ const Categories: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent className="content">
-        <IonList>
+        <IonList className="content" style={{ padding: "0" }}>
           <IonItemGroup>
             {standardCategories
               .filter((x) => x.category !== "HOME")
               .map((cat, i) => (
                 <IonItem
-                  className="CategoryPageItem"
+                  className="CategoryPageItem content"
                   lines="none"
                   key={i}
                   button
@@ -57,13 +57,13 @@ const Categories: React.FC = () => {
                 </IonItem>
               ))}
           </IonItemGroup>
-          <IonListHeader>
+          <IonListHeader className="content">
             <IonLabel>CATEGORIES</IonLabel>
           </IonListHeader>
           <IonItemGroup>
             {categories.map((cat, i) => (
               <IonItem
-                className="CategoryPageItem"
+                className="CategoryPageItem content"
                 key={i}
                 button
                 onClick={() => onPress(cat.category)}
