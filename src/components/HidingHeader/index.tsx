@@ -3,23 +3,18 @@ import React, { memo, useMemo, useRef } from "react"
 
 interface ContainerProps {
   children: any
-  showHeader: boolean
   // number between 0 and 1
-  heightPrecentage: number
+  hideDecimal: number
 }
 
-const HidingHeader: React.FC<ContainerProps> = ({
-  showHeader,
-  heightPrecentage,
-  children,
-}) => {
+const HidingHeader: React.FC<ContainerProps> = ({ hideDecimal, children }) => {
   const header = useRef<any>(null)
   const styles = useMemo(
     () => ({
-      marginTop: `${-heightPrecentage * 100}px`,
-      marginBottom: `${heightPrecentage * 100}px`,
+      marginTop: `${-hideDecimal * 100}px`,
+      marginBottom: `${hideDecimal * 100}px`,
     }),
-    [heightPrecentage]
+    [hideDecimal]
   )
 
   return useMemo(
@@ -27,14 +22,12 @@ const HidingHeader: React.FC<ContainerProps> = ({
       <IonHeader
         ref={header}
         style={styles}
-        className={`ion-no-border bottom-line-border ${
-          !showHeader && "fade-out"
-        }`}
+        className="ion-no-border bottom-line-border"
       >
         <IonToolbar>{children}</IonToolbar>
       </IonHeader>
     ),
-    [showHeader, children, styles]
+    [children, styles]
   )
 }
 
