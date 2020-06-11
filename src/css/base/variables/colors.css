@@ -26,6 +26,7 @@ http://ionicframework.com/docs/theming/ */
   --ion-font-family: Roboto Slab, serif;
   --ion-segment-button-color-checked: black;
   --ion-tab-bar-color-selected: #74b9ff;
+  --ion-tab-bar-background: #f8f8f8;
 
   /** primary **/
   --ion-color-primary: #74b9ff;
