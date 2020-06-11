@@ -6,7 +6,12 @@
 }
 
 .ScreenshotCol {
-  margin: 12px;
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  box-sizing: border-box;
+  min-height: 400px;
 }
 
 .DeleteButtonBlock {
@@ -16,7 +21,8 @@
 }
 
 .ScreenshotSliderImage {
-  max-width: 250px;
+  max-height: 400px;
+  max-width: 600px;
   border-radius: 6px;
 }
 
