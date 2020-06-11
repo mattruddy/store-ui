@@ -18,7 +18,7 @@ const Home: React.FC = () => {
   const history = useHistory()
   const content = useRef<any>()
   const [prompt, promptToInstall] = useAddToHomescreenPrompt()
-  const [showHeader, heightPercentage, setScrollYCurrent] = useHidingHeader(50)
+  const [hideDecimal, setScrollYCurrent] = useHidingHeader(50)
 
   const { homeData, isLoading } = useSelector(
     ({ pwas }: ReduxCombinedState) => ({
@@ -76,9 +76,10 @@ const Home: React.FC = () => {
     )
   }, [homeData, isLoading, onPress])
 
-  const renderHeader = useMemo(
-    () => (
-      <HidingHeader showHeader={showHeader} heightPrecentage={heightPercentage}>
+  const renderHeader = useMemo(() => {
+    console.log(hideDecimal)
+    return (
+      <HidingHeader hideDecimal={hideDecimal}>
         <div className="HomeHeader">
           <div>
             <h1>PWA Store</h1>
@@ -92,9 +93,8 @@ const Home: React.FC = () => {
           </div>
         </div>
       </HidingHeader>
-    ),
-    [showHeader, heightPercentage, prompt, promptToInstall]
-  )
+    )
+  }, [hideDecimal, promptToInstall, prompt])
 
   return (
     <IonPage>

@@ -36,7 +36,7 @@ const PWAs: React.FC<RouteComponentProps> = () => {
   const [page, setPage] = useState<number>(0)
   const scrollEl = useRef<HTMLIonInfiniteScrollElement>(null)
   const content = useRef<HTMLIonContentElement>(null)
-  const [showHeader, heightPercentage, setScrollYCurrent] = useHidingHeader(50)
+  const [hideDecimal, setScrollYCurrent] = useHidingHeader(50)
 
   const { pwasSections, isLoading, pwas } = useSelector(
     ({ pwas }: ReduxCombinedState) => ({
@@ -101,14 +101,14 @@ const PWAs: React.FC<RouteComponentProps> = () => {
 
   const renderHeader = useMemo(
     () => (
-      <HidingHeader showHeader={showHeader} heightPrecentage={heightPercentage}>
+      <HidingHeader hideDecimal={hideDecimal}>
         <IonButtons className="PWAsBackbutton" slot="start">
           <IonBackButton defaultHref="/home" />
         </IonButtons>
         <IonTitle>{capitalize(normalizeCategory(category))}</IonTitle>
       </HidingHeader>
     ),
-    [showHeader, heightPercentage, category]
+    [hideDecimal, category]
   )
 
   return (

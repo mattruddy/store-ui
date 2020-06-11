@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 
 /**
  * The BeforeInstallPromptEvent is fired at the Window.onbeforeinstallprompt handler
@@ -38,17 +38,16 @@ type BeforeInstallPromptEventType = () => [
 export const useAddToHomescreenPrompt: BeforeInstallPromptEventType = () => {
   const [displayPrompt, setDisplayPrompt] = useState<BeforeInstallPromptEvent>()
 
-  const promptToInstall = () => {
+  const promptToInstall = useCallback(() => {
     if (displayPrompt) {
       return displayPrompt.prompt()
     }
-
     return Promise.reject(
       new Error(
         'Tried installing before browser sent "beforeinstallprompt" event'
       )
     )
-  }
+  }, [displayPrompt])
 
   useEffect(() => {
     const ready = (prompt: any) => {
@@ -62,6 +61,8 @@ export const useAddToHomescreenPrompt: BeforeInstallPromptEventType = () => {
       window.removeEventListener("beforeinstallprompt", ready)
     }
   }, [])
+
+  useEffect(() => {}, [promptToInstall])
 
   return [displayPrompt, promptToInstall]
 }
