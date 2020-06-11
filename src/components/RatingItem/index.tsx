@@ -12,7 +12,7 @@ interface ContainerProps {
 
 const RatingItem: React.FC<ContainerProps> = ({ rating }) => {
   return (
-    <IonItem>
+    <IonItem className="content" lines="none">
       <div style={{ width: "100%", display: "flex", flexDirection: "column" }}>
         <div
           style={{
@@ -27,13 +27,12 @@ const RatingItem: React.FC<ContainerProps> = ({ rating }) => {
           />
         </div>
         <div
+          className="line-border"
           style={{
             minHeight: "200px",
-            background: "rgb(248,248,248)",
-            borderRadius: "30px",
           }}
         >
-          <p style={{ margin: "20px" }}>{rating.comment}</p>
+          <p style={{ margin: "12px" }}>{rating.comment}</p>
         </div>
         <div
           style={{

@@ -125,7 +125,11 @@ const PWA: React.FC<OwnProps> = ({
           <IonButtons slot="start">
             <IonBackButton defaultHref="/home" />
           </IonButtons>
-          {pwa && <IonTitle>{pwa.name}</IonTitle>}
+          {pwa && (
+            <IonTitle>
+              <h1 className="h1-title">{pwa.name}</h1>
+            </IonTitle>
+          )}
         </IonToolbar>
       </IonHeader>
       <IonContent class="content">
@@ -143,13 +147,13 @@ const PWA: React.FC<OwnProps> = ({
                   />
                 </IonCol>
                 <IonCol size="12" sizeMd="6" pushMd="6">
-                  <h2 style={{ paddingLeft: "10px" }}>Screenshots</h2>
                   <ScreenshotSlider images={pwa.screenshots} />
                 </IonCol>
                 <IonCol size="12" sizeMd="6" pullMd="6">
-                  <h2 style={{ paddingLeft: "10px" }}>Reviews</h2>
                   <Rating onSubmit={onRatingSubmit} />
-                  <IonList>{renderRatings}</IonList>
+                  <IonList style={{ background: "inherit" }}>
+                    {renderRatings}
+                  </IonList>
                 </IonCol>
               </Fragment>
             ) : (

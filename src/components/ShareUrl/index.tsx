@@ -59,11 +59,19 @@ const ShareUrl: React.FC<ContainerProps> = ({ title }) => {
 
   return (
     <IonFab style={{ position: "relative" }} activated={activated}>
-      <IonFabButton color={mainShareButtonColor} size="small">
+      <IonFabButton
+        className="fab-no-shadow"
+        color={mainShareButtonColor}
+        size="small"
+      >
         <IonIcon icon={renderMainShareButtonIcon} />
       </IonFabButton>
-      <IonFabList side="end">
-        <IonFabButton color="secondary" onClick={handleShareButtonClick}>
+      <IonFabList className="fab-no-shadow" side="end">
+        <IonFabButton
+          className="fab-no-shadow"
+          color="secondary"
+          onClick={handleShareButtonClick}
+        >
           <IonIcon icon={renderSharButtonIcon} />
         </IonFabButton>
         <ShareOnFaceBook url={url} />

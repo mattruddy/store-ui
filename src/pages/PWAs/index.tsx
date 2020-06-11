@@ -105,7 +105,11 @@ const PWAs: React.FC<RouteComponentProps> = () => {
         <IonButtons className="PWAsBackbutton" slot="start">
           <IonBackButton defaultHref="/home" />
         </IonButtons>
-        <IonTitle>{capitalize(normalizeCategory(category))}</IonTitle>
+        <IonTitle>
+          <h1 className="h1-title">
+            {capitalize(normalizeCategory(category))}
+          </h1>
+        </IonTitle>
       </HidingHeader>
     ),
     [hideDecimal, category]

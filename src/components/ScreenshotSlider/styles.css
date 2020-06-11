@@ -1,25 +1,23 @@
 .ScreenshotRow {
   display: flex;
-  height: 450px;
   overflow-x: auto;
   overflow-y: hidden;
+  padding: 16px;
 }
 
 .ScreenshotCol {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 10px;
+  margin: 12px;
 }
 
 .DeleteButtonBlock {
   position: relative;
-  left: 90%;
-  bottom: 53%;
+  left: 88%;
+  bottom: 3%;
 }
 
 .ScreenshotSliderImage {
-  width: 250px;
+  max-width: 250px;
+  border-radius: 6px;
 }
 
 .ScreenshotDeleteButton {
@@ -29,14 +27,6 @@
 
 .ScreenshotSliderImage:hover {
   cursor: pointer;
-  background-repeat: no-repeat;
-  backface-visibility: hidden;
-  -webkit-font-smoothing: subpixel-antialiased;
-  transition: -webkit-transform 0.425s cubic-bezier(0.485, 1.65, 0.545, 0.835);
-  transform: perspective(1px) translate3d(0, 0, 0) scale3d(1.05, 1.05, 1);
-  box-shadow: var(--primaryBoxShadow);
-  z-index: 9999;
-  overflow-x: initial;
 }
 
 .ScreenshotSliderLightbox .ril-prev-button:focus,

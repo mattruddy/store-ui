@@ -11,6 +11,11 @@
   --background: rgb(248, 248, 248);
 }
 
+.h1-title {
+  margin: 0;
+  font-size: 22px;
+}
+
 .center {
   display: flex;
   justify-content: center;
@@ -38,9 +43,18 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.13);
 }
 
+.line-border {
+  border: 1px solid rgba(0, 0, 0, 0.13);
+  border-radius: 10px;
+}
+
 .fab {
   --color: black;
   --color-activated: black;
+}
+
+.fab-no-shadow {
+  --box-shadow: none;
 }
 
 .primary-input-label:focus-within {

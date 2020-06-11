@@ -16,7 +16,6 @@ import {
   IonBackButton,
   IonText,
   IonTitle,
-  IonList,
   IonImg,
   IonProgressBar,
   IonChip,
@@ -24,7 +23,7 @@ import {
   IonGrid,
 } from "@ionic/react"
 import ImageUploader from "react-images-upload"
-import { withRouter, useParams, useHistory } from "react-router"
+import { useParams, useHistory } from "react-router"
 import { Image, PWA } from "../../util/types"
 import {
   pencil,
@@ -35,7 +34,7 @@ import {
   openOutline,
 } from "ionicons/icons"
 import { fixFilesRotation, noSpecialChars } from "../../util"
-import { CategoryOptions, RatingItem, ScreenshotSlider } from "../../components"
+import { CategoryOptions, ScreenshotSlider } from "../../components"
 import { RouteMap, GetMyPWADetailUrl } from "../../routes"
 //@ts-ignore
 import StarRatings from "react-star-ratings"
@@ -47,7 +46,7 @@ import { thunkDeletePWA, thunkUpdateApp } from "../../redux/User/actions"
 import "./styles.css"
 
 const MyPWA: React.FC = () => {
-  const [screenshots, setScreenshots] = useState<Image[]>()
+  const [screenshots, setScreenshots] = useState<Image[]>([])
   const [isEdit, setIsEdit] = useState<boolean>(false)
   const [name, setName] = useState<string | undefined>(undefined)
   const [nameError, setNameError] = useState<string | undefined>(undefined)
@@ -208,11 +207,13 @@ const MyPWA: React.FC = () => {
   const renderScreenshots = useMemo(() => {
     const shownScreenshots = isEdit ? screenshots : pwa && pwa.screenshots
     return (
-      <ScreenshotSlider
-        images={shownScreenshots}
-        isEdit={isEdit}
-        onDelete={removeImage}
-      />
+      shownScreenshots && (
+        <ScreenshotSlider
+          images={shownScreenshots}
+          isEdit={isEdit}
+          onDelete={removeImage}
+        />
+      )
     )
   }, [pwa, screenshots, isEdit])
 
@@ -240,11 +241,11 @@ const MyPWA: React.FC = () => {
           horizontal="end"
           slot="fixed"
         >
-          <IonFabButton class="fab">
+          <IonFabButton class="fab fab-no-shadow">
             <IonIcon icon={options} />
           </IonFabButton>
           {isEdit ? (
-            <IonFabList side="top">
+            <IonFabList side="top" className="fab-no-shadow">
               <IonFabButton
                 type="button"
                 onClick={() => {
@@ -306,7 +307,8 @@ const MyPWA: React.FC = () => {
                   {isEdit ? (
                     <>
                       <IonInput
-                        style={{ padding: "0", boxShadow: "0 0 3px #ccc" }}
+                        className="line-border"
+                        style={{ padding: "0", marginBottom: "5px" }}
                         maxlength={25}
                         value={name}
                         onIonChange={(e) => {
@@ -325,7 +327,12 @@ const MyPWA: React.FC = () => {
                   )}
                   {isEdit ? (
                     <>
-                      <CategoryOptions onPress={onCatChange} initValue={cat} />
+                      <div className="line-border">
+                        <CategoryOptions
+                          onPress={onCatChange}
+                          initValue={cat}
+                        />
+                      </div>
                       {catError && (
                         <IonText color="danger">
                           <p>{catError}</p>
@@ -341,6 +348,8 @@ const MyPWA: React.FC = () => {
             {pwa && (
               <IonButton
                 style={{ marginRight: "10px", marginLeft: "10px" }}
+                fill="outline"
+                color="dark"
                 onClick={() => {
                   window.open(link, "_blank")
                 }}
@@ -359,9 +368,6 @@ const MyPWA: React.FC = () => {
               />
               <span style={{ marginLeft: "5px" }}>({pwa.ratingsCount})</span>
             </div>
-          )}
-          {!isLoading && (
-            <h2 style={{ paddingTop: "10px", paddingLeft: "10px" }}>Tags</h2>
           )}
           {isEdit ? (
             <>
@@ -395,13 +401,11 @@ const MyPWA: React.FC = () => {
                 ))}
             </div>
           )}
-          {!isLoading && (
-            <h2 style={{ paddingTop: "10px", paddingLeft: "10px" }}>About</h2>
-          )}
           {isEdit ? (
             <>
               <IonTextarea
-                style={{ margin: "10px", boxShadow: "0 0 3px #ccc" }}
+                className="line-border"
+                style={{ margin: "10px" }}
                 rows={10}
                 value={desc}
                 onIonChange={(e) => {
@@ -417,12 +421,12 @@ const MyPWA: React.FC = () => {
             </>
           ) : (
             <div
-              style={{ height: "200px", padding: "15px", overflowY: "scroll" }}
+              className="bottom-line-border"
+              style={{ minHeight: "200px", padding: "16px" }}
             >
               {pwa && pwa.description}
             </div>
           )}
-          {!isLoading && <h2 style={{ paddingLeft: "10px" }}>Screenshots</h2>}
           {renderScreenshots}
           {isEdit && (
             <form>
@@ -440,14 +444,6 @@ const MyPWA: React.FC = () => {
                 maxFileSize={5242880}
               />
             </form>
-          )}
-          {!isEdit && <h2 style={{ paddingLeft: "10px" }}>Reviews</h2>}
-          {!isEdit && pwa && pwa.ratings && (
-            <IonList>
-              {pwa.ratings.map((rating, idx) => (
-                <RatingItem key={idx} rating={rating} />
-              ))}
-            </IonList>
           )}
         </IonGrid>
       </IonContent>
@@ -474,4 +470,4 @@ const MyPWA: React.FC = () => {
   )
 }
 
-export default withRouter(memo(MyPWA))
+export default memo(MyPWA)

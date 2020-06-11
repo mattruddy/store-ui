@@ -153,7 +153,7 @@ const Profile: React.FC = () => {
       </IonHeader>
       <IonContent class="content">
         <IonFab vertical="top" horizontal="end" slot="fixed">
-          <IonFabButton class="fab">
+          <IonFabButton class="fab fab-no-shadow">
             <IonIcon icon={menu} />
           </IonFabButton>
           <IonFabList side="bottom">

@@ -11,6 +11,7 @@ interface ContainerProps {
   errorMessage: string
   showError: boolean
   children?: any
+  lines?: "full" | "none"
 }
 
 const FormItem: React.FC<ContainerProps> = ({
@@ -23,10 +24,11 @@ const FormItem: React.FC<ContainerProps> = ({
   errorMessage,
   showError = false,
   children,
+  lines = "full",
 }) => {
   return (
     <Fragment>
-      <IonItem className="content">
+      <IonItem className="content" lines={lines}>
         <IonLabel position="stacked">{name}</IonLabel>
         {children ? (
           children
