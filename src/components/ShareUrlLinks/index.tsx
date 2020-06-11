@@ -19,6 +19,7 @@ const ShareUrl: React.FC<ContainerProps> = ({
     href={href}
     target={target || "_blank"}
     className="fab-no-shadow"
+    size="small"
   >
     {children}
   </IonFabButton>

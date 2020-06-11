@@ -87,6 +87,7 @@ const PWAInfo: React.FC<ContainerProps> = ({
           display: "flex",
           flexDirection: "row",
           alignItems: "center",
+          marginTop: "10px",
         }}
       >
         <ShareUrl title={pwa.name} />

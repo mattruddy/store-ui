@@ -55,6 +55,7 @@
 
 .fab-no-shadow {
   --box-shadow: none;
+  margin: 5px;
 }
 
 .primary-input-label:focus-within {

@@ -1,5 +1,8 @@
-import React, { useEffect, useState, memo } from "react"
-import { IonIcon, IonFab, IonFabButton, IonFabList } from "@ionic/react"
+import React, { useEffect, useState, memo, Fragment } from "react"
+import {
+  IonIcon,
+  IonFabButton,
+} from "@ionic/react"
 import { ShareOnFaceBook, ShareOnLinkedIn, ShareOnTwitter } from "../"
 import { checkmark, clipboard, share, shareSocialOutline } from "ionicons/icons"
 import { copyStringToClipboard, shareUrl } from "../../util"
@@ -11,11 +14,7 @@ interface ContainerProps {
 }
 
 const ShareUrl: React.FC<ContainerProps> = ({ title }) => {
-  useEffect(() => {
-    setTimeout(() => setActivated(true), 600)
-  }, [])
   const [copiedUrlToClipboard, setCopiedUrlToClipboard] = useState(false)
-  const [activated, setActivated] = useState(false)
   const { href } = window.location
 
   const url = href
@@ -26,13 +25,7 @@ const ShareUrl: React.FC<ContainerProps> = ({ title }) => {
 
   // @ts-ignore
   const canShareOnMobileDevice = navigator.share ? true : false
-
-  const renderMainShareButtonIcon = copiedUrlToClipboard
-    ? checkmark
-    : shareSocialOutline
-
-  const mainShareButtonColor = copiedUrlToClipboard ? "success" : "secondary"
-
+  
   const renderSharButtonIcon = copiedUrlToClipboard
     ? checkmark
     : canShareOnMobileDevice
@@ -58,27 +51,19 @@ const ShareUrl: React.FC<ContainerProps> = ({ title }) => {
   }
 
   return (
-    <IonFab style={{ position: "relative" }} activated={activated}>
+    <Fragment>
       <IonFabButton
         className="fab-no-shadow"
-        color={mainShareButtonColor}
+        color="secondary"
+        onClick={handleShareButtonClick}
         size="small"
       >
-        <IonIcon icon={renderMainShareButtonIcon} />
+        <IonIcon size="small" icon={renderSharButtonIcon} />
       </IonFabButton>
-      <IonFabList className="fab-no-shadow" side="end">
-        <IonFabButton
-          className="fab-no-shadow"
-          color="secondary"
-          onClick={handleShareButtonClick}
-        >
-          <IonIcon icon={renderSharButtonIcon} />
-        </IonFabButton>
-        <ShareOnFaceBook url={url} />
-        <ShareOnLinkedIn url={url} />
-        <ShareOnTwitter text={twitterText} />
-      </IonFabList>
-    </IonFab>
+      <ShareOnFaceBook url={url} />
+      <ShareOnLinkedIn url={url} />
+      <ShareOnTwitter text={twitterText} />
+    </Fragment>
   )
 }
 

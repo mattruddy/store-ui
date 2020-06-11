@@ -14,7 +14,7 @@ const ShareOnFacebook: React.FC<ContainerProps> = ({
     color="facebook"
     href={`https://www.facebook.com/sharer/sharer.php?u=${url}`}
   >
-    <IonIcon icon={logoFacebook} />
+    <IonIcon size="small" icon={logoFacebook} />
   </ShareUrlLink>
 )
 
