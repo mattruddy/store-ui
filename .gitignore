@@ -24,5 +24,3 @@ yarn-debug.log*
 yarn-error.log*
 
 .postgres
-/src/hooks/useInstallPrompt/node_modules
-/src/hooks/useInstallPrompt/lib

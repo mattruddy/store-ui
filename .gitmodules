@@ -1,0 +1,3 @@
+[submodule "src/hooks/useInstallPrompt"]
+	path = src/hooks/useInstallPrompt
+	url = https://github.com/nrgapple/useInstallPrompt.git
