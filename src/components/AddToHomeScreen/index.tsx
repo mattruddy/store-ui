@@ -1,10 +1,10 @@
 import React, { memo, useMemo } from "react"
 import { IonButton } from "@ionic/react"
-import { BeforeInstallPromptEvent } from "../../hooks/useAddToHomescreenPrompt"
+import { BeforeInstallPromptEvent } from "../../hooks/useAddToHomescreenPromise/useAddToHomescreenPrompt"
 
 interface AddToHomeScreenProps {
   prompt: BeforeInstallPromptEvent | undefined
-  promptToInstall: () => Promise<void> | undefined
+  promptToInstall: () => Promise<void>
 }
 
 const AddToHomeScreen: React.FC<AddToHomeScreenProps> = ({

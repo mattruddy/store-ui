@@ -7,7 +7,7 @@ import { AddToHomeScreen } from "../../components"
 import Footer from "../../components/Footer"
 import HidingHeader from "../../components/HidingHeader"
 import HomeRow from "../../components/HomeRow"
-import { useAddToHomescreenPrompt } from "../../hooks/useAddToHomescreenPrompt"
+import useInstallPrompt from "../../hooks/useInstallPrompt/src"
 import { thunkGetHomeData } from "../../redux/PWAs/actions"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { GetPwaCategoryUrl } from "../../routes"
@@ -17,7 +17,7 @@ import { useHidingHeader } from "../../hooks/useHidingHeader"
 const Home: React.FC = () => {
   const history = useHistory()
   const content = useRef<any>()
-  const [prompt, promptToInstall] = useAddToHomescreenPrompt()
+  const [prompt, promptToInstall] = useInstallPrompt()
   const [hideDecimal, setScrollYCurrent] = useHidingHeader(50)
 
   const { homeData, isLoading } = useSelector(
