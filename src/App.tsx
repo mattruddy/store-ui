@@ -37,6 +37,7 @@ import { clearAlerts } from "./redux/Alerts/actions"
 import { Axios } from "./redux/Actions"
 import { SideBar } from "./components"
 import Search from "./pages/Search"
+import Settings from "./pages/Settings"
 
 const App: React.FC = () => {
   return <IonicApp />
@@ -142,6 +143,7 @@ const IonicApp: React.FC = () => {
                 <Route path={RouteMap.PWAS} component={PWAs} exact />
                 <Route path={RouteMap.HOME} component={Home} />
                 <Route path={RouteMap.SEARCH} component={Search} />
+                <Route path={RouteMap.SETTINGS} component={Settings} />
                 <Route
                   path={RouteMap.ROOT}
                   render={() => <Redirect to={RouteMap.HOME} />}

@@ -12,7 +12,6 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
-  IonGrid,
   IonRow,
   IonButtons,
   IonAlert,
@@ -31,7 +30,13 @@ import { thunkLogout, thunkAddPWA } from "../../redux/User/actions"
 import SumbitAppModal from "../../components/SumbitAppModal"
 import "./styles.css"
 import Popover from "../../components/Popover"
-import { logOut, menu, peopleOutline, addCircleOutline } from "ionicons/icons"
+import {
+  logOut,
+  menu,
+  peopleOutline,
+  addCircleOutline,
+  settingsOutline,
+} from "ionicons/icons"
 
 const Profile: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false)
@@ -144,6 +149,11 @@ const Profile: React.FC = () => {
                   name: "Add PWA",
                   action: () => setShowModal(true),
                   icon: addCircleOutline,
+                },
+                {
+                  name: "Settings",
+                  action: () => history.push(RouteMap.SETTINGS),
+                  icon: settingsOutline,
                 },
                 {
                   name: "Support",
