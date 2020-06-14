@@ -16,8 +16,8 @@
 
 .DeleteButtonBlock {
   position: relative;
-  left: 88%;
-  bottom: 3%;
+  left: 90%;
+  bottom: 7%;
 }
 
 .ScreenshotSliderImage {
@@ -27,8 +27,7 @@
 }
 
 .ScreenshotDeleteButton {
-  position: absolute;
-  z-index: 100000;
+  --box-shadow: none;
 }
 
 .ScreenshotSliderImage:hover {
