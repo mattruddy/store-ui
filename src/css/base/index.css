@@ -43,6 +43,10 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.13);
 }
 
+.right-line-border {
+  border-right: 1px solid rgba(0, 0, 0, 0.13);
+}
+
 .line-border {
   border: 1px solid rgba(0, 0, 0, 0.13);
   border-radius: 10px;

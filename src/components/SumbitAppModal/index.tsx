@@ -109,6 +109,8 @@ const SubmitAppModal: React.FC<ContainerProps> = ({
               <ImageUploader
                 fileContainerStyle={{
                   boxShadow: "none",
+                  background: "inherit",
+                  padding: "0",
                 }}
                 withPreview={true}
                 withLabel={false}
@@ -159,6 +161,8 @@ const SubmitAppModal: React.FC<ContainerProps> = ({
               <ImageUploader
                 fileContainerStyle={{
                   boxShadow: "none",
+                  background: "inherit",
+                  padding: "0",
                 }}
                 withPreview={true}
                 withLabel={false}

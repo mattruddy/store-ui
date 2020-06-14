@@ -43,6 +43,7 @@ export interface UserProfile {
   username: string
   email: string
   pwas: PWA[]
+  profile: Profile
 }
 
 export interface HomePWAs {
@@ -60,6 +61,14 @@ export interface Push {
   key: string
   auth: string
   endpoint: string
+}
+
+export interface Profile {
+  gitHub: string
+  linkedIn: string
+  twitter: string
+  avatar: string
+  showEmail: boolean
 }
 
 export interface AxiosCustomRequestConfig extends AxiosRequestConfig {

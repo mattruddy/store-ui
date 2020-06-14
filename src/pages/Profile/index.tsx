@@ -18,6 +18,9 @@ import {
   IonAlert,
   IonCol,
   IonProgressBar,
+  IonList,
+  IonItem,
+  IonListHeader,
 } from "@ionic/react"
 import { useHistory } from "react-router"
 import { PWACard } from "../../components"
@@ -85,7 +88,7 @@ const Profile: React.FC = () => {
     const filteredPwas = pwas && pwas.filter((pwa) => pwa.status === filter)
     return filteredPwas.length > 0 ? (
       filteredPwas.map((pwa, idx) => (
-        <IonCol key={idx} size="6" sizeMd="4" sizeLg="3">
+        <IonCol key={idx} size="8" sizeMd="8" sizeLg="4">
           <PWACard url="/mypwa" pwa={pwa} />
           {filter === "DENIED" && (
             <Fragment>
@@ -158,7 +161,24 @@ const Profile: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent class="content">
-        <IonGrid fixed>{renderAppsSections}</IonGrid>
+        <IonRow>
+          <IonCol className="ProfileAboutCol" size="4">
+            <img
+              alt="avatar"
+              style={{ height: "150px", width: "150px" }}
+              src="assets/icon/logo.png"
+            />
+            <IonList style={{ background: "inherit" }}>
+              <IonListHeader>
+                <IonTitle>About</IonTitle>
+              </IonListHeader>
+              <IonItem>Github</IonItem>
+              <IonItem>LinkedIn</IonItem>
+              <IonItem>Twitter</IonItem>
+            </IonList>
+          </IonCol>
+          <IonCol>{renderAppsSections}</IonCol>
+        </IonRow>
       </IonContent>
       <IonAlert
         isOpen={showAlert}

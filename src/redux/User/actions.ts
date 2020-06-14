@@ -7,8 +7,9 @@ import {
   USER_ADD_APP,
   USER_REMOVE_APP,
   UserRole,
+  USER_CREATE_PROFILE,
 } from "./types"
-import { PWA, Push } from "../../util/types"
+import { PWA, Push, Profile } from "../../util/types"
 import { ReduxCombinedState } from "../RootReducer"
 import { Action } from "redux"
 import { ThunkAction } from "redux-thunk"
@@ -137,6 +138,40 @@ export const thunkLogin = (
   }
 }
 
+export const thunkCreateProfile = (
+  gitHub: string,
+  linkedIn: string,
+  twitter: string,
+  showEmail: boolean
+): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
+  dispatch(setLoading(true))
+  try {
+    const url = `secure/profile`
+    const resp = await (await Axios()).post(url, {
+      gitHub,
+      linkedIn,
+      twitter,
+      showEmail,
+    })
+    const {
+      data: { profile },
+    } = resp
+    dispatch(setProfile(profile as Profile))
+  } catch (e) {
+    dispatch(
+      setAlert({
+        message: e.response.data.message,
+        apiResponseStatus: e.response.status,
+        timeout: 3000,
+        show: true,
+      })
+    )
+    return console.error(e)
+  } finally {
+    dispatch(setLoading(false))
+  }
+}
+
 export const thunkLoadProfile = (): ThunkAction<
   void,
   ReduxCombinedState,
@@ -148,13 +183,14 @@ export const thunkLoadProfile = (): ThunkAction<
     const url = `secure/profile`
     const resp = await (await Axios()).get(url)
     const {
-      data: { username, pageResponses, email },
+      data: { username, pageResponses, email, profile },
     } = resp
     dispatch(
       setData({
         email,
         username,
         pwas: pageResponses as PWA[],
+        profile: profile as Profile,
       })
     )
     await setEmailStorage(email)
@@ -242,6 +278,12 @@ export const setPWAS = (pwas: PWA[] | undefined) =>
   ({
     type: USER_SET_PWAS,
     payload: pwas,
+  } as const)
+
+export const setProfile = (profile: Profile | undefined) =>
+  ({
+    type: USER_CREATE_PROFILE,
+    payload: profile,
   } as const)
 
 export const replaceApp = (app: PWA) =>

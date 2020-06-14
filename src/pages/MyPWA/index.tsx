@@ -27,7 +27,6 @@ import { pencil, options, trash, close, checkmark } from "ionicons/icons"
 import { fixFilesRotation } from "../../util"
 import { ScreenshotSlider, PWAInfo } from "../../components"
 import { RouteMap, GetMyPWADetailUrl } from "../../routes"
-import "@pathofdev/react-tag-input/build/index.css"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { useSelector, useDispatch, shallowEqual } from "react-redux"
 import { thunkDeletePWA, thunkUpdateApp } from "../../redux/User/actions"
@@ -245,6 +244,8 @@ const MyPWA: React.FC = () => {
             <ImageUploader
               fileContainerStyle={{
                 boxShadow: "none",
+                background: "inherit",
+                padding: "0",
               }}
               withPreview={true}
               withLabel={false}

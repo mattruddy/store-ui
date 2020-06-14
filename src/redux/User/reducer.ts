@@ -8,6 +8,7 @@ import {
   USER_ADD_APP,
   USER_REMOVE_APP,
   UserRole,
+  USER_CREATE_PROFILE,
 } from "./types"
 import { AppActionTypes, REDUX_RESET } from "../App/types"
 
@@ -16,6 +17,7 @@ const DEFAULT_STATE_USER: UserState = {
   id: -1,
   loading: false,
   pwas: [],
+  profile: undefined,
   username: "",
   email: "",
   darkMode: false,
@@ -66,6 +68,11 @@ const userReducer = (
       return {
         ...state,
         pwas: [...state.pwas.filter((x) => x.appId !== action.payload)],
+      }
+    case USER_CREATE_PROFILE:
+      return {
+        ...state,
+        profile: action.payload,
       }
 
     case REDUX_RESET:
