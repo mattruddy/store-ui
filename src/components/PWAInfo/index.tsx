@@ -104,7 +104,7 @@ const PWAInfo: React.FC<ContainerProps> = ({
       </div>
       {isEdit ? (
         <FormItem name="Tags" showError={false} errorMessage="">
-          <div style={{ padding: "10px" }}>
+          <div style={{ padding: "10px", width: "100%" }}>
             <ReactTagInput
               tags={tags!}
               onChange={(newTags) => {
