@@ -28,7 +28,7 @@ import { thunkLogout, thunkAddPWA } from "../../redux/User/actions"
 import SumbitAppModal from "../../components/SumbitAppModal"
 import "./styles.css"
 import Popover from "../../components/Popover"
-import { add, help, logOut, menu } from "ionicons/icons"
+import { add, logOut, menu, peopleOutline } from "ionicons/icons"
 
 const Profile: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false)
@@ -148,7 +148,7 @@ const Profile: React.FC = () => {
                 {
                   name: "Support",
                   action: () => history.push(RouteMap.SUPPORT),
-                  icon: help,
+                  icon: peopleOutline,
                 },
                 {
                   name: "Log out",
