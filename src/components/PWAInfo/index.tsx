@@ -115,7 +115,7 @@ const PWAInfo: React.FC<ContainerProps> = ({
               }}
               removeOnBackspace={true}
               maxTags={5}
-              placeholder="Add tags"
+              placeholder="Enter to add"
             />
           </div>
         </FormItem>

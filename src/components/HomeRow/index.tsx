@@ -35,7 +35,7 @@ const HomeRow: React.FC<ContainerProps> = ({
       <IonNote className="HomeRowHeaderSubTitle">{subtitle}</IonNote>
       <IonRow className="HomeRow bottom-line-border">
         {pwas.map((topApp, i) => (
-          <IonCol key={i} sizeXs="6.7" sizeSm="4" sizeMd="5" sizeLg="4">
+          <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
             <PWACard url="/pwa" pwa={topApp} />
           </IonCol>
         ))}

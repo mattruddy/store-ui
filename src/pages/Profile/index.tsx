@@ -28,7 +28,7 @@ import { thunkLogout, thunkAddPWA } from "../../redux/User/actions"
 import SumbitAppModal from "../../components/SumbitAppModal"
 import "./styles.css"
 import Popover from "../../components/Popover"
-import { add, logOut, menu, peopleOutline } from "ionicons/icons"
+import { logOut, menu, peopleOutline, addCircleOutline } from "ionicons/icons"
 
 const Profile: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false)
@@ -76,36 +76,32 @@ const Profile: React.FC = () => {
   }, [isLoggedIn])
 
   useEffect(() => {
-    if (status === "success" && showModal) {
+    if (status === "success") {
       setShowModal(false)
     }
   }, [status])
 
-  const loadPwas = (filter: string) => {
-    if (pwas) {
-      const filteredPwas = pwas.filter((pwa) => pwa.status === filter)
-      if (filteredPwas.length > 0) {
-        return filteredPwas.map((pwa, idx) => (
-          <IonCol key={idx} sizeXs="6" sizeSm="4" sizeMd="3">
-            <PWACard url="/mypwa" pwa={pwa} />
-            {filter === "DENIED" && (
-              <>
-                <span style={{ paddingLeft: "15px" }}>
-                  <strong>Reason</strong>
-                </span>
-                <p style={{ padding: "15px" }}>{pwa.reason}</p>
-              </>
-            )}
-          </IonCol>
-        ))
-      } else {
-        return (
-          <IonCol>
-            <small className="NoAppsNote">{`No ${filter.toLowerCase()} apps yet`}</small>
-          </IonCol>
-        )
-      }
-    }
+  const filterPwa = (filter: string) => {
+    const filteredPwas = pwas && pwas.filter((pwa) => pwa.status === filter)
+    return filteredPwas.length > 0 ? (
+      filteredPwas.map((pwa, idx) => (
+        <IonCol key={idx} size="6" sizeMd="4" sizeLg="3">
+          <PWACard url="/mypwa" pwa={pwa} />
+          {filter === "DENIED" && (
+            <Fragment>
+              <span style={{ paddingLeft: "15px" }}>
+                <strong>Reason</strong>
+              </span>
+              <p style={{ padding: "15px" }}>{pwa.reason}</p>
+            </Fragment>
+          )}
+        </IonCol>
+      ))
+    ) : (
+      <IonCol>
+        <small className="NoAppsNote">{`No ${filter.toLowerCase()} apps yet`}</small>
+      </IonCol>
+    )
   }
 
   const renderAppsSections: JSX.Element = useMemo(
@@ -113,11 +109,11 @@ const Profile: React.FC = () => {
       !isLoading && pwas ? (
         <Fragment>
           <h2 style={{ marginLeft: "20px" }}>Approved</h2>
-          <IonRow>{loadPwas("APPROVED")}</IonRow>
+          <IonRow>{filterPwa("APPROVED")}</IonRow>
           <h2 style={{ marginLeft: "20px" }}>Pending</h2>
-          <IonRow>{loadPwas("PENDING")}</IonRow>
+          <IonRow>{filterPwa("PENDING")}</IonRow>
           <h2 style={{ marginLeft: "20px" }}>Denied</h2>
-          <IonRow>{loadPwas("DENIED")}</IonRow>
+          <IonRow>{filterPwa("DENIED")}</IonRow>
         </Fragment>
       ) : (
         <IonProgressBar type="indeterminate" />
@@ -143,7 +139,7 @@ const Profile: React.FC = () => {
                 {
                   name: "Add PWA",
                   action: () => setShowModal(true),
-                  icon: add,
+                  icon: addCircleOutline,
                 },
                 {
                   name: "Support",
@@ -163,25 +159,25 @@ const Profile: React.FC = () => {
       </IonHeader>
       <IonContent class="content">
         <IonGrid fixed>{renderAppsSections}</IonGrid>
-        <IonAlert
-          isOpen={showAlert}
-          onDidDismiss={() => setShowAlert(false)}
-          header="Logout"
-          message="Are you sure you want to log out?"
-          buttons={[
-            {
-              text: "Cancel",
-              handler: () => setShowAlert(false),
-            },
-            {
-              text: "Logout",
-              handler: () => {
-                logout()
-              },
-            },
-          ]}
-        />
       </IonContent>
+      <IonAlert
+        isOpen={showAlert}
+        onDidDismiss={() => setShowAlert(false)}
+        header="Logout"
+        message="Are you sure you want to log out?"
+        buttons={[
+          {
+            text: "Cancel",
+            handler: () => setShowAlert(false),
+          },
+          {
+            text: "Logout",
+            handler: () => {
+              logout()
+            },
+          },
+        ]}
+      />
     </IonPage>
   )
 }
