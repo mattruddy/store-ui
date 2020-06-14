@@ -1,4 +1,11 @@
-import React, { useState, memo, useEffect, useCallback, useMemo } from "react"
+import React, {
+  useState,
+  memo,
+  useEffect,
+  useCallback,
+  useMemo,
+  Fragment,
+} from "react"
 import {
   IonContent,
   IonHeader,
@@ -85,9 +92,7 @@ const MyPWA: React.FC = () => {
   )
 
   useEffect(() => {
-    if (pwa) {
-      updateStateProperties()
-    }
+    pwa && updateStateProperties()
   }, [pwa])
 
   useEffect(() => {
@@ -145,13 +150,16 @@ const MyPWA: React.FC = () => {
     setIsEdit(false)
   }
 
-  const removeImage = (imageId: number) => {
-    setScreenshots(
-      (previous) => previous && previous.filter((x) => x.imageId !== imageId)
-    )
-    !removedImagesIds.includes(imageId) &&
-      setRemovedImagesIds((previous) => [...previous, imageId])
-  }
+  const removeImage = useCallback(
+    (imageId: number) => {
+      setScreenshots(
+        (previous) => previous && previous.filter((x) => x.imageId !== imageId)
+      )
+      !removedImagesIds.includes(imageId) &&
+        setRemovedImagesIds((previous) => [...previous, imageId])
+    },
+    [removedImagesIds]
+  )
 
   const renderScreenshots = useMemo(() => {
     const shownScreenshots = isEdit ? screenshots : pwa && pwa.screenshots
@@ -164,7 +172,29 @@ const MyPWA: React.FC = () => {
         />
       )
     )
-  }, [pwa, screenshots, isEdit])
+  }, [pwa, screenshots, isEdit, removeImage])
+
+  const renderEditButtons = useMemo(() => {
+    return (
+      isEdit && (
+        <Fragment>
+          <IonFabButton className="MyPWAFab" size="small" onClick={editApp}>
+            <IonIcon color="success" icon={checkmark} />
+          </IonFabButton>
+          <IonFabButton
+            className="MyPWAFab"
+            size="small"
+            onClick={() => {
+              updateStateProperties()
+              setIsEdit(false)
+            }}
+          >
+            <IonIcon color="danger" icon={close} />
+          </IonFabButton>
+        </Fragment>
+      )
+    )
+  }, [isEdit, editApp])
 
   return (
     <IonPage>
@@ -175,27 +205,7 @@ const MyPWA: React.FC = () => {
           </IonButtons>
           {pwa && <IonTitle>{pwa.name}</IonTitle>}
           <IonButtons slot="end">
-            {isEdit && (
-              <>
-                <IonFabButton
-                  className="MyPWAFab"
-                  size="small"
-                  onClick={editApp}
-                >
-                  <IonIcon color="success" icon={checkmark} />
-                </IonFabButton>
-                <IonFabButton
-                  className="MyPWAFab"
-                  size="small"
-                  onClick={() => {
-                    updateStateProperties()
-                    setIsEdit(false)
-                  }}
-                >
-                  <IonIcon color="danger" icon={close} />
-                </IonFabButton>
-              </>
-            )}
+            {renderEditButtons}
             <Popover
               showPopover={showPopover}
               setShowPopover={setShowPopover}

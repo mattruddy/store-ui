@@ -130,6 +130,7 @@ const Profile: React.FC = () => {
       />
       <IonHeader className="ion-no-border bottom-line-border">
         <IonToolbar>
+          <IonTitle>{username}</IonTitle>
           <IonButtons slot="end">
             <Popover
               showPopover={showPopover}
@@ -154,7 +155,6 @@ const Profile: React.FC = () => {
               ]}
             />
           </IonButtons>
-          <IonTitle>{username}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent class="content">
