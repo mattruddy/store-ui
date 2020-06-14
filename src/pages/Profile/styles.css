@@ -2,3 +2,7 @@
   padding-left: 15px;
   color: rgb(115, 115, 115);
 }
+
+.ProfilePopover popover-content {
+  top: -30px;
+}

@@ -12,31 +12,28 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
-  IonButton,
   IonGrid,
   IonRow,
-  IonIcon,
   IonButtons,
-  IonFab,
-  IonFabButton,
-  IonFabList,
   IonAlert,
   IonCol,
   IonProgressBar,
 } from "@ionic/react"
 import { useHistory } from "react-router"
 import { PWACard } from "../../components"
-import { add, menu, logOut } from "ionicons/icons"
 import { RouteMap } from "../../routes"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { useSelector, useDispatch, shallowEqual } from "react-redux"
 import { thunkLogout, thunkAddPWA } from "../../redux/User/actions"
 import SumbitAppModal from "../../components/SumbitAppModal"
 import "./styles.css"
+import Popover from "../../components/Popover"
+import { add, help, logOut, menu } from "ionicons/icons"
 
 const Profile: React.FC = () => {
-  const [showModal, setShowModal] = useState(false)
-  const [showAlert, setShowAlert] = useState(false)
+  const [showModal, setShowModal] = useState<boolean>(false)
+  const [showAlert, setShowAlert] = useState<boolean>(false)
+  const [showPopover, setShowPopover] = useState<boolean>(false)
   const history = useHistory()
 
   const { pwas, username, isLoading, isLoggedIn, status } = useSelector(
@@ -112,22 +109,19 @@ const Profile: React.FC = () => {
   }
 
   const renderAppsSections: JSX.Element = useMemo(
-    () => (
-      <Fragment>
-        {!isLoading && pwas ? (
-          <Fragment>
-            <h2 style={{ marginLeft: "20px" }}>Approved</h2>
-            <IonRow>{loadPwas("APPROVED")}</IonRow>
-            <h2 style={{ marginLeft: "20px" }}>Pending</h2>
-            <IonRow>{loadPwas("PENDING")}</IonRow>
-            <h2 style={{ marginLeft: "20px" }}>Denied</h2>
-            <IonRow>{loadPwas("DENIED")}</IonRow>
-          </Fragment>
-        ) : (
-          <IonProgressBar type="indeterminate" />
-        )}
-      </Fragment>
-    ),
+    () =>
+      !isLoading && pwas ? (
+        <Fragment>
+          <h2 style={{ marginLeft: "20px" }}>Approved</h2>
+          <IonRow>{loadPwas("APPROVED")}</IonRow>
+          <h2 style={{ marginLeft: "20px" }}>Pending</h2>
+          <IonRow>{loadPwas("PENDING")}</IonRow>
+          <h2 style={{ marginLeft: "20px" }}>Denied</h2>
+          <IonRow>{loadPwas("DENIED")}</IonRow>
+        </Fragment>
+      ) : (
+        <IonProgressBar type="indeterminate" />
+      ),
     [pwas, isLoading]
   )
 
@@ -141,30 +135,33 @@ const Profile: React.FC = () => {
       <IonHeader className="ion-no-border bottom-line-border">
         <IonToolbar>
           <IonButtons slot="end">
-            <IonButton
-              fill="outline"
-              onClick={() => history.push(RouteMap.SUPPORT)}
-            >
-              SUPPORT
-            </IonButton>
+            <Popover
+              showPopover={showPopover}
+              setShowPopover={setShowPopover}
+              icon={menu}
+              items={[
+                {
+                  name: "Add PWA",
+                  action: () => setShowModal(true),
+                  icon: add,
+                },
+                {
+                  name: "Support",
+                  action: () => history.push(RouteMap.SUPPORT),
+                  icon: help,
+                },
+                {
+                  name: "Log out",
+                  action: () => setShowAlert(true),
+                  icon: logOut,
+                },
+              ]}
+            />
           </IonButtons>
           <IonTitle>{username}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent class="content">
-        <IonFab vertical="top" horizontal="end" slot="fixed">
-          <IonFabButton class="fab fab-no-shadow">
-            <IonIcon icon={menu} />
-          </IonFabButton>
-          <IonFabList side="bottom">
-            <IonFabButton type="button" onClick={() => setShowAlert(true)}>
-              <IonIcon icon={logOut} />
-            </IonFabButton>
-            <IonFabButton type="button" onClick={() => setShowModal(true)}>
-              <IonIcon icon={add} />
-            </IonFabButton>
-          </IonFabList>
-        </IonFab>
         <IonGrid fixed>{renderAppsSections}</IonGrid>
         <IonAlert
           isOpen={showAlert}

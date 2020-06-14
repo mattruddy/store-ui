@@ -138,13 +138,7 @@ const PWA: React.FC<OwnProps> = ({
             {pwa ? (
               <Fragment>
                 <IonCol size="12">
-                  <PWAInfo
-                    pwa={pwa}
-                    appId={pwa.appId}
-                    currentStar={pwa.averageRating}
-                    starCount={pwa.ratingsCount}
-                    tags={pwa.tags}
-                  />
+                  <PWAInfo pwa={pwa} isMyPwa={false} />
                 </IonCol>
                 <IonCol size="12" sizeMd="6" pushMd="6">
                   <ScreenshotSlider images={pwa.screenshots} />
