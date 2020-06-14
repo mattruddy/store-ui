@@ -1,5 +1,6 @@
 import React, { memo, Fragment, MouseEvent, useState } from "react"
 import { IonPopover, IonButton, IonIcon, IonList, IonItem } from "@ionic/react"
+import "./styles.css"
 
 type PopoverItem = {
   name: string
@@ -56,7 +57,7 @@ const Popover: React.FC<ContainerProps> = ({
         </IonList>
       </IonPopover>
       <IonButton onClick={onShow}>
-        <IonIcon icon={icon} />
+        <IonIcon className="PopoverButton" icon={icon} />
       </IonButton>
     </Fragment>
   )

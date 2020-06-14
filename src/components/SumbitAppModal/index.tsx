@@ -78,7 +78,7 @@ const SubmitAppModal: React.FC<ContainerProps> = ({
       </IonHeader>
       <IonContent className="content">
         <form onSubmit={addApp}>
-          <IonList>
+          <IonList style={{ background: "inherit" }}>
             <FormItem
               name="Name"
               type="text"
