@@ -7,8 +7,9 @@ import {
   USER_ADD_APP,
   USER_REMOVE_APP,
   UserRole,
+  USER_SET_NOTIFICATIONS,
 } from "./types"
-import { PWA, Push } from "../../util/types"
+import { PWA, Push, StoreNotification } from "../../util/types"
 import { ReduxCombinedState } from "../RootReducer"
 import { Action } from "redux"
 import { ThunkAction } from "redux-thunk"
@@ -260,6 +261,12 @@ export const removeApp = (appId: number) =>
   ({
     type: USER_REMOVE_APP,
     payload: appId,
+  } as const)
+
+export const setNotifications = (notifications: StoreNotification[]) =>
+  ({
+    type: USER_SET_NOTIFICATIONS,
+    payload: notifications,
   } as const)
 
 export const thunkThirdPartyLogin = (

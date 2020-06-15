@@ -62,6 +62,14 @@ export interface Push {
   endpoint: string
 }
 
+export interface StoreNotification {
+  subject: string
+  body?: string
+  link?: string
+  isRead: boolean
+  isArchived: boolean
+}
+
 export interface AxiosCustomRequestConfig extends AxiosRequestConfig {
   crossDomain?: boolean
 }

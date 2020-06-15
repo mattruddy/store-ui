@@ -26,7 +26,7 @@ import {
 } from "@ionic/react"
 import { useHistory } from "react-router"
 import { PWACard } from "../../components"
-import { add, menu, logOut } from "ionicons/icons"
+import { add, menu, logOut, notificationsOutline } from "ionicons/icons"
 import { RouteMap } from "../../routes"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { useSelector, useDispatch, shallowEqual } from "react-redux"
@@ -141,6 +141,9 @@ const Profile: React.FC = () => {
       <IonHeader className="ion-no-border bottom-line-border">
         <IonToolbar>
           <IonButtons slot="end">
+            <IonButton routerLink={"/notifications"}>
+              <IonIcon icon={notificationsOutline} />
+            </IonButton>
             <IonButton
               fill="outline"
               onClick={() => history.push(RouteMap.SUPPORT)}
@@ -190,3 +193,11 @@ const Profile: React.FC = () => {
 }
 
 export default memo(Profile)
+
+interface Notification {
+  subject: string
+  body?: string
+  link?: string
+  isRead: boolean
+  isArchived: boolean
+}

@@ -8,6 +8,7 @@ import {
   USER_ADD_APP,
   USER_REMOVE_APP,
   UserRole,
+  USER_SET_NOTIFICATIONS,
 } from "./types"
 import { AppActionTypes, REDUX_RESET } from "../App/types"
 
@@ -22,6 +23,7 @@ const DEFAULT_STATE_USER: UserState = {
   isLoggedIn: false,
   role: UserRole.Dev,
   push: undefined,
+  notifications: [],
 }
 
 const userReducer = (
@@ -66,6 +68,12 @@ const userReducer = (
       return {
         ...state,
         pwas: [...state.pwas.filter((x) => x.appId !== action.payload)],
+      }
+
+    case USER_SET_NOTIFICATIONS:
+      return {
+        ...state,
+        notifications: [...action.payload],
       }
 
     case REDUX_RESET:

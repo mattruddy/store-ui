@@ -1,4 +1,4 @@
-import { PWA, Push } from "../../util/types"
+import { PWA, Push, StoreNotification } from "../../util/types"
 
 export interface UserState {
   token: string
@@ -11,6 +11,7 @@ export interface UserState {
   isLoggedIn: boolean
   role: UserRole
   push: Push | undefined
+  notifications: StoreNotification[]
 }
 
 export enum UserRole {
@@ -28,6 +29,7 @@ export const USER_REPLACE_APP = "USER_REPLACE_APP"
 export const USER_ADD_APP = "USER_ADD_APP"
 export const USER_REMOVE_APP = "USER_REMOVE_APP"
 export const USER_HAS_READ_INSTALL = "USER_HAS_READ_INSTALL"
+export const USER_SET_NOTIFICATIONS = "USER_SET_NOTIFICATIONS"
 
 export interface SetUserAction {
   type: typeof USER_SET
@@ -47,6 +49,11 @@ export interface SetDataAction {
 export interface SetPWAsAction {
   type: typeof USER_SET_PWAS
   payload: PWA[]
+}
+
+export interface SetNotifications {
+  type: typeof USER_SET_NOTIFICATIONS
+  payload: StoreNotification[]
 }
 
 export interface ReplaceAppAction {
@@ -73,3 +80,4 @@ export type UserActionTypes =
   | ReplaceAppAction
   | SetLoadingAction
   | SetUserAction
+  | SetNotifications

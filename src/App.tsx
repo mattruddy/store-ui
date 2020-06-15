@@ -37,6 +37,7 @@ import { clearAlerts } from "./redux/Alerts/actions"
 import { Axios } from "./redux/Actions"
 import { SideBar } from "./components"
 import Search from "./pages/Search"
+import Notifications from "./pages/Notifications"
 
 const App: React.FC = () => {
   return <IonicApp />
@@ -146,6 +147,10 @@ const IonicApp: React.FC = () => {
                   path={RouteMap.ROOT}
                   render={() => <Redirect to={RouteMap.HOME} />}
                   exact={true}
+                />
+                <Route
+                  path={RouteMap.NOTIFICATIONS}
+                  component={Notifications}
                 />
               </IonRouterOutlet>
 
