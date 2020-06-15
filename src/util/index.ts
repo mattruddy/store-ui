@@ -148,6 +148,10 @@ const normalizeCategory = (category: string | undefined): string => {
     : category
 }
 
+const validProfileLink = (link: string, site: string): boolean => {
+  return link.toLowerCase().startsWith(`https://${site.toLowerCase()}.com/`)
+}
+
 export {
   blobToFile,
   fixFilesRotation,
@@ -163,4 +167,5 @@ export {
   checkValidPW,
   validAppUpload,
   normalizeCategory,
+  validProfileLink,
 }

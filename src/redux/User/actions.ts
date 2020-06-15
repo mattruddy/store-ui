@@ -27,7 +27,6 @@ import {
   setPushStorage,
 } from "../Actions"
 import { setAlert } from "../Alerts/actions"
-import ReactGA from "react-ga"
 
 export const thunkAddPush = (
   push: Push
@@ -70,10 +69,6 @@ export const thunkSignUp = (
     await setUsernameStorage(username)
     await setEmailStorage(email)
     await setIsLoggedInStorage("true")
-    ReactGA.event({
-      category: "sign up",
-      action: "User signed up!",
-    })
     dispatch(
       setAlert({
         message: "Signed Up!",
@@ -142,21 +137,33 @@ export const thunkCreateProfile = (
   gitHub: string,
   linkedIn: string,
   twitter: string,
-  showEmail: boolean
+  showEmail: boolean,
+  email: string,
+  avatar?: File
 ): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
   dispatch(setLoading(true))
   try {
-    const url = `secure/profile`
-    const resp = await (await Axios()).post(url, {
+    const url = "secure/profile"
+    const data = {
       gitHub,
       linkedIn,
       twitter,
       showEmail,
-    })
-    const {
-      data: { profile },
-    } = resp
-    dispatch(setProfile(profile as Profile))
+      email,
+    }
+    const fd = new FormData()
+    fd.append("info", JSON.stringify(data))
+    avatar && fd.append("avatar", avatar)
+    const resp = await (await AxiosForm(fd)).post(url, fd)
+    dispatch(setProfile(resp.data as Profile))
+    dispatch(
+      setAlert({
+        message: "Profile Updated",
+        timeout: 3000,
+        show: true,
+        status: "success",
+      })
+    )
   } catch (e) {
     dispatch(
       setAlert({

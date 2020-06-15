@@ -20,6 +20,9 @@ import {
   IonList,
   IonItem,
   IonListHeader,
+  IonIcon,
+  IonGrid,
+  IonButton,
 } from "@ionic/react"
 import { useHistory } from "react-router"
 import { PWACard } from "../../components"
@@ -36,6 +39,9 @@ import {
   peopleOutline,
   addCircleOutline,
   settingsOutline,
+  logoGithub,
+  logoLinkedin,
+  logoTwitter,
 } from "ionicons/icons"
 
 const Profile: React.FC = () => {
@@ -44,9 +50,16 @@ const Profile: React.FC = () => {
   const [showPopover, setShowPopover] = useState<boolean>(false)
   const history = useHistory()
 
-  const { pwas, username, isLoading, isLoggedIn, status } = useSelector(
+  const {
+    pwas,
+    username,
+    isLoading,
+    isLoggedIn,
+    status,
+    profile,
+  } = useSelector(
     ({
-      user: { pwas, username, loading, isLoggedIn },
+      user: { pwas, username, loading, isLoggedIn, profile },
       alerts: { status },
     }: ReduxCombinedState) => ({
       pwas: pwas,
@@ -54,6 +67,7 @@ const Profile: React.FC = () => {
       isLoading: loading,
       isLoggedIn: isLoggedIn,
       status: status,
+      profile: profile,
     }),
     shallowEqual
   )
@@ -93,7 +107,7 @@ const Profile: React.FC = () => {
     const filteredPwas = pwas && pwas.filter((pwa) => pwa.status === filter)
     return filteredPwas.length > 0 ? (
       filteredPwas.map((pwa, idx) => (
-        <IonCol key={idx} size="8" sizeMd="8" sizeLg="4">
+        <IonCol key={idx} size="6" sizeMd="4" sizeLg="3">
           <PWACard url="/mypwa" pwa={pwa} />
           {filter === "DENIED" && (
             <Fragment>
@@ -114,19 +128,17 @@ const Profile: React.FC = () => {
 
   const renderAppsSections: JSX.Element = useMemo(
     () =>
-      !isLoading && pwas ? (
-        <Fragment>
-          <h2 style={{ marginLeft: "20px" }}>Approved</h2>
+      pwas && (
+        <IonCol>
+          <IonTitle>Approved</IonTitle>
           <IonRow>{filterPwa("APPROVED")}</IonRow>
-          <h2 style={{ marginLeft: "20px" }}>Pending</h2>
+          <IonTitle>Pending</IonTitle>
           <IonRow>{filterPwa("PENDING")}</IonRow>
-          <h2 style={{ marginLeft: "20px" }}>Denied</h2>
+          <IonTitle>Denied</IonTitle>
           <IonRow>{filterPwa("DENIED")}</IonRow>
-        </Fragment>
-      ) : (
-        <IonProgressBar type="indeterminate" />
+        </IonCol>
       ),
-    [pwas, isLoading]
+    [pwas]
   )
 
   return (
@@ -169,26 +181,32 @@ const Profile: React.FC = () => {
             />
           </IonButtons>
         </IonToolbar>
+        {isLoading && <IonProgressBar type="indeterminate" color="primary" />}
       </IonHeader>
       <IonContent class="content">
-        <IonRow>
-          <IonCol className="ProfileAboutCol" size="4">
-            <img
-              alt="avatar"
-              style={{ height: "150px", width: "150px" }}
-              src="assets/icon/logo.png"
-            />
-            <IonList style={{ background: "inherit" }}>
-              <IonListHeader>
-                <IonTitle>About</IonTitle>
-              </IonListHeader>
-              <IonItem>Github</IonItem>
-              <IonItem>LinkedIn</IonItem>
-              <IonItem>Twitter</IonItem>
-            </IonList>
-          </IonCol>
-          <IonCol>{renderAppsSections}</IonCol>
+        <IonRow className="bottom-line-border">
+          <img
+            alt="avatar"
+            style={{ height: "120px", width: "120px" }}
+            src={profile?.avatar ? profile.avatar : "assets/icon/logo.png"}
+          />
+          <a href={profile?.gitHub} target="_blank">
+            <IonIcon size="large" icon={logoGithub} />
+          </a>
+          <a href={profile?.linkedIn} target="_blank">
+            <IonIcon color="gitHub" size="large" icon={logoLinkedin} />
+          </a>
+          <a href={profile?.twitter} target="_blank">
+            <IonIcon color="gitHub" size="large" icon={logoTwitter} />
+          </a>
+          <IonButton
+            onClick={() => history.push(RouteMap.SETTINGS)}
+            fill="outline"
+          >
+            Edit Profile
+          </IonButton>
         </IonRow>
+        <IonRow>{renderAppsSections}</IonRow>
       </IonContent>
       <IonAlert
         isOpen={showAlert}

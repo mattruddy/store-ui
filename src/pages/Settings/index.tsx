@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react"
+import React, { memo, useState, useCallback, useEffect } from "react"
 import {
   IonContent,
   IonPage,
@@ -8,16 +8,83 @@ import {
   IonBackButton,
   IonTitle,
   IonButton,
+  IonCheckbox,
+  IonProgressBar,
 } from "@ionic/react"
 import { FormItem } from "../../components"
 import ImageUploader from "react-images-upload"
+import { useDispatch, shallowEqual, useSelector } from "react-redux"
+import { ReduxCombinedState } from "../../redux/RootReducer"
+import { thunkCreateProfile } from "../../redux/User/actions"
+import { validProfileLink } from "../../util"
 
 const Settings: React.FC = () => {
   const [gitHub, setGitHub] = useState<string>()
   const [linkedIn, setLinkedIn] = useState<string>()
   const [twitter, setTwitter] = useState<string>()
-  const [avatar, setAvatar] = useState<File>()
-  const [newEmail, setNewEmail] = useState<string>()
+  const [showEmail, setShowEmail] = useState<boolean>()
+  const [avatar, setAvatar] = useState<File | undefined>(undefined)
+  const [updateEmail, setUpdateEmail] = useState<string>()
+
+  const { email, profile, isLoading, status } = useSelector(
+    ({
+      user: { email, profile, loading },
+      alerts: { status },
+    }: ReduxCombinedState) => ({
+      email: email,
+      profile: profile,
+      status: status,
+      isLoading: loading,
+    }),
+    shallowEqual
+  )
+
+  const dispatch = useDispatch()
+  const createProfile = useCallback(
+    async (
+      updateGitHub: string,
+      updateLinkedIn: string,
+      updateTwitter: string,
+      updateShowEmail: boolean,
+      updateEmail: string,
+      updateAvatar: File | undefined
+    ) => {
+      dispatch(
+        thunkCreateProfile(
+          updateGitHub,
+          updateLinkedIn,
+          updateTwitter,
+          updateShowEmail,
+          updateEmail,
+          updateAvatar
+        )
+      )
+    },
+    [dispatch]
+  )
+
+  useEffect(() => {
+    if (status === "success") {
+      setAvatar(undefined)
+    }
+  }, [status])
+
+  useEffect(() => {
+    if (email) {
+      setUpdateEmail(email)
+    }
+    if (profile) {
+      setGitHub(profile.gitHub)
+      setLinkedIn(profile.linkedIn)
+      setTwitter(profile.twitter)
+      setShowEmail(profile.showEmail)
+    }
+  }, [email, profile])
+
+  const onSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    createProfile(gitHub!, linkedIn!, twitter!, showEmail!, email!, avatar)
+  }
 
   return (
     <IonPage>
@@ -28,9 +95,23 @@ const Settings: React.FC = () => {
           </IonButtons>
           <IonTitle>Settings</IonTitle>
         </IonToolbar>
+        {isLoading && <IonProgressBar type="indeterminate" color="primary" />}
       </IonHeader>
       <IonContent className="content">
-        <form>
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            padding: "16px",
+          }}
+        >
+          <img
+            style={{ height: "120px", width: "120px", borderRadius: "6px" }}
+            src={profile?.avatar}
+          />
+        </div>
+        <form onSubmit={onSubmit}>
           <FormItem name="Avatar" showError={false} errorMessage="">
             <ImageUploader
               fileContainerStyle={{
@@ -38,7 +119,7 @@ const Settings: React.FC = () => {
                 background: "inherit",
                 padding: "0",
               }}
-              withPreview={true}
+              withPreview={avatar !== undefined}
               withLabel={false}
               singleImage={true}
               withIcon={false}
@@ -52,35 +133,47 @@ const Settings: React.FC = () => {
             name="GitHub"
             value={gitHub}
             onChange={(e) => setGitHub(e.detail.value)}
-            showError={false}
-            errorMessage=""
+            showError={gitHub ? !validProfileLink(gitHub, "github") : false}
+            errorMessage="Invalid GitHub Link"
             maxLength={256}
           />
           <FormItem
             name="LinkedIn"
             value={linkedIn}
             onChange={(e) => setLinkedIn(e.detail.value)}
-            showError={false}
-            errorMessage=""
+            showError={
+              linkedIn ? !validProfileLink(linkedIn, "linkedin") : false
+            }
+            errorMessage="Invalid LinkedIn Link"
             maxLength={256}
           />
           <FormItem
             name="Twitter"
             value={twitter}
             onChange={(e) => setTwitter(e.detail.value)}
-            showError={false}
-            errorMessage=""
+            showError={twitter ? !validProfileLink(twitter, "twitter") : false}
+            errorMessage="Invalid Twitter Link"
             maxLength={256}
           />
           <FormItem
             name="Email"
-            value={newEmail}
-            onChange={(e) => setNewEmail(e.detail.value)}
+            value={updateEmail}
+            onChange={(e) => setUpdateEmail(e.detail.value)}
             showError={false}
             errorMessage=""
             maxLength={256}
           />
-          <IonButton disabled={!gitHub && !linkedIn && !twitter} fill="outline">
+          <FormItem name="Display Email?" showError={false} errorMessage="">
+            <IonCheckbox
+              checked={showEmail}
+              onIonChange={(e) => setShowEmail(e.detail.checked)}
+            />
+          </FormItem>
+          <IonButton
+            disabled={!gitHub && !linkedIn && !twitter}
+            fill="outline"
+            type="submit"
+          >
             Update
           </IonButton>
         </form>
