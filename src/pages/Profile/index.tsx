@@ -17,12 +17,6 @@ import {
   IonAlert,
   IonCol,
   IonProgressBar,
-  IonList,
-  IonItem,
-  IonListHeader,
-  IonIcon,
-  IonGrid,
-  IonButton,
 } from "@ionic/react"
 import { useHistory } from "react-router"
 import { PWACard } from "../../components"
@@ -39,10 +33,8 @@ import {
   peopleOutline,
   addCircleOutline,
   settingsOutline,
-  logoGithub,
-  logoLinkedin,
-  logoTwitter,
 } from "ionicons/icons"
+import ProfileCard from "../../components/ProfileCard"
 
 const Profile: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false)
@@ -57,9 +49,10 @@ const Profile: React.FC = () => {
     isLoggedIn,
     status,
     profile,
+    email,
   } = useSelector(
     ({
-      user: { pwas, username, loading, isLoggedIn, profile },
+      user: { pwas, username, loading, isLoggedIn, profile, email },
       alerts: { status },
     }: ReduxCombinedState) => ({
       pwas: pwas,
@@ -68,6 +61,7 @@ const Profile: React.FC = () => {
       isLoggedIn: isLoggedIn,
       status: status,
       profile: profile,
+      email: email,
     }),
     shallowEqual
   )
@@ -185,42 +179,13 @@ const Profile: React.FC = () => {
       </IonHeader>
       <IonContent class="content">
         <IonRow className="ProfileTopRow bottom-line-border">
-          <div>
-            <img
-              alt="avatar"
-              className="icon"
-              src={profile?.avatar ? profile.avatar : "assets/icon/logo.png"}
+          <IonCol size="12">
+            <ProfileCard
+              profile={profile}
+              email={email}
+              isLoading={isLoading}
             />
-            <a
-              className="ion-color-github"
-              href={profile?.gitHub}
-              target="_blank"
-            >
-              <IonIcon size="large" icon={logoGithub} />
-            </a>
-            <a
-              className="ion-color-linkedin"
-              href={profile?.linkedIn}
-              target="_blank"
-            >
-              <IonIcon color="gitHub" size="large" icon={logoLinkedin} />
-            </a>
-            <a
-              className="ion-color-twitter"
-              href={profile?.twitter}
-              target="_blank"
-            >
-              <IonIcon color="gitHub" size="large" icon={logoTwitter} />
-            </a>
-          </div>
-          <div>
-            <IonButton
-              onClick={() => history.push(RouteMap.SETTINGS)}
-              fill="outline"
-            >
-              Edit Profile
-            </IonButton>
-          </div>
+          </IonCol>
         </IonRow>
         <IonRow>{renderAppsSections}</IonRow>
       </IonContent>

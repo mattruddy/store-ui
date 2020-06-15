@@ -1,0 +1,13 @@
+.ProfileCard {
+  box-shadow: none;
+  background: inherit;
+}
+
+.ProfileCardRight {
+  display: flex;
+  align-self: flex-end;
+}
+
+.ProfileCardImg {
+  border-radius: 50%;
+}
