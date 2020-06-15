@@ -24,24 +24,27 @@ import { useSelector, useDispatch, shallowEqual } from "react-redux"
 import { setNotifications } from "../../redux/User/actions"
 import { FormItem } from "../../components"
 import { StoreNotification } from "../../util/types"
-import { radioButtonOn, radioButtonOff, filter } from "ionicons/icons"
+import { radioButtonOn, radioButtonOff, filter, map } from "ionicons/icons"
 
 const Notifications: React.FC = () => {
   const history = useHistory()
-  const [notifications, setNotications] = useState<StoreNotification[]>([
+  const [notifications, setNotifications] = useState<StoreNotification[]>([
     {
+      id: 1,
       isRead: false,
       isArchived: false,
       body: "hey, testing\nand some more",
       subject: "this is a test",
     },
     {
+      id: 2,
       isRead: false,
       isArchived: false,
       body: "hey, testing\nand some more",
       subject: "this is a test",
     },
     {
+      id: 3,
       isRead: false,
       isArchived: false,
       subject: "this is a test",
@@ -67,12 +70,16 @@ const Notifications: React.FC = () => {
       <IonList lines="full">
         {notifications.map((n) => (
           <IonItem
-            onClick={() =>
-              setNotifications([
-                ...notifications.filter((x) => x !== n),
-                { ...n, isRead: true } as StoreNotification,
-              ])
-            }
+            button
+            onClick={() => {
+              setNotifications((notifications) =>
+                [
+                  ...notifications.filter((x) => x !== n),
+                  { ...n, isRead: true },
+                ].sort((a, b) => a.id - b.id)
+              )
+              console.log(notifications)
+            }}
           >
             <IonIcon
               slot="start"
@@ -89,6 +96,12 @@ const Notifications: React.FC = () => {
     [notifications]
   )
 
+  const markAllRead = () => {
+    setNotifications((n) =>
+      n.map((note) => ({ ...note, isRead: true } as StoreNotification))
+    )
+  }
+
   return (
     <IonPage>
       <IonHeader className="ion-no-border bottom-line-border">
@@ -102,7 +115,7 @@ const Notifications: React.FC = () => {
       <IonContent className="content">
         <IonRow>
           <IonCol>
-            <IonButton>Mark All as Read</IonButton>
+            <IonButton onClick={markAllRead}>Mark All as Read</IonButton>
           </IonCol>
         </IonRow>
         <IonRow>

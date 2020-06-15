@@ -63,6 +63,7 @@ export interface Push {
 }
 
 export interface StoreNotification {
+  id: number
   subject: string
   body?: string
   link?: string
