@@ -62,6 +62,12 @@
   margin: 5px;
 }
 
+.icon {
+  height: 120px;
+  width: 120px;
+  border-radius: 6px;
+}
+
 .primary-input-label:focus-within {
   color: var(--ion-color-primary);
 }

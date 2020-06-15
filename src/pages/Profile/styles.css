@@ -1,3 +1,9 @@
+.ProfileTopRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px;
+}
+
 .NoAppsNote {
   padding-left: 15px;
   color: rgb(115, 115, 115);

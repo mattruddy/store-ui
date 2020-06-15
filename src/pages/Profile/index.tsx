@@ -184,27 +184,43 @@ const Profile: React.FC = () => {
         {isLoading && <IonProgressBar type="indeterminate" color="primary" />}
       </IonHeader>
       <IonContent class="content">
-        <IonRow className="bottom-line-border">
-          <img
-            alt="avatar"
-            style={{ height: "120px", width: "120px" }}
-            src={profile?.avatar ? profile.avatar : "assets/icon/logo.png"}
-          />
-          <a href={profile?.gitHub} target="_blank">
-            <IonIcon size="large" icon={logoGithub} />
-          </a>
-          <a href={profile?.linkedIn} target="_blank">
-            <IonIcon color="gitHub" size="large" icon={logoLinkedin} />
-          </a>
-          <a href={profile?.twitter} target="_blank">
-            <IonIcon color="gitHub" size="large" icon={logoTwitter} />
-          </a>
-          <IonButton
-            onClick={() => history.push(RouteMap.SETTINGS)}
-            fill="outline"
-          >
-            Edit Profile
-          </IonButton>
+        <IonRow className="ProfileTopRow bottom-line-border">
+          <div>
+            <img
+              alt="avatar"
+              className="icon"
+              src={profile?.avatar ? profile.avatar : "assets/icon/logo.png"}
+            />
+            <a
+              className="ion-color-github"
+              href={profile?.gitHub}
+              target="_blank"
+            >
+              <IonIcon size="large" icon={logoGithub} />
+            </a>
+            <a
+              className="ion-color-linkedin"
+              href={profile?.linkedIn}
+              target="_blank"
+            >
+              <IonIcon color="gitHub" size="large" icon={logoLinkedin} />
+            </a>
+            <a
+              className="ion-color-twitter"
+              href={profile?.twitter}
+              target="_blank"
+            >
+              <IonIcon color="gitHub" size="large" icon={logoTwitter} />
+            </a>
+          </div>
+          <div>
+            <IonButton
+              onClick={() => history.push(RouteMap.SETTINGS)}
+              fill="outline"
+            >
+              Edit Profile
+            </IonButton>
+          </div>
         </IonRow>
         <IonRow>{renderAppsSections}</IonRow>
       </IonContent>

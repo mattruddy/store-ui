@@ -72,7 +72,7 @@ const Settings: React.FC = () => {
 
   useEffect(() => {
     if (email) {
-      setUpdateEmail(email)
+      setUpdateEmail(email.endsWith("@pwa.com") ? "" : email)
     }
     if (profile) {
       setGitHub(profile.gitHub)
@@ -107,7 +107,7 @@ const Settings: React.FC = () => {
       </IonHeader>
       <IonContent className="content">
         <div className="SettingsAvatarContainer">
-          <img className="SettingsAvatarImg" src={profile?.avatar} />
+          <img className="icon" src={profile?.avatar} />
         </div>
         <form onSubmit={onSubmit}>
           <FormItem name="Avatar" showError={false} errorMessage="">
