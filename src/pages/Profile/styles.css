@@ -3,11 +3,17 @@
   justify-content: space-between;
 }
 
+.ProfileCardCol {
+  border-right: 1px solid rgba(0, 0, 0, 0.13);
+}
+
 .NoAppsNote {
   padding-left: 15px;
   color: rgb(115, 115, 115);
 }
 
-.ProfilePopover popover-content {
-  top: -30px;
+@media screen and (max-width: 768px) {
+  .ProfileCardCol {
+    border-right: none;
+  }
 }

@@ -179,7 +179,7 @@ const Profile: React.FC = () => {
       </IonHeader>
       <IonContent class="content">
         <IonRow>
-          <IonCol size="12" sizeMd="3">
+          <IonCol className="ProfileCardCol" size="12" sizeMd="3">
             <ProfileCard
               profile={profile}
               email={email}

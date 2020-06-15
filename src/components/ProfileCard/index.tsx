@@ -21,7 +21,7 @@ const ProfileCard: React.FC<ContainerProps> = ({
   isLoading,
 }) => {
   return (
-    <div className="ProfileCardLeft bottom-line-border">
+    <div className="ProfileCard bottom-line-border">
       {!isLoading && (
         <img
           alt="avatar"
