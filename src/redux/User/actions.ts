@@ -139,6 +139,7 @@ export const thunkCreateProfile = (
   twitter: string,
   showEmail: boolean,
   email: string,
+  about: string,
   avatar?: File
 ): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
   dispatch(setLoading(true))
@@ -149,6 +150,7 @@ export const thunkCreateProfile = (
       linkedIn,
       twitter,
       showEmail,
+      about,
       email,
     }
     const fd = new FormData()

@@ -68,6 +68,7 @@ export interface Profile {
   linkedIn: string
   twitter: string
   avatar: string
+  about: string
   showEmail: boolean
 }
 

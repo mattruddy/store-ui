@@ -101,7 +101,7 @@ const Profile: React.FC = () => {
     const filteredPwas = pwas && pwas.filter((pwa) => pwa.status === filter)
     return filteredPwas.length > 0 ? (
       filteredPwas.map((pwa, idx) => (
-        <IonCol key={idx} size="3" sizeMd="6" sizeLg="6">
+        <IonCol key={idx} size="6" sizeLg="4">
           <PWACard url="/mypwa" pwa={pwa} />
           {filter === "DENIED" && (
             <Fragment>

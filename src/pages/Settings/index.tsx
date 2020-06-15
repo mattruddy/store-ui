@@ -17,8 +17,17 @@ import { useDispatch, shallowEqual, useSelector } from "react-redux"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { thunkCreateProfile } from "../../redux/User/actions"
 import { validProfileLink } from "../../util"
-import MDEditor from "@uiw/react-md-editor"
+import ReactMde from "react-mde"
+import * as Showdown from "showdown"
+import "react-mde/lib/styles/css/react-mde-all.css"
 import "./styles.css"
+
+const mdConverter = new Showdown.Converter({
+  tables: true,
+  simplifiedAutoLink: true,
+  strikethrough: true,
+  tasklists: true,
+})
 
 const Settings: React.FC = () => {
   const [gitHub, setGitHub] = useState<string>()
@@ -26,6 +35,8 @@ const Settings: React.FC = () => {
   const [twitter, setTwitter] = useState<string>()
   const [showEmail, setShowEmail] = useState<boolean>()
   const [avatar, setAvatar] = useState<File | undefined>(undefined)
+  const [about, setAbout] = useState<string>()
+  const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write")
   const [updateEmail, setUpdateEmail] = useState<string>()
 
   const { email, profile, isLoading, status } = useSelector(
@@ -49,6 +60,7 @@ const Settings: React.FC = () => {
       updateTwitter: string,
       updateShowEmail: boolean,
       updateEmail: string,
+      updateAbout: string,
       updateAvatar: File | undefined
     ) => {
       dispatch(
@@ -58,6 +70,7 @@ const Settings: React.FC = () => {
           updateTwitter,
           updateShowEmail,
           updateEmail,
+          updateAbout,
           updateAvatar
         )
       )
@@ -80,6 +93,7 @@ const Settings: React.FC = () => {
       setLinkedIn(profile.linkedIn)
       setTwitter(profile.twitter)
       setShowEmail(profile.showEmail)
+      setAbout(profile.about)
     }
   }, [email, profile])
 
@@ -91,6 +105,7 @@ const Settings: React.FC = () => {
       twitter!,
       showEmail!,
       updateEmail!,
+      about!,
       avatar
     )
   }
@@ -168,7 +183,15 @@ const Settings: React.FC = () => {
               onIonChange={(e) => setShowEmail(e.detail.checked)}
             />
           </FormItem>
-          <MDEditor />
+          <ReactMde
+            value={about}
+            onChange={setAbout}
+            selectedTab={selectedTab}
+            onTabChange={setSelectedTab}
+            generateMarkdownPreview={(md) =>
+              Promise.resolve(mdConverter.makeHtml(about!))
+            }
+          />
           <IonButton
             disabled={!gitHub && !linkedIn && !twitter}
             fill="outline"
