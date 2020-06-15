@@ -156,6 +156,7 @@ export const thunkCreateProfile = (
     avatar && fd.append("avatar", avatar)
     const resp = await (await AxiosForm(fd)).post(url, fd)
     dispatch(setProfile(resp.data as Profile))
+    dispatch(setData({ email }))
     dispatch(
       setAlert({
         message: "Profile Updated",

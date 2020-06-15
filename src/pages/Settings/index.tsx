@@ -17,6 +17,7 @@ import { useDispatch, shallowEqual, useSelector } from "react-redux"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { thunkCreateProfile } from "../../redux/User/actions"
 import { validProfileLink } from "../../util"
+import "./styles.css"
 
 const Settings: React.FC = () => {
   const [gitHub, setGitHub] = useState<string>()
@@ -83,7 +84,14 @@ const Settings: React.FC = () => {
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    createProfile(gitHub!, linkedIn!, twitter!, showEmail!, email!, avatar)
+    createProfile(
+      gitHub!,
+      linkedIn!,
+      twitter!,
+      showEmail!,
+      updateEmail!,
+      avatar
+    )
   }
 
   return (
@@ -98,18 +106,8 @@ const Settings: React.FC = () => {
         {isLoading && <IonProgressBar type="indeterminate" color="primary" />}
       </IonHeader>
       <IonContent className="content">
-        <div
-          style={{
-            width: "100%",
-            display: "flex",
-            justifyContent: "center",
-            padding: "16px",
-          }}
-        >
-          <img
-            style={{ height: "120px", width: "120px", borderRadius: "6px" }}
-            src={profile?.avatar}
-          />
+        <div className="SettingsAvatarContainer">
+          <img className="SettingsAvatarImg" src={profile?.avatar} />
         </div>
         <form onSubmit={onSubmit}>
           <FormItem name="Avatar" showError={false} errorMessage="">

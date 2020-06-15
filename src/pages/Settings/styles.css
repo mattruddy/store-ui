@@ -1,0 +1,12 @@
+.SettingsAvatarContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 16px;
+}
+
+.SettingsAvatarImg {
+  height: 120px;
+  width: 120px;
+  border-radius: 6px;
+}
