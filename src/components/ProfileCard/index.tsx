@@ -1,5 +1,5 @@
 import React, { memo, Fragment } from "react"
-import { IonButton, IonCard } from "@ionic/react"
+import { IonButton, IonCard, IonRow, IonCol } from "@ionic/react"
 import { Profile } from "../../util/types"
 import {
   logoGithub,
@@ -26,44 +26,48 @@ const ProfileCard: React.FC<ContainerProps> = ({
   const history = useHistory()
 
   return (
-    <IonCard className="ProfileCard">
-      {!isLoading && (
-        <img
-          alt="avatar"
-          className="ProfileCardImg icon line-around"
-          src={profile?.avatar ? profile.avatar : "assets/icon/logo.png"}
-        />
-      )}
-      <LinkItem url={`mailto:${email}`} logo={mailOutline} />
-      {profile?.gitHub && (
-        <LinkItem
-          url={profile.gitHub}
-          logo={logoGithub}
-          className="ion-color-github"
-        />
-      )}
-      {profile?.linkedIn && (
-        <LinkItem
-          url={profile.linkedIn}
-          logo={logoLinkedin}
-          className="ion-color-linkedin"
-        />
-      )}
-      {profile?.twitter && (
-        <LinkItem
-          url={profile.twitter}
-          logo={logoTwitter}
-          className="ion-color-twitter"
-        />
-      )}
-      <IonButton
+    <Fragment>
+      <div className="ProfileCardLeft">
+        {!isLoading && (
+          <img
+            alt="avatar"
+            className="ProfileCardImg icon line-around"
+            src={profile?.avatar ? profile.avatar : "assets/icon/logo.png"}
+          />
+        )}
+        <div className="ProfileCardLinks">
+          <LinkItem url={`mailto:${email}`} logo={mailOutline} />
+          {profile?.gitHub && (
+            <LinkItem
+              url={profile.gitHub}
+              logo={logoGithub}
+              className="ion-color-github"
+            />
+          )}
+          {profile?.linkedIn && (
+            <LinkItem
+              url={profile.linkedIn}
+              logo={logoLinkedin}
+              className="ion-color-linkedin"
+            />
+          )}
+          {profile?.twitter && (
+            <LinkItem
+              url={profile.twitter}
+              logo={logoTwitter}
+              className="ion-color-twitter"
+            />
+          )}
+        </div>
+      </div>
+      {/* <IonButton
         onClick={() => history.push(RouteMap.SETTINGS)}
         color="dark"
         fill="outline"
       >
         Edit Profile
-      </IonButton>
-    </IonCard>
+      </IonButton> */}
+    </Fragment>
   )
 }
 

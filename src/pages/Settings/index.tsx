@@ -17,6 +17,7 @@ import { useDispatch, shallowEqual, useSelector } from "react-redux"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { thunkCreateProfile } from "../../redux/User/actions"
 import { validProfileLink } from "../../util"
+import MDEditor from "@uiw/react-md-editor"
 import "./styles.css"
 
 const Settings: React.FC = () => {
@@ -167,6 +168,7 @@ const Settings: React.FC = () => {
               onIonChange={(e) => setShowEmail(e.detail.checked)}
             />
           </FormItem>
+          <MDEditor />
           <IonButton
             disabled={!gitHub && !linkedIn && !twitter}
             fill="outline"

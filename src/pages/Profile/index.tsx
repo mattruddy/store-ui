@@ -101,7 +101,7 @@ const Profile: React.FC = () => {
     const filteredPwas = pwas && pwas.filter((pwa) => pwa.status === filter)
     return filteredPwas.length > 0 ? (
       filteredPwas.map((pwa, idx) => (
-        <IonCol key={idx} size="6" sizeMd="4" sizeLg="3">
+        <IonCol key={idx} size="3" sizeMd="6" sizeLg="6">
           <PWACard url="/mypwa" pwa={pwa} />
           {filter === "DENIED" && (
             <Fragment>
@@ -123,12 +123,12 @@ const Profile: React.FC = () => {
   const renderAppsSections: JSX.Element = useMemo(
     () =>
       pwas && (
-        <IonCol>
-          <IonTitle>Approved</IonTitle>
+        <IonCol size="12" sizeMd="9">
+          <h2>Approved</h2>
           <IonRow>{filterPwa("APPROVED")}</IonRow>
-          <IonTitle>Pending</IonTitle>
+          <h2>Pending</h2>
           <IonRow>{filterPwa("PENDING")}</IonRow>
-          <IonTitle>Denied</IonTitle>
+          <h2>Denied</h2>
           <IonRow>{filterPwa("DENIED")}</IonRow>
         </IonCol>
       ),
@@ -178,16 +178,16 @@ const Profile: React.FC = () => {
         {isLoading && <IonProgressBar type="indeterminate" color="primary" />}
       </IonHeader>
       <IonContent class="content">
-        <IonRow className="ProfileTopRow bottom-line-border">
-          <IonCol size="12">
+        <IonRow>
+          <IonCol size="12" sizeMd="3">
             <ProfileCard
               profile={profile}
               email={email}
               isLoading={isLoading}
             />
           </IonCol>
+          {renderAppsSections}
         </IonRow>
-        <IonRow>{renderAppsSections}</IonRow>
       </IonContent>
       <IonAlert
         isOpen={showAlert}
