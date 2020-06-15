@@ -123,7 +123,7 @@ const Settings: React.FC = () => {
       </IonHeader>
       <IonContent className="content">
         <div className="SettingsAvatarContainer">
-          <img className="icon" src={profile?.avatar} />
+          <img className="SettingsAvatar icon line-around" src={profile?.avatar} />
         </div>
         <form onSubmit={onSubmit}>
           <FormItem name="Avatar" showError={false} errorMessage="">
