@@ -6,6 +6,7 @@ import {
   IonLabel,
   IonTextarea,
   IonItem,
+  IonRouterLink,
 } from "@ionic/react"
 import { ShareUrl, FormItem } from "../"
 import { PWA } from "../../util/types"
@@ -94,6 +95,14 @@ const PWAInfo: React.FC<ContainerProps> = ({
           FREE <IonIcon style={{ marginLeft: "10px" }} icon={openOutline} />
         </IonButton>
       </div>
+      {!isMyPwa && pwa.username && (
+        <IonRouterLink
+          style={{ margin: "24px" }}
+          routerLink={`/dev/${pwa.username}`}
+        >
+          Developer Info
+        </IonRouterLink>
+      )}
       <div style={{ marginLeft: "10px" }}>
         <StarRatings
           rating={pwa.averageRating}
@@ -101,14 +110,6 @@ const PWAInfo: React.FC<ContainerProps> = ({
           starSpacing="2px"
         />
         <span style={{ marginLeft: "5px" }}>({pwa.ratingsCount})</span>
-      </div>
-      <div>
-        <IonItem
-          type="button"
-          onClick={() => history.push(`/dev/${pwa.username}`)}
-        >
-          Developer Info
-        </IonItem>
       </div>
       <div className="PWAShareContainer">
         <ShareUrl title={pwa.name} />
