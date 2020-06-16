@@ -37,7 +37,7 @@ const ProfileCard: React.FC<ContainerProps> = ({
           src={profile?.avatar ? profile.avatar : "assets/icon/logo.png"}
         />
       )}
-      <div className="ProfileCardLinks">
+      <div className="ProfileCardLinks bottom-line-border">
         <LinkItem url={`mailto:${email}`} logo={mailOutline} />
         {profile?.gitHub && (
           <LinkItem
@@ -50,25 +50,21 @@ const ProfileCard: React.FC<ContainerProps> = ({
           <LinkItem
             url={profile.linkedIn}
             logo={logoLinkedin}
-            className="ion-color-linkedin"
+            color="linkedin"
           />
         )}
         {profile?.twitter && (
-          <LinkItem
-            url={profile.twitter}
-            logo={logoTwitter}
-            className="ion-color-twitter"
-          />
+          <LinkItem url={profile.twitter} logo={logoTwitter} color="twitter" />
         )}
       </div>
       <div style={{ width: "100%" }}>
-        <IonRow className="bottom-line-border">
+        <IonRow className="DataRow bottom-line-border">
           <IonCol className="DataCol">Installs</IonCol>
-          <IonCol className="DataCol">{data.totalInstalls}</IonCol>
+          <IonCol className="DataCol text-color">{data.totalInstalls}</IonCol>
         </IonRow>
-        <IonRow>
+        <IonRow className="DataRow">
           <IonCol className="DataCol">Page Views</IonCol>
-          <IonCol className="DataCol">{data.totalPageViews}</IonCol>
+          <IonCol className="DataCol text-color">{data.totalPageViews}</IonCol>
         </IonRow>
       </div>
     </div>

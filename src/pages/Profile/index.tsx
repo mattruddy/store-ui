@@ -29,10 +29,10 @@ import "./styles.css"
 import Popover from "../../components/Popover"
 import {
   logOut,
-  menu,
   peopleOutline,
   addCircleOutline,
   settingsOutline,
+  ellipsisVertical,
 } from "ionicons/icons"
 import ProfileCard, { TotalAppData } from "../../components/ProfileCard"
 
@@ -157,7 +157,7 @@ const Profile: React.FC = () => {
             <Popover
               showPopover={showPopover}
               setShowPopover={setShowPopover}
-              icon={menu}
+              icon={ellipsisVertical}
               items={[
                 {
                   name: "Add PWA",

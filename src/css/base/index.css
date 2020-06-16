@@ -16,6 +16,10 @@
   font-size: 22px;
 }
 
+.text-color {
+  color: #737373;
+}
+
 .center {
   display: flex;
   justify-content: center;

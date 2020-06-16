@@ -4,17 +4,24 @@
   align-items: center;
 }
 
-.ProfileCardLinks {
-  padding: 16px;
-}
-
 .ProfileCardImg {
   border-radius: 50%;
-  margin: 16px;
+  margin-top: 16px;
+}
+
+.ProfileCardLinks {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.DataRow {
+  height: 80px;
 }
 
 .DataCol {
   display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
 }
