@@ -66,7 +66,7 @@ const ProfileCard: React.FC<ContainerProps> = ({
           <IonCol>
             <p>Total Installs</p>
           </IonCol>
-          <IonCol>
+          <IonCol className="DataRightCol">
             <p>{data.totalInstalls}</p>
           </IonCol>
         </IonRow>
@@ -74,7 +74,7 @@ const ProfileCard: React.FC<ContainerProps> = ({
           <IonCol>
             <p>Total App Page Views</p>
           </IonCol>
-          <IonCol>
+          <IonCol className="DataRightCol">
             <p>{data.totalPageViews}</p>
           </IonCol>
         </IonRow>

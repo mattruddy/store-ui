@@ -131,14 +131,14 @@ const Profile: React.FC = () => {
   const renderAppsSections: JSX.Element = useMemo(
     () =>
       pwas && (
-        <IonCol size="12" sizeMd="9">
+        <Fragment>
           <h2>Approved</h2>
           <IonRow>{filterPwa("APPROVED")}</IonRow>
           <h2>Pending</h2>
           <IonRow>{filterPwa("PENDING")}</IonRow>
           <h2>Denied</h2>
           <IonRow>{filterPwa("DENIED")}</IonRow>
-        </IonCol>
+        </Fragment>
       ),
     [pwas]
   )
@@ -195,7 +195,9 @@ const Profile: React.FC = () => {
               isLoading={isLoading}
             />
           </IonCol>
-          {renderAppsSections}
+          <IonCol size="12" sizeMd="9">
+            {renderAppsSections}
+          </IonCol>
         </IonRow>
       </IonContent>
       <IonAlert

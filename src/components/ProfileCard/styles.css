@@ -12,7 +12,8 @@
   border-radius: 50%;
 }
 
-.center {
-  justify-content: center;
+.DataRightCol {
   display: flex;
+  align-items: center;
+  justify-content: space-around;
 }
