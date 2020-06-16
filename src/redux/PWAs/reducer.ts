@@ -108,7 +108,9 @@ const pwasReducer = (
     case DEV_ADD:
       return {
         ...state,
-        devs: [...state.devs, action.payload],
+        devs: state.devs.some((x) => x.username === action.payload.username)
+          ? state.devs
+          : [...state.devs, action.payload],
       }
 
     case HOME_SET:

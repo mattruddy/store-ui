@@ -43,8 +43,8 @@ const Developer: React.FC = () => {
     ;(async () => {
       if (!notFound) {
         if (!profile && username) {
-          const fetchedPwa = await addDev(username)
-          if (!fetchedPwa) {
+          const fetchedDev = await addDev(username)
+          if (!fetchedDev) {
             setNotFound(true)
           }
         }

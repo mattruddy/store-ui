@@ -123,8 +123,16 @@ const thunkGetPWAs = (
 
 const thunkGetPWAFromName = (
   name: string
-): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
-  dispatch(loadingPWAs)
+): ThunkAction<void, ReduxCombinedState, null, Action> => async (
+  dispatch,
+  getState
+) => {
+  const {
+    pwas: { pwas },
+  } = getState()
+  const pwa = pwas.find((x) => x.name === name)
+  if (pwa) return pwa
+  dispatch(loadingPWAs())
   try {
     const url = `/public/pwa/${name}`
     const axiosInstance = await Axios()
@@ -261,8 +269,14 @@ const thunkGetHomeData = (
 const thunkGetDev = (
   username: string
 ): ThunkAction<void, ReduxCombinedState, null, Action<string>> => async (
-  dispatch
+  dispatch,
+  getState
 ) => {
+  const {
+    pwas: { devs },
+  } = getState()
+  const dev = devs.find((x) => x.username === username)
+  if (dev) return dev
   try {
     dispatch(loadingDev())
     const resp = await (await Axios()).get(`/public/profile/${username}`)
@@ -273,7 +287,7 @@ const thunkGetDev = (
     console.error(e)
     return undefined
   } finally {
-    dispatch(loadingDev())
+    dispatch(completeDev())
   }
 }
 
