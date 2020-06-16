@@ -38,6 +38,7 @@ import { Axios } from "./redux/Actions"
 import { SideBar } from "./components"
 import Search from "./pages/Search"
 import Settings from "./pages/Settings"
+import Developer from "./pages/Developer"
 
 const App: React.FC = () => {
   return <IonicApp />
@@ -144,6 +145,7 @@ const IonicApp: React.FC = () => {
                 <Route path={RouteMap.HOME} component={Home} />
                 <Route path={RouteMap.SEARCH} component={Search} />
                 <Route path={RouteMap.SETTINGS} component={Settings} />
+                <Route path={RouteMap.DEVELOPER} component={Developer} />
                 <Route
                   path={RouteMap.ROOT}
                   render={() => <Redirect to={RouteMap.HOME} />}
