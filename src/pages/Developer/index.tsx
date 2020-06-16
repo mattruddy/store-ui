@@ -1,4 +1,4 @@
-import React, { memo, useMemo, useState } from "react"
+import React, { memo, useMemo, useState, useCallback, useEffect } from "react"
 import {
   IonContent,
   IonHeader,
@@ -10,34 +10,47 @@ import {
   IonCol,
   IonBackButton,
   useIonViewDidEnter,
-  useIonViewDidLeave,
 } from "@ionic/react"
 import { useParams } from "react-router"
 import { PWACard } from "../../components"
 import "./styles.css"
 import ProfileCard from "../../components/ProfileCard"
-import { Axios } from "../../redux/Actions"
-import { PublicProfile } from "../../util/types"
 import { mdConverter } from "../../util"
+import { useSelector, shallowEqual, useDispatch } from "react-redux"
+import { ReduxCombinedState } from "../../redux/RootReducer"
+import { thunkGetDev } from "../../redux/PWAs/actions"
+import ReactGA from "react-ga"
 
 const Developer: React.FC = () => {
-  const [profile, setProfile] = useState<PublicProfile>()
-  const [isLoading, setIsLoading] = useState<boolean>()
   const { username } = useParams()
+  const [notFound, setNotFound] = useState<boolean>(false)
 
-  useIonViewDidEnter(async () => {
-    try {
-      setIsLoading(true)
-      const resp = await (await Axios()).get(`/public/profile/${username}`)
-      setProfile(resp.data as PublicProfile)
-    } finally {
-      setIsLoading(false)
-    }
-  })
+  const { profile, isLoading } = useSelector(
+    ({ pwas: { devs, isDevPending } }: ReduxCombinedState) => ({
+      profile: devs.find((x) => x.username === username),
+      isLoading: isDevPending,
+    }),
+    shallowEqual
+  )
 
-  useIonViewDidLeave(() => {
-    setProfile(undefined)
-  })
+  const dispatch = useDispatch()
+  const addDev = useCallback(
+    async (username: string) => dispatch(thunkGetDev(username)),
+    [dispatch]
+  )
+
+  useEffect(() => {
+    ;(async () => {
+      if (!notFound) {
+        if (!profile && username) {
+          const fetchedPwa = await addDev(username)
+          if (!fetchedPwa) {
+            setNotFound(true)
+          }
+        }
+      }
+    })()
+  }, [notFound, profile, username])
 
   const renderProfileSection = useMemo(
     () =>
@@ -52,6 +65,14 @@ const Developer: React.FC = () => {
       ),
     [profile, isLoading]
   )
+
+  useIonViewDidEnter(() => {
+    if (username) {
+      ReactGA.pageview(username)
+    } else {
+      console.warn("page loaded before param view found.")
+    }
+  }, [])
 
   const renderAboutSection = useMemo(() => {
     return (

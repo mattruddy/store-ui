@@ -13,6 +13,9 @@ import {
   RATINGS_ADD,
   PWAS_DATA,
   RATING_ADD,
+  DEV_ADD,
+  DEV_PENDING,
+  DEV_COMPLETE,
 } from "./types"
 import { AppActionTypes, REDUX_RESET } from "../App/types"
 import { HomePWAs, PWA } from "../../util/types"
@@ -28,6 +31,8 @@ const DEFAULT_STATE_PWAS: PWAsState = {
   search: "",
   home: { topApps: [], newApps: [], discoverApps: [] } as HomePWAs,
   isRatingsPending: false,
+  isDevPending: false,
+  devs: [],
 }
 
 const pwasReducer = (
@@ -39,10 +44,12 @@ const pwasReducer = (
       return { ...state, ...action.payload }
     case PWAS_PENDING:
       return { ...state, isPending: true }
-
     case PWAS_COMPLETE:
       return { ...state, isPending: false }
-
+    case DEV_PENDING:
+      return { ...state, isDevPending: true }
+    case DEV_COMPLETE:
+      return { ...state, isDevPending: false }
     case RATINGS_PENDING:
       return { ...state, isRatingsPending: true }
     case RATINGS_ADD:
@@ -96,6 +103,12 @@ const pwasReducer = (
       return {
         ...state,
         pwas: [...state.pwas, ...action.payload],
+      }
+
+    case DEV_ADD:
+      return {
+        ...state,
+        devs: [...state.devs, action.payload],
       }
 
     case HOME_SET:
