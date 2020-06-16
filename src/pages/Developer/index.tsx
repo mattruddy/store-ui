@@ -39,24 +39,16 @@ const Developer: React.FC = () => {
     setProfile(undefined)
   })
 
-  const renderProfileSection: JSX.Element = useMemo(
+  const renderProfileSection = useMemo(
     () =>
-      profile ? (
-        <>
-          <ProfileCard
-            gitHub={profile.github}
-            linkedIn={profile.linkedIn}
-            twitter={profile.twitter}
-            avatar={profile.avatar}
-            isLoading={isLoading}
-          />
-          <h2>Apps</h2>
-          {profile.apps.map((pwa, idx) => (
-            <PWACard key={idx} pwa={pwa} url="/pwa" />
-          ))}
-        </>
-      ) : (
-        <></>
+      profile && (
+        <ProfileCard
+          gitHub={profile.github}
+          linkedIn={profile.linkedIn}
+          twitter={profile.twitter}
+          avatar={profile.avatar}
+          isLoading={isLoading}
+        />
       ),
     [profile, isLoading]
   )
@@ -64,12 +56,20 @@ const Developer: React.FC = () => {
   const renderAboutSection = useMemo(() => {
     return (
       <p
+        style={{ margin: "0", padding: "16px" }}
         dangerouslySetInnerHTML={{
           __html: mdConverter.makeHtml(profile?.about!),
         }}
       />
     )
   }, [profile?.about])
+
+  const renderAppsSection = useMemo(() => {
+    return (
+      profile &&
+      profile.apps.map((pwa, idx) => <PWACard key={idx} pwa={pwa} url="/pwa" />)
+    )
+  }, [profile?.apps])
 
   return (
     <IonPage>
@@ -85,13 +85,14 @@ const Developer: React.FC = () => {
       </IonHeader>
       <IonContent class="content">
         <IonRow>
-          <IonCol size="12" sizeMd="3">
-            <IonRow>
-              <IonCol>{renderProfileSection}</IonCol>
-            </IonRow>
+          <IonCol className="ProfileCardCol" size="12" sizeMd="3">
+            {renderProfileSection}
           </IonCol>
-          <IonCol size="12" sizeMd="9">
+          <IonCol className="bottom-line-border" size="12" sizeMd="9">
             {renderAboutSection}
+          </IonCol>
+          <IonCol className="ProfileCardCol" size="12" sizeMd="3">
+            {renderAppsSection}
           </IonCol>
         </IonRow>
       </IonContent>

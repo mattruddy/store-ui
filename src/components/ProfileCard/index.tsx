@@ -34,7 +34,7 @@ const ProfileCard: React.FC<ContainerProps> = ({
   data,
 }) => {
   return (
-    <div className="ProfileCard bottom-line-border">
+    <div className="ProfileCard">
       {!isLoading && (
         <img
           alt="avatar"
@@ -64,7 +64,7 @@ const ProfileCard: React.FC<ContainerProps> = ({
             <IonCol className="DataCol">Installs</IonCol>
             <IonCol className="DataCol text-color">{data.totalInstalls}</IonCol>
           </IonRow>
-          <IonRow className="DataRow">
+          <IonRow className="DataRow bottom-line-border">
             <IonCol className="DataCol">Page Views</IonCol>
             <IonCol className="DataCol text-color">
               {data.totalPageViews}
