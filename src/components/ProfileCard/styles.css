@@ -10,10 +10,11 @@
 
 .ProfileCardImg {
   border-radius: 50%;
+  margin: 16px;
 }
 
-.DataRightCol {
+.DataCol {
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
 }

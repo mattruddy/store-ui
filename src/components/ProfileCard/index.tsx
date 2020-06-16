@@ -61,22 +61,14 @@ const ProfileCard: React.FC<ContainerProps> = ({
           />
         )}
       </div>
-      <div>
+      <div style={{ width: "100%" }}>
         <IonRow className="bottom-line-border">
-          <IonCol>
-            <p>Total Installs</p>
-          </IonCol>
-          <IonCol className="DataRightCol">
-            <p>{data.totalInstalls}</p>
-          </IonCol>
+          <IonCol className="DataCol">Installs</IonCol>
+          <IonCol className="DataCol">{data.totalInstalls}</IonCol>
         </IonRow>
         <IonRow>
-          <IonCol>
-            <p>Total App Page Views</p>
-          </IonCol>
-          <IonCol className="DataRightCol">
-            <p>{data.totalPageViews}</p>
-          </IonCol>
+          <IonCol className="DataCol">Page Views</IonCol>
+          <IonCol className="DataCol">{data.totalPageViews}</IonCol>
         </IonRow>
       </div>
     </div>

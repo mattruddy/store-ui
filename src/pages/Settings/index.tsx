@@ -123,7 +123,10 @@ const Settings: React.FC = () => {
       </IonHeader>
       <IonContent className="content">
         <div className="SettingsAvatarContainer">
-          <img className="SettingsAvatar icon line-around" src={profile?.avatar} />
+          <img
+            className="SettingsAvatar icon line-around"
+            src={profile?.avatar}
+          />
         </div>
         <form onSubmit={onSubmit}>
           <FormItem name="Avatar" showError={false} errorMessage="">
@@ -183,19 +186,23 @@ const Settings: React.FC = () => {
               onIonChange={(e) => setShowEmail(e.detail.checked)}
             />
           </FormItem>
-          <ReactMde
-            value={about}
-            onChange={setAbout}
-            selectedTab={selectedTab}
-            onTabChange={setSelectedTab}
-            generateMarkdownPreview={(md) =>
-              Promise.resolve(mdConverter.makeHtml(about!))
-            }
-          />
+          <div style={{ padding: "8px" }}>
+            <ReactMde
+              value={about}
+              onChange={setAbout}
+              selectedTab={selectedTab}
+              onTabChange={setSelectedTab}
+              generateMarkdownPreview={(md) =>
+                Promise.resolve(mdConverter.makeHtml(about!))
+              }
+            />
+          </div>
           <IonButton
             disabled={!gitHub && !linkedIn && !twitter}
+            expand="block"
             fill="outline"
             type="submit"
+            color="dark"
           >
             Update
           </IonButton>

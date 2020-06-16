@@ -113,10 +113,10 @@ const Profile: React.FC = () => {
           <PWACard url="/mypwa" pwa={pwa} />
           {filter === "DENIED" && (
             <Fragment>
-              <span style={{ paddingLeft: "15px" }}>
+              <span>
                 <strong>Reason</strong>
               </span>
-              <p style={{ padding: "15px" }}>{pwa.reason}</p>
+              <p>{pwa.reason}</p>
             </Fragment>
           )}
         </IonCol>
@@ -132,11 +132,11 @@ const Profile: React.FC = () => {
     () =>
       pwas && (
         <Fragment>
-          <h2>Approved</h2>
+          <h2 style={{ marginLeft: "32px" }}>Approved</h2>
           <IonRow>{filterPwa("APPROVED")}</IonRow>
-          <h2>Pending</h2>
+          <h2 style={{ marginLeft: "32px" }}>Pending</h2>
           <IonRow>{filterPwa("PENDING")}</IonRow>
-          <h2>Denied</h2>
+          <h2 style={{ marginLeft: "32px" }}>Denied</h2>
           <IonRow>{filterPwa("DENIED")}</IonRow>
         </Fragment>
       ),
