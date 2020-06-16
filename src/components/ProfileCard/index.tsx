@@ -8,9 +8,16 @@ import {
 } from "ionicons/icons"
 import LinkItem from "./LinkItem"
 import "./styles.css"
+import { IonRow, IonCol, IonLabel } from "@ionic/react"
+
+export interface TotalAppData {
+  totalInstalls: number
+  totalPageViews: number
+}
 
 interface ContainerProps {
   profile: Profile | undefined
+  data: TotalAppData
   email: string | undefined
   isLoading: boolean
 }
@@ -19,6 +26,7 @@ const ProfileCard: React.FC<ContainerProps> = ({
   profile,
   email,
   isLoading,
+  data,
 }) => {
   return (
     <div className="ProfileCard bottom-line-border">
@@ -52,6 +60,24 @@ const ProfileCard: React.FC<ContainerProps> = ({
             className="ion-color-twitter"
           />
         )}
+      </div>
+      <div>
+        <IonRow className="bottom-line-border">
+          <IonCol>
+            <p>Total Installs</p>
+          </IonCol>
+          <IonCol>
+            <p>{data.totalInstalls}</p>
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            <p>Total App Page Views</p>
+          </IonCol>
+          <IonCol>
+            <p>{data.totalPageViews}</p>
+          </IonCol>
+        </IonRow>
       </div>
     </div>
   )

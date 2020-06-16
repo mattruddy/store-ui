@@ -11,3 +11,8 @@
 .ProfileCardImg {
   border-radius: 50%;
 }
+
+.center {
+  justify-content: center;
+  display: flex;
+}

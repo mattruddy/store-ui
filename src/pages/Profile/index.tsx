@@ -34,7 +34,7 @@ import {
   addCircleOutline,
   settingsOutline,
 } from "ionicons/icons"
-import ProfileCard from "../../components/ProfileCard"
+import ProfileCard, { TotalAppData } from "../../components/ProfileCard"
 
 const Profile: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false)
@@ -50,6 +50,7 @@ const Profile: React.FC = () => {
     status,
     profile,
     email,
+    totalData,
   } = useSelector(
     ({
       user: { pwas, username, loading, isLoggedIn, profile, email },
@@ -62,6 +63,13 @@ const Profile: React.FC = () => {
       status: status,
       profile: profile,
       email: email,
+      totalData: pwas.reduce<TotalAppData>(
+        (tot, currentPwa) => ({
+          totalInstalls: tot.totalInstalls + currentPwa.installs,
+          totalPageViews: tot.totalPageViews + currentPwa.pageViews,
+        }),
+        { totalInstalls: 0, totalPageViews: 0 }
+      ),
     }),
     shallowEqual
   )
@@ -181,6 +189,7 @@ const Profile: React.FC = () => {
         <IonRow>
           <IonCol className="ProfileCardCol" size="12" sizeMd="3">
             <ProfileCard
+              data={totalData}
               profile={profile}
               email={email}
               isLoading={isLoading}

@@ -37,6 +37,8 @@ export interface PWA {
   averageRating: number
   ratingsCount: number
   tags: string[]
+  pageViews: number
+  installs: number
 }
 
 export interface UserProfile {
