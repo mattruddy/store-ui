@@ -88,7 +88,7 @@ const Developer: React.FC = () => {
           <IonCol className="ProfileCardCol" size="12" sizeMd="3">
             {renderProfileSection}
           </IonCol>
-          <IonCol className="bottom-line-border" size="12" sizeMd="9">
+          <IonCol size="12" sizeMd="9">
             {renderAboutSection}
           </IonCol>
           <IonCol className="ProfileCardCol" size="12" sizeMd="3">
