@@ -1,6 +1,7 @@
 import loadImage from "blueimp-load-image"
 import moment from "moment"
 import ReactGA from "react-ga"
+import Showdown from "showdown"
 
 const blobToFile = (blob: Blob, fileName: string): File => {
   const b: any = blob
@@ -152,6 +153,13 @@ const validProfileLink = (link: string, site: string): boolean => {
   return link.toLowerCase().startsWith(`https://${site.toLowerCase()}.com/`)
 }
 
+const mdConverter = new Showdown.Converter({
+  tables: true,
+  simplifiedAutoLink: true,
+  strikethrough: true,
+  tasklists: true,
+})
+
 export {
   blobToFile,
   fixFilesRotation,
@@ -168,4 +176,5 @@ export {
   validAppUpload,
   normalizeCategory,
   validProfileLink,
+  mdConverter,
 }

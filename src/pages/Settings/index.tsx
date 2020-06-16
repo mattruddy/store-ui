@@ -16,18 +16,10 @@ import ImageUploader from "react-images-upload"
 import { useDispatch, shallowEqual, useSelector } from "react-redux"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { thunkCreateProfile } from "../../redux/User/actions"
-import { validProfileLink } from "../../util"
+import { validProfileLink, mdConverter } from "../../util"
 import ReactMde from "react-mde"
-import * as Showdown from "showdown"
 import "react-mde/lib/styles/css/react-mde-all.css"
 import "./styles.css"
-
-const mdConverter = new Showdown.Converter({
-  tables: true,
-  simplifiedAutoLink: true,
-  strikethrough: true,
-  tasklists: true,
-})
 
 const Settings: React.FC = () => {
   const [gitHub, setGitHub] = useState<string>()

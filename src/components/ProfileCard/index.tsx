@@ -1,5 +1,4 @@
-import React, { memo, Fragment } from "react"
-import { Profile } from "../../util/types"
+import React, { memo } from "react"
 import {
   logoGithub,
   logoLinkedin,
@@ -8,7 +7,7 @@ import {
 } from "ionicons/icons"
 import LinkItem from "./LinkItem"
 import "./styles.css"
-import { IonRow, IonCol, IonLabel } from "@ionic/react"
+import { IonRow, IonCol } from "@ionic/react"
 
 export interface TotalAppData {
   totalInstalls: number
@@ -16,14 +15,20 @@ export interface TotalAppData {
 }
 
 interface ContainerProps {
-  profile: Profile | undefined
-  data: TotalAppData
-  email: string | undefined
-  isLoading: boolean
+  avatar?: string
+  gitHub?: string
+  twitter?: string
+  linkedIn?: string
+  data?: TotalAppData
+  email?: string | undefined
+  isLoading?: boolean
 }
 
 const ProfileCard: React.FC<ContainerProps> = ({
-  profile,
+  avatar,
+  twitter,
+  gitHub,
+  linkedIn,
   email,
   isLoading,
   data,
@@ -34,39 +39,39 @@ const ProfileCard: React.FC<ContainerProps> = ({
         <img
           alt="avatar"
           className="ProfileCardImg icon line-around"
-          src={profile?.avatar ? profile.avatar : "assets/icon/logo.png"}
+          src={avatar ? avatar : "assets/icon/logo.png"}
         />
       )}
       <div className="ProfileCardLinks bottom-line-border">
-        <LinkItem url={`mailto:${email}`} logo={mailOutline} />
-        {profile?.gitHub && (
+        {email && <LinkItem url={`mailto:${email}`} logo={mailOutline} />}
+        {gitHub && (
           <LinkItem
-            url={profile.gitHub}
+            url={gitHub}
             logo={logoGithub}
             className="ion-color-github"
           />
         )}
-        {profile?.linkedIn && (
-          <LinkItem
-            url={profile.linkedIn}
-            logo={logoLinkedin}
-            color="linkedin"
-          />
+        {linkedIn && (
+          <LinkItem url={linkedIn} logo={logoLinkedin} color="linkedin" />
         )}
-        {profile?.twitter && (
-          <LinkItem url={profile.twitter} logo={logoTwitter} color="twitter" />
+        {twitter && (
+          <LinkItem url={twitter} logo={logoTwitter} color="twitter" />
         )}
       </div>
-      <div style={{ width: "100%" }}>
-        <IonRow className="DataRow bottom-line-border">
-          <IonCol className="DataCol">Installs</IonCol>
-          <IonCol className="DataCol text-color">{data.totalInstalls}</IonCol>
-        </IonRow>
-        <IonRow className="DataRow">
-          <IonCol className="DataCol">Page Views</IonCol>
-          <IonCol className="DataCol text-color">{data.totalPageViews}</IonCol>
-        </IonRow>
-      </div>
+      {data && (
+        <div style={{ width: "100%" }}>
+          <IonRow className="DataRow bottom-line-border">
+            <IonCol className="DataCol">Installs</IonCol>
+            <IonCol className="DataCol text-color">{data.totalInstalls}</IonCol>
+          </IonRow>
+          <IonRow className="DataRow">
+            <IonCol className="DataCol">Page Views</IonCol>
+            <IonCol className="DataCol text-color">
+              {data.totalPageViews}
+            </IonCol>
+          </IonRow>
+        </div>
+      )}
     </div>
   )
 }

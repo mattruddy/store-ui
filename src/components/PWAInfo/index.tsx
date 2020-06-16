@@ -5,6 +5,7 @@ import {
   IonChip,
   IonLabel,
   IonTextarea,
+  IonItem,
 } from "@ionic/react"
 import { ShareUrl, FormItem } from "../"
 import { PWA } from "../../util/types"
@@ -18,6 +19,7 @@ import CategoryOptions from "../CategoryOptions"
 import ReactTagInput from "@pathofdev/react-tag-input"
 import "./styles.css"
 import { noSpecialChars } from "../../util"
+import { useHistory } from "react-router"
 
 interface ContainerProps {
   pwa: PWA
@@ -46,6 +48,8 @@ const PWAInfo: React.FC<ContainerProps> = ({
   setDesc,
   setTags,
 }) => {
+  const history = useHistory()
+
   const onInstall = () => {
     if (!isMyPwa) {
       ;(async () => await (await Axios()).post(`public/pwa/${pwa.appId}`))()
@@ -98,7 +102,14 @@ const PWAInfo: React.FC<ContainerProps> = ({
         />
         <span style={{ marginLeft: "5px" }}>({pwa.ratingsCount})</span>
       </div>
-
+      <div>
+        <IonItem
+          type="button"
+          onClick={() => history.push(`/dev/${pwa.username}`)}
+        >
+          Developer Info
+        </IonItem>
+      </div>
       <div className="PWAShareContainer">
         <ShareUrl title={pwa.name} />
       </div>

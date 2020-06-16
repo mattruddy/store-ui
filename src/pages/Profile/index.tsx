@@ -190,7 +190,10 @@ const Profile: React.FC = () => {
           <IonCol className="ProfileCardCol" size="12" sizeMd="3">
             <ProfileCard
               data={totalData}
-              profile={profile}
+              avatar={profile?.avatar}
+              gitHub={profile?.gitHub}
+              twitter={profile?.twitter}
+              linkedIn={profile?.linkedIn}
               email={email}
               isLoading={isLoading}
             />

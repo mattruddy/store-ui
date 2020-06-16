@@ -39,6 +39,7 @@ export interface PWA {
   tags: string[]
   pageViews: number
   installs: number
+  username: string
 }
 
 export interface UserProfile {
@@ -72,6 +73,17 @@ export interface Profile {
   avatar: string
   about: string
   showEmail: boolean
+}
+
+export interface PublicProfile {
+  about: string
+  apps: PWA[]
+  avatar: string
+  email: string
+  github: string
+  linkedIn: string
+  twitter: string
+  username: string
 }
 
 export interface AxiosCustomRequestConfig extends AxiosRequestConfig {
