@@ -55,10 +55,6 @@ const IonicApp: React.FC = () => {
     dispatch,
   ])
   const clearAlert = useCallback(() => dispatch(clearAlerts()), [dispatch])
-  const setDarkMode = useCallback(
-    (prefersDarkMode: boolean) => dispatch(thunkSetDarkMode(prefersDarkMode)),
-    [dispatch]
-  )
 
   const setDarkMode = useCallback(
     (prefersDarkMode: boolean) => dispatch(thunkSetDarkMode(prefersDarkMode)),
