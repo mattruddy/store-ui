@@ -15,11 +15,14 @@ import { useDispatch, useSelector, shallowEqual } from "react-redux"
 import { thunkAddPWA } from "../../redux/User/actions"
 import SumbitAppForm from "../../components/SumbitAppForm"
 import { ReduxCombinedState } from "../../redux/RootReducer"
+import { useHistory } from "react-router"
 
 const AddPWA: React.FC = () => {
-  const { isLoading } = useSelector(
-    ({ user: { loading } }: ReduxCombinedState) => ({
+  const history = useHistory()
+  const { isLoading, isLoggedIn } = useSelector(
+    ({ user: { loading, isLoggedIn } }: ReduxCombinedState) => ({
       isLoading: loading,
+      isLoggedIn,
     }),
     shallowEqual
   )
@@ -41,6 +44,12 @@ const AddPWA: React.FC = () => {
     },
     [dispatch]
   )
+
+  useEffect(() => {
+    if (!isLoading && !isLoggedIn) {
+      history.push(RouteMap.LOGIN)
+    }
+  }, [isLoading, isLoggedIn])
 
   return (
     <IonPage>
