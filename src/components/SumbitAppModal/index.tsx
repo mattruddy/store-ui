@@ -20,8 +20,9 @@ import ImageUploader from "react-images-upload"
 import CategoryOptions from "../CategoryOptions"
 import { useLighthouse } from "../../hooks/useLightHouse"
 import { Lighthouse } from ".."
-import { noSpecialChars, validAppUpload } from "../../util"
+import { noSpecialChars, validAppUpload, mdConverter } from "../../util"
 import "@pathofdev/react-tag-input/build/index.css"
+import ReactMde from "react-mde"
 
 interface ContainerProps {
   isOpen: boolean
@@ -50,6 +51,7 @@ const SubmitAppModal: React.FC<ContainerProps> = ({
   const [screenshots, setScreenshots] = useState<File[]>()
   const [tags, setTags] = useState<string[]>([])
   const [testLoading, lightHouseTests, setTargetUrl] = useLighthouse()
+  const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write")
 
   const addApp = (e: FormEvent) => {
     e.preventDefault()
@@ -134,17 +136,20 @@ const SubmitAppModal: React.FC<ContainerProps> = ({
             />
             <FormItem
               name="Description"
-              showError={false}
-              errorMessage="Description is required"
+              showError={desc.length > 1500}
+              errorMessage="Description cannot be more than 1500 characters"
             >
-              <IonTextarea
-                name="desc"
-                rows={6}
-                spellCheck={true}
-                value={desc}
-                maxlength={1500}
-                onIonChange={(e) => setDesc(e.detail.value!)}
-              />
+              <div style={{ width: "100%", paddingTop: "16px" }}>
+                <ReactMde
+                  value={desc}
+                  onChange={setDesc}
+                  selectedTab={selectedTab}
+                  onTabChange={setSelectedTab}
+                  generateMarkdownPreview={(md) =>
+                    Promise.resolve(mdConverter.makeHtml(desc))
+                  }
+                />
+              </div>
             </FormItem>
             <FormItem
               name="Category"
@@ -155,8 +160,11 @@ const SubmitAppModal: React.FC<ContainerProps> = ({
             </FormItem>
             <FormItem
               name="Screenshots"
-              showError={false}
-              errorMessage="Screenshots are required"
+              showError={
+                screenshots !== undefined &&
+                (screenshots.length < 0 || screenshots.length > 6)
+              }
+              errorMessage="1 to 6 screenshots allowed"
             >
               <ImageUploader
                 fileContainerStyle={{

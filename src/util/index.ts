@@ -132,6 +132,7 @@ const validAppUpload = (
     icon &&
     /^((https))/.test(url) &&
     description &&
+    description.length <= 1500 &&
     category &&
     screenshots &&
     screenshots.length <= 6

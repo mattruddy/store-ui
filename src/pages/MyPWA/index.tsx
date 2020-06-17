@@ -123,7 +123,8 @@ const MyPWA: React.FC = () => {
         removedImagesIds.length < 1) ||
       !name ||
       !desc ||
-      !cat
+      !cat ||
+      desc.length > 1500
     )
   }
 

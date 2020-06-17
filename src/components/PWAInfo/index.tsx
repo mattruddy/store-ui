@@ -1,10 +1,9 @@
-import React, { memo } from "react"
+import React, { memo, useState } from "react"
 import {
   IonButton,
   IonIcon,
   IonChip,
   IonLabel,
-  IonTextarea,
   IonRouterLink,
 } from "@ionic/react"
 import { ShareUrl, FormItem } from "../"
@@ -18,8 +17,8 @@ import { Axios } from "../../redux/Actions"
 import CategoryOptions from "../CategoryOptions"
 import ReactTagInput from "@pathofdev/react-tag-input"
 import "./styles.css"
-import { noSpecialChars } from "../../util"
-import { useHistory } from "react-router"
+import { noSpecialChars, mdConverter } from "../../util"
+import ReactMde from "react-mde"
 
 interface ContainerProps {
   pwa: PWA
@@ -48,7 +47,7 @@ const PWAInfo: React.FC<ContainerProps> = ({
   setDesc,
   setTags,
 }) => {
-  const history = useHistory()
+  const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write")
 
   const onInstall = () => {
     if (!isMyPwa) {
@@ -146,25 +145,28 @@ const PWAInfo: React.FC<ContainerProps> = ({
       {isEdit ? (
         <FormItem
           name="Description"
-          showError={desc === ""}
-          errorMessage="Description is required"
+          showError={!desc || desc.length > 1500}
+          errorMessage="Description is required and max length is 1500 characters"
         >
-          <IonTextarea
-            style={{ margin: "10px" }}
-            rows={10}
-            value={desc}
-            onIonChange={(e) => {
-              setDesc!(e.detail.value!)
-            }}
-          />
+          <div style={{ width: "100%", paddingTop: "16px" }}>
+            <ReactMde
+              value={desc}
+              onChange={setDesc}
+              selectedTab={selectedTab}
+              onTabChange={setSelectedTab}
+              generateMarkdownPreview={(md) =>
+                Promise.resolve(mdConverter.makeHtml(desc!))
+              }            />
+          </div>
         </FormItem>
       ) : (
         <div
           className="bottom-line-border"
           style={{ padding: "16px", minHeight: "200px" }}
-        >
-          {pwa.description}
-        </div>
+          dangerouslySetInnerHTML={{
+            __html: mdConverter.makeHtml(pwa.description),
+          }}
+        />
       )}
     </>
   )
