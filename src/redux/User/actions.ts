@@ -250,11 +250,13 @@ export const thunkLogout = (): ThunkAction<
   dispatch(setLoading(true))
   dispatch(
     setData({
+      profile: undefined,
       token: "",
       email: "",
       username: "",
       isLoggedIn: false,
       pwas: [],
+      id: -1,
     })
   )
   await setEmailStorage("")
