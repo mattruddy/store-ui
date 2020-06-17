@@ -54,9 +54,11 @@ const Developer: React.FC = () => {
     () =>
       profile && (
         <ProfileCard
-          gitHub={profile.github}
+          isMyProfile={false}
+          gitHub={profile.gitHub}
           linkedIn={profile.linkedIn}
           twitter={profile.twitter}
+          email={profile.email}
           avatar={profile.avatar}
           isLoading={isLoading}
           pwas={profile.apps}
@@ -73,7 +75,7 @@ const Developer: React.FC = () => {
   const renderAboutSection = useMemo(() => {
     return (
       <p
-        style={{ margin: "0", padding: "16px" }}
+        style={{ margin: "0", padding: "24px" }}
         dangerouslySetInnerHTML={{
           __html: mdConverter.makeHtml(profile?.about!),
         }}

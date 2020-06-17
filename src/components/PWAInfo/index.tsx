@@ -99,7 +99,7 @@ const PWAInfo: React.FC<ContainerProps> = ({
           FREE <IonIcon style={{ marginLeft: "10px" }} icon={openOutline} />
         </IonButton>
       </div>
-      {!isMyPwa && pwa.username && (
+      {pwa.username && (
         <div style={{ marginLeft: "8px", marginBottom: "10px" }}>
           <IonRouterLink routerLink={`/dev/${pwa.username}`}>
             Developer Info

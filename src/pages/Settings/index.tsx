@@ -178,19 +178,26 @@ const Settings: React.FC = () => {
               onIonChange={(e) => setShowEmail(e.detail.checked)}
             />
           </FormItem>
-          <div style={{ padding: "8px" }}>
-            <ReactMde
-              value={about}
-              onChange={setAbout}
-              selectedTab={selectedTab}
-              onTabChange={setSelectedTab}
-              generateMarkdownPreview={(md) =>
-                Promise.resolve(mdConverter.makeHtml(about!))
-              }
-            />
-          </div>
+          <FormItem
+            name="This is your section to add what ever you want in markdown"
+            showError={about?.trim() === ""}
+            errorMessage="About section is required"
+          >
+            <div style={{ width: "100%", paddingTop: "16px" }}>
+              <ReactMde
+                value={about}
+                onChange={setAbout}
+                selectedTab={selectedTab}
+                onTabChange={setSelectedTab}
+                generateMarkdownPreview={(md) =>
+                  Promise.resolve(mdConverter.makeHtml(about!))
+                }
+              />
+            </div>
+          </FormItem>
           <IonButton
-            disabled={!gitHub && !linkedIn && !twitter}
+            style={{ margin: "16px" }}
+            disabled={about?.trim() === ""}
             expand="block"
             fill="outline"
             type="submit"
