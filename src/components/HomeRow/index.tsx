@@ -7,11 +7,11 @@ import "./styles.css"
 
 interface ContainerProps {
   pwas: PWA[]
-  linkTo: string
+  linkTo?: string
   isLoading: boolean
-  title: string
-  subtitle: string
-  onPressCallback: (value: string) => void
+  title?: string
+  subtitle?: string
+  onPressCallback?: (value: string) => void
 }
 
 const HomeRow: React.FC<ContainerProps> = ({
@@ -25,14 +25,18 @@ const HomeRow: React.FC<ContainerProps> = ({
     <Fragment>
       <div className="HomeRowHeader">
         <h1 className="HomeRowHeaderTitle">{title}</h1>
-        <IonButton
-          className="HomeViewMoreButton"
-          onClick={() => onPressCallback(linkTo)}
-        >
-          <IonIcon color="dark" icon={arrowForward} />
-        </IonButton>
+        {linkTo && onPressCallback && (
+          <IonButton
+            className="HomeViewMoreButton"
+            onClick={() => onPressCallback(linkTo)}
+          >
+            <IonIcon color="dark" icon={arrowForward} />
+          </IonButton>
+        )}
       </div>
-      <IonNote className="HomeRowHeaderSubTitle">{subtitle}</IonNote>
+      {subtitle && (
+        <IonNote className="HomeRowHeaderSubTitle">{subtitle}</IonNote>
+      )}
       <IonRow className="HomeRow bottom-line-border">
         {pwas.map((topApp, i) => (
           <IonCol key={i} size="6" sizeMd="4" sizeLg="3">

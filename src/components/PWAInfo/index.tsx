@@ -100,12 +100,11 @@ const PWAInfo: React.FC<ContainerProps> = ({
         </IonRouterLink>
       </div>
       {!isMyPwa && pwa.username && (
-        <IonRouterLink
-          style={{ margin: "24px" }}
-          routerLink={`/dev/${pwa.username}`}
-        >
-          Developer Info
-        </IonRouterLink>
+        <div style={{ marginLeft: "8px", marginBottom: "10px" }}>
+          <IonRouterLink routerLink={`/dev/${pwa.username}`}>
+            Developer Info
+          </IonRouterLink>
+        </div>
       )}
       <div style={{ marginLeft: "10px" }}>
         <StarRatings

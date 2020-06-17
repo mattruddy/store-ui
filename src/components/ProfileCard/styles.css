@@ -8,13 +8,16 @@
   display: flex;
 }
 
-.ProfileCardLeftRight {
-  display: flex;
-  justify-content: space-between;
-  flex-direction: column;
+.ProfileAppsRow {
+  overflow-x: scroll;
+  overflow-y: hidden;
+  white-space: nowrap;
 }
 
-.ProfileCardLinks {
+.ProfileCardLeftRight {
+  display: flex;
+  justify-content: space-ar;
+  flex-direction: column;
 }
 
 .ProfileCardImg {
@@ -29,7 +32,9 @@
 }
 
 .DataRow {
-  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .DataCol {
@@ -37,4 +42,29 @@
   align-items: center;
   justify-content: center;
   text-align: center;
+}
+
+.DataRowLeft {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.13);
+}
+
+.DataLeftCol {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media screen and (max-width: 992px) {
+  .ProfileCardLeftCol {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.13);
+  }
+
+  .DataRowLeft {
+    border-right: 1px solid rgba(0, 0, 0, 0.13);
+    border-bottom: none;
+  }
+
+  .DataLeftCol {
+    display: inline;
+  }
 }

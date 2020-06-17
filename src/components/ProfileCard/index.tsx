@@ -7,7 +7,8 @@ import {
 } from "ionicons/icons"
 import LinkItem from "./LinkItem"
 import "./styles.css"
-import { IonRow, IonCol, IonHeader } from "@ionic/react"
+import { IonRow, IonCol, IonHeader, IonRouterLink } from "@ionic/react"
+import { PWA } from "../../util/types"
 
 export interface TotalAppData {
   totalInstalls: number
@@ -20,6 +21,7 @@ interface ContainerProps {
   twitter?: string
   linkedIn?: string
   data?: TotalAppData
+  pwas?: PWA[]
   email?: string | undefined
   username?: string
   isLoading?: boolean
@@ -34,10 +36,15 @@ const ProfileCard: React.FC<ContainerProps> = ({
   username,
   isLoading,
   data,
+  pwas,
 }) => {
   return (
     <IonRow className="bottom-line-border">
-      <IonCol className="bottom-line-border" size="12" sizeLg="8">
+      <IonCol
+        className="ProfileCardLeftCol"
+        size="12"
+        sizeLg={data ? "8" : "12"}
+      >
         <div className="ProfileCardLeft">
           {!isLoading && (
             <img
@@ -47,7 +54,7 @@ const ProfileCard: React.FC<ContainerProps> = ({
             />
           )}
           <div className="ProfileCardLeftRight">
-            <h1>{username}</h1>
+            <h1 style={{ paddingLeft: "8px" }}>{username}</h1>
             <div className="ProfileCardLinks">
               {email && <LinkItem url={`mailto:${email}`} logo={mailOutline} />}
               {gitHub && (
@@ -70,10 +77,10 @@ const ProfileCard: React.FC<ContainerProps> = ({
 
       {data && (
         <>
-          <IonCol size="12" sizeLg="4">
+          <IonCol className="DataLeftCol" size="12" sizeLg="4">
             <IonRow>
-              <IonCol size="6" sizeLg="12">
-                <IonRow className="DataRow right-line-border">
+              <IonCol className="DataRowLeft" size="6" sizeLg="12">
+                <IonRow className="DataRow">
                   <IonCol className="DataCol">Installs</IonCol>
                   <IonCol className="DataCol text-color">
                     {data.totalInstalls}
@@ -91,6 +98,23 @@ const ProfileCard: React.FC<ContainerProps> = ({
             </IonRow>
           </IonCol>
         </>
+      )}
+      {pwas && (
+        <div className="ProfileAppsRow">
+          {pwas.map((pwa, idx) => (
+            <IonRouterLink
+              style={{ padding: "8px" }}
+              routerLink={`/pwa/${pwa.name.replace(/ /g, "-")}`}
+            >
+              <img
+                style={{ padding: "8px" }}
+                src={pwa.icon}
+                height="50"
+                width="50"
+              />
+            </IonRouterLink>
+          ))}
+        </div>
       )}
     </IonRow>
   )

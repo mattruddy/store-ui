@@ -12,7 +12,7 @@ import {
   useIonViewDidEnter,
 } from "@ionic/react"
 import { useParams } from "react-router"
-import { PWACard } from "../../components"
+import { PWACard, HomeRow } from "../../components"
 import "./styles.css"
 import ProfileCard from "../../components/ProfileCard"
 import { mdConverter } from "../../util"
@@ -61,6 +61,8 @@ const Developer: React.FC = () => {
           twitter={profile.twitter}
           avatar={profile.avatar}
           isLoading={isLoading}
+          pwas={profile.apps}
+          username={profile.username}
         />
       ),
     [profile, isLoading]
@@ -85,13 +87,6 @@ const Developer: React.FC = () => {
     )
   }, [profile?.about])
 
-  const renderAppsSection = useMemo(() => {
-    return (
-      profile &&
-      profile.apps.map((pwa, idx) => <PWACard key={idx} pwa={pwa} url="/pwa" />)
-    )
-  }, [profile?.apps])
-
   return (
     <IonPage>
       <IonHeader className="ion-no-border bottom-line-border">
@@ -99,22 +94,13 @@ const Developer: React.FC = () => {
           <IonButtons slot="start">
             <IonBackButton defaultHref="/home" />
           </IonButtons>
-          <IonTitle>
-            <h1 style={{ fontSize: "20px", margin: "0" }}>{username}</h1>
-          </IonTitle>
+          <IonTitle>Developer</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent class="content">
         <IonRow>
-          <IonCol className="ProfileCardCol" size="12" sizeMd="3">
-            {renderProfileSection}
-          </IonCol>
-          <IonCol size="12" sizeMd="9">
-            {renderAboutSection}
-          </IonCol>
-          <IonCol className="ProfileCardCol" size="12" sizeMd="3">
-            {renderAppsSection}
-          </IonCol>
+          <IonCol size="12">{renderProfileSection}</IonCol>
+          <IonCol size="12">{renderAboutSection}</IonCol>
         </IonRow>
       </IonContent>
     </IonPage>
