@@ -13,6 +13,7 @@ const RouteMap = {
   HOME: "/home",
   SEARCH: "/search",
   SETTINGS: "/settings",
+  ADD: "/add",
   DEVELOPER: "/dev/:username",
 }
 

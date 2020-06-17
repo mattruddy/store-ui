@@ -39,6 +39,7 @@ import { SideBar } from "./components"
 import Search from "./pages/Search"
 import Settings from "./pages/Settings"
 import Developer from "./pages/Developer"
+import AddPWA from "./pages/AddPWA"
 
 const App: React.FC = () => {
   return <IonicApp />
@@ -146,6 +147,7 @@ const IonicApp: React.FC = () => {
                 <Route path={RouteMap.SEARCH} component={Search} />
                 <Route path={RouteMap.SETTINGS} component={Settings} />
                 <Route path={RouteMap.DEVELOPER} component={Developer} />
+                <Route path={RouteMap.ADD} component={AddPWA} />
                 <Route
                   path={RouteMap.ROOT}
                   render={() => <Redirect to={RouteMap.HOME} />}

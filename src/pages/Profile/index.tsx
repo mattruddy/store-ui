@@ -24,7 +24,6 @@ import { RouteMap } from "../../routes"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { useSelector, useDispatch, shallowEqual } from "react-redux"
 import { thunkLogout, thunkAddPWA } from "../../redux/User/actions"
-import SumbitAppModal from "../../components/SumbitAppModal"
 import "./styles.css"
 import Popover from "../../components/Popover"
 import {
@@ -37,7 +36,6 @@ import {
 import ProfileCard, { TotalAppData } from "../../components/ProfileCard"
 import { useInView } from "react-intersection-observer"
 const Profile: React.FC = () => {
-  const [showModal, setShowModal] = useState<boolean>(false)
   const [showAlert, setShowAlert] = useState<boolean>(false)
   const [showPopover, setShowPopover] = useState<boolean>(false)
   const [ref, inView] = useInView()
@@ -48,20 +46,17 @@ const Profile: React.FC = () => {
     username,
     isLoading,
     isLoggedIn,
-    status,
     profile,
     email,
     totalData,
   } = useSelector(
     ({
       user: { pwas, username, loading, isLoggedIn, profile, email },
-      alerts: { status },
     }: ReduxCombinedState) => ({
       pwas: pwas,
       username: username,
       isLoading: loading,
       isLoggedIn: isLoggedIn,
-      status: status,
       profile: profile,
       email: email,
       totalData: pwas.reduce<TotalAppData>(
@@ -77,34 +72,12 @@ const Profile: React.FC = () => {
 
   const dispatch = useDispatch()
   const logout = useCallback(() => dispatch(thunkLogout()), [dispatch])
-  const addApp = useCallback(
-    async (
-      name: string,
-      description: string,
-      url: string,
-      category: string,
-      icon: File,
-      screenshots: File[],
-      tags: string[]
-    ) => {
-      dispatch(
-        thunkAddPWA(name, description, url, category, icon, screenshots, tags)
-      )
-    },
-    [dispatch]
-  )
 
   useEffect(() => {
     if (!isLoggedIn) {
       history.push(RouteMap.LOGIN)
     }
   }, [isLoggedIn])
-
-  useEffect(() => {
-    if (status === "success") {
-      setShowModal(false)
-    }
-  }, [status])
 
   const filterPwa = (filter: string) => {
     const filteredPwas = pwas && pwas.filter((pwa) => pwa.status === filter)
@@ -146,11 +119,6 @@ const Profile: React.FC = () => {
 
   return (
     <IonPage>
-      <SumbitAppModal
-        isOpen={showModal}
-        closeModal={() => setShowModal(false)}
-        onSubmit={addApp}
-      />
       <IonHeader className="ion-no-border bottom-line-border">
         <IonToolbar>
           <IonTitle>{inView ? "Profile" : username}</IonTitle>
@@ -162,7 +130,7 @@ const Profile: React.FC = () => {
               items={[
                 {
                   name: "Add PWA",
-                  action: () => setShowModal(true),
+                  action: () => history.push(RouteMap.ADD),
                   icon: addCircleOutline,
                 },
                 {
