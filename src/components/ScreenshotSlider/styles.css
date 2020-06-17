@@ -1,8 +1,8 @@
 .ScreenshotRow {
   display: flex;
-  overflow-x: auto;
+  overflow-x: scroll;
   overflow-y: hidden;
-  padding: 16px;
+  white-space: nowrap;
 }
 
 .ScreenshotCol {

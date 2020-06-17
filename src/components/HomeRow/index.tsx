@@ -1,17 +1,24 @@
 import React, { memo, Fragment } from "react"
-import { IonButton, IonRow, IonCol, IonIcon, IonNote } from "@ionic/react"
+import {
+  IonButton,
+  IonRow,
+  IonCol,
+  IonIcon,
+  IonNote,
+  IonRouterLink,
+} from "@ionic/react"
 import { PWA } from "../../util/types"
 import { PWACard } from ".."
 import { arrowForward } from "ionicons/icons"
 import "./styles.css"
+import { GetPwaCategoryUrl } from "../../routes"
 
 interface ContainerProps {
   pwas: PWA[]
-  linkTo?: string
+  linkTo: string
   isLoading: boolean
-  title?: string
-  subtitle?: string
-  onPressCallback?: (value: string) => void
+  title: string
+  subtitle: string
 }
 
 const HomeRow: React.FC<ContainerProps> = ({
@@ -19,24 +26,19 @@ const HomeRow: React.FC<ContainerProps> = ({
   linkTo,
   title,
   subtitle,
-  onPressCallback,
 }) => {
   return (
     <Fragment>
       <div className="HomeRowHeader">
         <h1 className="HomeRowHeaderTitle">{title}</h1>
-        {linkTo && onPressCallback && (
-          <IonButton
-            className="HomeViewMoreButton"
-            onClick={() => onPressCallback(linkTo)}
-          >
-            <IonIcon color="dark" icon={arrowForward} />
-          </IonButton>
-        )}
+        <IonRouterLink
+          className="HomeViewMoreLink"
+          routerLink={GetPwaCategoryUrl(linkTo)}
+        >
+          <IonIcon color="dark" icon={arrowForward} />
+        </IonRouterLink>
       </div>
-      {subtitle && (
-        <IonNote className="HomeRowHeaderSubTitle">{subtitle}</IonNote>
-      )}
+      <IonNote className="HomeRowHeaderSubTitle">{subtitle}</IonNote>
       <IonRow className="HomeRow bottom-line-border">
         {pwas.map((topApp, i) => (
           <IonCol key={i} size="6" sizeMd="4" sizeLg="3">

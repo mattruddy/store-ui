@@ -5,7 +5,6 @@ import {
   IonChip,
   IonLabel,
   IonTextarea,
-  IonItem,
   IonRouterLink,
 } from "@ionic/react"
 import { ShareUrl, FormItem } from "../"
@@ -90,14 +89,15 @@ const PWAInfo: React.FC<ContainerProps> = ({
             )}
           </div>
         </div>
-        <IonRouterLink
+        <IonButton
           color="dark"
+          fill="outline"
           href={pwa.link}
           target="_blank"
           onClick={onInstall}
         >
           FREE <IonIcon style={{ marginLeft: "10px" }} icon={openOutline} />
-        </IonRouterLink>
+        </IonButton>
       </div>
       {!isMyPwa && pwa.username && (
         <div style={{ marginLeft: "8px", marginBottom: "10px" }}>

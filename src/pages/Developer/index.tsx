@@ -12,8 +12,6 @@ import {
   useIonViewDidEnter,
 } from "@ionic/react"
 import { useParams } from "react-router"
-import { PWACard, HomeRow } from "../../components"
-import "./styles.css"
 import ProfileCard from "../../components/ProfileCard"
 import { mdConverter } from "../../util"
 import { useSelector, shallowEqual, useDispatch } from "react-redux"
@@ -69,12 +67,8 @@ const Developer: React.FC = () => {
   )
 
   useIonViewDidEnter(() => {
-    if (username) {
-      ReactGA.pageview(username)
-    } else {
-      console.warn("page loaded before param view found.")
-    }
-  }, [])
+    ReactGA.pageview(username!)
+  })
 
   const renderAboutSection = useMemo(() => {
     return (

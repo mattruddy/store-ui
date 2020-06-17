@@ -9,6 +9,9 @@ import LinkItem from "./LinkItem"
 import "./styles.css"
 import { IonRow, IonCol, IonHeader, IonRouterLink } from "@ionic/react"
 import { PWA } from "../../util/types"
+import { capitalize } from "../../util"
+import AppImgs from "./AppImgs"
+import DataBox from "./DataBox"
 
 export interface TotalAppData {
   totalInstalls: number
@@ -53,9 +56,13 @@ const ProfileCard: React.FC<ContainerProps> = ({
               src={avatar ? avatar : "assets/icon/logo.png"}
             />
           )}
-          <div className="ProfileCardLeftRight">
-            <h1 style={{ paddingLeft: "8px" }}>{username}</h1>
-            <div className="ProfileCardLinks">
+          <div className="ProfileCardLeftInfo">
+            {username && (
+              <h1 style={{ paddingLeft: "8px", margin: "0" }}>
+                {capitalize(username)}
+              </h1>
+            )}
+            <div>
               {email && <LinkItem url={`mailto:${email}`} logo={mailOutline} />}
               {gitHub && (
                 <LinkItem
@@ -74,48 +81,8 @@ const ProfileCard: React.FC<ContainerProps> = ({
           </div>
         </div>
       </IonCol>
-
-      {data && (
-        <>
-          <IonCol className="DataLeftCol" size="12" sizeLg="4">
-            <IonRow>
-              <IonCol className="DataRowLeft" size="6" sizeLg="12">
-                <IonRow className="DataRow">
-                  <IonCol className="DataCol">Installs</IonCol>
-                  <IonCol className="DataCol text-color">
-                    {data.totalInstalls}
-                  </IonCol>
-                </IonRow>
-              </IonCol>
-              <IonCol size="6" sizeLg="12">
-                <IonRow className="DataRow">
-                  <IonCol className="DataCol">Page Views</IonCol>
-                  <IonCol className="DataCol text-color">
-                    {data.totalPageViews}
-                  </IonCol>
-                </IonRow>
-              </IonCol>
-            </IonRow>
-          </IonCol>
-        </>
-      )}
-      {pwas && (
-        <div className="ProfileAppsRow">
-          {pwas.map((pwa, idx) => (
-            <IonRouterLink
-              style={{ padding: "8px" }}
-              routerLink={`/pwa/${pwa.name.replace(/ /g, "-")}`}
-            >
-              <img
-                style={{ padding: "8px" }}
-                src={pwa.icon}
-                height="50"
-                width="50"
-              />
-            </IonRouterLink>
-          ))}
-        </div>
-      )}
+      {data && <DataBox data={data} />}
+      {pwas && <AppImgs pwas={pwas} />}
     </IonRow>
   )
 }
