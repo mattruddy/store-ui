@@ -14,7 +14,7 @@ const ShareOnLinkedIn: React.FC<ContainerProps> = ({
     color="linkedin"
     href={`https://www.linkedin.com/shareArticle?mini=true&url=${url}`}
   >
-    <IonIcon icon={logoLinkedin} />
+    <IonIcon size="small" icon={logoLinkedin} />
   </ShareUrlLink>
 )
 

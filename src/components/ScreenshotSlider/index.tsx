@@ -5,17 +5,8 @@ import React, {
   useMemo,
   memo,
   ReactChildren,
-  Fragment,
 } from "react"
-import {
-  IonSlides,
-  IonSlide,
-  IonImg,
-  IonCol,
-  IonButton,
-  IonIcon,
-  IonRow,
-} from "@ionic/react"
+import { IonButton, IonIcon } from "@ionic/react"
 import Lightbox from "react-image-lightbox"
 import { Image } from "../../util/types"
 import "./styles.css"
@@ -23,7 +14,7 @@ import { trash } from "ionicons/icons"
 
 interface ContainerProps {
   toolbarButtons?: []
-  images?: Image[]
+  images: Image[]
   photoIndex?: number
   isOpen?: boolean
   children?: ReactChildren[]
@@ -37,7 +28,6 @@ const ScreenshotSlider: React.FC<ContainerProps> = ({
   ...restOfProps
 }) => {
   const mounted = useRef(false)
-  const [images, setImages] = useState(restOfProps.images || [])
   const [photoIndex, setPhotoIndex] = useState(restOfProps.photoIndex || 0)
   const [isOpen, setIsOpen] = useState(restOfProps.isOpen || false)
 
@@ -45,7 +35,6 @@ const ScreenshotSlider: React.FC<ContainerProps> = ({
     if (mounted.current) {
       setIsOpen(restOfProps.isOpen || false)
       setPhotoIndex(restOfProps.photoIndex || 0)
-      setImages(restOfProps.images || [])
     }
     mounted.current = true
   }, [restOfProps.photoIndex, restOfProps.isOpen, restOfProps.images])
@@ -53,10 +42,14 @@ const ScreenshotSlider: React.FC<ContainerProps> = ({
   let mainSrc = ""
   let prevSrc = ""
   let nextSrc = ""
-  if (images.length > 0) {
-    mainSrc = images[photoIndex].url
-    prevSrc = images[(photoIndex + images.length - 1) % images.length].url
-    nextSrc = images[(photoIndex + 1) % images.length].url
+  if (restOfProps.images.length > 0) {
+    mainSrc = restOfProps.images[photoIndex].url
+    prevSrc =
+      restOfProps.images[
+        (photoIndex + restOfProps.images.length - 1) % restOfProps.images.length
+      ].url
+    nextSrc =
+      restOfProps.images[(photoIndex + 1) % restOfProps.images.length].url
   }
 
   const handleOpen = () => setIsOpen(true)
@@ -64,13 +57,16 @@ const ScreenshotSlider: React.FC<ContainerProps> = ({
   const handleClose = () => setIsOpen(false)
 
   const handleMovePrev = () =>
-    setPhotoIndex((photoIndex + images.length - 1) % images.length)
+    setPhotoIndex(
+      (photoIndex + restOfProps.images!.length - 1) % restOfProps.images.length
+    )
 
-  const handleMoveNext = () => setPhotoIndex((photoIndex + 1) % images.length)
+  const handleMoveNext = () =>
+    setPhotoIndex((photoIndex + 1) % restOfProps.images.length)
 
   const renderSlides = useMemo(
     () =>
-      images.map((image, i) => {
+      restOfProps.images.map((image, i) => {
         const { url } = image
         const handleOnClick = () => {
           handleOpen()
@@ -93,7 +89,7 @@ const ScreenshotSlider: React.FC<ContainerProps> = ({
                 </IonButton>
               </div>
             )}
-            <IonImg
+            <img
               className="ScreenshotSliderImage"
               alt="screenshot"
               onClick={handleOnClick}
@@ -102,11 +98,11 @@ const ScreenshotSlider: React.FC<ContainerProps> = ({
           </div>
         )
       }),
-    [images, restOfProps.isEdit, restOfProps.onDelete]
+    [restOfProps.images, restOfProps.isEdit, restOfProps.onDelete]
   )
 
   return (
-    <div className="ScreenshotRow">
+    <div className="ScreenshotRow bottom-line-border">
       {renderSlides}
       {isOpen && (
         <Lightbox

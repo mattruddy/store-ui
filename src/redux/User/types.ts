@@ -4,7 +4,6 @@ export interface UserState {
   token: string
   id: number
   loading: boolean
-  hasRead: boolean
   pwas: PWA[]
   username: string
   email: string
@@ -70,11 +69,6 @@ export interface RemoveAppAction {
   payload: number
 }
 
-export interface SetHasReadInstallAction {
-  type: typeof USER_HAS_READ_INSTALL
-  payload: boolean
-}
-
 export type UserActionTypes =
   | SetLoadingAction
   | SetDataAction
@@ -83,6 +77,4 @@ export type UserActionTypes =
   | AddAppAction
   | ReplaceAppAction
   | SetLoadingAction
-  | SetHasReadInstallAction
   | SetUserAction
-  | setDarkMode

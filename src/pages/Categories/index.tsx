@@ -25,6 +25,8 @@ const Categories: React.FC = () => {
   const onPress = (category: string) => {
     if (category.toLowerCase() === "home") {
       history.push(RouteMap.HOME)
+    } else if (category.toLowerCase() === "search") {
+      history.push(RouteMap.SEARCH)
     } else {
       history.push(GetPwaCategoryUrl(category.toLowerCase()))
     }
@@ -32,19 +34,19 @@ const Categories: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
+      <IonHeader className="ion-no-border bottom-line-border">
         <IonToolbar>
           <IonTitle>Categories</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
-        <IonList>
+      <IonContent className="content">
+        <IonList className="content" style={{ padding: "0" }}>
           <IonItemGroup>
             {standardCategories
               .filter((x) => x.category !== "HOME")
               .map((cat, i) => (
                 <IonItem
-                  className="CategoryPageItem"
+                  className="CategoryPageItem content"
                   lines="none"
                   key={i}
                   button
@@ -55,13 +57,13 @@ const Categories: React.FC = () => {
                 </IonItem>
               ))}
           </IonItemGroup>
-          <IonListHeader>
+          <IonListHeader className="content">
             <IonLabel>CATEGORIES</IonLabel>
           </IonListHeader>
           <IonItemGroup>
             {categories.map((cat, i) => (
               <IonItem
-                className="CategoryPageItem"
+                className="CategoryPageItem content"
                 key={i}
                 button
                 onClick={() => onPress(cat.category)}

@@ -8,7 +8,6 @@ const { Storage } = Plugins
 const { API_URL } = vars().env
 const TOKEN = "token"
 const HAS_LOGGED_IN = "hasLoggedIn"
-const HAS_READ = "hasRead"
 const DARK_MODE = "darkMode"
 const USERNAME = "username"
 const EMAIL = "email"
@@ -21,7 +20,6 @@ const getUserData = async () => {
   const response = await Promise.all([
     Storage.get({ key: HAS_LOGGED_IN }),
     Storage.get({ key: TOKEN }),
-    Storage.get({ key: HAS_READ }),
     Storage.get({ key: DARK_MODE }),
     Storage.get({ key: USERNAME }),
     Storage.get({ key: EMAIL }),
@@ -32,18 +30,16 @@ const getUserData = async () => {
   ])
   const isLoggedIn = response[0].value === "true"
   const token = response[1].value || undefined
-  const hasRead = response[2].value === "true"
-  const darkMode = response[3].value === "true"
-  const username = response[4].value || undefined
-  const email = response[5].value || undefined
-  const role = parseInt(response[6].value || "2")
-  const pushKey = response[7].value || undefined
-  const pushAuth = response[8].value || undefined
-  const pushEndpoint = response[9].value || undefined
+  const darkMode = response[2].value === "true"
+  const username = response[3].value || undefined
+  const email = response[4].value || undefined
+  const role = parseInt(response[5].value || "2")
+  const pushKey = response[6].value || undefined
+  const pushAuth = response[7].value || undefined
+  const pushEndpoint = response[8].value || undefined
   const data = {
     isLoggedIn,
     token,
-    hasRead,
     darkMode,
     username,
     email,
@@ -53,10 +49,6 @@ const getUserData = async () => {
       : undefined,
   }
   return data
-}
-
-const setHasReadInstallStorage = async (hasRead: "false" | "true") => {
-  await Storage.set({ key: HAS_READ, value: hasRead })
 }
 
 const setTokenStorage = async (token: string) => {
@@ -152,11 +144,10 @@ const baseHeaders = {
 
 const AxiosForm = async (payload: FormData): Promise<AxiosInstance> => {
   const response = await getUserData()
-  const { isLoggedIn, token, hasRead } = response
+  const { token } = response
 
   return axios.create({
     baseURL: API_URL,
-    // timeout: 25000,
     responseType: "json",
     headers: token
       ? {
@@ -174,7 +165,6 @@ const Axios = async (responseType: "json" = "json"): Promise<AxiosInstance> => {
   return axios.create({
     withCredentials: true,
     baseURL: API_URL,
-    // timeout: 25000,
     crossDomain: true,
     responseType,
     headers: token
@@ -190,7 +180,6 @@ export {
   AxiosForm,
   Axios,
   getUserData,
-  setHasReadInstallStorage,
   setDarkModeStorage,
   setIsLoggedInStorage,
   setTokenStorage,

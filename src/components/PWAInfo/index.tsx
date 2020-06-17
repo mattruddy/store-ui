@@ -1,12 +1,5 @@
 import React, { memo } from "react"
-import {
-  IonButton,
-  IonIcon,
-  IonImg,
-  IonTextarea,
-  IonChip,
-  IonLabel,
-} from "@ionic/react"
+import { IonButton, IonIcon, IonChip, IonLabel } from "@ionic/react"
 import { ShareUrl } from "../"
 import { PWA } from "../../util/types"
 import ReactGA from "react-ga"
@@ -42,12 +35,12 @@ const PWAInfo: React.FC<ContainerProps> = ({
         }}
       >
         <div style={{ display: "flex", alignItems: "center" }}>
-          <IonImg
+          <img
             alt="icon"
             style={{
               height: "80px",
               width: "80px",
-              borderRadius: "5px",
+              borderRadius: "6px",
               margin: "10px",
             }}
             src={pwa.icon}
@@ -66,8 +59,8 @@ const PWAInfo: React.FC<ContainerProps> = ({
           </div>
         </div>
         <IonButton
-          class="button"
-          style={{ marginRight: "10px", marginLeft: "10px" }}
+          color="dark"
+          fill="outline"
           onClick={() => {
             ;(async () => await (await Axios()).post(`public/pwa/${appId}`))()
             ReactGA.event({
@@ -94,6 +87,7 @@ const PWAInfo: React.FC<ContainerProps> = ({
           display: "flex",
           flexDirection: "row",
           alignItems: "center",
+          marginTop: "10px",
         }}
       >
         <ShareUrl title={pwa.name} />
@@ -106,17 +100,9 @@ const PWAInfo: React.FC<ContainerProps> = ({
         ))}
       </div>
       <div
-        style={{
-          paddingLeft: "10px",
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          fontSize: "1.5rem",
-        }}
+        className="bottom-line-border"
+        style={{ padding: "16px", minHeight: "200px" }}
       >
-        About
-      </div>
-      <div style={{ height: 200, padding: 16, overflowY: "scroll" }}>
         {pwa.description}
       </div>
     </>

@@ -14,7 +14,6 @@ import { Action } from "redux"
 import { ThunkAction } from "redux-thunk"
 import {
   getUserData,
-  setHasReadInstallStorage,
   setEmailStorage,
   setTokenStorage,
   setUsernameStorage,
@@ -66,13 +65,7 @@ export const thunkSignUp = (
       data: { token },
     } = response
 
-    // TODO: do this in the api.
-    var role = UserRole.Dev
-    if (username === "mattruddy") {
-      role = UserRole.Admin
-    }
-    dispatch(setData({ token, username, isLoggedIn: true, role }))
-    await setRoleStorage(UserRole.Admin.toString())
+    dispatch(setData({ token, username, isLoggedIn: true }))
     await setTokenStorage(token)
     await setUsernameStorage(username)
     await setEmailStorage(email)
@@ -116,14 +109,7 @@ export const thunkLogin = (
     const {
       data: { token },
     } = response
-
-    // TODO: do this in the api.
-    var role = UserRole.Dev
-    if (username === "mattruddy") {
-      role = UserRole.Admin
-    }
-    dispatch(setData({ token, username, isLoggedIn: true, role }))
-    await setRoleStorage(UserRole.Admin.toString())
+    dispatch(setData({ token, username, isLoggedIn: true }))
     await setTokenStorage(token)
     await setUsernameStorage(username)
     await setIsLoggedInStorage("true")
@@ -289,9 +275,9 @@ export const thunkThirdPartyLogin = (
 ): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
   try {
     dispatch(setLoading(true))
+    await setTokenStorage(token)
     dispatch(setData({ token, isLoggedIn: true }))
     await setRoleStorage(UserRole.Dev.toString())
-    await setTokenStorage(token)
     await setIsLoggedInStorage("true")
   } finally {
     dispatch(setLoading(false))
@@ -432,11 +418,4 @@ export const thunkUpdateApp = (
   } finally {
     dispatch(setLoading(false))
   }
-}
-
-export const thunkSetHasReadInstall = (
-  hasReadInstall: boolean
-): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
-  await setHasReadInstallStorage(hasReadInstall ? "true" : "false")
-  dispatch(setData({ hasRead: hasReadInstall }))
 }

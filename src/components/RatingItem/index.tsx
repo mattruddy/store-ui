@@ -12,7 +12,7 @@ interface ContainerProps {
 
 const RatingItem: React.FC<ContainerProps> = ({ rating }) => {
   return (
-    <IonItem>
+    <IonItem className="content" lines="none">
       <div style={{ width: "100%", display: "flex", flexDirection: "column" }}>
         <div
           style={{
@@ -26,8 +26,13 @@ const RatingItem: React.FC<ContainerProps> = ({ rating }) => {
             starSpacing="2px"
           />
         </div>
-        <div className="RatingCommentBackground">
-          <p style={{ margin: "20px" }}>{rating.comment}</p>
+        <div
+          className="line-border"
+          style={{
+            minHeight: "200px",
+          }}
+        >
+          <p style={{ margin: "12px" }}>{rating.comment}</p>
         </div>
         <div
           style={{

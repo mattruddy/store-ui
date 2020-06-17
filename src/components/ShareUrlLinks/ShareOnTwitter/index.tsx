@@ -14,7 +14,7 @@ const ShareOnTwitter: React.FC<ContainerProps> = ({
     color="twitter"
     href={`https://twitter.com/intent/tweet?text=${text}`}
   >
-    <IonIcon icon={logoTwitter} />
+    <IonIcon size="small" icon={logoTwitter} />
   </ShareUrlLink>
 )
 
