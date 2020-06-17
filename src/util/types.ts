@@ -80,7 +80,7 @@ export interface PublicProfile {
   apps: PWA[]
   avatar: string
   email: string
-  github: string
+  gitHub: string
   linkedIn: string
   twitter: string
   username: string

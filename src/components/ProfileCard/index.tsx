@@ -7,7 +7,7 @@ import {
 } from "ionicons/icons"
 import LinkItem from "./LinkItem"
 import "./styles.css"
-import { IonRow, IonCol, IonHeader, IonRouterLink } from "@ionic/react"
+import { IonRow, IonCol, IonButton } from "@ionic/react"
 import { PWA } from "../../util/types"
 import { capitalize } from "../../util"
 import AppImgs from "./AppImgs"
@@ -19,6 +19,7 @@ export interface TotalAppData {
 }
 
 interface ContainerProps {
+  isMyProfile: boolean
   avatar?: string
   gitHub?: string
   twitter?: string
@@ -31,6 +32,7 @@ interface ContainerProps {
 }
 
 const ProfileCard: React.FC<ContainerProps> = ({
+  isMyProfile,
   avatar,
   twitter,
   gitHub,
@@ -78,6 +80,13 @@ const ProfileCard: React.FC<ContainerProps> = ({
                 <LinkItem url={twitter} logo={logoTwitter} color="twitter" />
               )}
             </div>
+            {isMyProfile && (
+              <div>
+                <IonButton fill="outline" color="dark" routerLink="/settings">
+                  Edit
+                </IonButton>
+              </div>
+            )}
           </div>
         </div>
       </IonCol>

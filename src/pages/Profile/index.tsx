@@ -189,6 +189,7 @@ const Profile: React.FC = () => {
         <IonRow>
           <IonCol className="ProfileCardCol" size="12">
             <ProfileCard
+              isMyProfile={true}
               data={totalData}
               avatar={profile?.avatar}
               gitHub={profile?.gitHub}
