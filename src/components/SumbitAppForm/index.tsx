@@ -67,6 +67,23 @@ const SubmitAppForm: React.FC<ContainerProps> = ({ onSubmit }) => {
           showError={!noSpecialChars(name)}
           errorMessage="No special chars allowed"
         />
+        <FormItem
+          name="Link"
+          type="text"
+          maxLength={80}
+          spellCheck={false}
+          value={url}
+          onChange={(e) => setUrl(e.detail.value!)}
+          showError={url !== "" && !/^((https))/.test(url)}
+          errorMessage="Must be https"
+        />
+        <FormItem
+          name="Category"
+          showError={false}
+          errorMessage="Category is required"
+        >
+          <CategoryOptions onPress={setCat} />
+        </FormItem>
         <FormItem name="Tags" showError={false} errorMessage="">
           <div style={{ padding: "15px", width: "100%" }}>
             <ReactTagInput
@@ -76,6 +93,23 @@ const SubmitAppForm: React.FC<ContainerProps> = ({ onSubmit }) => {
               removeOnBackspace={true}
               maxTags={5}
               placeholder="Enter to add"
+            />
+          </div>
+        </FormItem>
+        <FormItem
+          name="Description"
+          showError={desc.length > 1500}
+          errorMessage="Description cannot be more than 1500 characters"
+        >
+          <div style={{ width: "100%", paddingTop: "16px" }}>
+            <ReactMde
+              value={desc}
+              onChange={setDesc}
+              selectedTab={selectedTab}
+              onTabChange={setSelectedTab}
+              generateMarkdownPreview={(md) =>
+                Promise.resolve(mdConverter.makeHtml(desc))
+              }
             />
           </div>
         </FormItem>
@@ -95,40 +129,6 @@ const SubmitAppForm: React.FC<ContainerProps> = ({ onSubmit }) => {
             imgExtension={[".jpg", ".png", ".jpeg"]}
             maxFileSize={5242880}
           />
-        </FormItem>
-        <FormItem
-          name="Link"
-          type="text"
-          maxLength={80}
-          spellCheck={false}
-          value={url}
-          onChange={(e) => setUrl(e.detail.value!)}
-          showError={url !== "" && !/^((https))/.test(url)}
-          errorMessage="Must be https"
-        />
-        <FormItem
-          name="Description"
-          showError={desc.length > 1500}
-          errorMessage="Description cannot be more than 1500 characters"
-        >
-          <div style={{ width: "100%", paddingTop: "16px" }}>
-            <ReactMde
-              value={desc}
-              onChange={setDesc}
-              selectedTab={selectedTab}
-              onTabChange={setSelectedTab}
-              generateMarkdownPreview={(md) =>
-                Promise.resolve(mdConverter.makeHtml(desc))
-              }
-            />
-          </div>
-        </FormItem>
-        <FormItem
-          name="Category"
-          showError={false}
-          errorMessage="Category is required"
-        >
-          <CategoryOptions onPress={setCat} />
         </FormItem>
         <FormItem
           name="Screenshots"

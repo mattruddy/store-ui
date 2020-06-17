@@ -65,6 +65,9 @@ const Developer: React.FC = () => {
           isLoading={isLoading}
           pwas={profile.apps}
           username={profile.username}
+          header={profile.header}
+          fullName={profile.fullName}
+          location={profile.location}
         />
       ),
     [profile, isLoading]

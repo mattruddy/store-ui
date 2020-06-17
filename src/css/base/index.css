@@ -20,6 +20,11 @@
   color: #737373;
 }
 
+.react-tag-input {
+  background: inherit !important;
+  border: none !important;
+}
+
 .center {
   display: flex;
   justify-content: center;

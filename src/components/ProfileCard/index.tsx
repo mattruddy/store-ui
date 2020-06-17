@@ -4,12 +4,12 @@ import {
   logoLinkedin,
   logoTwitter,
   mailOutline,
+  locationOutline,
 } from "ionicons/icons"
 import LinkItem from "./LinkItem"
 import "./styles.css"
-import { IonRow, IonCol, IonButton, IonText } from "@ionic/react"
+import { IonRow, IonCol, IonButton, IonIcon } from "@ionic/react"
 import { PWA } from "../../util/types"
-import { capitalize } from "../../util"
 import AppImgs from "./AppImgs"
 import DataBox from "./DataBox"
 
@@ -24,6 +24,9 @@ interface ContainerProps {
   gitHub?: string
   twitter?: string
   linkedIn?: string
+  location?: string
+  fullName?: string
+  header?: string
   data?: TotalAppData
   pwas?: PWA[]
   email?: string | undefined
@@ -36,6 +39,9 @@ const ProfileCard: React.FC<ContainerProps> = ({
   avatar,
   twitter,
   gitHub,
+  location,
+  header,
+  fullName,
   linkedIn,
   email,
   username,
@@ -60,28 +66,24 @@ const ProfileCard: React.FC<ContainerProps> = ({
           )}
           <div className="ProfileCardLeftInfo">
             {username && (
-              <IonText color="primary">
+              <div>
                 <h1 style={{ paddingLeft: "8px", margin: "0" }}>
-                  @{capitalize(username)}
+                  {fullName ? fullName : `@${username}`}
                 </h1>
-              </IonText>
+                {fullName && (
+                  <h4
+                    className="text-color"
+                    style={{ margin: "0", padding: "8px" }}
+                  >{`@${username}`}</h4>
+                )}
+                {location && (
+                  <div style={{ padding: "8px" }}>
+                    <IonIcon icon={locationOutline} />
+                    {location}
+                  </div>
+                )}
+              </div>
             )}
-            <div>
-              {email && <LinkItem url={`mailto:${email}`} logo={mailOutline} />}
-              {gitHub && (
-                <LinkItem
-                  url={gitHub}
-                  logo={logoGithub}
-                  className="ion-color-github"
-                />
-              )}
-              {linkedIn && (
-                <LinkItem url={linkedIn} logo={logoLinkedin} color="linkedin" />
-              )}
-              {twitter && (
-                <LinkItem url={twitter} logo={logoTwitter} color="twitter" />
-              )}
-            </div>
             {isMyProfile && (
               <div>
                 <IonButton fill="outline" color="dark" routerLink="/settings">
@@ -90,6 +92,30 @@ const ProfileCard: React.FC<ContainerProps> = ({
               </div>
             )}
           </div>
+        </div>
+        <div className="ProfileLinksCont">
+          {email && <LinkItem url={`mailto:${email}`} logo={mailOutline} />}
+          {gitHub && (
+            <LinkItem
+              url={gitHub}
+              logo={logoGithub}
+              className="ion-color-github"
+            />
+          )}
+          {linkedIn && (
+            <LinkItem url={linkedIn} logo={logoLinkedin} color="linkedin" />
+          )}
+          {twitter && (
+            <LinkItem url={twitter} logo={logoTwitter} color="twitter" />
+          )}
+        </div>
+        <div
+          style={{
+            padding: "32px",
+            paddingTop: "16px",
+          }}
+        >
+          {header}
         </div>
       </IonCol>
       {data && <DataBox data={data} />}
