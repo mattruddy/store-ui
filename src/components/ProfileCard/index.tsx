@@ -109,14 +109,16 @@ const ProfileCard: React.FC<ContainerProps> = ({
             <LinkItem url={twitter} logo={logoTwitter} color="twitter" />
           )}
         </div>
-        <div
-          style={{
-            padding: "32px",
-            paddingTop: "16px",
-          }}
-        >
-          {header}
-        </div>
+        {header && (
+          <div
+            style={{
+              padding: "32px",
+              paddingTop: "16px",
+            }}
+          >
+            {header}
+          </div>
+        )}
       </IonCol>
       {data && <DataBox data={data} />}
       {pwas && <AppImgs pwas={pwas} />}

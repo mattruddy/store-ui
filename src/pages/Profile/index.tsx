@@ -164,6 +164,9 @@ const Profile: React.FC = () => {
               gitHub={profile?.gitHub}
               twitter={profile?.twitter}
               linkedIn={profile?.linkedIn}
+              header={profile?.header}
+              fullName={profile?.fullName}
+              location={profile?.location}
               email={email}
               username={username}
               isLoading={isLoading}
