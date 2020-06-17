@@ -148,7 +148,7 @@ http://ionicframework.com/docs/theming/ */
 
 /* Dark mode */
 
-/* Fall back */
+/* Fall Back */
 .dark-theme {
   --ion-color-primary: #74b9ff;
   --ion-color-primary-rgb: 66, 140, 255;
@@ -214,19 +214,21 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-light-tint: #383a3e;
   --ion-background-color: #121212;
   --starRatedColor: #eeeeee;
+  --ion-toolbar-background: #121212 !important;
+  --ion-tab-bar-background: #121212 !important;
+  --ion-text-color: #eeeeee !important;
 }
 
-.dark-theme .content,
-.dark-theme {
+.dark-theme .content {
   --background: #121212 !important;
 }
 
 .dark-theme .SideBarCategory {
-  --background: #161616 !important;
+  --background: #121212 !important;
 }
 
 .dark-theme .SideBar {
-  background: #161616 !important;
+  background: #121212 !important;
 }
 
 .dark-theme h2,
@@ -254,19 +256,19 @@ http://ionicframework.com/docs/theming/ */
   color: #eeeeee !important;
 }
 
-.dark-theme .HeaderLogo {
-  filter: invert(100%) !important;
-}
-
 .dark-theme .PWACardTitle {
   color: #eeeeee !important;
 }
 
-/* StarRatedColor.dark-theme {
+.dark-theme .button {
   color: #eeeeee !important;
-} */
+}
 
-/*iOS dark-theme */
+.dark-theme .starRatedHover {
+  color: #ffffff !important;
+}
+
+/* iOS dark-theme */
 
 .ios .dark-theme {
   --ion-background-color: #121212;
@@ -275,16 +277,17 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-step-50: #121212;
   --ion-toolbar-background: #161616;
   --color: #eeeeee !important;
-  --ion-tab-bar-background: #161616 !important;
+  --ion-tab-bar-background: #121212 !important;
 }
 
-/*material design dark-theme */
+/* material design dark-theme */
+
 .md .dark-theme {
   --ion-background-color: #121212;
   --ion-text-color: #eeeeee;
   --ion-title-color: #eeeeee;
   --ion-color-step-50: #121212;
-  --ion-toolbar-background: #161616;
+  --ion-toolbar-background: #121212;
   --color: #eeeeee !important;
-  --ion-tab-bar-background: #161616 !important;
+  --ion-tab-bar-background: #121212 !important;
 }

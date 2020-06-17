@@ -30,7 +30,11 @@ import { RouteMap } from "./routes"
 import ReactGA from "react-ga"
 import Home from "./pages/Home"
 import { useDispatch, useSelector, shallowEqual } from "react-redux"
-import { thunkLoadUserData, thunkLoadProfile } from "./redux/User/actions"
+import {
+  thunkLoadUserData,
+  thunkLoadProfile,
+  thunkSetDarkMode,
+} from "./redux/User/actions"
 import { SetWindow } from "./redux/Window/actions"
 import { ReduxCombinedState } from "./redux/RootReducer"
 import { clearAlerts } from "./redux/Alerts/actions"
@@ -56,26 +60,32 @@ const IonicApp: React.FC = () => {
     [dispatch]
   )
 
+  const setDarkMode = useCallback(
+    (prefersDarkMode: boolean) => dispatch(thunkSetDarkMode(prefersDarkMode)),
+    [dispatch]
+  )
+
   const handleResize = useCallback(() => dispatch(SetWindow()), [dispatch])
 
-  const { isLoggedIn, token, alerts, push } = useSelector(
-    ({ user: { isLoggedIn, token, push }, alerts }: ReduxCombinedState) => ({
+  const { isLoggedIn, token, alerts, push, darkMode } = useSelector(
+    ({
+      user: { isLoggedIn, token, push, darkMode },
+      alerts,
+    }: ReduxCombinedState) => ({
       isLoggedIn: isLoggedIn,
       token: token,
       alerts: alerts,
       push: push,
+      darkMode: darkMode,
     }),
     shallowEqual
   )
 
   const handleTheme = (): void => {
-    const prefersDark: MediaQueryList = window.matchMedia(
+    const prefersDarkMode: MediaQueryList = window.matchMedia(
       "(prefers-color-scheme: dark)"
     )
-
-    if (prefersDark.matches) {
-      setDarkMode(true)
-    }
+    setDarkMode(prefersDarkMode.matches)
   }
 
   useEffect(() => {
@@ -89,7 +99,7 @@ const IonicApp: React.FC = () => {
 
   useEffect(() => {
     loadUserData()
-    //handleTheme()
+    handleTheme()
   }, [])
 
   useEffect(() => {

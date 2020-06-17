@@ -5,5 +5,11 @@
 }
 
 .RatingCommentTextArea {
+  border-radius: 30px;
   background: rgb(248, 248, 248);
+  padding: 8px;
+}
+
+.starRateHover {
+  color: rgb(109, 122, 130);
 }

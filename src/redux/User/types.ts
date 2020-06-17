@@ -34,6 +34,11 @@ export interface setDarkMode {
   type: typeof USER_SET_DARKMODE
   payload: boolean
 }
+
+export interface setDarkMode {
+  type: typeof USER_SET_DARKMODE
+  payload: boolean
+}
 export interface SetUserAction {
   type: typeof USER_SET
   payload: string
@@ -78,3 +83,4 @@ export type UserActionTypes =
   | ReplaceAppAction
   | SetLoadingAction
   | SetUserAction
+  | setDarkMode

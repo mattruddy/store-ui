@@ -5,6 +5,7 @@ import { Rating } from "../../util/types"
 import { IonItem, IonIcon } from "@ionic/react"
 import { dateFormatter } from "../../util"
 import { checkmarkCircleOutline } from "ionicons/icons"
+import "./style.css"
 
 interface ContainerProps {
   rating: Rating
@@ -26,12 +27,7 @@ const RatingItem: React.FC<ContainerProps> = ({ rating }) => {
             starSpacing="2px"
           />
         </div>
-        <div
-          className="line-border"
-          style={{
-            minHeight: "200px",
-          }}
-        >
+        <div className="line-border RatingCommentBackground">
           <p style={{ margin: "12px" }}>{rating.comment}</p>
         </div>
         <div

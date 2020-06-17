@@ -1,4 +1,10 @@
-import { IonContent, IonNote, IonPage, useIonViewDidEnter } from "@ionic/react"
+import {
+  IonContent,
+  IonNote,
+  IonPage,
+  useIonViewDidEnter,
+  IonToggle,
+} from "@ionic/react"
 import React, { useCallback, useEffect, useMemo, useRef, memo } from "react"
 import ReactGA from "react-ga"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
@@ -13,6 +19,7 @@ import { ReduxCombinedState } from "../../redux/RootReducer"
 import { GetPwaCategoryUrl } from "../../routes"
 import "./styles.css"
 import { useHidingHeader } from "../../hooks/useHidingHeader"
+import { thunkSetDarkMode } from "../../redux/User/actions"
 
 const Home: React.FC = () => {
   const history = useHistory()
@@ -40,12 +47,20 @@ const Home: React.FC = () => {
     [dispatch]
   )
 
+  const setDarkMode = useCallback(
+    (active: boolean) => dispatch(thunkSetDarkMode(active)),
+    [dispatch]
+  )
+
   useIonViewDidEnter(() => {
     getHomeData()
   })
 
   useEffect(() => {
     ReactGA.pageview(`Home`)
+    const prefersDarkMode: MediaQueryList = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    )
   }, [])
 
   const onPress = useCallback(
@@ -93,6 +108,10 @@ const Home: React.FC = () => {
             <IonNote>Progressive Web App Discovery</IonNote>
           </div>
           <div>
+            <IonToggle
+              checked={darkMode}
+              onIonChange={(e) => setDarkMode(!darkMode)}
+            />
             <AddToHomeScreen
               prompt={prompt}
               promptToInstall={promptToInstall}
@@ -101,11 +120,12 @@ const Home: React.FC = () => {
         </div>
       </HidingHeader>
     )
-  }, [hideDecimal, promptToInstall, prompt])
+  }, [hideDecimal, promptToInstall, prompt, darkMode])
 
   return (
     <IonPage>
       {renderHeader}
+
       <IonContent
         fullscreen={true}
         scrollEvents={true}
