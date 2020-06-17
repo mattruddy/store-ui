@@ -18,10 +18,12 @@ import { useSelector, shallowEqual, useDispatch } from "react-redux"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { thunkGetDev } from "../../redux/PWAs/actions"
 import ReactGA from "react-ga"
+import { useInView } from "react-intersection-observer"
 
 const Developer: React.FC = () => {
   const { username } = useParams()
   const [notFound, setNotFound] = useState<boolean>(false)
+  const [ref, inView] = useInView()
 
   const { profile, isLoading } = useSelector(
     ({ pwas: { devs, isDevPending } }: ReduxCombinedState) => ({
@@ -90,12 +92,14 @@ const Developer: React.FC = () => {
           <IonButtons slot="start">
             <IonBackButton defaultHref="/home" />
           </IonButtons>
-          <IonTitle>Developer</IonTitle>
+          <IonTitle>{inView ? "Developer" : profile?.username}</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent class="content">
         <IonRow>
-          <IonCol size="12">{renderProfileSection}</IonCol>
+          <IonCol size="12" ref={ref}>
+            {renderProfileSection}
+          </IonCol>
           <IonCol size="12">{renderAboutSection}</IonCol>
         </IonRow>
       </IonContent>

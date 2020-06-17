@@ -35,11 +35,12 @@ import {
   ellipsisVertical,
 } from "ionicons/icons"
 import ProfileCard, { TotalAppData } from "../../components/ProfileCard"
-
+import { useInView } from "react-intersection-observer"
 const Profile: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false)
   const [showAlert, setShowAlert] = useState<boolean>(false)
   const [showPopover, setShowPopover] = useState<boolean>(false)
+  const [ref, inView] = useInView()
   const history = useHistory()
 
   const {
@@ -152,7 +153,7 @@ const Profile: React.FC = () => {
       />
       <IonHeader className="ion-no-border bottom-line-border">
         <IonToolbar>
-          <IonTitle>Profile</IonTitle>
+          <IonTitle>{inView ? "Profile" : username}</IonTitle>
           <IonButtons slot="end">
             <Popover
               showPopover={showPopover}
@@ -187,7 +188,7 @@ const Profile: React.FC = () => {
       </IonHeader>
       <IonContent class="content">
         <IonRow>
-          <IonCol className="ProfileCardCol" size="12">
+          <IonCol ref={ref} className="ProfileCardCol" size="12">
             <ProfileCard
               isMyProfile={true}
               data={totalData}
