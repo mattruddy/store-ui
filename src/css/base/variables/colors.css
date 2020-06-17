@@ -145,3 +145,149 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-base: #0e76a8;
   --ion-color-contrast: #ffffff;
 }
+
+/* Dark mode */
+
+/* Fall Back */
+.dark-theme {
+  --ion-color-primary: #74b9ff;
+  --ion-color-primary-rgb: 66, 140, 255;
+  --ion-color-primary-contrast: #eeeeee;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #74b9ff;
+  --ion-color-primary-tint: #74b9ff;
+
+  --ion-color-secondary: #99b0a7;
+  --ion-color-secondary-rgb: 80, 200, 255;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade: #36abe0;
+  --ion-color-secondary-tint: #50c8ff;
+
+  --ion-color-tertiary: #006aff;
+  --ion-color-tertiary-rgb: 106, 100, 255;
+  --ion-color-tertiary-contrast: #ffffff;
+  --ion-color-tertiary-contrast-rgb: 255, 255, 255;
+  --ion-color-tertiary-shade: #006aff;
+  --ion-color-tertiary-tint: #006aff;
+
+  --ion-color-success: #2fdf75;
+  --ion-color-success-rgb: 47, 223, 117;
+  --ion-color-success-contrast: #000000;
+  --ion-color-success-contrast-rgb: 0, 0, 0;
+  --ion-color-success-shade: #29c467;
+  --ion-color-success-tint: #44e283;
+
+  --ion-color-warning: #ffd534;
+  --ion-color-warning-rgb: 255, 213, 52;
+  --ion-color-warning-contrast: #000000;
+  --ion-color-warning-contrast-rgb: 0, 0, 0;
+  --ion-color-warning-shade: #e0bb2e;
+  --ion-color-warning-tint: #ffd948;
+
+  --ion-color-danger: #ff4961;
+  --ion-color-danger-rgb: 255, 73, 97;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
+  --ion-color-danger-shade: #e04055;
+  --ion-color-danger-tint: #ff5b71;
+
+  --ion-color-dark: #f4f5f8;
+  --ion-color-dark-rgb: 244, 245, 248;
+  --ion-color-dark-contrast: #303028;
+  --ion-color-dark-contrast-rgb: 0, 0, 0;
+  --ion-color-dark-shade: #d7d8da;
+  --ion-color-dark-tint: #f5f6f9;
+
+  --ion-color-medium: #989aa2;
+  --ion-color-medium-rgb: 152, 154, 162;
+  --ion-color-medium-contrast: #000000;
+  --ion-color-medium-contrast-rgb: 0, 0, 0;
+  --ion-color-medium-shade: #86888f;
+  --ion-color-medium-tint: #a2a4ab;
+
+  --ion-color-light: #303028;
+  --ion-color-light-rgb: 34, 36, 40;
+  --ion-color-light-contrast: #ffffff;
+  --ion-color-light-contrast-rgb: 255, 255, 255;
+  --ion-color-light-shade: #1e2023;
+  --ion-color-light-tint: #383a3e;
+  --ion-background-color: #121212;
+  --starRatedColor: #eeeeee;
+  --ion-toolbar-background: #121212 !important;
+  --ion-tab-bar-background: #121212 !important;
+  --ion-text-color: #eeeeee !important;
+}
+
+.dark-theme .content {
+  --background: #121212 !important;
+}
+
+.dark-theme .SideBarCategory {
+  --background: #121212 !important;
+}
+
+.dark-theme .SideBar {
+  background: #121212 !important;
+}
+
+.dark-theme h2,
+.dark-theme strong {
+  color: #eeeeee !important;
+}
+
+.dark-theme .RatingCommentBackground {
+  background: #161616;
+}
+
+.dark-theme .RatingCommentTextArea {
+  background: #161616;
+}
+
+.dark-theme .SideBarCategory {
+  color: #eeeeee !important;
+}
+
+.dark-theme .CategoriesItemIcon {
+  color: #eeeeee !important;
+}
+
+.dark-theme .StandardCategoriesItemIcon {
+  color: #eeeeee !important;
+}
+
+.dark-theme .PWACardTitle {
+  color: #eeeeee !important;
+}
+
+.dark-theme .button {
+  color: #eeeeee !important;
+}
+
+.dark-theme .starRatedHover {
+  color: #ffffff !important;
+}
+
+/* iOS dark-theme */
+
+.ios .dark-theme {
+  --ion-background-color: #121212;
+  --ion-text-color: #eeeeee;
+  --ion-title-color: #eeeeee;
+  --ion-color-step-50: #121212;
+  --ion-toolbar-background: #161616;
+  --color: #eeeeee !important;
+  --ion-tab-bar-background: #121212 !important;
+}
+
+/* material design dark-theme */
+
+.md .dark-theme {
+  --ion-background-color: #121212;
+  --ion-text-color: #eeeeee;
+  --ion-title-color: #eeeeee;
+  --ion-color-step-50: #121212;
+  --ion-toolbar-background: #121212;
+  --color: #eeeeee !important;
+  --ion-tab-bar-background: #121212 !important;
+}

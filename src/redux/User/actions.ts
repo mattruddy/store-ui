@@ -24,6 +24,7 @@ import {
   UploadScreenshots,
   DeleteScreenshot,
   setPushStorage,
+  setDarkModeStorage,
 } from "../Actions"
 import { setAlert } from "../Alerts/actions"
 import ReactGA from "react-ga"
@@ -224,6 +225,13 @@ export const thunkSetEmail = (
 ): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
   dispatch(setData({ email }))
   await setEmailStorage(email)
+}
+
+export const thunkSetDarkMode = (
+  darkMode: boolean
+): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
+  dispatch(setData({ darkMode }))
+  await setDarkModeStorage(darkMode ? "true" : "false")
 }
 
 export const setLoading = (isLoading: boolean) =>
