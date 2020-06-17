@@ -7,7 +7,7 @@ import {
 } from "ionicons/icons"
 import LinkItem from "./LinkItem"
 import "./styles.css"
-import { IonRow, IonCol, IonButton } from "@ionic/react"
+import { IonRow, IonCol, IonButton, IonText } from "@ionic/react"
 import { PWA } from "../../util/types"
 import { capitalize } from "../../util"
 import AppImgs from "./AppImgs"
@@ -60,9 +60,11 @@ const ProfileCard: React.FC<ContainerProps> = ({
           )}
           <div className="ProfileCardLeftInfo">
             {username && (
-              <h1 style={{ paddingLeft: "8px", margin: "0" }}>
-                {capitalize(username)}
-              </h1>
+              <IonText color="primary">
+                <h1 style={{ paddingLeft: "8px", margin: "0" }}>
+                  @{capitalize(username)}
+                </h1>
+              </IonText>
             )}
             <div>
               {email && <LinkItem url={`mailto:${email}`} logo={mailOutline} />}

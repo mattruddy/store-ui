@@ -10,7 +10,6 @@ interface ContainerProps {
 const AppImgs: React.FC<ContainerProps> = ({ pwas }) => {
   return (
     <div className="ProfileAppsContainer">
-      <h4 style={{ margin: "0", paddingRight: "16px" }}>PWAs</h4>
       <div className="ProfileAppsRow">
         {pwas.map((pwa, idx) => (
           <IonRouterLink

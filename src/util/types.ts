@@ -73,6 +73,9 @@ export interface Profile {
   avatar: string
   about: string
   showEmail: boolean
+  location: string
+  fullName: string
+  header: string
 }
 
 export interface PublicProfile {
@@ -84,6 +87,9 @@ export interface PublicProfile {
   linkedIn: string
   twitter: string
   username: string
+  location: string
+  fullName: string
+  header: string
 }
 
 export interface AxiosCustomRequestConfig extends AxiosRequestConfig {

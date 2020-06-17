@@ -10,6 +10,7 @@ import {
   IonButton,
   IonCheckbox,
   IonProgressBar,
+  IonTextarea,
 } from "@ionic/react"
 import { FormItem } from "../../components"
 import ImageUploader from "react-images-upload"
@@ -22,11 +23,14 @@ import "react-mde/lib/styles/css/react-mde-all.css"
 import "./styles.css"
 
 const Settings: React.FC = () => {
+  const [fullName, setFullName] = useState<string>()
   const [gitHub, setGitHub] = useState<string>()
   const [linkedIn, setLinkedIn] = useState<string>()
   const [twitter, setTwitter] = useState<string>()
   const [showEmail, setShowEmail] = useState<boolean>()
   const [avatar, setAvatar] = useState<File | undefined>(undefined)
+  const [location, setLocation] = useState<string>()
+  const [header, setHeader] = useState<string>()
   const [about, setAbout] = useState<string>()
   const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write")
   const [updateEmail, setUpdateEmail] = useState<string>()
@@ -53,6 +57,9 @@ const Settings: React.FC = () => {
       updateShowEmail: boolean,
       updateEmail: string,
       updateAbout: string,
+      updateHeader: string | undefined,
+      updateLocation: string | undefined,
+      updateFullName: string | undefined,
       updateAvatar: File | undefined
     ) => {
       dispatch(
@@ -63,6 +70,9 @@ const Settings: React.FC = () => {
           updateShowEmail,
           updateEmail,
           updateAbout,
+          updateHeader,
+          updateLocation,
+          updateFullName,
           updateAvatar
         )
       )
@@ -86,6 +96,9 @@ const Settings: React.FC = () => {
       setTwitter(profile.twitter)
       setShowEmail(profile.showEmail)
       setAbout(profile.about)
+      setLocation(profile.location)
+      setFullName(profile.fullName)
+      setHeader(profile.header)
     }
   }, [email, profile])
 
@@ -98,6 +111,9 @@ const Settings: React.FC = () => {
       showEmail!,
       updateEmail!,
       about!,
+      header,
+      location,
+      fullName,
       avatar
     )
   }
@@ -109,7 +125,7 @@ const Settings: React.FC = () => {
           <IonButtons slot="start">
             <IonBackButton defaultHref="/profile" />
           </IonButtons>
-          <IonTitle>Settings</IonTitle>
+          <IonTitle>Edit Profile</IonTitle>
         </IonToolbar>
         {isLoading && <IonProgressBar type="indeterminate" color="primary" />}
       </IonHeader>
@@ -139,12 +155,20 @@ const Settings: React.FC = () => {
             />
           </FormItem>
           <FormItem
+            name="Full Name (optional)"
+            value={fullName}
+            onChange={(e) => setFullName(e.detail!.value)}
+            showError={false}
+            maxLength={30}
+            errorMessage=""
+          />
+          <FormItem
             name="GitHub"
             value={gitHub}
             onChange={(e) => setGitHub(e.detail.value)}
             showError={gitHub ? !validProfileLink(gitHub, "github") : false}
             errorMessage="Invalid GitHub Link"
-            maxLength={256}
+            maxLength={100}
           />
           <FormItem
             name="LinkedIn"
@@ -154,7 +178,7 @@ const Settings: React.FC = () => {
               linkedIn ? !validProfileLink(linkedIn, "linkedin") : false
             }
             errorMessage="Invalid LinkedIn Link"
-            maxLength={256}
+            maxLength={100}
           />
           <FormItem
             name="Twitter"
@@ -162,7 +186,7 @@ const Settings: React.FC = () => {
             onChange={(e) => setTwitter(e.detail.value)}
             showError={twitter ? !validProfileLink(twitter, "twitter") : false}
             errorMessage="Invalid Twitter Link"
-            maxLength={256}
+            maxLength={100}
           />
           <FormItem
             name="Email"
@@ -170,12 +194,28 @@ const Settings: React.FC = () => {
             onChange={(e) => setUpdateEmail(e.detail.value)}
             showError={false}
             errorMessage=""
-            maxLength={256}
+            maxLength={50}
           />
           <FormItem name="Display Email?" showError={false} errorMessage="">
             <IonCheckbox
               checked={showEmail}
               onIonChange={(e) => setShowEmail(e.detail.checked)}
+            />
+          </FormItem>
+          <FormItem
+            name="Location (optional)"
+            value={location}
+            onChange={(e) => setLocation(e.detail.value)}
+            maxLength={50}
+            showError={false}
+            errorMessage=""
+          />
+          <FormItem name="Header (optional)" showError={false} errorMessage="">
+            <IonTextarea
+              value={header}
+              onIonChange={(e) => setHeader(e.detail.value!)}
+              maxlength={200}
+              spellCheck={true}
             />
           </FormItem>
           <FormItem

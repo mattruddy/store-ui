@@ -140,6 +140,9 @@ export const thunkCreateProfile = (
   showEmail: boolean,
   email: string,
   about: string,
+  header: string | undefined,
+  location: string | undefined,
+  fullName: string | undefined,
   avatar?: File
 ): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
   dispatch(setLoading(true))
@@ -152,6 +155,9 @@ export const thunkCreateProfile = (
       showEmail,
       about,
       email,
+      header,
+      location,
+      fullName,
     }
     const fd = new FormData()
     fd.append("info", JSON.stringify(data))

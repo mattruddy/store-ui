@@ -134,7 +134,7 @@ const Profile: React.FC = () => {
                   icon: addCircleOutline,
                 },
                 {
-                  name: "Settings",
+                  name: "Edit Profile",
                   action: () => history.push(RouteMap.SETTINGS),
                   icon: settingsOutline,
                 },
