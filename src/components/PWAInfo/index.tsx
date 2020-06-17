@@ -59,7 +59,6 @@ const PWAInfo: React.FC<ContainerProps> = ({
         action: pwa.name,
       })
     }
-    window.open(pwa.link, "_blank")
   }
 
   return (
@@ -91,9 +90,14 @@ const PWAInfo: React.FC<ContainerProps> = ({
             )}
           </div>
         </div>
-        <IonButton color="dark" fill="outline" onClick={onInstall}>
+        <IonRouterLink
+          color="dark"
+          href={pwa.link}
+          target="_blank"
+          onClick={onInstall}
+        >
           FREE <IonIcon style={{ marginLeft: "10px" }} icon={openOutline} />
-        </IonButton>
+        </IonRouterLink>
       </div>
       {!isMyPwa && pwa.username && (
         <IonRouterLink

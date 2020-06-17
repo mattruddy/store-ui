@@ -4,9 +4,22 @@
   align-items: center;
 }
 
+.ProfileCardLeft {
+  display: flex;
+}
+
+.ProfileCardLeftRight {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.ProfileCardLinks {
+}
+
 .ProfileCardImg {
   border-radius: 50%;
-  margin-top: 16px;
+  margin: 24px;
 }
 
 .ProfileCardLinks {
@@ -16,7 +29,7 @@
 }
 
 .DataRow {
-  height: 80px;
+  height: 60px;
 }
 
 .DataCol {

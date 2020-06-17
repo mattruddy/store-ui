@@ -152,7 +152,7 @@ const Profile: React.FC = () => {
       />
       <IonHeader className="ion-no-border bottom-line-border">
         <IonToolbar>
-          <IonTitle>{username}</IonTitle>
+          <IonTitle>Profile</IonTitle>
           <IonButtons slot="end">
             <Popover
               showPopover={showPopover}
@@ -187,7 +187,7 @@ const Profile: React.FC = () => {
       </IonHeader>
       <IonContent class="content">
         <IonRow>
-          <IonCol className="ProfileCardCol" size="12" sizeMd="3">
+          <IonCol className="ProfileCardCol" size="12">
             <ProfileCard
               data={totalData}
               avatar={profile?.avatar}
@@ -195,12 +195,11 @@ const Profile: React.FC = () => {
               twitter={profile?.twitter}
               linkedIn={profile?.linkedIn}
               email={email}
+              username={username}
               isLoading={isLoading}
             />
           </IonCol>
-          <IonCol size="12" sizeMd="9">
-            {renderAppsSections}
-          </IonCol>
+          <IonCol size="12">{renderAppsSections}</IonCol>
         </IonRow>
       </IonContent>
       <IonAlert
