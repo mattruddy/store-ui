@@ -12,9 +12,3 @@
   justify-content: space-around;
   flex-direction: column;
 }
-
-@media screen and (max-width: 992px) {
-  .ProfileCardLeftCol {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.13);
-  }
-}

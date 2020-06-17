@@ -9,22 +9,18 @@ interface ContainerProps {
 
 const AppImgs: React.FC<ContainerProps> = ({ pwas }) => {
   return (
-    <div className="ProfileAppsRow">
-      {pwas.map((pwa, idx) => (
-        <IonRouterLink
-          key={idx}
-          style={{ padding: "8px" }}
-          routerLink={`/pwa/${pwa.name.replace(/ /g, "-")}`}
-        >
-          <img
-            alt="icon"
-            style={{ padding: "8px" }}
-            src={pwa.icon}
-            height="50"
-            width="50"
-          />
-        </IonRouterLink>
-      ))}
+    <div className="ProfileAppsContainer">
+      <h4 style={{ margin: "0", paddingRight: "16px" }}>PWAs</h4>
+      <div className="ProfileAppsRow">
+        {pwas.map((pwa, idx) => (
+          <IonRouterLink
+            key={idx}
+            routerLink={`/pwa/${pwa.name.replace(/ /g, "-")}`}
+          >
+            <img alt="icon" src={pwa.icon} height="35" width="35" />
+          </IonRouterLink>
+        ))}
+      </div>
     </div>
   )
 }

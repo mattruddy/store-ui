@@ -113,7 +113,7 @@ const stringMatch = (
 
 const checkValidPW = (pw: string): boolean => {
   return RegExp(
-    "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
+    "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%#*?&+])[A-Za-z\\d@$!%#*?&+]{8,}$",
     "g"
   ).test(pw)
 }
