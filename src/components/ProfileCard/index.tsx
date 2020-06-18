@@ -64,19 +64,24 @@ const ProfileCard: React.FC<ContainerProps> = ({
             )}
             <div className="ProfileCardLeftInfo">
               {username && (
-                <div>
-                  <h1
-                    className={`${fullName ? "" : "text-color"}`}
-                    style={{ paddingLeft: "8px", margin: "0" }}
-                  >
-                    {fullName ? capitalize(fullName) : `@${username}`}
-                  </h1>
-                  {fullName && (
-                    <h4
-                      className="text-color"
-                      style={{ margin: "0", padding: "8px" }}
-                    >{`@${username}`}</h4>
-                  )}
+                <>
+                  <div>
+                    <h1
+                      className={`${fullName ? "" : "text-color"}`}
+                      style={{ paddingLeft: "8px", margin: "0" }}
+                    >
+                      {fullName ? capitalize(fullName) : `@${username}`}
+                    </h1>
+                    {fullName && (
+                      <h4
+                        className="text-color"
+                        style={{
+                          margin: "0",
+                          paddingLeft: "8px",
+                        }}
+                      >{`@${username}`}</h4>
+                    )}
+                  </div>
                   <div className="ProfileLinksCont">
                     {email && (
                       <LinkItem url={`mailto:${email}`} logo={mailOutline} />
@@ -103,7 +108,7 @@ const ProfileCard: React.FC<ContainerProps> = ({
                       />
                     )}
                   </div>
-                </div>
+                </>
               )}
             </div>
           </div>
@@ -117,7 +122,7 @@ const ProfileCard: React.FC<ContainerProps> = ({
             {header && (
               <div
                 style={{
-                  padding: "16px",
+                  padding: "8px",
                 }}
               >
                 {header}

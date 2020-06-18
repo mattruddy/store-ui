@@ -79,8 +79,8 @@ const Developer: React.FC = () => {
 
   const renderAboutSection = useMemo(() => {
     return (
-      <p
-        style={{ margin: "0", padding: "24px" }}
+      <div
+        style={{ margin: "0", paddingLeft: "16px" }}
         dangerouslySetInnerHTML={{
           __html: mdConverter.makeHtml(profile?.about!),
         }}
