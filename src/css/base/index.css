@@ -37,7 +37,7 @@
 }
 
 .button {
-  --color: black;
+  --color: --text-color;
 }
 
 .button-no-shadow {

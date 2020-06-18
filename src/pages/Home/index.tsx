@@ -4,6 +4,7 @@ import {
   IonPage,
   useIonViewDidEnter,
   IonToggle,
+  IonButtons,
 } from "@ionic/react"
 import React, { useCallback, useEffect, useMemo, useRef, memo } from "react"
 import ReactGA from "react-ga"
@@ -97,14 +98,17 @@ const Home: React.FC = () => {
             <IonNote>Progressive Web App Discovery</IonNote>
           </div>
           <div>
-            <IonToggle
-              checked={darkMode}
-              onIonChange={(e) => setDarkMode(!darkMode)}
-            />
-            <AddToHomeScreen
-              prompt={prompt}
-              promptToInstall={promptToInstall}
-            />
+            <IonButtons>
+              <IonToggle
+                style={{ padding: "10px" }}
+                checked={darkMode}
+                onIonChange={(e) => setDarkMode(!darkMode)}
+              />
+              <AddToHomeScreen
+                prompt={prompt}
+                promptToInstall={promptToInstall}
+              />
+            </IonButtons>
           </div>
         </div>
       </HidingHeader>
