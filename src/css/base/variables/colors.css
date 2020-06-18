@@ -243,8 +243,9 @@ ion-select {
 }
 
 ion-alert {
-  color: var(--text-color);
-  opacity: 1;
+  --color: var(--text-color) !important;
+  --background: var(--background-color) !important;
+  --backdrop-opacity: 0.5 !important;
 }
 
 input.react-tag-input__input {
