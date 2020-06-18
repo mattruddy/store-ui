@@ -107,6 +107,10 @@ http://ionicframework.com/docs/theming/ */
   color: #24292e;
 }
 
+.dark-theme .ion-color-github {
+  color: white;
+}
+
 .ion-color-twitter {
   --ion-color-base: #1da1f4;
   --ion-color-base-rgb: 29, 161, 244;
