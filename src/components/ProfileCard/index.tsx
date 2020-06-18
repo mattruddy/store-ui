@@ -59,7 +59,7 @@ const ProfileCard: React.FC<ContainerProps> = ({
               <img
                 alt="avatar"
                 className="ProfileCardImg icon line-around"
-                src={avatar ? avatar : "assets/icon/logo.png"}
+                src={avatar ? avatar : "assets/icon/apple-touch-icon.png"}
               />
             )}
             <div className="ProfileCardLeftInfo">
