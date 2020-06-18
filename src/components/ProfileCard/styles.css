@@ -1,0 +1,27 @@
+.ProfileCardLeft {
+  display: flex;
+  height: 135px;
+}
+
+.ProfileCardImg {
+  border-radius: 50%;
+}
+
+.ProfileLinksCont {
+  width: 120px;
+  margin-left: 12px;
+  display: flex;
+}
+
+.ProfileCardLeftInfo {
+  display: flex;
+  justify-content: space-between;
+  height: 120px;
+  flex-direction: column;
+}
+
+.ProfileSubTitleBlock {
+  display: flex;
+  justify-content: space-between;
+  margin-right: 32px;
+}

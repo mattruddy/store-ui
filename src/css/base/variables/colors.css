@@ -36,8 +36,6 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-primary-shade: #74b9ff;
   --ion-color-primary-tint: #74b9ff;
 
-  --ion-color-github: #24292e;
-
   /** secondary **/
   --ion-color-secondary: #99b0a7;
   --ion-color-secondary-rgb: 61, 194, 255;
@@ -103,6 +101,11 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-light-tint: #74b9ff;
 
   --ion-toolbar-background: rgb(248, 248, 248);
+  --ion-color-github: #24292e;
+}
+
+.ion-color-github {
+  color: #24292e;
 }
 
 .ion-color-twitter {

@@ -25,12 +25,14 @@ import {
   thunkGetPWAFromName,
   thunkGetRatings,
   thunkAddRating,
+  thunkGetDev,
 } from "../../redux/PWAs/actions"
 import { RouteComponentProps, withRouter } from "react-router"
 import { ScreenshotSlider, Rating, PWAInfo, RatingItem } from "../../components"
 import ReactGA from "react-ga"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { useSelector, shallowEqual, useDispatch } from "react-redux"
+import { PWA as PWAType } from "../../util/types"
 
 const stars = ["ONE", "TWO", "THREE", "FOUR", "FIVE"]
 
@@ -48,12 +50,17 @@ const PWA: React.FC<OwnProps> = ({
 }) => {
   const [notFound, setNotFound] = useState<boolean>(false)
   const [hasFetchedRatings, setHasFetchedRatings] = useState<boolean>(false)
+  const [hasFetchDev, sethasFetchDev] = useState<boolean>(false)
 
-  const { pwa } = useSelector(
-    ({ pwas: { pwas }, user }: ReduxCombinedState) => ({
-      pwa: pwas.find((x) => {
-        return pwaName.replace(/-/g, " ").toLowerCase() === x.name.toLowerCase()
-      }),
+  const findPWA = (pwas: PWAType[]) =>
+    pwas.find((x) => {
+      return pwaName.replace(/-/g, " ").toLowerCase() === x.name.toLowerCase()
+    })
+
+  const { pwa, dev } = useSelector(
+    ({ pwas: { pwas, devs } }: ReduxCombinedState) => ({
+      pwa: findPWA(pwas),
+      dev: devs.find((x) => x.username === findPWA(pwas)?.username),
     }),
     shallowEqual
   )
@@ -72,6 +79,11 @@ const PWA: React.FC<OwnProps> = ({
     [dispatch]
   )
 
+  const addDev = useCallback(
+    async (username: string) => dispatch(thunkGetDev(username)),
+    [dispatch]
+  )
+
   useEffect(() => {
     ;(async () => {
       if (!notFound) {
@@ -84,6 +96,18 @@ const PWA: React.FC<OwnProps> = ({
       }
     })()
   }, [pwa, notFound])
+
+  // Set the developer.
+  useEffect(() => {
+    ;(async () => {
+      if (pwa && pwa.username) {
+        if (!dev) {
+          console.log("dlak;fjlka")
+          await addDev(pwa.username)
+        }
+      }
+    })()
+  }, [pwa, dev])
 
   useIonViewDidEnter(() => {
     ReactGA.pageview(pwaName)
@@ -138,13 +162,7 @@ const PWA: React.FC<OwnProps> = ({
             {pwa ? (
               <Fragment>
                 <IonCol size="12">
-                  <PWAInfo
-                    pwa={pwa}
-                    appId={pwa.appId}
-                    currentStar={pwa.averageRating}
-                    starCount={pwa.ratingsCount}
-                    tags={pwa.tags}
-                  />
+                  <PWAInfo pwa={pwa} isMyPwa={false} />
                 </IonCol>
                 <IonCol size="12" sizeMd="6" pushMd="6">
                   <ScreenshotSlider images={pwa.screenshots} />

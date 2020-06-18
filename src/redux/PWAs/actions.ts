@@ -10,11 +10,20 @@ import {
   RATINGS_COMPLETE,
   RATINGS_ADD,
   RATING_ADD,
+  DEV_ADD,
+  DEV_PENDING,
+  DEV_COMPLETE,
 } from "./types"
 import { Axios } from "../Actions"
 import { Action } from "redux"
 import { ThunkAction } from "redux-thunk"
-import { PWA, HomePWAs, Rating, NewRating } from "../../util/types"
+import {
+  PWA,
+  HomePWAs,
+  Rating,
+  NewRating,
+  PublicProfile,
+} from "../../util/types"
 import { ReduxCombinedState } from "../RootReducer"
 import ReactGA from "react-ga"
 import { setAlert } from "../Alerts/actions"
@@ -26,6 +35,10 @@ const completePWAs = () => ({ type: PWAS_COMPLETE })
 const loadingRatings = () => ({ type: RATINGS_PENDING })
 
 const completeRatings = () => ({ type: RATINGS_COMPLETE })
+
+const loadingDev = () => ({ type: DEV_PENDING })
+
+const completeDev = () => ({ type: DEV_COMPLETE })
 
 const addRatings = (ratings: Rating[], appId: number) => ({
   type: RATINGS_ADD,
@@ -39,6 +52,11 @@ const addRating = (newRating: NewRating, appId: number) => ({
 
 const addPWASection = (data: PWASection) => ({
   type: PWAS_SECTION_ADD,
+  payload: data,
+})
+
+const addDev = (data: PublicProfile) => ({
+  type: DEV_ADD,
   payload: data,
 })
 
@@ -105,8 +123,16 @@ const thunkGetPWAs = (
 
 const thunkGetPWAFromName = (
   name: string
-): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
-  dispatch(loadingPWAs)
+): ThunkAction<void, ReduxCombinedState, null, Action> => async (
+  dispatch,
+  getState
+) => {
+  const {
+    pwas: { pwas },
+  } = getState()
+  const pwa = pwas.find((x) => x.name === name)
+  if (pwa) return pwa
+  dispatch(loadingPWAs())
   try {
     const url = `/public/pwa/${name}`
     const axiosInstance = await Axios()
@@ -127,7 +153,7 @@ const thunkGetRatings = (
 ): ThunkAction<void, ReduxCombinedState, null, Action<string>> => async (
   dispatch
 ) => {
-  dispatch(loadingRatings)
+  dispatch(loadingRatings())
   try {
     const url = `/public/pwa/${appId}/ratings`
     const axiosInstance = await Axios()
@@ -240,10 +266,36 @@ const thunkGetHomeData = (
   }
 }
 
+const thunkGetDev = (
+  username: string
+): ThunkAction<void, ReduxCombinedState, null, Action<string>> => async (
+  dispatch,
+  getState
+) => {
+  const {
+    pwas: { devs },
+  } = getState()
+  const dev = devs.find((x) => x.username === username)
+  if (dev) return dev
+  try {
+    dispatch(loadingDev())
+    const resp = await (await Axios()).get(`/public/profile/${username}`)
+    const data = resp.data as PublicProfile
+    dispatch(addDev(data))
+    return data
+  } catch (e) {
+    console.error(e)
+    return undefined
+  } finally {
+    dispatch(completeDev())
+  }
+}
+
 export {
   thunkGetPWAs,
   thunkGetHomeData,
   thunkGetPWAFromName,
   thunkGetRatings,
   thunkAddRating,
+  thunkGetDev,
 }

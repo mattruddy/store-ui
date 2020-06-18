@@ -1,4 +1,10 @@
-import { PWA, HomePWAs, Rating, NewRating } from "../../util/types"
+import {
+  PWA,
+  HomePWAs,
+  Rating,
+  NewRating,
+  PublicProfile,
+} from "../../util/types"
 
 export interface PWASection {
   category: string
@@ -17,11 +23,15 @@ export interface PWAsState {
   search: string
   home: HomePWAs
   isRatingsPending: boolean
+  isDevPending: boolean
+  devs: PublicProfile[]
 }
 
 export const PWAS_PENDING = "PWAS_PENDING"
 export const PWAS_COMPLETE = "PWAS_COMPLETE"
 export const RATINGS_PENDING = "RATINGS_PENDING"
+export const DEV_PENDING = "DEV_PENDING"
+export const DEV_COMPLETE = "DEV_COMPLETE"
 export const RATINGS_COMPLETE = "RATINGS_COMPLETE"
 export const RATINGS_ADD = "RATINGS_ADD"
 export const PWAS_SECTION_ADD = "PWAS_SECTION_ADD"
@@ -31,6 +41,8 @@ export const PWAS_ADD = "PWAS_ADD"
 export const PWA_REPLACE = "PWAS_REPLACE"
 export const PWAS_DATA = "PWAS_DATA"
 export const RATING_ADD = "RATING_ADD"
+export const DEV_ADD = "DEV_ADD"
+export const DEV_REPLACE = "DEV_REPLACE"
 
 export interface AddPWAsSectionAction {
   type: typeof PWAS_SECTION_ADD
@@ -42,9 +54,9 @@ export interface AddPWAsAction {
   payload: PWA[]
 }
 
-export interface AddPWAsAction {
-  type: typeof PWAS_ADD
-  payload: PWA[]
+export interface AddDevAction {
+  type: typeof DEV_ADD
+  payload: PublicProfile
 }
 
 export interface PWASDataAction {
@@ -83,6 +95,14 @@ export interface LoadingRatingsAction {
   type: typeof RATINGS_PENDING
 }
 
+export interface LoadingDevAction {
+  type: typeof DEV_PENDING
+}
+
+export interface CompleteDevAction {
+  type: typeof DEV_COMPLETE
+}
+
 export interface SetHomeDataAction {
   type: typeof HOME_SET
   payload: HomePWAs
@@ -100,3 +120,6 @@ export type PWAsActionTypes =
   | AddRatingsAction
   | PWASDataAction
   | AddRatingAction
+  | AddDevAction
+  | CompleteDevAction
+  | LoadingDevAction

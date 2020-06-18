@@ -37,12 +37,16 @@ export interface PWA {
   averageRating: number
   ratingsCount: number
   tags: string[]
+  pageViews: number
+  installs: number
+  username: string
 }
 
 export interface UserProfile {
   username: string
   email: string
   pwas: PWA[]
+  profile: Profile
 }
 
 export interface HomePWAs {
@@ -60,6 +64,32 @@ export interface Push {
   key: string
   auth: string
   endpoint: string
+}
+
+export interface Profile {
+  gitHub: string
+  linkedIn: string
+  twitter: string
+  avatar: string
+  about: string
+  showEmail: boolean
+  location: string
+  fullName: string
+  header: string
+}
+
+export interface PublicProfile {
+  about: string
+  apps: PWA[]
+  avatar: string
+  email: string
+  gitHub: string
+  linkedIn: string
+  twitter: string
+  username: string
+  location: string
+  fullName: string
+  header: string
 }
 
 export interface AxiosCustomRequestConfig extends AxiosRequestConfig {

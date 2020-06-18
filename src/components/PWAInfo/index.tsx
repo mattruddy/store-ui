@@ -1,6 +1,12 @@
-import React, { memo } from "react"
-import { IonButton, IonIcon, IonChip, IonLabel } from "@ionic/react"
-import { ShareUrl } from "../"
+import React, { memo, useState } from "react"
+import {
+  IonButton,
+  IonIcon,
+  IonChip,
+  IonLabel,
+  IonRouterLink,
+} from "@ionic/react"
+import { ShareUrl, FormItem } from "../"
 import { PWA } from "../../util/types"
 import ReactGA from "react-ga"
 
@@ -8,103 +14,160 @@ import ReactGA from "react-ga"
 import StarRatings from "react-star-ratings"
 import { openOutline } from "ionicons/icons"
 import { Axios } from "../../redux/Actions"
+import CategoryOptions from "../CategoryOptions"
+import ReactTagInput from "@pathofdev/react-tag-input"
+import "./styles.css"
+import { noSpecialChars, mdConverter } from "../../util"
+import ReactMde from "react-mde"
 
 interface ContainerProps {
   pwa: PWA
-  appId: number
-  currentStar: number
-  starCount: number
-  tags: string[]
+  isMyPwa: boolean
+  isEdit?: boolean
+  name?: string
+  cat?: string
+  desc?: string
+  tags?: string[]
+  setName?: (name: string) => void
+  setCat?: (option: string) => void
+  setDesc?: (description: string) => void
+  setTags?: (tasg: string[]) => void
 }
 
 const PWAInfo: React.FC<ContainerProps> = ({
   pwa,
-  appId,
-  currentStar,
-  starCount,
+  isMyPwa,
+  isEdit = false,
+  name,
+  cat,
+  desc,
   tags,
+  setName,
+  setCat,
+  setDesc,
+  setTags,
 }) => {
+  const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write")
+
+  const onInstall = () => {
+    if (!isMyPwa) {
+      ;(async () => await (await Axios()).post(`public/pwa/${pwa.appId}`))()
+      ReactGA.event({
+        category: "installed",
+        action: pwa.name,
+      })
+    }
+  }
+
   return (
     <>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          paddingBottom: "10px",
-        }}
-      >
+      <div className="PWAInfoHeader">
         <div style={{ display: "flex", alignItems: "center" }}>
-          <img
-            alt="icon"
-            style={{
-              height: "80px",
-              width: "80px",
-              borderRadius: "6px",
-              margin: "10px",
-            }}
-            src={pwa.icon}
-          />
-          <div
-            style={{
-              paddingLeft: "10px",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-around",
-              height: "70px",
-            }}
-          >
-            <p style={{ margin: "0", fontSize: "20px" }}>{pwa.name}</p>
-            <small>{pwa.category}</small>
+          <img alt="icon" className="PWAInfoIcon" src={pwa.icon} />
+          <div className="PWAInfoToolbar">
+            {isEdit ? (
+              <FormItem
+                name="Name"
+                value={name!}
+                onChange={(e) => setName!(e.detail!.value)}
+                maxLength={25}
+                showError={!noSpecialChars(name!)}
+                errorMessage="No special chars allowed"
+              />
+            ) : (
+              <span style={{ padding: "8px", fontSize: "20px" }}>
+                {pwa.name}
+              </span>
+            )}
+            {isEdit ? (
+              <FormItem name="Category" showError={false} errorMessage="">
+                <CategoryOptions initValue={cat} onPress={setCat!} />
+              </FormItem>
+            ) : (
+              <small style={{ padding: "8px" }}>{pwa.category}</small>
+            )}
           </div>
         </div>
         <IonButton
           color="dark"
           fill="outline"
-          onClick={() => {
-            ;(async () => await (await Axios()).post(`public/pwa/${appId}`))()
-            ReactGA.event({
-              category: "installed",
-              action: pwa.name,
-            })
-            window.open(pwa.link, "_blank")
-          }}
+          href={pwa.link}
+          target="_blank"
+          onClick={onInstall}
         >
           FREE <IonIcon style={{ marginLeft: "10px" }} icon={openOutline} />
         </IonButton>
       </div>
+      {pwa.username && (
+        <div style={{ marginLeft: "8px", marginBottom: "10px" }}>
+          <IonRouterLink routerLink={`/dev/${pwa.username}`}>
+            Developer Info
+          </IonRouterLink>
+        </div>
+      )}
       <div style={{ marginLeft: "10px" }}>
         <StarRatings
-          rating={currentStar}
+          rating={pwa.averageRating}
           starDimension="20px"
           starSpacing="2px"
         />
-        <span style={{ marginLeft: "5px" }}>({starCount})</span>
+        <span style={{ marginLeft: "5px" }}>({pwa.ratingsCount})</span>
       </div>
-
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          marginTop: "10px",
-        }}
-      >
+      <div className="PWAShareContainer">
         <ShareUrl title={pwa.name} />
       </div>
-      <div style={{ padding: "10px" }}>
-        {tags.map((x, i) => (
-          <IonChip key={i}>
-            <IonLabel>{x}</IonLabel>
-          </IonChip>
-        ))}
-      </div>
-      <div
-        className="bottom-line-border"
-        style={{ padding: "16px", minHeight: "200px" }}
-      >
-        {pwa.description}
-      </div>
+      {isEdit ? (
+        <FormItem name="Tags" showError={false} errorMessage="">
+          <div style={{ padding: "10px", width: "100%" }}>
+            <ReactTagInput
+              tags={tags!}
+              onChange={(newTags) => {
+                setTags!(newTags)
+              }}
+              validator={(tag) => {
+                return tag.length <= 30
+              }}
+              removeOnBackspace={true}
+              maxTags={5}
+              placeholder="Enter to add"
+            />
+          </div>
+        </FormItem>
+      ) : (
+        <div style={{ padding: "10px" }}>
+          {pwa.tags.map((x, i) => (
+            <IonChip key={i}>
+              <IonLabel>{x}</IonLabel>
+            </IonChip>
+          ))}
+        </div>
+      )}
+      {isEdit ? (
+        <FormItem
+          name="Description"
+          showError={!desc || desc.length > 1500}
+          errorMessage="Description is required and max length is 1500 characters"
+        >
+          <div style={{ width: "100%", paddingTop: "16px" }}>
+            <ReactMde
+              value={desc}
+              onChange={setDesc}
+              selectedTab={selectedTab}
+              onTabChange={setSelectedTab}
+              generateMarkdownPreview={(md) =>
+                Promise.resolve(mdConverter.makeHtml(desc!))
+              }            />
+          </div>
+        </FormItem>
+      ) : (
+        <div
+          className="bottom-line-border"
+          style={{ padding: "16px", minHeight: "200px" }}
+          dangerouslySetInnerHTML={{
+            __html: mdConverter.makeHtml(pwa.description),
+          }}
+        />
+      )}
     </>
   )
 }

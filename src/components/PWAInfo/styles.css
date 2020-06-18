@@ -1,0 +1,27 @@
+.PWAInfoHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 10px;
+}
+
+.PWAInfoIcon {
+  height: 80px;
+  width: 80px;
+  border-radius: 6px;
+  margin: 10px;
+}
+
+.PWAInfoToolbar {
+  padding-left: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.PWAShareContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 10px;
+}

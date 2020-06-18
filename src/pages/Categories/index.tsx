@@ -14,21 +14,18 @@ import {
 } from "@ionic/react"
 import { categories } from "../../components/CategoryOptions"
 import { capitalize } from "../../util"
-import { useHistory } from "react-router"
 import { GetPwaCategoryUrl, RouteMap } from "../../routes"
 import "./styles.css"
 import { standardCategories } from "../../components/SideBar"
 
 const Categories: React.FC = () => {
-  const history = useHistory()
-
-  const onPress = (category: string) => {
+  const href = (category: string): string => {
     if (category.toLowerCase() === "home") {
-      history.push(RouteMap.HOME)
+      return RouteMap.HOME
     } else if (category.toLowerCase() === "search") {
-      history.push(RouteMap.SEARCH)
+      return RouteMap.SEARCH
     } else {
-      history.push(GetPwaCategoryUrl(category.toLowerCase()))
+      return GetPwaCategoryUrl(category.toLowerCase())
     }
   }
 
@@ -49,8 +46,7 @@ const Categories: React.FC = () => {
                   className="CategoryPageItem content"
                   lines="none"
                   key={i}
-                  button
-                  onClick={() => onPress(cat.value)}
+                  routerLink={href(cat.value)}
                 >
                   <IonIcon className="CategoryPageItemIcon" icon={cat.icon} />
                   {capitalize(cat.category)}
@@ -65,8 +61,7 @@ const Categories: React.FC = () => {
               <IonItem
                 className="CategoryPageItem content"
                 key={i}
-                button
-                onClick={() => onPress(cat.category)}
+                routerLink={href(cat.category)}
               >
                 <IonIcon className="CategoryPageItemIcon" icon={cat.icon} />
                 {capitalize(cat.category)}

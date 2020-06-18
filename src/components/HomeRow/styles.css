@@ -20,8 +20,6 @@
   margin-left: 16px;
 }
 
-.HomeViewMoreButton {
-  --background: transparent;
-  --box-shadow: none;
-  --color: var(--ion-color-primary);
+.HomeViewMoreLink {
+  padding-right: 24px;
 }

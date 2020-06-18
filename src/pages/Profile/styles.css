@@ -1,4 +1,20 @@
+.ProfileTopRow {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ProfileCardCol {
+  border-right: 1px solid rgba(0, 0, 0, 0.13);
+  padding: 0;
+}
+
 .NoAppsNote {
-  padding-left: 15px;
+  padding-left: 40px;
   color: rgb(115, 115, 115);
+}
+
+@media screen and (max-width: 768px) {
+  .ProfileCardCol {
+    border-right: none;
+  }
 }

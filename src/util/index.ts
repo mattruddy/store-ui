@@ -1,6 +1,7 @@
 import loadImage from "blueimp-load-image"
 import moment from "moment"
 import ReactGA from "react-ga"
+import Showdown from "showdown"
 
 const blobToFile = (blob: Blob, fileName: string): File => {
   const b: any = blob
@@ -112,7 +113,7 @@ const stringMatch = (
 
 const checkValidPW = (pw: string): boolean => {
   return RegExp(
-    "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
+    "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%#*?&+])[A-Za-z\\d@$!%#*?&+]{8,}$",
     "g"
   ).test(pw)
 }
@@ -131,6 +132,8 @@ const validAppUpload = (
     icon &&
     /^((https))/.test(url) &&
     description &&
+    description.length > 0 &&
+    description.length <= 1500 &&
     category &&
     screenshots &&
     screenshots.length <= 6
@@ -148,6 +151,17 @@ const normalizeCategory = (category: string | undefined): string => {
     : category
 }
 
+const validProfileLink = (link: string, site: string): boolean => {
+  return link.toLowerCase().startsWith(`https://${site.toLowerCase()}.com/`)
+}
+
+const mdConverter = new Showdown.Converter({
+  tables: true,
+  simplifiedAutoLink: true,
+  strikethrough: true,
+  tasklists: true,
+})
+
 export {
   blobToFile,
   fixFilesRotation,
@@ -163,4 +177,6 @@ export {
   checkValidPW,
   validAppUpload,
   normalizeCategory,
+  validProfileLink,
+  mdConverter,
 }

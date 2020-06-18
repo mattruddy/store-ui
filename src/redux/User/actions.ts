@@ -7,8 +7,9 @@ import {
   USER_ADD_APP,
   USER_REMOVE_APP,
   UserRole,
+  USER_CREATE_PROFILE,
 } from "./types"
-import { PWA, Push } from "../../util/types"
+import { PWA, Push, Profile } from "../../util/types"
 import { ReduxCombinedState } from "../RootReducer"
 import { Action } from "redux"
 import { ThunkAction } from "redux-thunk"
@@ -26,7 +27,6 @@ import {
   setPushStorage,
 } from "../Actions"
 import { setAlert } from "../Alerts/actions"
-import ReactGA from "react-ga"
 
 export const thunkAddPush = (
   push: Push
@@ -69,10 +69,6 @@ export const thunkSignUp = (
     await setUsernameStorage(username)
     await setEmailStorage(email)
     await setIsLoggedInStorage("true")
-    ReactGA.event({
-      category: "sign up",
-      action: "User signed up!",
-    })
     dispatch(
       setAlert({
         message: "Signed Up!",
@@ -137,6 +133,61 @@ export const thunkLogin = (
   }
 }
 
+export const thunkCreateProfile = (
+  gitHub: string,
+  linkedIn: string,
+  twitter: string,
+  showEmail: boolean,
+  email: string,
+  about: string,
+  header: string | undefined,
+  location: string | undefined,
+  fullName: string | undefined,
+  avatar?: File
+): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
+  dispatch(setLoading(true))
+  try {
+    const url = "secure/profile"
+    const data = {
+      gitHub,
+      linkedIn,
+      twitter,
+      showEmail,
+      about,
+      email,
+      header,
+      location,
+      fullName,
+    }
+    const fd = new FormData()
+    fd.append("info", JSON.stringify(data))
+    avatar && fd.append("avatar", avatar)
+    const resp = await (await AxiosForm(fd)).post(url, fd)
+    dispatch(setProfile(resp.data as Profile))
+    dispatch(setData({ email }))
+    dispatch(
+      setAlert({
+        message: "Profile Updated",
+        timeout: 3000,
+        show: true,
+        status: "success",
+      })
+    )
+  } catch (e) {
+    dispatch(
+      setAlert({
+        message: e.response.data.message,
+        apiResponseStatus: e.response.status,
+        timeout: 3000,
+        show: true,
+      })
+    )
+    return console.error(e)
+  } finally {
+    dispatch(setLoading(false))
+  }
+}
+
 export const thunkLoadProfile = (): ThunkAction<
   void,
   ReduxCombinedState,
@@ -148,13 +199,14 @@ export const thunkLoadProfile = (): ThunkAction<
     const url = `secure/profile`
     const resp = await (await Axios()).get(url)
     const {
-      data: { username, pageResponses, email },
+      data: { username, pageResponses, email, profile },
     } = resp
     dispatch(
       setData({
         email,
         username,
         pwas: pageResponses as PWA[],
+        profile: profile as Profile,
       })
     )
     await setEmailStorage(email)
@@ -204,11 +256,13 @@ export const thunkLogout = (): ThunkAction<
   dispatch(setLoading(true))
   dispatch(
     setData({
+      profile: undefined,
       token: "",
       email: "",
       username: "",
       isLoggedIn: false,
       pwas: [],
+      id: -1,
     })
   )
   await setEmailStorage("")
@@ -242,6 +296,12 @@ export const setPWAS = (pwas: PWA[] | undefined) =>
   ({
     type: USER_SET_PWAS,
     payload: pwas,
+  } as const)
+
+export const setProfile = (profile: Profile | undefined) =>
+  ({
+    type: USER_CREATE_PROFILE,
+    payload: profile,
   } as const)
 
 export const replaceApp = (app: PWA) =>
