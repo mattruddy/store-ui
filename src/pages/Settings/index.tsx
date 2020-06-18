@@ -133,7 +133,11 @@ const Settings: React.FC = () => {
         <div className="SettingsAvatarContainer">
           <img
             className="SettingsAvatar icon line-around"
-            src={profile?.avatar}
+            src={
+              profile && profile.avatar
+                ? profile.avatar
+                : "assets/icon/apple-touch-icon.png"
+            }
           />
         </div>
         <form onSubmit={onSubmit}>
@@ -237,7 +241,7 @@ const Settings: React.FC = () => {
           </FormItem>
           <IonButton
             style={{ margin: "16px" }}
-            disabled={about?.trim() === ""}
+            disabled={!about || about?.trim() === ""}
             expand="block"
             fill="outline"
             type="submit"
