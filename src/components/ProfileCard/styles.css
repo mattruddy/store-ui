@@ -4,6 +4,7 @@
 
 .ProfileCardLeft {
   display: flex;
+  height: 160px;
 }
 
 .ProfileCardImg {
@@ -22,4 +23,9 @@
   display: flex;
   justify-content: space-around;
   flex-direction: column;
+}
+
+.ProfileSubTitleBlock {
+  display: flex;
+  justify-content: space-between;
 }

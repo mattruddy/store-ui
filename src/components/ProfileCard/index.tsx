@@ -76,49 +76,61 @@ const ProfileCard: React.FC<ContainerProps> = ({
                     style={{ margin: "0", padding: "8px" }}
                   >{`@${username}`}</h4>
                 )}
-                {location && (
-                  <div style={{ padding: "8px" }}>
-                    <IonIcon icon={locationOutline} />
-                    {location}
-                  </div>
-                )}
-              </div>
-            )}
-            {isMyProfile && (
-              <div>
-                <IonButton fill="outline" color="dark" routerLink="/settings">
-                  Edit
-                </IonButton>
+                <div className="ProfileLinksCont">
+                  {email && (
+                    <LinkItem url={`mailto:${email}`} logo={mailOutline} />
+                  )}
+                  {gitHub && (
+                    <LinkItem
+                      url={gitHub}
+                      logo={logoGithub}
+                      className="ion-color-github"
+                    />
+                  )}
+                  {linkedIn && (
+                    <LinkItem
+                      url={linkedIn}
+                      logo={logoLinkedin}
+                      color="linkedin"
+                    />
+                  )}
+                  {twitter && (
+                    <LinkItem
+                      url={twitter}
+                      logo={logoTwitter}
+                      color="twitter"
+                    />
+                  )}
+                </div>
               </div>
             )}
           </div>
         </div>
-        <div className="ProfileLinksCont">
-          {email && <LinkItem url={`mailto:${email}`} logo={mailOutline} />}
-          {gitHub && (
-            <LinkItem
-              url={gitHub}
-              logo={logoGithub}
-              className="ion-color-github"
-            />
-          )}
-          {linkedIn && (
-            <LinkItem url={linkedIn} logo={logoLinkedin} color="linkedin" />
-          )}
-          {twitter && (
-            <LinkItem url={twitter} logo={logoTwitter} color="twitter" />
-          )}
-        </div>
-        {header && (
-          <div
-            style={{
-              padding: "32px",
-              paddingTop: "16px",
-            }}
-          >
-            {header}
+        {location && (
+          <div className="text-color" style={{ paddingLeft: "24px" }}>
+            <IonIcon icon={locationOutline} />
+            {location}
           </div>
         )}
+        <div className="ProfileSubTitleBlock">
+          {header && (
+            <div
+              style={{
+                padding: "32px",
+                paddingTop: "16px",
+              }}
+            >
+              {header}
+            </div>
+          )}
+          {isMyProfile && (
+            <div>
+              <IonButton fill="outline" color="dark" routerLink="/settings">
+                Edit
+              </IonButton>
+            </div>
+          )}
+        </div>
       </IonCol>
       {data && <DataBox data={data} />}
       {pwas && <AppImgs pwas={pwas} />}
