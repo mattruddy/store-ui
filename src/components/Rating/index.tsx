@@ -56,8 +56,8 @@ const Rating: React.FC<ContainerProps> = ({ onSubmit }) => {
             rating={star}
             changeRating={handleStarRatingChange}
             stars={5}
-            starRatedColor="starRatedColor" //"rgb(109, 122, 130)"
-            starHoverColor="starRatedHover" //"rgb(109, 122, 130)"
+            starRatedColor="var(--light-rating)"
+            starEmptyColor="var(--dark-rating)"
             name="rating"
             starDimension="30px"
             starSpacing="4px"

@@ -25,6 +25,8 @@ const RatingItem: React.FC<ContainerProps> = ({ rating }) => {
             rating={rating.star}
             starDimension="20px"
             starSpacing="2px"
+            starRatedColor="var(--light-rating)"
+            starEmptyColor="var(--dark-rating)"
           />
         </div>
         <div className="line-border RatingCommentBackground">

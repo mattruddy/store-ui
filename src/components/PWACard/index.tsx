@@ -45,6 +45,8 @@ const PWACard: React.FC<ContainerProps> = ({ pwa, url }) => {
             stars={5}
             starDimension="15px"
             starSpacing="2px"
+            starRatedColor="var(--light-rating)"
+            starEmptyColor="var(--dark-rating)"
           />
         </div>
       </IonCardContent>

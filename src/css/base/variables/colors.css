@@ -227,6 +227,16 @@ http://ionicframework.com/docs/theming/ */
   --background: #121212 !important;
 }
 
+.dark-theme {
+  --light-rating: #eeeeee !important;
+  --dark-rating: #303028 !important;
+}
+
+:root {
+  --light-rating: #2d3436;
+  --dark-rating: #eeeeee;
+}
+
 .dark-theme .SideBar {
   background: #121212 !important;
 }
