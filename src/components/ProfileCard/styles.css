@@ -1,15 +1,10 @@
-.ProfileCardLeftCol {
-  padding-left: 24px;
-}
-
 .ProfileCardLeft {
   display: flex;
-  height: 160px;
+  height: 135px;
 }
 
 .ProfileCardImg {
   border-radius: 50%;
-  margin: 24px;
 }
 
 .ProfileLinksCont {
