@@ -226,7 +226,7 @@ ion-searchbar {
 }
 
 ion-tab-button {
-  --color: var(--tab-button-color);
+  --color: var(--sub-color);
 }
 
 ion-tab-bar {
@@ -272,11 +272,16 @@ textarea {
   --background: #121212 !important;
 }
 
+ion-split-pane {
+  --border: 1px solid var(--border-color);
+}
+
 .dark-theme {
   --light-rating: #eeeeee !important;
   --dark-rating: #303028 !important;
   --border-color: #737373 !important;
   --background-color: #161616 !important;
+  --ion-background-color: var(--background-color) !important;
 
   --ion-text-color: #eeeeee;
   --title-color: #eeeeee;
