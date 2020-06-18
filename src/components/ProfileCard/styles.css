@@ -21,11 +21,12 @@
 
 .ProfileCardLeftInfo {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   flex-direction: column;
 }
 
 .ProfileSubTitleBlock {
   display: flex;
   justify-content: space-between;
+  margin-right: 32px;
 }

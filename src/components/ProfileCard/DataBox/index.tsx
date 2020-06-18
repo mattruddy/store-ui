@@ -9,15 +9,15 @@ interface ContainerProps {
 
 const DataBox: React.FC<ContainerProps> = ({ data }) => {
   return (
-    <IonCol className="DataLeftCol" size="12" sizeLg="4">
+    <IonCol className="DataLeftCol" size="12">
       <IonRow>
-        <IonCol className="DataRowLeft" size="6" sizeLg="12">
+        <IonCol className="DataRowLeft" size="6">
           <IonRow className="DataRow">
             <IonCol className="DataCol">Installs</IonCol>
             <IonCol className="DataCol text-color">{data.totalInstalls}</IonCol>
           </IonRow>
         </IonCol>
-        <IonCol size="6" sizeLg="12">
+        <IonCol size="6">
           <IonRow className="DataRow">
             <IonCol className="DataCol">Page Views</IonCol>
             <IonCol className="DataCol text-color">

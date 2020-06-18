@@ -51,11 +51,7 @@ const ProfileCard: React.FC<ContainerProps> = ({
 }) => {
   return (
     <IonRow className="bottom-line-border">
-      <IonCol
-        className="ProfileCardLeftCol"
-        size="12"
-        sizeLg={data ? "8" : "12"}
-      >
+      <IonCol className="ProfileCardLeftCol" size="12">
         <div className="ProfileCardLeft">
           {!isLoading && (
             <img

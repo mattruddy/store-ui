@@ -4,10 +4,6 @@
   align-items: center;
 }
 
-.DataRowLeft {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.13);
-}
-
 .DataRow {
   display: flex;
   justify-content: center;
@@ -21,13 +17,11 @@
   text-align: center;
 }
 
-@media screen and (max-width: 992px) {
-  .DataLeftCol {
-    display: inline;
-  }
+.DataLeftCol {
+  display: inline;
+}
 
-  .DataRowLeft {
-    border-right: 1px solid rgba(0, 0, 0, 0.13);
-    border-bottom: none;
-  }
+.DataRowLeft {
+  border-right: 1px solid rgba(0, 0, 0, 0.13);
+  border-bottom: none;
 }
