@@ -17,7 +17,7 @@
 }
 
 .text-color {
-  color: #737373;
+  color: var(--text-color);
 }
 
 .react-tag-input {
@@ -44,25 +44,25 @@
 }
 
 .button-border {
-  border: 1px solid rgba(0, 0, 0, 0.13);
+  border: 1px solid var(--border-color);
   border-radius: 5px;
 }
 
 .bottom-line-border {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.13);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .right-line-border {
-  border-right: 1px solid rgba(0, 0, 0, 0.13);
+  border-right: 1px solid var(--border-color);
 }
 
 .line-border {
-  border: 1px solid rgba(0, 0, 0, 0.13);
+  border: 1px solid var(--border-color);
   border-radius: 10px;
 }
 
 .line-around {
-  border: 1px solid rgba(0, 0, 0, 0.13);
+  border: 1px solid var(--border-color);
 }
 
 .fab {

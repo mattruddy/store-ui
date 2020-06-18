@@ -3,37 +3,35 @@
   --side-min-width: 220px;
 }
 
-.SideBar {
-  background: rgb(248, 248, 248);
-}
-
 .SideBarCategory {
   --min-height: 36px;
-  --background: rgb(248, 248, 248);
 }
 
 .StandardCategoriesItem {
   font-size: 15px;
   padding-top: 0;
   padding-bottom: 0;
+  color: var(--sub-color);
 }
 
 .StandardCategoriesItemIcon {
   margin-right: 0.5rem;
+  color: var(--sub-color);
 }
 
 .CategoriesItem {
-  --color: #737373;
+  color: var(--sub-color);
   font-size: 12px;
   --color-activated: black;
 }
 
 .Selected {
-  --color: var(--ion-color-primary);
+  color: var(--ion-color-primary);
 }
 
 .CategoriesItemIcon {
   height: 15px;
   width: 15px;
   margin-right: 10px;
+  color: var(--sub-color);
 }

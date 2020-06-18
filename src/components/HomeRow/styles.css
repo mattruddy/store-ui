@@ -18,6 +18,7 @@
 
 .HomeRowHeaderSubTitle {
   margin-left: 16px;
+  color: var(--sub-color);
 }
 
 .HomeViewMoreLink {

@@ -1,15 +1,14 @@
 .RatingCommentBackground {
   min-height: 200px;
-  background: rgb(248, 248, 248);
+  background: var(--background-color);
   border-radius: 30px;
 }
 
 .RatingCommentTextArea {
   border-radius: 30px;
-  background: rgb(248, 248, 248);
   padding: 8px;
 }
 
-.starRateHover {
-  color: rgb(109, 122, 130);
+.RatingSenderIcon {
+  color: var(--rating-sender-color);
 }

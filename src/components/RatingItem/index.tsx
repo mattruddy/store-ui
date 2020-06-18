@@ -43,7 +43,7 @@ const RatingItem: React.FC<ContainerProps> = ({ rating }) => {
           <i>
             {rating.from !== "anonymous" && (
               <IonIcon
-                style={{ color: "blue" }}
+                className="RatingSenderIcon"
                 icon={checkmarkCircleOutline}
               />
             )}{" "}
