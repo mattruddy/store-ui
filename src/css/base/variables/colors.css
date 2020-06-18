@@ -255,6 +255,10 @@ div.alert-radio-label.sc-ion-alert-md {
   color: var(--text-color);
 }
 
+ion-title {
+  --color: var(--title-color);
+}
+
 ion-back-button {
   color: var(--title-color);
 }
@@ -265,7 +269,7 @@ ion-checkbox {
 }
 
 textarea {
-  background-color: var(--border-color);
+  background-color: var(--background-color);
 }
 
 .dark-theme .content {
