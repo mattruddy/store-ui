@@ -98,7 +98,7 @@ const IonicApp: React.FC = () => {
 
   useEffect(() => {
     loadUserData()
-    handleTheme()
+    //handleTheme()
   }, [])
 
   useEffect(() => {
