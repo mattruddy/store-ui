@@ -280,6 +280,12 @@ ion-checkbox {
   --border-color: var(--text-color);
 }
 
+ion-toast {
+  --background: var(--background-color);
+  --color: var(--title-color);
+  --border-color: var(--border-color);
+}
+
 textarea {
   background-color: var(--background-color);
 }
