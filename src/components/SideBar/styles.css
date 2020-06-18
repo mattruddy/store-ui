@@ -19,6 +19,10 @@
   color: var(--sub-color);
 }
 
+.CategoriesHeader {
+  color: var(--sub-color);
+}
+
 .CategoriesItem {
   color: var(--sub-color);
   font-size: 12px;
