@@ -10,7 +10,6 @@ import {
 import StarRatings from "react-star-ratings"
 import { PWA } from "../../util/types"
 import "./styles.css"
-import { useHistory } from "react-router"
 
 interface ContainerProps {
   pwa: PWA
@@ -18,13 +17,9 @@ interface ContainerProps {
 }
 
 const PWACard: React.FC<ContainerProps> = ({ pwa, url }) => {
-  const history = useHistory()
   const href = `${url}/${pwa.name.replace(/ /g, "-")}`
-
-  const onPress = () => history.push(href)
-
   return (
-    <IonCard className="PWACard fade-in" button onClick={onPress}>
+    <IonCard className="PWACard fade-in" routerLink={href}>
       <IonCardHeader className="PWACardHeader PWACardContent">
         <img alt="icon" className="PWACardImage" src={pwa.icon} />
       </IonCardHeader>

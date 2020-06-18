@@ -9,15 +9,16 @@ import {
   USER_REMOVE_APP,
   UserRole,
   USER_SET_DARKMODE,
+  USER_CREATE_PROFILE,
 } from "./types"
 import { AppActionTypes, REDUX_RESET } from "../App/types"
-import { act } from "react-dom/test-utils"
 
 const DEFAULT_STATE_USER: UserState = {
   token: "",
   id: -1,
   loading: false,
   pwas: [],
+  profile: undefined,
   username: "",
   email: "",
   darkMode: false,
@@ -74,6 +75,11 @@ const userReducer = (
       return {
         ...state,
         pwas: [...state.pwas.filter((x) => x.appId !== action.payload)],
+      }
+    case USER_CREATE_PROFILE:
+      return {
+        ...state,
+        profile: action.payload,
       }
 
     case REDUX_RESET:

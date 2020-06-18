@@ -16,6 +16,15 @@
   font-size: 22px;
 }
 
+.text-color {
+  color: #737373;
+}
+
+.react-tag-input {
+  background: inherit !important;
+  border: none !important;
+}
+
 .center {
   display: flex;
   justify-content: center;
@@ -43,9 +52,17 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.13);
 }
 
+.right-line-border {
+  border-right: 1px solid rgba(0, 0, 0, 0.13);
+}
+
 .line-border {
   border: 1px solid rgba(0, 0, 0, 0.13);
   border-radius: 10px;
+}
+
+.line-around {
+  border: 1px solid rgba(0, 0, 0, 0.13);
 }
 
 .fab {
@@ -56,6 +73,12 @@
 .fab-no-shadow {
   --box-shadow: none;
   margin: 5px;
+}
+
+.icon {
+  height: 120px;
+  width: 120px;
+  border-radius: 6px;
 }
 
 .primary-input-label:focus-within {

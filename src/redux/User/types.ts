@@ -1,10 +1,11 @@
-import { PWA, Push } from "../../util/types"
+import { PWA, Push, Profile } from "../../util/types"
 
 export interface UserState {
   token: string
   id: number
   loading: boolean
   pwas: PWA[]
+  profile: Profile | undefined
   username: string
   email: string
   darkMode: boolean
@@ -29,6 +30,7 @@ export const USER_ADD_APP = "USER_ADD_APP"
 export const USER_REMOVE_APP = "USER_REMOVE_APP"
 export const USER_HAS_READ_INSTALL = "USER_HAS_READ_INSTALL"
 export const USER_SET_DARKMODE = "USER_SET_DARKMODE"
+export const USER_CREATE_PROFILE = "USER_CREATE_PROFILE"
 
 export interface setDarkMode {
   type: typeof USER_SET_DARKMODE
@@ -64,6 +66,11 @@ export interface ReplaceAppAction {
   payload: PWA
 }
 
+export interface CreateProfile {
+  type: typeof USER_CREATE_PROFILE
+  payload: Profile
+}
+
 export interface AddAppAction {
   type: typeof USER_ADD_APP
   payload: PWA
@@ -84,3 +91,4 @@ export type UserActionTypes =
   | SetLoadingAction
   | SetUserAction
   | setDarkMode
+  | CreateProfile

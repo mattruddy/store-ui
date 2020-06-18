@@ -1,0 +1,27 @@
+.DataLeftCol {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.DataRow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.DataCol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.DataLeftCol {
+  display: inline;
+}
+
+.DataRowLeft {
+  border-right: 1px solid rgba(0, 0, 0, 0.13);
+  border-bottom: none;
+}

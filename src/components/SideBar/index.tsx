@@ -17,7 +17,7 @@ import {
   home,
   search,
 } from "ionicons/icons"
-import { useHistory, useLocation } from "react-router"
+import { useLocation } from "react-router"
 import { GetPwaCategoryUrl, RouteMap } from "../../routes"
 import "./styles.css"
 
@@ -30,16 +30,15 @@ export const standardCategories = [
 ]
 
 const SideBar: React.FC = () => {
-  const history = useHistory()
   const location = useLocation()
 
-  const onPress = (category: string) => {
+  const href = (category: string): string => {
     if (category.toLowerCase() === "home") {
-      history.push(RouteMap.HOME)
+      return RouteMap.HOME
     } else if (category.toLowerCase() === "search") {
-      history.push(RouteMap.SEARCH)
+      return RouteMap.SEARCH
     } else {
-      history.push(GetPwaCategoryUrl(category.toLowerCase()))
+      return GetPwaCategoryUrl(category.toLowerCase())
     }
   }
 
@@ -61,8 +60,7 @@ const SideBar: React.FC = () => {
             selected(cat.value) && "Selected"
           }`}
           lines="none"
-          button={true}
-          onClick={() => onPress(cat.value)}
+          routerLink={href(cat.value)}
         >
           <IonIcon
             className={`StandardCategoriesItemIcon`}
@@ -83,8 +81,7 @@ const SideBar: React.FC = () => {
           className={`CategoriesItem SideBarCategory item ${
             selected(cat.category) && "Selected"
           }`}
-          button={true}
-          onClick={() => onPress(cat.category)}
+          routerLink={href(cat.category)}
         >
           <IonIcon
             className="CategoriesItemIcon"

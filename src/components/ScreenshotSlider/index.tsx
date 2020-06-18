@@ -6,7 +6,7 @@ import React, {
   memo,
   ReactChildren,
 } from "react"
-import { IonButton, IonIcon } from "@ionic/react"
+import { IonButton, IonIcon, IonFabButton } from "@ionic/react"
 import Lightbox from "react-image-lightbox"
 import { Image } from "../../util/types"
 import "./styles.css"
@@ -76,17 +76,16 @@ const ScreenshotSlider: React.FC<ContainerProps> = ({
           <div className="ScreenshotCol" key={i}>
             {restOfProps.isEdit && (
               <div className="DeleteButtonBlock">
-                <IonButton
+                <IonFabButton
                   className="ScreenshotDeleteButton"
-                  shape="round"
                   size="small"
-                  color="light"
+                  color="transparent"
                   onClick={() =>
                     restOfProps.onDelete && restOfProps.onDelete(image.imageId)
                   }
                 >
                   <IonIcon color="danger" icon={trash} />
-                </IonButton>
+                </IonFabButton>
               </div>
             )}
             <img

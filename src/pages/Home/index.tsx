@@ -8,7 +8,6 @@ import {
 import React, { useCallback, useEffect, useMemo, useRef, memo } from "react"
 import ReactGA from "react-ga"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
-import { useHistory } from "react-router"
 import { AddToHomeScreen } from "../../components"
 import Footer from "../../components/Footer"
 import HidingHeader from "../../components/HidingHeader"
@@ -16,13 +15,11 @@ import HomeRow from "../../components/HomeRow"
 import { useAddToHomescreenPrompt } from "../../hooks/useAddToHomescreenPrompt"
 import { thunkGetHomeData } from "../../redux/PWAs/actions"
 import { ReduxCombinedState } from "../../redux/RootReducer"
-import { GetPwaCategoryUrl } from "../../routes"
 import "./styles.css"
 import { useHidingHeader } from "../../hooks/useHidingHeader"
 import { thunkSetDarkMode } from "../../redux/User/actions"
 
 const Home: React.FC = () => {
-  const history = useHistory()
   const content = useRef<any>()
   const [prompt, promptToInstall] = useAddToHomescreenPrompt()
   const [hideDecimal, setScrollYCurrent] = useHidingHeader(50)
@@ -63,11 +60,6 @@ const Home: React.FC = () => {
     )
   }, [])
 
-  const onPress = useCallback(
-    (category: string) => history.push(GetPwaCategoryUrl(category)),
-    [history]
-  )
-
   const renderHomeList = useMemo(() => {
     return (
       <>
@@ -76,7 +68,6 @@ const Home: React.FC = () => {
           title="Top"
           subtitle="Most popular"
           linkTo=""
-          onPressCallback={onPress}
           isLoading={isLoading}
         />
         <HomeRow
@@ -84,7 +75,6 @@ const Home: React.FC = () => {
           title="Discover"
           subtitle="Currently trending"
           linkTo="trending"
-          onPressCallback={onPress}
           isLoading={isLoading}
         />
         <HomeRow
@@ -92,12 +82,11 @@ const Home: React.FC = () => {
           title="New"
           subtitle="Fresh new uploads"
           linkTo="new"
-          onPressCallback={onPress}
           isLoading={isLoading}
         />
       </>
     )
-  }, [homeData, isLoading, onPress])
+  }, [homeData, isLoading])
 
   const renderHeader = useMemo(() => {
     return (
