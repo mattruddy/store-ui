@@ -5,6 +5,7 @@ import React, {
   useMemo,
   memo,
   ReactChildren,
+  Suspense,
 } from "react"
 import { IonButton, IonIcon, IonFabButton } from "@ionic/react"
 import Lightbox from "react-image-lightbox"
@@ -12,6 +13,7 @@ import { Image } from "../../util/types"
 import "./styles.css"
 import { trash } from "ionicons/icons"
 import { useInView } from "react-intersection-observer"
+import { useImage } from "react-image"
 
 interface ContainerProps {
   toolbarButtons?: []
@@ -23,6 +25,18 @@ interface ContainerProps {
   onDelete?: (id: number) => void
 }
 
+interface ImageProps {
+  src: string
+}
+
+const ScreenshotImage: React.FC<ImageProps> = ({ src: url }) => {
+  const { src } = useImage({
+    srcList: url,
+  })
+
+  return <img className="ScreenshotSliderImage" src={src} />
+}
+
 const ScreenshotSlider: React.FC<ContainerProps> = ({
   toolbarButtons,
   children,
@@ -31,13 +45,6 @@ const ScreenshotSlider: React.FC<ContainerProps> = ({
   const mounted = useRef(false)
   const [photoIndex, setPhotoIndex] = useState(restOfProps.photoIndex || 0)
   const [isOpen, setIsOpen] = useState(restOfProps.isOpen || false)
-  const [show, setShow] = useState(false)
-
-  useEffect(() => {
-    setTimeout(() => {
-      setShow(true)
-    }, 300)
-  }, [])
 
   useEffect(() => {
     if (mounted.current) {
@@ -96,18 +103,13 @@ const ScreenshotSlider: React.FC<ContainerProps> = ({
                 </IonFabButton>
               </div>
             )}
-            {show && (
-              <img
-                className={`ScreenshotSliderImage ${show ? "fade-in" : ""}`}
-                alt="screenshot"
-                onClick={handleOnClick}
-                src={url}
-              />
-            )}
+            <Suspense fallback={"test"}>
+              <ScreenshotImage src={url} />
+            </Suspense>
           </div>
         )
       }),
-    [restOfProps.images, restOfProps.isEdit, restOfProps.onDelete, show]
+    [restOfProps.images, restOfProps.isEdit, restOfProps.onDelete]
   )
 
   return (
