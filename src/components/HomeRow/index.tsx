@@ -42,7 +42,7 @@ const HomeRow: React.FC<ContainerProps> = ({
       <IonRow className="HomeRow bottom-line-border">
         {pwas.map((topApp, i) => (
           <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
-            <PWACard url="/pwa" pwa={topApp} />
+            <PWACard url="/pwa" pwa={topApp} isMyPwa={false} />
           </IonCol>
         ))}
       </IonRow>

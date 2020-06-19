@@ -29,7 +29,7 @@ const Search: React.FC = () => {
   const renderSearchResults = useMemo(() => {
     return pwaSearchResults.map((pwa, i) => (
       <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
-        <PWACard url="/pwa" pwa={pwa} />
+        <PWACard url="/pwa" pwa={pwa} isMyPwa={false} />
       </IonCol>
     ))
   }, [pwaSearchResults])

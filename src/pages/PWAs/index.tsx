@@ -94,7 +94,7 @@ const PWAs: React.FC<RouteComponentProps> = () => {
 
     return sectionPwas?.map((pwa, i) => (
       <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
-        <PWACard url="/pwa" pwa={pwa} />
+        <PWACard url="/pwa" pwa={pwa} isMyPwa={false} />
       </IonCol>
     ))
   }, [sectionPwas, isLoading])

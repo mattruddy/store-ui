@@ -10,16 +10,26 @@ import {
 import StarRatings from "react-star-ratings"
 import { PWA } from "../../util/types"
 import "./styles.css"
+import { Axios } from "../../redux/Actions"
 
 interface ContainerProps {
   pwa: PWA
   url: string
+  isMyPwa: boolean
 }
 
-const PWACard: React.FC<ContainerProps> = ({ pwa, url }) => {
+const PWACard: React.FC<ContainerProps> = ({ pwa, url, isMyPwa }) => {
   const href = `${url}/${pwa.name.replace(/ /g, "-")}`
+
+  const sendPageView = async () =>
+    !isMyPwa && (await (await Axios()).post(`public/pwa/view/${pwa.appId}`))
+
   return (
-    <IonCard className="PWACard fade-in" routerLink={href}>
+    <IonCard
+      className="PWACard fade-in"
+      routerLink={href}
+      onClick={sendPageView}
+    >
       <IonCardHeader className="PWACardHeader PWACardContent">
         <img alt="icon" className="PWACardImage" src={pwa.icon} />
       </IonCardHeader>

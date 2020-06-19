@@ -84,7 +84,7 @@ const Profile: React.FC = () => {
     return filteredPwas.length > 0 ? (
       filteredPwas.map((pwa, idx) => (
         <IonCol key={idx} size="6" sizeLg="4">
-          <PWACard url="/mypwa" pwa={pwa} />
+          <PWACard url="/mypwa" pwa={pwa} isMyPwa={true} />
           {filter === "DENIED" && (
             <Fragment>
               <span>

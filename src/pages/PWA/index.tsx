@@ -102,7 +102,6 @@ const PWA: React.FC<OwnProps> = ({
     ;(async () => {
       if (pwa && pwa.username) {
         if (!dev) {
-          console.log("dlak;fjlka")
           await addDev(pwa.username)
         }
       }
