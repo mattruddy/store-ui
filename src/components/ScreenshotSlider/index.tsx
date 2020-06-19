@@ -11,6 +11,7 @@ import Lightbox from "react-image-lightbox"
 import { Image } from "../../util/types"
 import "./styles.css"
 import { trash } from "ionicons/icons"
+import { useInView } from "react-intersection-observer"
 
 interface ContainerProps {
   toolbarButtons?: []
@@ -30,6 +31,13 @@ const ScreenshotSlider: React.FC<ContainerProps> = ({
   const mounted = useRef(false)
   const [photoIndex, setPhotoIndex] = useState(restOfProps.photoIndex || 0)
   const [isOpen, setIsOpen] = useState(restOfProps.isOpen || false)
+  const [show, setShow] = useState(false)
+
+  useEffect(() => {
+    setTimeout(() => {
+      setShow(true)
+    }, 300)
+  }, [])
 
   useEffect(() => {
     if (mounted.current) {
@@ -102,7 +110,7 @@ const ScreenshotSlider: React.FC<ContainerProps> = ({
 
   return (
     <div className="ScreenshotRow bottom-line-border">
-      {renderSlides}
+      {show && renderSlides}
       {isOpen && (
         <Lightbox
           wrapperClassName="ScreenshotSliderLightbox"
