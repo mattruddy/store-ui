@@ -96,21 +96,23 @@ const ScreenshotSlider: React.FC<ContainerProps> = ({
                 </IonFabButton>
               </div>
             )}
-            <img
-              className="ScreenshotSliderImage"
-              alt="screenshot"
-              onClick={handleOnClick}
-              src={url}
-            />
+            {show && (
+              <img
+                className={`ScreenshotSliderImage ${show ? "fade-in" : ""}`}
+                alt="screenshot"
+                onClick={handleOnClick}
+                src={url}
+              />
+            )}
           </div>
         )
       }),
-    [restOfProps.images, restOfProps.isEdit, restOfProps.onDelete]
+    [restOfProps.images, restOfProps.isEdit, restOfProps.onDelete, show]
   )
 
   return (
     <div className="ScreenshotRow bottom-line-border">
-      {show && renderSlides}
+      {renderSlides}
       {isOpen && (
         <Lightbox
           wrapperClassName="ScreenshotSliderLightbox"
