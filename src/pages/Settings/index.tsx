@@ -23,17 +23,17 @@ import "react-mde/lib/styles/css/react-mde-all.css"
 import "./styles.css"
 
 const Settings: React.FC = () => {
-  const [fullName, setFullName] = useState<string>()
-  const [gitHub, setGitHub] = useState<string>()
-  const [linkedIn, setLinkedIn] = useState<string>()
-  const [twitter, setTwitter] = useState<string>()
-  const [showEmail, setShowEmail] = useState<boolean>()
+  const [fullName, setFullName] = useState<string>("")
+  const [gitHub, setGitHub] = useState<string>("")
+  const [linkedIn, setLinkedIn] = useState<string>("")
+  const [twitter, setTwitter] = useState<string>("")
+  const [showEmail, setShowEmail] = useState<boolean>(false)
   const [avatar, setAvatar] = useState<File | undefined>(undefined)
-  const [location, setLocation] = useState<string>()
-  const [header, setHeader] = useState<string>()
-  const [about, setAbout] = useState<string>()
+  const [location, setLocation] = useState<string>("")
+  const [header, setHeader] = useState<string>("")
+  const [about, setAbout] = useState<string>("")
   const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write")
-  const [updateEmail, setUpdateEmail] = useState<string>()
+  const [updateEmail, setUpdateEmail] = useState<string>("")
 
   const { email, profile, isLoading, status } = useSelector(
     ({
