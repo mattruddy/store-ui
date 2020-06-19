@@ -15,6 +15,7 @@ const RouteMap = {
   SETTINGS: "/settings",
   ADD: "/add",
   DEVELOPER: "/dev/:username",
+  NOTIFICATIONS: "/notifications",
 }
 
 const getPwaName = (name: string) => name.replace(/ /g, "-")

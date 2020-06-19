@@ -16,6 +16,13 @@ export interface NewRating {
   rating: Rating
 }
 
+export interface StoreNotification {
+  subject: string
+  body: string
+  timestamp: Date
+  id: number
+}
+
 export interface Rating {
   from: string
   star: number

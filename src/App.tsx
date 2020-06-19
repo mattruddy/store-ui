@@ -13,7 +13,14 @@ import {
   IonSplitPane,
 } from "@ionic/react"
 import { IonReactRouter } from "@ionic/react-router"
-import { person, home, logIn, informationCircle, search } from "ionicons/icons"
+import {
+  person,
+  home,
+  logIn,
+  informationCircle,
+  search,
+  notifications,
+} from "ionicons/icons"
 import {
   PWAs,
   SignUp,
@@ -44,6 +51,7 @@ import Search from "./pages/Search"
 import Settings from "./pages/Settings"
 import Developer from "./pages/Developer"
 import AddPWA from "./pages/AddPWA"
+import Notifications from "./pages/Notifications"
 
 const App: React.FC = () => {
   return <IonicApp />
@@ -170,6 +178,10 @@ const IonicApp: React.FC = () => {
                 <Route path={RouteMap.DEVELOPER} component={Developer} />
                 <Route path={RouteMap.ADD} component={AddPWA} />
                 <Route
+                  path={RouteMap.NOTIFICATIONS}
+                  component={Notifications}
+                />
+                <Route
                   path={RouteMap.ROOT}
                   render={() => <Redirect to={RouteMap.HOME} />}
                   exact={true}
@@ -189,9 +201,13 @@ const IonicApp: React.FC = () => {
                   <IonIcon icon={search} />
                   <IonLabel>Search</IonLabel>
                 </IonTabButton>
-                <IonTabButton className="tab" tab="about" href={RouteMap.ABOUT}>
-                  <IonIcon icon={informationCircle} />
-                  <IonLabel>About</IonLabel>
+                <IonTabButton
+                  className="tab"
+                  tab="notifications"
+                  href={RouteMap.NOTIFICATIONS}
+                >
+                  <IonIcon icon={notifications} />
+                  <IonLabel>Notifications</IonLabel>
                 </IonTabButton>
                 <IonTabButton
                   className="tab"
