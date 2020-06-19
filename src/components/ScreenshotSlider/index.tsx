@@ -116,7 +116,7 @@ const ScreenshotSlider: React.FC<ContainerProps> = ({
   return (
     <div className="ScreenshotRow bottom-line-border">
       {renderSlides}
-      {isOpen && (
+      {isOpen && !restOfProps.isEdit && (
         <Lightbox
           wrapperClassName="ScreenshotSliderLightbox"
           mainSrc={mainSrc}
