@@ -7,12 +7,11 @@ import React, {
   ReactChildren,
   Suspense,
 } from "react"
-import { IonButton, IonIcon, IonFabButton } from "@ionic/react"
+import { IonIcon, IonFabButton } from "@ionic/react"
 import Lightbox from "react-image-lightbox"
 import { Image } from "../../util/types"
 import "./styles.css"
 import { trash } from "ionicons/icons"
-import { useInView } from "react-intersection-observer"
 import { useImage } from "react-image"
 
 interface ContainerProps {
@@ -27,14 +26,16 @@ interface ContainerProps {
 
 interface ImageProps {
   src: string
+  onClick: () => void
 }
 
-const ScreenshotImage: React.FC<ImageProps> = ({ src: url }) => {
+const ScreenshotImage: React.FC<ImageProps> = ({ src: url, onClick }) => {
   const { src } = useImage({
     srcList: url,
+    useSuspense: true,
   })
 
-  return <img className="ScreenshotSliderImage" src={src} />
+  return <img className="ScreenshotSliderImage" src={src} onClick={onClick} />
 }
 
 const ScreenshotSlider: React.FC<ContainerProps> = ({
@@ -103,8 +104,8 @@ const ScreenshotSlider: React.FC<ContainerProps> = ({
                 </IonFabButton>
               </div>
             )}
-            <Suspense fallback={"test"}>
-              <ScreenshotImage src={url} />
+            <Suspense fallback={<div></div>}>
+              <ScreenshotImage src={url} onClick={handleOnClick} />
             </Suspense>
           </div>
         )
