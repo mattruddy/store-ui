@@ -290,6 +290,10 @@ textarea {
   background-color: var(--background-color);
 }
 
+small {
+  color: var(--sub-color);
+}
+
 ion-chip {
   --background: var(--background-color);
   --color: var(--text-color);
@@ -333,12 +337,12 @@ ion-split-pane {
   --border-color: rgba(0, 0, 0, 0.13);
   --background-color: rgb(248, 248, 248);
   --cat-text-color: #737373;
-  --text-color: #737373;
+  --text-color: #2d3436;
   --pwa-title-color: #303028;
   --rating-sender-color: blue;
   --tab-button-color: var(--text-color);
   --sub-color: #737373;
-  --title-color: #2d3436;
+  --title-color: var(--text-color);
 }
 
 .dark-theme h2,
