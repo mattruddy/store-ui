@@ -5,6 +5,7 @@ import { Rating } from "../../util/types"
 import { IonItem, IonIcon } from "@ionic/react"
 import { dateFormatter } from "../../util"
 import { checkmarkCircleOutline } from "ionicons/icons"
+import "./style.css"
 
 interface ContainerProps {
   rating: Rating
@@ -24,14 +25,11 @@ const RatingItem: React.FC<ContainerProps> = ({ rating }) => {
             rating={rating.star}
             starDimension="20px"
             starSpacing="2px"
+            starRatedColor="var(--light-rating)"
+            starEmptyColor="var(--dark-rating)"
           />
         </div>
-        <div
-          className="line-border"
-          style={{
-            minHeight: "200px",
-          }}
-        >
+        <div className="line-border RatingCommentBackground">
           <p style={{ margin: "12px" }}>{rating.comment}</p>
         </div>
         <div
@@ -45,7 +43,7 @@ const RatingItem: React.FC<ContainerProps> = ({ rating }) => {
           <i>
             {rating.from !== "anonymous" && (
               <IonIcon
-                style={{ color: "blue" }}
+                className="RatingSenderIcon"
                 icon={checkmarkCircleOutline}
               />
             )}{" "}

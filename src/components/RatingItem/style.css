@@ -1,0 +1,14 @@
+.RatingCommentBackground {
+  min-height: 200px;
+  background: var(--background-color);
+  border-radius: 30px;
+}
+
+.RatingCommentTextArea {
+  border-radius: 30px;
+  padding: 8px;
+}
+
+.RatingSenderIcon {
+  color: var(--rating-sender-color);
+}

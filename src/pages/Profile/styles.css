@@ -4,13 +4,13 @@
 }
 
 .ProfileCardCol {
-  border-right: 1px solid rgba(0, 0, 0, 0.13);
+  border-right: 1px solid var(--border-color);
   padding: 0;
 }
 
 .NoAppsNote {
   padding-left: 40px;
-  color: rgb(115, 115, 115);
+  color: var(--text-color);
 }
 
 @media screen and (max-width: 768px) {

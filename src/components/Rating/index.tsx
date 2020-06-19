@@ -56,8 +56,8 @@ const Rating: React.FC<ContainerProps> = ({ onSubmit }) => {
             rating={star}
             changeRating={handleStarRatingChange}
             stars={5}
-            starRatedColor="rgb(109, 122, 130)"
-            starHoverColor="rgb(109, 122, 130)"
+            starRatedColor="var(--light-rating)"
+            starEmptyColor="var(--dark-rating)"
             name="rating"
             starDimension="30px"
             starSpacing="4px"
@@ -66,6 +66,7 @@ const Rating: React.FC<ContainerProps> = ({ onSubmit }) => {
       </FormItem>
       <FormItem name="Comment" showError={false} errorMessage="" lines="none">
         <IonTextarea
+          className="RatingCommentTextArea"
           placeholder="Add a comment (Optional)"
           value={comment}
           onIonChange={handleIonTextAreaChange}

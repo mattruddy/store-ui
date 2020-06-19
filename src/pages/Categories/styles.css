@@ -1,7 +1,4 @@
-.CategoryPageItem {
-  --color: #737373;
-}
-
 .CategoryPageItemIcon {
   margin-right: 8px;
+  color: var(--text-color);
 }

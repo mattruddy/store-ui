@@ -1,4 +1,11 @@
-import { IonContent, IonNote, IonPage, useIonViewDidEnter } from "@ionic/react"
+import {
+  IonContent,
+  IonNote,
+  IonPage,
+  useIonViewDidEnter,
+  IonToggle,
+  IonButtons,
+} from "@ionic/react"
 import React, { useCallback, useEffect, useMemo, useRef, memo } from "react"
 import ReactGA from "react-ga"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
@@ -11,16 +18,21 @@ import { thunkGetHomeData } from "../../redux/PWAs/actions"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import "./styles.css"
 import { useHidingHeader } from "../../hooks/useHidingHeader"
+import { thunkSetDarkMode } from "../../redux/User/actions"
 
 const Home: React.FC = () => {
   const content = useRef<any>()
   const [prompt, promptToInstall] = useAddToHomescreenPrompt()
   const [hideDecimal, setScrollYCurrent] = useHidingHeader(50)
 
-  const { homeData, isLoading } = useSelector(
-    ({ pwas }: ReduxCombinedState) => ({
-      homeData: pwas.home,
-      isLoading: pwas.isPending,
+  const { homeData, isLoading, darkMode } = useSelector(
+    ({
+      pwas: { home, isPending },
+      user: { darkMode },
+    }: ReduxCombinedState) => ({
+      homeData: home,
+      isLoading: isPending,
+      darkMode,
     }),
     shallowEqual
   )
@@ -28,6 +40,15 @@ const Home: React.FC = () => {
   const getHomeData = useCallback(() => dispatch(thunkGetHomeData()), [
     dispatch,
   ])
+  const setDarkmode = useCallback(
+    (active: boolean) => dispatch(thunkSetDarkMode(active)),
+    [dispatch]
+  )
+
+  const setDarkMode = useCallback(
+    (active: boolean) => dispatch(thunkSetDarkMode(active)),
+    [dispatch]
+  )
 
   useIonViewDidEnter(() => {
     getHomeData()
@@ -35,6 +56,9 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     ReactGA.pageview(`Home`)
+    const prefersDarkMode: MediaQueryList = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    )
   }, [])
 
   const renderHomeList = useMemo(() => {
@@ -74,19 +98,27 @@ const Home: React.FC = () => {
             <IonNote>Progressive Web App Discovery</IonNote>
           </div>
           <div>
-            <AddToHomeScreen
-              prompt={prompt}
-              promptToInstall={promptToInstall}
-            />
+            <IonButtons>
+              <IonToggle
+                style={{ padding: "10px" }}
+                checked={darkMode}
+                onIonChange={(e) => setDarkMode(!darkMode)}
+              />
+              <AddToHomeScreen
+                prompt={prompt}
+                promptToInstall={promptToInstall}
+              />
+            </IonButtons>
           </div>
         </div>
       </HidingHeader>
     )
-  }, [hideDecimal, promptToInstall, prompt])
+  }, [hideDecimal, promptToInstall, prompt, darkMode])
 
   return (
     <IonPage>
       {renderHeader}
+
       <IonContent
         fullscreen={true}
         scrollEvents={true}

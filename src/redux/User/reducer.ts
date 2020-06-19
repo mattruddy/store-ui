@@ -8,6 +8,7 @@ import {
   USER_ADD_APP,
   USER_REMOVE_APP,
   UserRole,
+  USER_SET_DARKMODE,
   USER_CREATE_PROFILE,
 } from "./types"
 import { AppActionTypes, REDUX_RESET } from "../App/types"
@@ -31,6 +32,12 @@ const userReducer = (
   action: UserActionTypes | AppActionTypes
 ): UserState => {
   switch (action.type) {
+    case USER_SET_DARKMODE:
+      return {
+        ...state,
+        darkMode: action.payload,
+      }
+
     case USER_SET_LOADING:
       return {
         ...state,

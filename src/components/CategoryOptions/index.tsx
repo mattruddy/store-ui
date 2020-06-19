@@ -18,6 +18,7 @@ import {
   cartOutline,
 } from "ionicons/icons"
 import { capitalize } from "../../util"
+import "./styles.css"
 
 export const categories = [
   { category: "BUSINESS", icon: business },
@@ -45,7 +46,7 @@ const CategoryOptions: React.FC<ContainerProps> = ({ onPress, initValue }) => {
   const renderOptions: JSX.Element[] = useMemo(
     () =>
       categories.map((cat, i) => (
-        <IonSelectOption key={i} value={cat.category}>
+        <IonSelectOption className="OptionText" key={i} value={cat.category}>
           {capitalize(cat.category)}
         </IonSelectOption>
       )),
@@ -57,7 +58,6 @@ const CategoryOptions: React.FC<ContainerProps> = ({ onPress, initValue }) => {
       interfaceOptions={{
         header: "Categories",
       }}
-      color="dark"
       value={initValue !== undefined ? initValue : undefined}
       placeholder="Category"
       onIonChange={(e) => onPress(e.detail.value!)}

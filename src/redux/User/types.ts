@@ -29,8 +29,18 @@ export const USER_REPLACE_APP = "USER_REPLACE_APP"
 export const USER_ADD_APP = "USER_ADD_APP"
 export const USER_REMOVE_APP = "USER_REMOVE_APP"
 export const USER_HAS_READ_INSTALL = "USER_HAS_READ_INSTALL"
+export const USER_SET_DARKMODE = "USER_SET_DARKMODE"
 export const USER_CREATE_PROFILE = "USER_CREATE_PROFILE"
 
+export interface setDarkMode {
+  type: typeof USER_SET_DARKMODE
+  payload: boolean
+}
+
+export interface setDarkMode {
+  type: typeof USER_SET_DARKMODE
+  payload: boolean
+}
 export interface SetUserAction {
   type: typeof USER_SET
   payload: string
@@ -80,4 +90,5 @@ export type UserActionTypes =
   | ReplaceAppAction
   | SetLoadingAction
   | SetUserAction
+  | setDarkMode
   | CreateProfile

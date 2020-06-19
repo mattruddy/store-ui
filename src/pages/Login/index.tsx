@@ -132,7 +132,7 @@ const LogIn: React.FC = () => {
           <IonButton
             className="button-no-shadow button-border"
             color="github"
-            expand="full"
+            expand="block"
             type="submit"
           >
             Sign In with GitHub <IonIcon icon={logoGithub} />

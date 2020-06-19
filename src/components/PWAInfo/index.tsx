@@ -110,6 +110,8 @@ const PWAInfo: React.FC<ContainerProps> = ({
           rating={pwa.averageRating}
           starDimension="20px"
           starSpacing="2px"
+          starRatedColor="var(--light-rating)"
+          starEmptyColor="var(--dark-rating)"
         />
         <span style={{ marginLeft: "5px" }}>({pwa.ratingsCount})</span>
       </div>

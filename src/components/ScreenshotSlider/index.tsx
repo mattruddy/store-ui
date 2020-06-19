@@ -5,12 +5,14 @@ import React, {
   useMemo,
   memo,
   ReactChildren,
+  Suspense,
 } from "react"
-import { IonButton, IonIcon, IonFabButton } from "@ionic/react"
+import { IonIcon, IonFabButton } from "@ionic/react"
 import Lightbox from "react-image-lightbox"
 import { Image } from "../../util/types"
 import "./styles.css"
 import { trash } from "ionicons/icons"
+import { useImage } from "react-image"
 
 interface ContainerProps {
   toolbarButtons?: []
@@ -20,6 +22,20 @@ interface ContainerProps {
   children?: ReactChildren[]
   isEdit?: boolean
   onDelete?: (id: number) => void
+}
+
+interface ImageProps {
+  src: string
+  onClick: () => void
+}
+
+const ScreenshotImage: React.FC<ImageProps> = ({ src: url, onClick }) => {
+  const { src } = useImage({
+    srcList: url,
+    useSuspense: true,
+  })
+
+  return <img className="ScreenshotSliderImage" src={src} onClick={onClick} />
 }
 
 const ScreenshotSlider: React.FC<ContainerProps> = ({
@@ -88,12 +104,9 @@ const ScreenshotSlider: React.FC<ContainerProps> = ({
                 </IonFabButton>
               </div>
             )}
-            <img
-              className="ScreenshotSliderImage"
-              alt="screenshot"
-              onClick={handleOnClick}
-              src={url}
-            />
+            <Suspense fallback={<div></div>}>
+              <ScreenshotImage src={url} onClick={handleOnClick} />
+            </Suspense>
           </div>
         )
       }),
@@ -103,7 +116,7 @@ const ScreenshotSlider: React.FC<ContainerProps> = ({
   return (
     <div className="ScreenshotRow bottom-line-border">
       {renderSlides}
-      {isOpen && (
+      {isOpen && !restOfProps.isEdit && (
         <Lightbox
           wrapperClassName="ScreenshotSliderLightbox"
           mainSrc={mainSrc}

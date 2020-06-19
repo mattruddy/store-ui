@@ -30,7 +30,11 @@ import { RouteMap } from "./routes"
 import ReactGA from "react-ga"
 import Home from "./pages/Home"
 import { useDispatch, useSelector, shallowEqual } from "react-redux"
-import { thunkLoadUserData, thunkLoadProfile } from "./redux/User/actions"
+import {
+  thunkLoadUserData,
+  thunkLoadProfile,
+  thunkSetDarkMode,
+} from "./redux/User/actions"
 import { SetWindow } from "./redux/Window/actions"
 import { ReduxCombinedState } from "./redux/RootReducer"
 import { clearAlerts } from "./redux/Alerts/actions"
@@ -55,17 +59,33 @@ const IonicApp: React.FC = () => {
   ])
   const clearAlert = useCallback(() => dispatch(clearAlerts()), [dispatch])
 
+  const setDarkMode = useCallback(
+    (prefersDarkMode: boolean) => dispatch(thunkSetDarkMode(prefersDarkMode)),
+    [dispatch]
+  )
+
   const handleResize = useCallback(() => dispatch(SetWindow()), [dispatch])
 
-  const { isLoggedIn, token, alerts, push } = useSelector(
-    ({ user: { isLoggedIn, token, push }, alerts }: ReduxCombinedState) => ({
+  const { isLoggedIn, token, alerts, push, darkMode } = useSelector(
+    ({
+      user: { isLoggedIn, token, push, darkMode },
+      alerts,
+    }: ReduxCombinedState) => ({
       isLoggedIn: isLoggedIn,
       token: token,
       alerts: alerts,
       push: push,
+      darkMode: darkMode,
     }),
     shallowEqual
   )
+
+  const handleTheme = (): void => {
+    const prefersDarkMode: MediaQueryList = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    )
+    setDarkMode(prefersDarkMode.matches)
+  }
 
   useEffect(() => {
     window.addEventListener("resize", handleResize)
@@ -78,6 +98,7 @@ const IonicApp: React.FC = () => {
 
   useEffect(() => {
     loadUserData()
+    //handleTheme()
   }, [])
 
   useEffect(() => {
@@ -114,7 +135,7 @@ const IonicApp: React.FC = () => {
   }, [])
 
   return (
-    <IonApp>
+    <IonApp className={`${darkMode ? "dark-theme" : ""}`}>
       <IonReactRouter>
         <IonSplitPane contentId="main" when="md">
           <SideBar />
