@@ -1,26 +1,38 @@
-import { memo } from "react"
+import { memo, useEffect, useCallback } from "react"
 import {
   IonPage,
   IonToolbar,
   IonTitle,
   IonHeader,
   IonContent,
-  IonList,
-  IonItem,
-  IonLabel,
+  IonCard,
 } from "@ionic/react"
 import React from "react"
-import { StoreNotification } from "../../util/types"
+import { useSelector, shallowEqual, useDispatch } from "react-redux"
+import { ReduxCombinedState } from "../../redux/RootReducer"
+import { thunkSetLastNotId } from "../../redux/User/actions"
+import NotifyList from "../../components/NotifyList"
 
 const Notifications: React.FC = () => {
-  const notifications: StoreNotification[] = [
-    {
-      body: "Td;alfkj;aslkdfj",
-      subject: "Here is a test",
-      timestamp: new Date(),
-      id: 1,
-    },
-  ]
+  const { notifications } = useSelector(
+    ({ user: { notifications } }: ReduxCombinedState) => ({
+      notifications,
+    }),
+    shallowEqual
+  )
+
+  const dispatch = useDispatch()
+  const setLastNotId = useCallback(
+    (id: number) => dispatch(thunkSetLastNotId(id)),
+    [dispatch]
+  )
+
+  useEffect(() => {
+    console.log(notifications)
+    if (notifications.length > 0) {
+      setLastNotId(notifications[0].id)
+    }
+  }, [notifications])
 
   return (
     <IonPage>
@@ -30,14 +42,9 @@ const Notifications: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        <IonList>
-          {notifications.map((n, i) => (
-            <IonLabel key={i}>
-              <h2>{n.subject}</h2>
-              <p>{n.body}</p>
-            </IonLabel>
-          ))}
-        </IonList>
+        <IonCard className="line-around">
+          <NotifyList notifications={notifications} />
+        </IonCard>
       </IonContent>
     </IonPage>
   )

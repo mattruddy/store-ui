@@ -19,7 +19,7 @@ export interface NewRating {
 export interface StoreNotification {
   subject: string
   body: string
-  timestamp: Date
+  createdAt: Date
   id: number
 }
 

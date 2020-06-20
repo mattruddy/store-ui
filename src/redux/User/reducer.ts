@@ -10,6 +10,8 @@ import {
   UserRole,
   USER_SET_DARKMODE,
   USER_CREATE_PROFILE,
+  USER_SET_NOT_ID,
+  USER_SET_NOT,
 } from "./types"
 import { AppActionTypes, REDUX_RESET } from "../App/types"
 
@@ -25,6 +27,8 @@ const DEFAULT_STATE_USER: UserState = {
   isLoggedIn: false,
   role: UserRole.Dev,
   push: undefined,
+  lastNotId: -1,
+  notifications: [],
 }
 
 const userReducer = (
@@ -84,6 +88,18 @@ const userReducer = (
 
     case REDUX_RESET:
       return DEFAULT_STATE_USER
+
+    case USER_SET_NOT_ID:
+      return {
+        ...state,
+        lastNotId: action.payload,
+      }
+
+    case USER_SET_NOT:
+      return {
+        ...state,
+        notifications: action.payload,
+      }
 
     default:
       return state

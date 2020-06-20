@@ -21,7 +21,7 @@ import { useSelector, shallowEqual } from "react-redux"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { Axios } from "../../redux/Actions"
 
-const Admin: React.FC = () => {
+const AdminPwas: React.FC = () => {
   const [pwas, setPwas] = useState<PWA[]>([])
   const [status, setStatus] = useState<string | undefined>()
   const [reason, setReason] = useState<string | undefined>()
@@ -155,4 +155,4 @@ const Admin: React.FC = () => {
   )
 }
 
-export default withRouter(memo(Admin))
+export default memo(AdminPwas)
