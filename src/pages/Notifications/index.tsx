@@ -6,12 +6,20 @@ import {
   IonHeader,
   IonContent,
   IonCard,
+  IonButton,
+  IonRow,
+  IonCol,
+  IonIcon,
 } from "@ionic/react"
 import React from "react"
 import { useSelector, shallowEqual, useDispatch } from "react-redux"
 import { ReduxCombinedState } from "../../redux/RootReducer"
-import { thunkSetLastNotId } from "../../redux/User/actions"
+import {
+  thunkSetLastNotId,
+  thunkLoadNotifications,
+} from "../../redux/User/actions"
 import NotifyList from "../../components/NotifyList"
+import { refresh } from "ionicons/icons"
 
 const Notifications: React.FC = () => {
   const { notifications } = useSelector(
@@ -24,6 +32,10 @@ const Notifications: React.FC = () => {
   const dispatch = useDispatch()
   const setLastNotId = useCallback(
     (id: number) => dispatch(thunkSetLastNotId(id)),
+    [dispatch]
+  )
+  const loadNotifications = useCallback(
+    () => dispatch(thunkLoadNotifications()),
     [dispatch]
   )
 
@@ -42,9 +54,15 @@ const Notifications: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        <IonCard className="line-around">
-          <NotifyList notifications={notifications} />
-        </IonCard>
+        <IonRow>
+          <IonCol>
+            <IonButton fill="clear" onClick={loadNotifications}>
+              <IonIcon icon={refresh} />
+              Refresh
+            </IonButton>
+          </IonCol>
+        </IonRow>
+        <NotifyList notifications={notifications} />
       </IonContent>
     </IonPage>
   )
