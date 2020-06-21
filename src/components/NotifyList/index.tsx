@@ -43,7 +43,6 @@ const More: React.FC<BodyProps> = ({
       </IonHeader>
       <IonContent>
         <div
-          className="bottom-line-border "
           style={{
             padding: "16px",
             minHeight: "200px",
