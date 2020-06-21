@@ -23,6 +23,8 @@ import {
   IonCol,
   IonCard,
   IonCardHeader,
+  IonButtons,
+  IonIcon,
 } from "@ionic/react"
 import { withRouter } from "react-router"
 import { PWA, StoreNotification } from "../../util/types"
@@ -34,6 +36,8 @@ import ReactMde from "react-mde"
 import { mdConverter } from "../../util"
 import NotifyList from "../../components/NotifyList"
 import { async } from "q"
+import { RouteMap } from "../../routes"
+import { newspaper } from "ionicons/icons"
 
 const AdminNotify: React.FC = () => {
   const [notifications, setNotifications] = useState<StoreNotification[]>([])
@@ -123,7 +127,12 @@ const AdminNotify: React.FC = () => {
     <IonPage>
       <IonHeader className="ion-no-border bottom-line-border">
         <IonToolbar>
-          <IonTitle>Admin</IonTitle>
+          <IonTitle>Notifications Admin</IonTitle>
+          <IonButtons slot="end">
+            <IonButton routerLink={RouteMap.ADMIN_PWAS}>
+              <IonIcon icon={newspaper} />
+            </IonButton>
+          </IonButtons>
         </IonToolbar>
       </IonHeader>
       <IonContent>

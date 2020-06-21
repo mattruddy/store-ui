@@ -206,6 +206,11 @@ const IonicApp: React.FC = () => {
                   component={Notifications}
                 />
                 <Route
+                  path={RouteMap.ADMIN_ROOT}
+                  render={() => <Redirect to={RouteMap.ADMIN_PWAS} />}
+                  exact={true}
+                />
+                <Route
                   path={RouteMap.ROOT}
                   render={() => <Redirect to={RouteMap.HOME} />}
                   exact={true}
@@ -213,7 +218,7 @@ const IonicApp: React.FC = () => {
               </IonRouterOutlet>
 
               <IonTabBar slot="bottom">
-                <IonTabButton className="tab" tab="home" href={RouteMap.HOME}>
+                <IonTabButton className="tab" tab="pwas" href={RouteMap.HOME}>
                   <IonIcon icon={home} />
                   <IonLabel>Home</IonLabel>
                 </IonTabButton>
