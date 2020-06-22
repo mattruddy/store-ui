@@ -5,6 +5,8 @@ import {
   useIonViewDidEnter,
   IonToggle,
   IonButtons,
+  IonButton,
+  IonIcon,
 } from "@ionic/react"
 import React, { useCallback, useEffect, useMemo, useRef, memo } from "react"
 import ReactGA from "react-ga"
@@ -19,6 +21,7 @@ import { ReduxCombinedState } from "../../redux/RootReducer"
 import "./styles.css"
 import { useHidingHeader } from "../../hooks/useHidingHeader"
 import { thunkSetDarkMode } from "../../redux/User/actions"
+import { sunny, moon } from "ionicons/icons"
 
 const Home: React.FC = () => {
   const content = useRef<any>()
@@ -40,10 +43,6 @@ const Home: React.FC = () => {
   const getHomeData = useCallback(() => dispatch(thunkGetHomeData()), [
     dispatch,
   ])
-  const setDarkmode = useCallback(
-    (active: boolean) => dispatch(thunkSetDarkMode(active)),
-    [dispatch]
-  )
 
   const setDarkMode = useCallback(
     (active: boolean) => dispatch(thunkSetDarkMode(active)),
@@ -99,11 +98,9 @@ const Home: React.FC = () => {
           </div>
           <div>
             <IonButtons>
-              <IonToggle
-                style={{ padding: "10px" }}
-                checked={darkMode}
-                onIonChange={(e) => setDarkMode(!darkMode)}
-              />
+              <IonButton onClick={(e) => setDarkMode(!darkMode)}>
+                <IonIcon icon={darkMode ? moon : sunny} />
+              </IonButton>
               <AddToHomeScreen
                 prompt={prompt}
                 promptToInstall={promptToInstall}
