@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react"
+import React, { useEffect, useCallback, useRef, HtmlHTMLAttributes } from "react"
 import { Redirect, Route } from "react-router-dom"
 import {
   IonApp,
@@ -62,6 +62,9 @@ const App: React.FC = () => {
 }
 
 const IonicApp: React.FC = () => {
+
+  const idk = useRef<any>()
+
   const dispatch = useDispatch()
   const loadUserData = useCallback(() => dispatch(thunkLoadUserData()), [
     dispatch,
@@ -167,7 +170,7 @@ const IonicApp: React.FC = () => {
         <IonSplitPane contentId="main" when="md">
           <SideBar />
           <div id="main">
-            <IonTabs>
+            <IonTabs ref={idk}>
               <IonRouterOutlet animated={false}>
                 <Route
                   path={[RouteMap.PWA_DETAIL]}
@@ -188,7 +191,7 @@ const IonicApp: React.FC = () => {
                 <Route
                   path={RouteMap.ADMIN_NOTIFY}
                   component={AdminNotify}
-                  exact
+                  exact={true}
                 />
                 <Route
                   path={RouteMap.CATEGORIES}
@@ -204,6 +207,7 @@ const IonicApp: React.FC = () => {
                 <Route
                   path={RouteMap.NOTIFICATIONS}
                   component={Notifications}
+                  exact
                 />
                 <Route
                   path={RouteMap.ADMIN_ROOT}

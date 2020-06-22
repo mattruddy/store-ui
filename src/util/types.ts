@@ -28,6 +28,7 @@ export interface Rating {
   star: number
   comment: string
   createdAt: Date
+  linkable: boolean
 }
 
 export interface PWA {

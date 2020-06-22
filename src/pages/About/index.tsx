@@ -12,6 +12,8 @@ import {
   IonGrid,
   IonRow,
   IonImg,
+  IonButtons,
+  IonBackButton,
 } from "@ionic/react"
 import { Icon } from "@iconify/react"
 import appleSafari from "@iconify/icons-mdi/apple-safari"
@@ -34,6 +36,9 @@ const About: React.FC = () => (
   <IonPage>
     <IonHeader className="ion-no-border bottom-line-border">
       <IonToolbar>
+        <IonButtons slot="start">
+          <IonBackButton defaultHref="/home" />
+        </IonButtons>
         <IonTitle>About</IonTitle>
       </IonToolbar>
     </IonHeader>
