@@ -12,6 +12,7 @@ import {
   USER_CREATE_PROFILE,
   USER_SET_NOT_ID,
   USER_SET_NOT,
+  USER_SET_NOT_LOADING,
 } from "./types"
 import { AppActionTypes, REDUX_RESET } from "../App/types"
 
@@ -29,6 +30,7 @@ const DEFAULT_STATE_USER: UserState = {
   push: undefined,
   lastNotId: -1,
   notifications: [],
+  notLoading: false,
 }
 
 const userReducer = (
@@ -46,6 +48,12 @@ const userReducer = (
       return {
         ...state,
         loading: action.payload,
+      }
+
+    case USER_SET_NOT_LOADING:
+      return {
+        ...state,
+        notLoading: action.payload,
       }
 
     case USER_SET_DATA:

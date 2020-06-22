@@ -45,9 +45,10 @@ const AdminNotify: React.FC = () => {
   const [body, setBody] = useState("")
   const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write")
 
-  const { isLoggedIn } = useSelector(
-    ({ user: { isLoggedIn } }: ReduxCombinedState) => ({
+  const { isLoggedIn, loading } = useSelector(
+    ({ user: { isLoggedIn, notLoading } }: ReduxCombinedState) => ({
       isLoggedIn: isLoggedIn,
+      loading: notLoading,
     }),
     shallowEqual
   )
@@ -144,6 +145,7 @@ const AdminNotify: React.FC = () => {
                 <IonTitle>Notifications</IonTitle>
               </IonCardHeader>
               <NotifyList
+                loading={loading}
                 notifications={notifications}
                 deleteCallback={onDelete}
               />

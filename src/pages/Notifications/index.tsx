@@ -21,9 +21,10 @@ import NotifyList from "../../components/NotifyList"
 import { refresh } from "ionicons/icons"
 
 const Notifications: React.FC = () => {
-  const { notifications } = useSelector(
-    ({ user: { notifications } }: ReduxCombinedState) => ({
+  const { notifications, loading } = useSelector(
+    ({ user: { notifications, notLoading } }: ReduxCombinedState) => ({
       notifications,
+      loading: notLoading,
     }),
     shallowEqual
   )
@@ -61,7 +62,7 @@ const Notifications: React.FC = () => {
             </IonButton>
           </IonCol>
         </IonRow>
-        <NotifyList notifications={notifications} />
+        <NotifyList loading={loading} notifications={notifications} />
       </IonContent>
     </IonPage>
   )

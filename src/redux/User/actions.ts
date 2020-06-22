@@ -10,6 +10,7 @@ import {
   USER_CREATE_PROFILE,
   USER_SET_NOT_ID,
   USER_SET_NOT,
+  USER_SET_NOT_LOADING,
 } from "./types"
 import { PWA, Push, Profile, StoreNotification } from "../../util/types"
 import { ReduxCombinedState } from "../RootReducer"
@@ -298,6 +299,12 @@ export const setLoading = (isLoading: boolean) =>
     payload: isLoading,
   } as const)
 
+export const setNotLoading = (isLoading: boolean) =>
+  ({
+    type: USER_SET_NOT_LOADING,
+    payload: isLoading,
+  } as const)
+
 export const setData = (data: Partial<UserState>) =>
   ({
     type: USER_SET_DATA,
@@ -508,6 +515,7 @@ export const thunkLoadNotifications = (): ThunkAction<
   null,
   Action
 > => async (dispatch) => {
+  dispatch(setNotLoading(true))
   try {
     const url = `/public/notifys`
     const resp = await (await Axios()).get(url)
@@ -517,5 +525,7 @@ export const thunkLoadNotifications = (): ThunkAction<
   } catch (e) {
     console.log(e)
     return undefined
+  } finally {
+    dispatch(setNotLoading(false))
   }
 }

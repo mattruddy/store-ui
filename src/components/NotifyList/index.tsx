@@ -14,6 +14,8 @@ import {
   IonContent,
   IonIcon,
   IonTitle,
+  IonSpinner,
+  IonProgressBar,
 } from "@ionic/react"
 import { dateFormatter, mdConverter, removeMarkdown } from "../../util"
 import { trash } from "ionicons/icons"
@@ -60,11 +62,13 @@ const More: React.FC<BodyProps> = ({
 interface ContainerProps {
   notifications: StoreNotification[]
   deleteCallback?: (id: number) => void
+  loading?: boolean
 }
 
 const NotifyList: React.FC<ContainerProps> = ({
   notifications,
   deleteCallback,
+  loading = false,
 }) => {
   const [body, setBody] = useState("")
   const [subject, setSubject] = useState("")
@@ -74,41 +78,45 @@ const NotifyList: React.FC<ContainerProps> = ({
     <>
       <IonRow>
         <IonCol>
-          <IonList>
-            {notifications.map((n, i) => (
-              <IonItem
-                button
-                onClick={() => {
-                  setBody(n.body)
-                  setSubject(n.subject)
-                  setShowMore(true)
-                }}
-                key={i}
-              >
-                <IonLabel>
-                  <h2>{n.subject}</h2>
-                  <p>{removeMarkdown(n.body)}</p>
-                </IonLabel>
-                <IonLabel slot="end">
-                  <p>{dateFormatter(n.createdAt)}</p>
-                </IonLabel>
-                {deleteCallback && (
-                  <IonButton
-                    item-right
-                    style={{ zIdex: "100" }}
-                    slot="end"
-                    fill="clear"
-                    onClick={(e) => {
-                      deleteCallback(n.id)
-                      e.stopPropagation()
-                    }}
-                  >
-                    <IonIcon icon={trash} />
-                  </IonButton>
-                )}
-              </IonItem>
-            ))}
-          </IonList>
+          {loading === true ? (
+            <IonProgressBar type="indeterminate" />
+          ) : (
+            <IonList>
+              {notifications.map((n, i) => (
+                <IonItem
+                  button
+                  onClick={() => {
+                    setBody(n.body)
+                    setSubject(n.subject)
+                    setShowMore(true)
+                  }}
+                  key={i}
+                >
+                  <IonLabel>
+                    <h2>{n.subject}</h2>
+                    <p>{removeMarkdown(n.body)}</p>
+                  </IonLabel>
+                  <IonLabel slot="end">
+                    <p>{dateFormatter(n.createdAt)}</p>
+                  </IonLabel>
+                  {deleteCallback && (
+                    <IonButton
+                      item-right
+                      style={{ zIdex: "100" }}
+                      slot="end"
+                      fill="clear"
+                      onClick={(e) => {
+                        deleteCallback(n.id)
+                        e.stopPropagation()
+                      }}
+                    >
+                      <IonIcon icon={trash} />
+                    </IonButton>
+                  )}
+                </IonItem>
+              ))}
+            </IonList>
+          )}
         </IonCol>
       </IonRow>
       <More

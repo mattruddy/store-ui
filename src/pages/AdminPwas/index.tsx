@@ -152,7 +152,7 @@ const AdminPwas: React.FC = () => {
     <IonPage>
       <IonHeader className="ion-no-border bottom-line-border">
         <IonToolbar>
-          <IonTitle>Aproval Admin</IonTitle>
+          <IonTitle>Approval Admin</IonTitle>
           <IonButtons slot="end">
             <IonButton routerLink={RouteMap.ADMIN_NOTIFY}>
               <IonIcon icon={pencil} />

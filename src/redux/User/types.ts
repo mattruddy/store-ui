@@ -14,6 +14,7 @@ export interface UserState {
   push: Push | undefined
   lastNotId: number
   notifications: StoreNotification[]
+  notLoading: boolean
 }
 
 export enum UserRole {
@@ -35,6 +36,7 @@ export const USER_SET_DARKMODE = "USER_SET_DARKMODE"
 export const USER_CREATE_PROFILE = "USER_CREATE_PROFILE"
 export const USER_SET_NOT_ID = "USER_SET_NOT_ID"
 export const USER_SET_NOT = "USER_SET_NOT"
+export const USER_SET_NOT_LOADING = "USER_SET_NOT_LOADING"
 
 export interface setDarkMode {
   type: typeof USER_SET_DARKMODE
@@ -52,6 +54,11 @@ export interface SetUserAction {
 
 export interface SetLoadingAction {
   type: typeof USER_SET_LOADING
+  payload: boolean
+}
+
+export interface SetNotLoadingAction {
+  type: typeof USER_SET_NOT_LOADING
   payload: boolean
 }
 
@@ -108,3 +115,4 @@ export type UserActionTypes =
   | CreateProfileAction
   | SetNotIdAction
   | SetNotAction
+  | SetNotLoadingAction
