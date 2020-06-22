@@ -1,4 +1,9 @@
-import React, { useEffect, useCallback, useRef, HtmlHTMLAttributes } from "react"
+import React, {
+  useEffect,
+  useCallback,
+  useRef,
+  HtmlHTMLAttributes,
+} from "react"
 import { Redirect, Route } from "react-router-dom"
 import {
   IonApp,
@@ -62,7 +67,6 @@ const App: React.FC = () => {
 }
 
 const IonicApp: React.FC = () => {
-
   const idk = useRef<any>()
 
   const dispatch = useDispatch()
@@ -93,10 +97,12 @@ const IonicApp: React.FC = () => {
     darkMode,
     lastNotId,
     notifys,
+    hasUpdate,
   } = useSelector(
     ({
       user: { isLoggedIn, token, push, darkMode, lastNotId, notifications },
       alerts,
+      app: { hasUpdate },
     }: ReduxCombinedState) => ({
       isLoggedIn,
       token,
@@ -105,6 +111,7 @@ const IonicApp: React.FC = () => {
       darkMode,
       lastNotId,
       notifys: notifications,
+      hasUpdate,
     }),
     shallowEqual
   )
@@ -128,7 +135,6 @@ const IonicApp: React.FC = () => {
   useEffect(() => {
     loadUserData()
     loadNotifications()
-    //handleTheme()
   }, [])
 
   useEffect(() => {
@@ -282,6 +288,20 @@ const IonicApp: React.FC = () => {
               text: "Dismiss",
               handler: () => {
                 clearAlert()
+              },
+            },
+          ]}
+        />
+        <IonToast
+          isOpen={hasUpdate}
+          position="top"
+          message={"There is a new version of the PWA Store available"}
+          buttons={[
+            {
+              side: "end",
+              text: "Update",
+              handler: () => {
+                window.location.reload()
               },
             },
           ]}
