@@ -58,6 +58,11 @@ const dateFormatter = (date: Date) => {
   return momentDate.format("MM/DD/YY h:mm a")
 }
 
+const dateNoTimeFormatter = (date: Date) => {
+  const momentDate = moment(date.toString())
+  return momentDate.format("MM/DD/YY")
+}
+
 const shareUrl = (url: string, title: string, text: string) => {
   // @ts-ignore
   if (!navigator.share) return
@@ -188,4 +193,5 @@ export {
   validProfileLink,
   mdConverter,
   removeMarkdown,
+  dateNoTimeFormatter,
 }

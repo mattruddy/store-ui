@@ -14,10 +14,9 @@ import {
   IonContent,
   IonIcon,
   IonTitle,
-  IonSpinner,
   IonProgressBar,
 } from "@ionic/react"
-import { dateFormatter, mdConverter, removeMarkdown } from "../../util"
+import { mdConverter, removeMarkdown, dateNoTimeFormatter } from "../../util"
 import { trash } from "ionicons/icons"
 
 interface BodyProps {
@@ -81,7 +80,7 @@ const NotifyList: React.FC<ContainerProps> = ({
           {loading === true ? (
             <IonProgressBar type="indeterminate" />
           ) : (
-            <IonList>
+            <IonList lines="inset">
               {notifications.map((n, i) => (
                 <IonItem
                   button
@@ -94,10 +93,8 @@ const NotifyList: React.FC<ContainerProps> = ({
                 >
                   <IonLabel>
                     <h2>{n.subject}</h2>
+                    <p>{dateNoTimeFormatter(n.createdAt)}</p>
                     <p>{removeMarkdown(n.body)}</p>
-                  </IonLabel>
-                  <IonLabel slot="end">
-                    <p>{dateFormatter(n.createdAt)}</p>
                   </IonLabel>
                   {deleteCallback && (
                     <IonButton
