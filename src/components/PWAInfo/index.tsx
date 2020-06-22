@@ -116,7 +116,7 @@ const PWAInfo: React.FC<ContainerProps> = ({
         <span style={{ marginLeft: "5px" }}>({pwa.ratingsCount})</span>
       </div>
       <div className="PWAShareContainer">
-        <ShareUrl title={pwa.name} />
+        <ShareUrl title={pwa.name} url={window.location.href} />
       </div>
       {isEdit ? (
         <FormItem name="Tags" showError={false} errorMessage="">
@@ -158,7 +158,8 @@ const PWAInfo: React.FC<ContainerProps> = ({
               onTabChange={setSelectedTab}
               generateMarkdownPreview={(md) =>
                 Promise.resolve(mdConverter.makeHtml(desc!))
-              }            />
+              }
+            />
           </div>
         </FormItem>
       ) : (
