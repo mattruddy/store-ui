@@ -25,7 +25,7 @@ const DEFAULT_STATE_USER: UserState = {
   username: "",
   email: "",
   darkMode: false,
-  isLoggedIn: false,
+  isLoggedIn: undefined,
   role: UserRole.Dev,
   push: undefined,
   lastNotId: -1,

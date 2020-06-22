@@ -3,7 +3,6 @@ import { vars } from "../../data/env"
 import { Plugins } from "@capacitor/core"
 import { AxiosCustomRequestConfig, Image, Push } from "../../util/types"
 import { setAlert } from "../Alerts/actions"
-import { async } from "q"
 
 const { Storage } = Plugins
 const { API_URL } = vars().env

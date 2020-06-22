@@ -9,7 +9,7 @@ export interface UserState {
   username: string
   email: string
   darkMode: boolean
-  isLoggedIn: boolean
+  isLoggedIn: boolean | undefined
   role: UserRole
   push: Push | undefined
   lastNotId: number

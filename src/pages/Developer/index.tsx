@@ -27,7 +27,9 @@ const Developer: React.FC = () => {
 
   const { profile, isLoading } = useSelector(
     ({ pwas: { devs, isDevPending } }: ReduxCombinedState) => ({
-      profile: devs.find((x) => x.username === username),
+      profile: devs.find(
+        (x) => x.username.toLowerCase() === username?.toLowerCase()
+      ),
       isLoading: isDevPending,
     }),
     shallowEqual
