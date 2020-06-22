@@ -1,24 +1,11 @@
-import React, {
-  useState,
-  memo,
-  useEffect,
-  useMemo,
-  Fragment,
-  FormEvent,
-} from "react"
+import React, { useState, memo, useEffect, useMemo, FormEvent } from "react"
 import {
   IonContent,
   IonHeader,
   IonPage,
   IonToolbar,
   IonTitle,
-  IonSelect,
-  IonSelectOption,
   IonButton,
-  IonItem,
-  IonLabel,
-  IonTextarea,
-  IonImg,
   IonRow,
   IonCol,
   IonCard,
@@ -26,8 +13,7 @@ import {
   IonButtons,
   IonIcon,
 } from "@ionic/react"
-import { withRouter } from "react-router"
-import { PWA, StoreNotification } from "../../util/types"
+import { StoreNotification } from "../../util/types"
 import { useSelector, shallowEqual } from "react-redux"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { Axios } from "../../redux/Actions"
@@ -35,15 +21,22 @@ import { FormItem } from "../../components"
 import ReactMde from "react-mde"
 import { mdConverter } from "../../util"
 import NotifyList from "../../components/NotifyList"
-import { async } from "q"
 import { RouteMap } from "../../routes"
 import { newspaper } from "ionicons/icons"
+import { useChange } from "../../hooks/useChange"
+import { useBeforeunload } from "react-beforeunload"
 
 const AdminNotify: React.FC = () => {
   const [notifications, setNotifications] = useState<StoreNotification[]>([])
   const [subject, setSubject] = useState("")
   const [body, setBody] = useState("")
   const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write")
+
+  const [isChanged, changeInitialize] = useChange([subject, body])
+
+  useBeforeunload((evt) => {
+    return isChanged && evt.preventDefault()
+  })
 
   const { isLoggedIn, loading } = useSelector(
     ({ user: { isLoggedIn, notLoading } }: ReduxCombinedState) => ({
@@ -63,6 +56,10 @@ const AdminNotify: React.FC = () => {
       })()
     }
   }, [isLoggedIn])
+
+  useEffect(() => {
+    changeInitialize([subject, body])
+  }, [])
 
   const onSubmit = async (e: FormEvent) => {
     e.preventDefault()
@@ -106,7 +103,7 @@ const AdminNotify: React.FC = () => {
                       onChange={setBody}
                       selectedTab={selectedTab}
                       onTabChange={setSelectedTab}
-                      generateMarkdownPreview={(md) =>
+                      generateMarkdownPreview={() =>
                         Promise.resolve(mdConverter.makeHtml(body!))
                       }
                     />

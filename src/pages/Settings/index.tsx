@@ -49,7 +49,6 @@ const Settings: React.FC = () => {
   ])
 
   useBeforeunload((evt) => {
-    console.log(isChanges)
     return isChanges && evt.preventDefault()
   })
 
