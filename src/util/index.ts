@@ -35,6 +35,12 @@ function fixRotation(file: File) {
   })
 }
 
+const removeMarkdown = (input: string) =>
+  input.replace(
+    /(?:\[.*\]\(.*\))|(?:!\[.*\]\(.*\))|(?:```[a-z]*\n[\s\S]*?\n```)|[^\w\s]/gi,
+    ""
+  )
+
 const fixRoation = (src: string): string | undefined => {
   let fixSrc
   loadImage(
@@ -162,6 +168,8 @@ const mdConverter = new Showdown.Converter({
   tasklists: true,
 })
 
+mdConverter.setFlavor("github")
+
 export {
   blobToFile,
   fixFilesRotation,
@@ -179,4 +187,5 @@ export {
   normalizeCategory,
   validProfileLink,
   mdConverter,
+  removeMarkdown,
 }

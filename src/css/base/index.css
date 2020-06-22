@@ -7,6 +7,11 @@
   transition: box-shadow 0.3s ease-in-out;
 }
 
+ion-card {
+  --background: transparent;
+  box-shadow: none;
+}
+
 .content {
   --background: rgb(248, 248, 248);
   --color: var(--text-color);

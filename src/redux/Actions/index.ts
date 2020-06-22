@@ -3,6 +3,7 @@ import { vars } from "../../data/env"
 import { Plugins } from "@capacitor/core"
 import { AxiosCustomRequestConfig, Image, Push } from "../../util/types"
 import { setAlert } from "../Alerts/actions"
+import { async } from "q"
 
 const { Storage } = Plugins
 const { API_URL } = vars().env
@@ -15,6 +16,7 @@ const ROLE = "role"
 const PUSH_KEY = "push_key"
 const PUSH_AUTH = "push_auth"
 const PUSH_ENDPOINT = "push_endpoint"
+const LAST_NOT_ID = "LAST_NOT_ID"
 
 const getUserData = async () => {
   const response = await Promise.all([
@@ -27,6 +29,7 @@ const getUserData = async () => {
     Storage.get({ key: PUSH_KEY }),
     Storage.get({ key: PUSH_AUTH }),
     Storage.get({ key: PUSH_ENDPOINT }),
+    Storage.get({ key: LAST_NOT_ID }),
   ])
   const isLoggedIn = response[0].value === "true"
   const token = response[1].value || undefined
@@ -37,6 +40,7 @@ const getUserData = async () => {
   const pushKey = response[6].value || undefined
   const pushAuth = response[7].value || undefined
   const pushEndpoint = response[8].value || undefined
+  const lastNotId = parseInt(response[9].value || "-1")
   const data = {
     isLoggedIn,
     token,
@@ -47,6 +51,7 @@ const getUserData = async () => {
     push: pushKey
       ? ({ key: pushKey, auth: pushAuth, endpoint: pushEndpoint } as Push)
       : undefined,
+    lastNotId,
   }
   return data
 }
@@ -79,6 +84,10 @@ const setPushStorage = async (push: Push) => {
   await Storage.set({ key: PUSH_AUTH, value: push.auth })
   await Storage.set({ key: PUSH_KEY, value: push.key })
   await Storage.set({ key: PUSH_ENDPOINT, value: push.endpoint })
+}
+
+const setLastNotIdStorage = async (id: string) => {
+  await Storage.set({ key: LAST_NOT_ID, value: id })
 }
 
 export const UploadScreenshots = async (screenshots: File[], appId: number) => {
@@ -187,4 +196,5 @@ export {
   setUsernameStorage,
   setRoleStorage,
   setPushStorage,
+  setLastNotIdStorage,
 }

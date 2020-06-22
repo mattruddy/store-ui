@@ -16,11 +16,19 @@ export interface NewRating {
   rating: Rating
 }
 
+export interface StoreNotification {
+  subject: string
+  body: string
+  createdAt: Date
+  id: number
+}
+
 export interface Rating {
   from: string
   star: number
   comment: string
   createdAt: Date
+  linkable: boolean
 }
 
 export interface PWA {

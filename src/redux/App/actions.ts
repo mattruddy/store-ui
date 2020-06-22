@@ -1,4 +1,4 @@
-import { APP_SET_VERSION, REDUX_RESET } from "./types"
+import { APP_SET_VERSION, REDUX_RESET, SET_HAS_UPDATE } from "./types"
 import axios from "axios"
 import ReactGA from "react-ga"
 import { Action } from "redux"
@@ -10,6 +10,10 @@ const { PUBLIC_URL } = process.env
 const setWindow = (payload: any) => ({
   type: SET_WINDOW,
   payload,
+})
+
+const setHasUpdate = () => ({
+  type: SET_HAS_UPDATE,
 })
 
 const thunkResetRedux = (): ThunkAction<
@@ -55,4 +59,10 @@ interface ComparableVersions {
   latestVersion: number
 }
 
-export { setWindow, thunkResetRedux, getAppVersion }
+export {
+  setWindow,
+  thunkResetRedux,
+  getAppVersion,
+  setAppVersion,
+  setHasUpdate,
+}

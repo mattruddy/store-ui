@@ -8,8 +8,11 @@ import {
   USER_REMOVE_APP,
   UserRole,
   USER_CREATE_PROFILE,
+  USER_SET_NOT_ID,
+  USER_SET_NOT,
+  USER_SET_NOT_LOADING,
 } from "./types"
-import { PWA, Push, Profile } from "../../util/types"
+import { PWA, Push, Profile, StoreNotification } from "../../util/types"
 import { ReduxCombinedState } from "../RootReducer"
 import { Action } from "redux"
 import { ThunkAction } from "redux-thunk"
@@ -26,8 +29,10 @@ import {
   DeleteScreenshot,
   setPushStorage,
   setDarkModeStorage,
+  setLastNotIdStorage,
 } from "../Actions"
 import { setAlert } from "../Alerts/actions"
+import { notifications } from "ionicons/icons"
 
 export const thunkAddPush = (
   push: Push
@@ -294,6 +299,12 @@ export const setLoading = (isLoading: boolean) =>
     payload: isLoading,
   } as const)
 
+export const setNotLoading = (isLoading: boolean) =>
+  ({
+    type: USER_SET_NOT_LOADING,
+    payload: isLoading,
+  } as const)
+
 export const setData = (data: Partial<UserState>) =>
   ({
     type: USER_SET_DATA,
@@ -329,6 +340,17 @@ export const removeApp = (appId: number) =>
     type: USER_REMOVE_APP,
     payload: appId,
   } as const)
+
+export const setLastNotId = (id: number) =>
+  ({
+    type: USER_SET_NOT_ID,
+    payload: id,
+  } as const)
+
+export const setNotifications = (notifications: StoreNotification[]) => ({
+  type: USER_SET_NOT,
+  payload: notifications,
+})
 
 export const thunkThirdPartyLogin = (
   token: string
@@ -477,5 +499,33 @@ export const thunkUpdateApp = (
     return console.error(e)
   } finally {
     dispatch(setLoading(false))
+  }
+}
+
+export const thunkSetLastNotId = (
+  id: number
+): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
+  dispatch(setLastNotId(id))
+  await setLastNotIdStorage(id.toString())
+}
+
+export const thunkLoadNotifications = (): ThunkAction<
+  void,
+  ReduxCombinedState,
+  null,
+  Action
+> => async (dispatch) => {
+  dispatch(setNotLoading(true))
+  try {
+    const url = `/public/notifys`
+    const resp = await (await Axios()).get(url)
+    const data = resp.data as StoreNotification[]
+    dispatch(setNotifications(data))
+    return data
+  } catch (e) {
+    console.log(e)
+    return undefined
+  } finally {
+    dispatch(setNotLoading(false))
   }
 }

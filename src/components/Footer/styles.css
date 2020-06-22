@@ -1,16 +1,9 @@
 .Footer {
-  height: 80px;
   display: flex;
-  align-items: flex-end;
   justify-content: space-between;
-  margin-top: 20px;
 }
 
 .FooterLeft {
   font-size: 12px;
-  margin: 16px;
-}
-
-.FooterRight {
   margin: 16px;
 }

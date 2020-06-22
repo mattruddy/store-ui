@@ -2,7 +2,7 @@ import React, { memo } from "react"
 //@ts-ignore
 import StarRatings from "react-star-ratings"
 import { Rating } from "../../util/types"
-import { IonItem, IonIcon } from "@ionic/react"
+import { IonItem, IonIcon, IonRouterLink } from "@ionic/react"
 import { dateFormatter } from "../../util"
 import { checkmarkCircleOutline } from "ionicons/icons"
 import "./style.css"
@@ -47,7 +47,14 @@ const RatingItem: React.FC<ContainerProps> = ({ rating }) => {
                 icon={checkmarkCircleOutline}
               />
             )}{" "}
-            {rating.from} <small>{dateFormatter(rating.createdAt)}</small>
+            {rating.linkable ? (
+              <IonRouterLink routerLink={`/dev/${rating.from}`}>
+                {rating.from}
+              </IonRouterLink>
+            ) : (
+              rating.from
+            )}{" "}
+            <small>{dateFormatter(rating.createdAt)}</small>
           </i>
         </div>
       </div>

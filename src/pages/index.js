@@ -1,5 +1,6 @@
 export { default as About } from "./About"
-export { default as Admin } from "./Admin"
+export { default as AdminPwas } from "./AdminPwas"
+export { default as AdminNotify } from "./AdminNotify"
 export { default as Login } from "./Login"
 export { default as MyPWA } from "./MyPWA"
 export { default as Profile } from "./Profile"

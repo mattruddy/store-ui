@@ -1,7 +1,5 @@
 .PWACard {
   height: 190px;
-  --background: transparent;
-  box-shadow: none;
 }
 
 .PWACardHeader {

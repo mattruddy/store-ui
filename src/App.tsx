@@ -1,4 +1,9 @@
-import React, { useEffect, useCallback } from "react"
+import React, {
+  useEffect,
+  useCallback,
+  useRef,
+  HtmlHTMLAttributes,
+} from "react"
 import { Redirect, Route } from "react-router-dom"
 import {
   IonApp,
@@ -11,9 +16,18 @@ import {
   IonToast,
   getPlatforms,
   IonSplitPane,
+  IonBadge,
 } from "@ionic/react"
 import { IonReactRouter } from "@ionic/react-router"
-import { person, home, logIn, informationCircle, search } from "ionicons/icons"
+import {
+  person,
+  home,
+  logIn,
+  informationCircle,
+  search,
+  notifications,
+  alert,
+} from "ionicons/icons"
 import {
   PWAs,
   SignUp,
@@ -23,7 +37,8 @@ import {
   PWA,
   MyPWA,
   About,
-  Admin,
+  AdminPwas,
+  AdminNotify,
   Categories,
 } from "./pages"
 import { RouteMap } from "./routes"
@@ -34,6 +49,7 @@ import {
   thunkLoadUserData,
   thunkLoadProfile,
   thunkSetDarkMode,
+  thunkLoadNotifications,
 } from "./redux/User/actions"
 import { SetWindow } from "./redux/Window/actions"
 import { ReduxCombinedState } from "./redux/RootReducer"
@@ -44,12 +60,15 @@ import Search from "./pages/Search"
 import Settings from "./pages/Settings"
 import Developer from "./pages/Developer"
 import AddPWA from "./pages/AddPWA"
+import Notifications from "./pages/Notifications"
 
 const App: React.FC = () => {
   return <IonicApp />
 }
 
 const IonicApp: React.FC = () => {
+  const idk = useRef<any>()
+
   const dispatch = useDispatch()
   const loadUserData = useCallback(() => dispatch(thunkLoadUserData()), [
     dispatch,
@@ -63,19 +82,36 @@ const IonicApp: React.FC = () => {
     (prefersDarkMode: boolean) => dispatch(thunkSetDarkMode(prefersDarkMode)),
     [dispatch]
   )
+  const loadNotifications = useCallback(
+    () => dispatch(thunkLoadNotifications()),
+    [dispatch]
+  )
 
   const handleResize = useCallback(() => dispatch(SetWindow()), [dispatch])
 
-  const { isLoggedIn, token, alerts, push, darkMode } = useSelector(
+  const {
+    isLoggedIn,
+    token,
+    alerts,
+    push,
+    darkMode,
+    lastNotId,
+    notifys,
+    hasUpdate,
+  } = useSelector(
     ({
-      user: { isLoggedIn, token, push, darkMode },
+      user: { isLoggedIn, token, push, darkMode, lastNotId, notifications },
       alerts,
+      app: { hasUpdate },
     }: ReduxCombinedState) => ({
-      isLoggedIn: isLoggedIn,
-      token: token,
-      alerts: alerts,
-      push: push,
-      darkMode: darkMode,
+      isLoggedIn,
+      token,
+      alerts,
+      push,
+      darkMode,
+      lastNotId,
+      notifys: notifications,
+      hasUpdate,
     }),
     shallowEqual
   )
@@ -98,7 +134,7 @@ const IonicApp: React.FC = () => {
 
   useEffect(() => {
     loadUserData()
-    //handleTheme()
+    loadNotifications()
   }, [])
 
   useEffect(() => {
@@ -140,7 +176,7 @@ const IonicApp: React.FC = () => {
         <IonSplitPane contentId="main" when="md">
           <SideBar />
           <div id="main">
-            <IonTabs>
+            <IonTabs ref={idk}>
               <IonRouterOutlet animated={false}>
                 <Route
                   path={[RouteMap.PWA_DETAIL]}
@@ -157,7 +193,12 @@ const IonicApp: React.FC = () => {
                 <Route path={RouteMap.PROFILE} component={Profile} />
                 <Route path={RouteMap.MY_PWA_DETAIL} component={MyPWA} />
                 <Route path={RouteMap.ABOUT} component={About} />
-                <Route path={RouteMap.ADMIN} component={Admin} exact />
+                <Route path={RouteMap.ADMIN_PWAS} component={AdminPwas} exact />
+                <Route
+                  path={RouteMap.ADMIN_NOTIFY}
+                  component={AdminNotify}
+                  exact={true}
+                />
                 <Route
                   path={RouteMap.CATEGORIES}
                   component={Categories}
@@ -170,6 +211,16 @@ const IonicApp: React.FC = () => {
                 <Route path={RouteMap.DEVELOPER} component={Developer} />
                 <Route path={RouteMap.ADD} component={AddPWA} />
                 <Route
+                  path={RouteMap.NOTIFICATIONS}
+                  component={Notifications}
+                  exact
+                />
+                <Route
+                  path={RouteMap.ADMIN_ROOT}
+                  render={() => <Redirect to={RouteMap.ADMIN_PWAS} />}
+                  exact={true}
+                />
+                <Route
                   path={RouteMap.ROOT}
                   render={() => <Redirect to={RouteMap.HOME} />}
                   exact={true}
@@ -177,9 +228,9 @@ const IonicApp: React.FC = () => {
               </IonRouterOutlet>
 
               <IonTabBar slot="bottom">
-                <IonTabButton className="tab" tab="home" href={RouteMap.HOME}>
+                <IonTabButton className="tab" tab="pwas" href={RouteMap.HOME}>
                   <IonIcon icon={home} />
-                  <IonLabel>Home</IonLabel>
+                  <IonLabel>Store</IonLabel>
                 </IonTabButton>
                 <IonTabButton
                   className="CatTabButton"
@@ -189,9 +240,18 @@ const IonicApp: React.FC = () => {
                   <IonIcon icon={search} />
                   <IonLabel>Search</IonLabel>
                 </IonTabButton>
-                <IonTabButton className="tab" tab="about" href={RouteMap.ABOUT}>
-                  <IonIcon icon={informationCircle} />
-                  <IonLabel>About</IonLabel>
+                <IonTabButton
+                  className="tab"
+                  tab="notifications"
+                  href={RouteMap.NOTIFICATIONS}
+                >
+                  {notifys.length > 0 && lastNotId < notifys[0].id && (
+                    <IonBadge color="danger">
+                      <IonIcon icon={alert} />
+                    </IonBadge>
+                  )}
+                  <IonIcon icon={notifications} />
+                  <IonLabel>Notifications</IonLabel>
                 </IonTabButton>
                 <IonTabButton
                   className="tab"
@@ -228,6 +288,20 @@ const IonicApp: React.FC = () => {
               text: "Dismiss",
               handler: () => {
                 clearAlert()
+              },
+            },
+          ]}
+        />
+        <IonToast
+          isOpen={hasUpdate}
+          position="top"
+          message={"There is a new version of the PWA Store available"}
+          buttons={[
+            {
+              side: "end",
+              text: "Update",
+              handler: () => {
+                window.location.reload()
               },
             },
           ]}

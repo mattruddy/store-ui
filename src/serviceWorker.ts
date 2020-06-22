@@ -5,6 +5,7 @@ import { vars } from "./data/env"
 import { Store } from "."
 import { thunkAddPush } from "./redux/User/actions"
 import { Push } from "./util/types"
+import { setHasUpdate } from "./redux/App/actions"
 
 // This lets the app load faster on subsequent visits in production, and gives
 // it offline capabilities. However, it also means that developers (and users)
@@ -83,7 +84,7 @@ function registerValidSW(swUrl: string, store: Store, config?: Config) {
                 "New content is available and will be used when all " +
                   "tabs for this page are closed. See https://bit.ly/CRA-PWA."
               )
-
+              store.dispatch<any>(setHasUpdate())
               // Execute callback
               if (config && config.onUpdate) {
                 config.onUpdate(registration)

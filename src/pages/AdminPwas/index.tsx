@@ -14,14 +14,19 @@ import {
   IonImg,
   IonRow,
   IonCol,
+  IonButtons,
+  IonRouterLink,
+  IonIcon,
 } from "@ionic/react"
 import { withRouter } from "react-router"
 import { PWA } from "../../util/types"
 import { useSelector, shallowEqual } from "react-redux"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { Axios } from "../../redux/Actions"
+import { pencil } from "ionicons/icons"
+import { RouteMap } from "../../routes"
 
-const Admin: React.FC = () => {
+const AdminPwas: React.FC = () => {
   const [pwas, setPwas] = useState<PWA[]>([])
   const [status, setStatus] = useState<string | undefined>()
   const [reason, setReason] = useState<string | undefined>()
@@ -145,9 +150,14 @@ const Admin: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
+      <IonHeader className="ion-no-border bottom-line-border">
         <IonToolbar>
-          <IonTitle>Admin</IonTitle>
+          <IonTitle>Approval Admin</IonTitle>
+          <IonButtons slot="end">
+            <IonButton routerLink={RouteMap.ADMIN_NOTIFY}>
+              <IonIcon icon={pencil} />
+            </IonButton>
+          </IonButtons>
         </IonToolbar>
       </IonHeader>
       <IonContent>{renderAdmin}</IonContent>
@@ -155,4 +165,4 @@ const Admin: React.FC = () => {
   )
 }
 
-export default withRouter(memo(Admin))
+export default memo(AdminPwas)

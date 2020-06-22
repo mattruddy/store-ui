@@ -248,6 +248,13 @@ ion-note {
   --color: var(--sub-color);
 }
 
+ion-toast {
+  --border-color: var(--border-color);
+  --border-width: 1px;
+  --border-style: solid;
+  --box-shadow: none;
+}
+
 ion-select {
   color: var(--text-color);
   --placeholder-opacity: 0.6;
