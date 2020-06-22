@@ -32,7 +32,6 @@ import {
   setLastNotIdStorage,
 } from "../Actions"
 import { setAlert } from "../Alerts/actions"
-import { notifications } from "ionicons/icons"
 
 export const thunkAddPush = (
   push: Push
