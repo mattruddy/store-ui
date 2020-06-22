@@ -162,10 +162,6 @@ const normalizeCategory = (category: string | undefined): string => {
     : category
 }
 
-const validProfileLink = (link: string, site: string): boolean => {
-  return link.toLowerCase().startsWith(`https://${site.toLowerCase()}.com/`)
-}
-
 const mdConverter = new Showdown.Converter({
   tables: true,
   simplifiedAutoLink: true,
@@ -190,7 +186,6 @@ export {
   checkValidPW,
   validAppUpload,
   normalizeCategory,
-  validProfileLink,
   mdConverter,
   removeMarkdown,
   dateNoTimeFormatter,

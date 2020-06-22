@@ -98,6 +98,7 @@ export interface PublicProfile {
   location: string
   fullName: string
   header: string
+  profileId: number
 }
 
 export interface AxiosCustomRequestConfig extends AxiosRequestConfig {

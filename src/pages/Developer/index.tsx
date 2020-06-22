@@ -19,6 +19,7 @@ import { ReduxCombinedState } from "../../redux/RootReducer"
 import { thunkGetDev } from "../../redux/PWAs/actions"
 import ReactGA from "react-ga"
 import { useInView } from "react-intersection-observer"
+import { Axios } from "../../redux/Actions"
 
 const Developer: React.FC = () => {
   const { username } = useParams()
@@ -53,6 +54,11 @@ const Developer: React.FC = () => {
       }
     })()
   }, [notFound, profile, username])
+
+  useEffect(() => {
+    if (profile) {
+    }
+  }, [profile])
 
   const renderProfileSection = useMemo(
     () =>

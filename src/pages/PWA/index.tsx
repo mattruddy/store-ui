@@ -50,7 +50,6 @@ const PWA: React.FC<OwnProps> = ({
 }) => {
   const [notFound, setNotFound] = useState<boolean>(false)
   const [hasFetchedRatings, setHasFetchedRatings] = useState<boolean>(false)
-  const [hasFetchDev, sethasFetchDev] = useState<boolean>(false)
 
   const findPWA = (pwas: PWAType[]) =>
     pwas.find((x) => {

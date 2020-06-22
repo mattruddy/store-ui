@@ -71,7 +71,9 @@ const pwasReducer = (
       if (!oPwa) return state
       const nPwa = {
         ...oPwa,
-        ratings: [...oPwa.ratings, action.payload.newRating.rating],
+        ratings: action.payload.newRating.rating.comment
+          ? [action.payload.newRating.rating, ...oPwa.ratings]
+          : [...oPwa.ratings],
         averageRating: action.payload.newRating.averageStar,
         ratingsCount: action.payload.newRating.ratingCount,
       } as PWA
