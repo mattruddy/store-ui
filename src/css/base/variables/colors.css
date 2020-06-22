@@ -232,12 +232,12 @@ ion-tab-button {
 }
 
 ion-tab-bar {
-  --border: 1px solid var(--border-color);
+  --border: 1px solid var(--store-border-color);
   --background: var(--background-color);
 }
 
 ion-item {
-  --border-color: var(--boarder-color);
+  --border-color: var(--store-border-color);
 }
 
 ion-toolbar {
@@ -249,7 +249,7 @@ ion-note {
 }
 
 ion-toast {
-  --border-color: var(--border-color);
+  --border-color: var(--store-border-color);
   --border-width: 1px;
   --border-style: solid;
   --box-shadow: none;
@@ -290,7 +290,7 @@ ion-checkbox {
 ion-toast {
   --background: var(--background-color);
   --color: var(--title-color);
-  --border-color: var(--border-color);
+  --border-color: var(--store-border-color);
 }
 
 textarea {
@@ -304,7 +304,7 @@ small {
 ion-chip {
   --background: var(--background-color);
   --color: var(--text-color);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--store-border-color);
 }
 
 .dark-theme .content {
@@ -312,14 +312,23 @@ ion-chip {
 }
 
 ion-split-pane {
-  --border: 1px solid var(--border-color);
+  --border: 1px solid var(--store-border-color);
   --background: #121212;
+}
+
+p {
+  color: var(--sub-color);
+}
+
+/* Fix color for p ios */
+.sc-ion-label-ios-s p {
+  color: var(--sub-color);
 }
 
 .dark-theme {
   --light-rating: #eeeeee !important;
   --dark-rating: #303028 !important;
-  --border-color: #737373 !important;
+  --store-border-color: #737373 !important;
   --background-color: #161616 !important;
   --ion-background-color: var(--background-color) !important;
 
@@ -341,7 +350,7 @@ ion-split-pane {
 :root {
   --light-rating: #2d3436;
   --dark-rating: #eeeeee;
-  --border-color: rgba(0, 0, 0, 0.13);
+  --store-border-color: rgba(0, 0, 0, 0.13);
   --background-color: rgb(248, 248, 248);
   --cat-text-color: #737373;
   --text-color: #2d3436;
