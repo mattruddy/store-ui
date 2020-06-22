@@ -19,6 +19,7 @@ import {
 } from "../../redux/User/actions"
 import NotifyList from "../../components/NotifyList"
 import { refresh } from "ionicons/icons"
+import ReactGA from "react-ga"
 
 const Notifications: React.FC = () => {
   const { notifications, loading } = useSelector(
@@ -45,6 +46,10 @@ const Notifications: React.FC = () => {
       setLastNotId(notifications[0].id)
     }
   }, [notifications])
+
+  useEffect(() => {
+    ReactGA.pageview(`notifications`)
+  }, [])
 
   return (
     <IonPage>

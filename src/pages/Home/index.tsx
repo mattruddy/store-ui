@@ -55,9 +55,6 @@ const Home: React.FC = () => {
 
   useEffect(() => {
     ReactGA.pageview(`Home`)
-    const prefersDarkMode: MediaQueryList = window.matchMedia(
-      "(prefers-color-scheme: dark)"
-    )
   }, [])
 
   const renderHomeList = useMemo(() => {

@@ -1,5 +1,5 @@
 import { StoreNotification } from "../../util/types"
-import React, { useState, memo } from "react"
+import React, { useState, memo, useEffect } from "react"
 import {
   IonRow,
   IonCol,
@@ -18,6 +18,7 @@ import {
 } from "@ionic/react"
 import { mdConverter, removeMarkdown, dateNoTimeFormatter } from "../../util"
 import { trash } from "ionicons/icons"
+import ReactGA from "react-ga"
 
 interface BodyProps {
   subject: string
@@ -32,6 +33,12 @@ const More: React.FC<BodyProps> = ({
   showMore,
   onDidDismiss,
 }) => {
+  useEffect(() => {
+    if (showMore) {
+      ReactGA.modalview(`notifications/${subject}`)
+    }
+  }, [showMore])
+
   return (
     <IonModal isOpen={showMore} onDidDismiss={onDidDismiss}>
       <IonHeader className="ion-no-border bottom-line-border">

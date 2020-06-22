@@ -70,7 +70,7 @@ const ProfileCard: React.FC<ContainerProps> = ({
                       className={`${fullName ? "" : "text-color"}`}
                       style={{ paddingLeft: "8px", margin: "0" }}
                     >
-                      {fullName ? capitalize(fullName) : `@${username}`}
+                      {fullName ? fullName : `@${username}`}
                     </h1>
                     {fullName && (
                       <h4

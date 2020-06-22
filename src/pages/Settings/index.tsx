@@ -21,6 +21,7 @@ import { validProfileLink, mdConverter } from "../../util"
 import ReactMde from "react-mde"
 import "react-mde/lib/styles/css/react-mde-all.css"
 import "./styles.css"
+import ReactGA from "react-ga"
 
 const Settings: React.FC = () => {
   const [fullName, setFullName] = useState<string>("")
@@ -79,6 +80,10 @@ const Settings: React.FC = () => {
     },
     [dispatch]
   )
+
+  useEffect(() => {
+    ReactGA.pageview(`settings`)
+  }, [])
 
   useEffect(() => {
     if (status === "success") {
