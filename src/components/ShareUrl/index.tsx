@@ -1,8 +1,5 @@
 import React, { useEffect, useState, memo, Fragment } from "react"
-import {
-  IonIcon,
-  IonFabButton,
-} from "@ionic/react"
+import { IonIcon, IonFabButton } from "@ionic/react"
 import { ShareOnFaceBook, ShareOnLinkedIn, ShareOnTwitter } from "../"
 import { checkmark, clipboard, share, shareSocialOutline } from "ionicons/icons"
 import { copyStringToClipboard, shareUrl } from "../../util"
@@ -11,13 +8,11 @@ const RESET_COPY_URL_INTERVAL = 5 * 1000
 
 interface ContainerProps {
   title: string
+  url: string
 }
 
-const ShareUrl: React.FC<ContainerProps> = ({ title }) => {
+const ShareUrl: React.FC<ContainerProps> = ({ title, url }) => {
   const [copiedUrlToClipboard, setCopiedUrlToClipboard] = useState(false)
-  const { href } = window.location
-
-  const url = href
 
   const text = "Check out this Progressive Web Application (PWA): "
 
@@ -25,8 +20,8 @@ const ShareUrl: React.FC<ContainerProps> = ({ title }) => {
 
   // @ts-ignore
   const canShareOnMobileDevice = navigator.share ? true : false
-  
-  const renderSharButtonIcon = copiedUrlToClipboard
+
+  const renderShareButtonIcon = copiedUrlToClipboard
     ? checkmark
     : canShareOnMobileDevice
     ? share
@@ -58,7 +53,7 @@ const ShareUrl: React.FC<ContainerProps> = ({ title }) => {
         onClick={handleShareButtonClick}
         size="small"
       >
-        <IonIcon size="small" icon={renderSharButtonIcon} />
+        <IonIcon size="small" icon={renderShareButtonIcon} />
       </IonFabButton>
       <ShareOnFaceBook url={url} />
       <ShareOnLinkedIn url={url} />
