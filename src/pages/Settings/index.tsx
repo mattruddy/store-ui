@@ -22,8 +22,6 @@ import ReactMde from "react-mde"
 import "react-mde/lib/styles/css/react-mde-all.css"
 import "./styles.css"
 import ReactGA from "react-ga"
-import { useBeforeunload } from "react-beforeunload"
-import { useChange } from "../../hooks/useChange"
 
 const Settings: React.FC = () => {
   const [fullName, setFullName] = useState<string>("")
@@ -37,21 +35,6 @@ const Settings: React.FC = () => {
   const [about, setAbout] = useState<string>("")
   const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write")
   const [updateEmail, setUpdateEmail] = useState<string>("")
-  const [isChanges, changeInitialize] = useChange([
-    fullName,
-    gitHub,
-    linkedIn,
-    twitter,
-    showEmail,
-    location,
-    header,
-    about,
-  ])
-
-  useBeforeunload((evt) => {
-    console.log(isChanges)
-    return isChanges && evt.preventDefault()
-  })
 
   const { email, profile, isLoading, status } = useSelector(
     ({
@@ -121,16 +104,6 @@ const Settings: React.FC = () => {
       setLocation(profile.location)
       setFullName(profile.fullName)
       setHeader(profile.header)
-      changeInitialize([
-        profile.fullName,
-        profile.gitHub,
-        profile.linkedIn,
-        profile.twitter,
-        profile.showEmail,
-        profile.location,
-        profile.header,
-        profile.about,
-      ])
     }
   }, [email, profile])
 
