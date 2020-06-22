@@ -43,10 +43,6 @@ const Home: React.FC = () => {
   const getHomeData = useCallback(() => dispatch(thunkGetHomeData()), [
     dispatch,
   ])
-  const setDarkmode = useCallback(
-    (active: boolean) => dispatch(thunkSetDarkMode(active)),
-    [dispatch]
-  )
 
   const setDarkMode = useCallback(
     (active: boolean) => dispatch(thunkSetDarkMode(active)),
@@ -102,7 +98,7 @@ const Home: React.FC = () => {
           </div>
           <div>
             <IonButtons>
-              <IonButton style={{}} onClick={(e) => setDarkMode(!darkMode)}>
+              <IonButton onClick={(e) => setDarkMode(!darkMode)}>
                 <IonIcon icon={darkMode ? moon : sunny} />
               </IonButton>
               <AddToHomeScreen
