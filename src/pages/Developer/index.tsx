@@ -57,6 +57,14 @@ const Developer: React.FC = () => {
 
   useEffect(() => {
     if (profile) {
+      ;(async () =>
+        await (await Axios()).post(
+          `public/profile/view/${profile.profileId}`
+        ))()
+      ReactGA.event({
+        category: `profile view for ${profile.username}`,
+        action: profile.username,
+      })
     }
   }, [profile])
 
