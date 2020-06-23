@@ -94,7 +94,7 @@ const SideBar: React.FC = () => {
     [location]
   )
   return (
-    <IonContent className="side">
+    <IonContent>
       <IonList className="SideBar">
         <IonItemGroup>{renderStandardCategories}</IonItemGroup>
         <IonListHeader className="CategoriesHeader">

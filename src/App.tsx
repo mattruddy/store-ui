@@ -17,6 +17,7 @@ import {
   getPlatforms,
   IonSplitPane,
   IonBadge,
+  IonMenu,
 } from "@ionic/react"
 import { IonReactRouter } from "@ionic/react-router"
 import {
@@ -174,8 +175,10 @@ const IonicApp: React.FC = () => {
     <IonApp className={`${darkMode ? "dark-theme" : ""}`}>
       {isLoggedIn !== undefined && (
         <IonReactRouter>
-          <IonSplitPane contentId="main" when="md">
-            <SideBar />
+          <IonSplitPane contentId="main" when="lg">
+            <IonMenu>
+              <SideBar />
+            </IonMenu>
             <div id="main">
               <IonTabs ref={idk}>
                 <IonRouterOutlet animated={false}>

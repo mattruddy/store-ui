@@ -12,6 +12,10 @@ ion-card {
   box-shadow: none;
 }
 
+ion-menu {
+  max-width: 220px !important;
+}
+
 .content {
   --background: rgb(248, 248, 248);
   --color: var(--text-color);

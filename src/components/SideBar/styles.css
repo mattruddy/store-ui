@@ -1,8 +1,3 @@
-.side {
-  --side-max-width: 220px;
-  --side-min-width: 220px;
-}
-
 .SideBarCategory {
   --min-height: 36px;
 }
