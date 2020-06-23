@@ -9,12 +9,9 @@ import {
 import LinkItem from "./LinkItem"
 import "./styles.css"
 import { IonRow, IonCol, IonButton, IonIcon, IonGrid } from "@ionic/react"
-import { ShareUrl } from "../"
 import { PWA } from "../../util/types"
 import AppImgs from "./AppImgs"
 import DataBox from "./DataBox"
-import { capitalize } from "../../util"
-import { RouteMap } from "../../routes"
 
 export interface TotalAppData {
   totalInstalls: number
@@ -52,13 +49,6 @@ const ProfileCard: React.FC<ContainerProps> = ({
   data,
   pwas,
 }) => {
-  const developerUrl = useMemo(() => {
-    const { origin } = window.location
-    const profileRoute = RouteMap.DEVELOPER.replace(":username", username)
-    const fullUrl = `${origin}${profileRoute}`
-    return fullUrl
-  }, [username])
-
   return (
     <IonGrid fixed>
       <IonRow className="bottom-line-border">
@@ -120,9 +110,6 @@ const ProfileCard: React.FC<ContainerProps> = ({
                 </>
               )}
             </div>
-          </div>
-          <div style={{ display: "flex", marginBottom: 10 }}>
-            <ShareUrl title="Developer's profile" url={developerUrl} />
           </div>
           {location && (
             <div className="text-color">

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, memo, Fragment } from "react"
+import React, { useState, memo, Fragment } from "react"
 import { IonIcon, IonFabButton } from "@ionic/react"
 import { ShareOnFaceBook, ShareOnLinkedIn, ShareOnTwitter } from "../"
 import { checkmark, clipboard, share, shareSocialOutline } from "ionicons/icons"
@@ -14,7 +14,7 @@ interface ContainerProps {
 const ShareUrl: React.FC<ContainerProps> = ({ title, url }) => {
   const [copiedUrlToClipboard, setCopiedUrlToClipboard] = useState(false)
 
-  const text = "Check out this Progressive Web Application (PWA): "
+  const text = `Check out ${title} on the PWA Store: `
 
   const twitterText = `${text}${url}`
 
