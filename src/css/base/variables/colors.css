@@ -274,6 +274,10 @@ div.alert-radio-label.sc-ion-alert-md {
   color: var(--text-color);
 }
 
+ion-segment-button {
+  color: var(--sub-color);
+}
+
 ion-title {
   --color: var(--title-color);
 }
