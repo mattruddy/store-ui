@@ -19,7 +19,12 @@ import ReactTagInput from "@pathofdev/react-tag-input"
 import "./styles.css"
 import { noSpecialChars, mdConverter } from "../../util"
 import ReactMde from "react-mde"
-import AxiosRaw from "axios"
+import { useGitHubRepo } from "../../hooks/useGitHubRepo"
+
+interface GithubRepo {
+  owner: string
+  repo: string
+}
 
 interface ContainerProps {
   pwa: PWA
@@ -33,7 +38,7 @@ interface ContainerProps {
   setCat?: (option: string) => void
   setDesc?: (description: string) => void
   setTags?: (tasg: string[]) => void
-  githubUrl?: string
+  github?: GithubRepo
 }
 
 const PWAInfo: React.FC<ContainerProps> = ({
@@ -48,10 +53,11 @@ const PWAInfo: React.FC<ContainerProps> = ({
   setCat,
   setDesc,
   setTags,
-  githubUrl = "excalidraw/excalidraw",
+  github = { owner: "mattruddy", repo: "store-ui" },
 }) => {
   const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write")
   const [stars, setStars] = useState<number | undefined>(undefined)
+  const githubData = useGitHubRepo(github.owner, github.repo)
 
   const onInstall = () => {
     if (!isMyPwa) {
@@ -62,24 +68,6 @@ const PWAInfo: React.FC<ContainerProps> = ({
       })
     }
   }
-
-  useEffect(() => {
-    if (githubUrl) {
-      ;(async () => {
-        const { data } = await AxiosRaw.request({
-          url: `https://api.github.com/repos/${githubUrl}`,
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-          },
-        })
-        console.log(data)
-        if (data.stargazers_count) {
-          setStars(data.stargazers_count)
-        }
-      })()
-    }
-  }, [githubUrl])
 
   return (
     <>
@@ -101,10 +89,10 @@ const PWAInfo: React.FC<ContainerProps> = ({
                 {pwa.name}
               </span>
             )}
-            {githubUrl && (
+            {github && (
               <IonRouterLink
                 style={{ paddingLeft: "8px" }}
-                href={`https://github.com/${githubUrl}`}
+                href={`https://github.com/${github.owner}/${github.repo}`}
               >
                 <small style={{ color: "var(--title-color)" }}>
                   <span style={{ margin: "auto" }}>
@@ -112,10 +100,16 @@ const PWAInfo: React.FC<ContainerProps> = ({
                   </span>
                   {"  "}
                   <span style={{ margin: "auto" }}>Open Source </span>
-                  <span className="github-stars-label">
-                    <IonIcon icon={star} />
-                  </span>
-                  <span className="github-stars">{stars}</span>
+                  {githubData && (
+                    <>
+                      <span className="github-stars-label">
+                        <IonIcon icon={star} />
+                      </span>
+                      <span className="github-stars">
+                        {githubData.stargazers_count}
+                      </span>
+                    </>
+                  )}
                 </small>
               </IonRouterLink>
             )}
