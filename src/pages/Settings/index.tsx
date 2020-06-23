@@ -17,7 +17,7 @@ import ImageUploader from "react-images-upload"
 import { useDispatch, shallowEqual, useSelector } from "react-redux"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { thunkCreateProfile } from "../../redux/User/actions"
-import { validProfileLink, mdConverter } from "../../util"
+import { mdConverter } from "../../util"
 import ReactMde from "react-mde"
 import "react-mde/lib/styles/css/react-mde-all.css"
 import "./styles.css"
@@ -175,7 +175,7 @@ const Settings: React.FC = () => {
             name="GitHub"
             value={gitHub}
             onChange={(e) => setGitHub(e.detail.value)}
-            showError={gitHub ? !validProfileLink(gitHub, "github") : false}
+            showError={false}
             errorMessage="Invalid GitHub Link"
             maxLength={100}
           />
@@ -183,9 +183,7 @@ const Settings: React.FC = () => {
             name="LinkedIn"
             value={linkedIn}
             onChange={(e) => setLinkedIn(e.detail.value)}
-            showError={
-              linkedIn ? !validProfileLink(linkedIn, "linkedin") : false
-            }
+            showError={false}
             errorMessage="Invalid LinkedIn Link"
             maxLength={100}
           />
@@ -193,7 +191,7 @@ const Settings: React.FC = () => {
             name="Twitter"
             value={twitter}
             onChange={(e) => setTwitter(e.detail.value)}
-            showError={twitter ? !validProfileLink(twitter, "twitter") : false}
+            showError={false}
             errorMessage="Invalid Twitter Link"
             maxLength={100}
           />
