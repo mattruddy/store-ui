@@ -57,7 +57,9 @@ const PWAInfo: React.FC<ContainerProps> = ({
 }) => {
   const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write")
   const [stars, setStars] = useState<number | undefined>(undefined)
-  const githubData = useGitHubRepo(github.owner, github.repo)
+  const { stargazers_count } = useGitHubRepo(github.owner, github.repo)
+
+  console.log(stargazers_count)
 
   const onInstall = () => {
     if (!isMyPwa) {
@@ -100,14 +102,12 @@ const PWAInfo: React.FC<ContainerProps> = ({
                   </span>
                   {"  "}
                   <span style={{ margin: "auto" }}>Open Source </span>
-                  {githubData && (
+                  {stargazers_count && (
                     <>
                       <span className="github-stars-label">
                         <IonIcon icon={star} />
                       </span>
-                      <span className="github-stars">
-                        {githubData.stargazers_count}
-                      </span>
+                      <span className="github-stars">{stargazers_count}</span>
                     </>
                   )}
                 </small>

@@ -27,5 +27,5 @@ export const useGitHubRepo: GitHubType = (owner: string, repo: string) => {
     }
   }
 
-  return gitHubData
+  return gitHubData || {}
 }
