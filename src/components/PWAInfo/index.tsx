@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react"
+import React, { memo, useState, useEffect } from "react"
 import {
   IonButton,
   IonIcon,
@@ -12,13 +12,14 @@ import ReactGA from "react-ga"
 
 //@ts-ignore
 import StarRatings from "react-star-ratings"
-import { openOutline } from "ionicons/icons"
+import { openOutline, star, logoGithub } from "ionicons/icons"
 import { Axios } from "../../redux/Actions"
 import CategoryOptions from "../CategoryOptions"
 import ReactTagInput from "@pathofdev/react-tag-input"
 import "./styles.css"
 import { noSpecialChars, mdConverter } from "../../util"
 import ReactMde from "react-mde"
+import AxiosRaw from "axios"
 
 interface ContainerProps {
   pwa: PWA
@@ -32,6 +33,7 @@ interface ContainerProps {
   setCat?: (option: string) => void
   setDesc?: (description: string) => void
   setTags?: (tasg: string[]) => void
+  githubUrl?: string
 }
 
 const PWAInfo: React.FC<ContainerProps> = ({
@@ -46,8 +48,10 @@ const PWAInfo: React.FC<ContainerProps> = ({
   setCat,
   setDesc,
   setTags,
+  githubUrl = "excalidraw/excalidraw",
 }) => {
   const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write")
+  const [stars, setStars] = useState<number | undefined>(undefined)
 
   const onInstall = () => {
     if (!isMyPwa) {
@@ -58,6 +62,24 @@ const PWAInfo: React.FC<ContainerProps> = ({
       })
     }
   }
+
+  useEffect(() => {
+    if (githubUrl) {
+      ;(async () => {
+        const { data } = await AxiosRaw.request({
+          url: `https://api.github.com/repos/${githubUrl}`,
+          method: "GET",
+          headers: {
+            Accept: "application/json",
+          },
+        })
+        console.log(data)
+        if (data.stargazers_count) {
+          setStars(data.stargazers_count)
+        }
+      })()
+    }
+  }, [githubUrl])
 
   return (
     <>
@@ -78,6 +100,24 @@ const PWAInfo: React.FC<ContainerProps> = ({
               <span style={{ padding: "8px", fontSize: "20px" }}>
                 {pwa.name}
               </span>
+            )}
+            {githubUrl && (
+              <IonRouterLink
+                style={{ paddingLeft: "8px" }}
+                href={`https://github.com/${githubUrl}`}
+              >
+                <small style={{ color: "var(--title-color)" }}>
+                  <span style={{ margin: "auto" }}>
+                    <IonIcon icon={logoGithub} />
+                  </span>
+                  {"  "}
+                  <span style={{ margin: "auto" }}>Open Source </span>
+                  <span className="github-stars-label">
+                    <IonIcon icon={star} />
+                  </span>
+                  <span className="github-stars">{stars}</span>
+                </small>
+              </IonRouterLink>
             )}
             {isEdit ? (
               <FormItem name="Category" showError={false} errorMessage="">
