@@ -38,7 +38,6 @@ const Search: React.FC = () => {
       const profileData: PublicProfile[] = profileResp.data
       const pwasData: PWA[] = pwasResp.data
 
-      console.log(profileData)
       setPwaSearchResults(pwasData)
       setProfileSearch(profileData)
     } else {

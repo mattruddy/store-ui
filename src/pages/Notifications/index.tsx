@@ -41,7 +41,6 @@ const Notifications: React.FC = () => {
   )
 
   useEffect(() => {
-    console.log(notifications)
     if (notifications.length > 0) {
       setLastNotId(notifications[0].id)
     }
