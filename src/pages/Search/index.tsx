@@ -10,23 +10,37 @@ import {
   IonBackButton,
   IonTitle,
   IonLabel,
+  IonTabs,
+  IonTab,
+  IonTabBar,
+  IonTabButton,
+  IonSegment,
+  IonSegmentButton,
 } from "@ionic/react"
 import { PWACard, DebouncedSearch } from "../../components"
-import { PWA, Profile } from "../../util/types"
+import { PWA, Profile, PublicProfile } from "../../util/types"
 import { Axios } from "../../redux/Actions"
+import DevCard from "../../components/DevCard"
+
+type SearchSections = "pwas" | "profiles"
 
 const Search: React.FC = () => {
   const [pwaSearchResults, setPwaSearchResults] = useState<PWA[]>([])
-  const [profileSearch, setProfileSearch] = useState<Profile[]>([])
+  const [profileSearch, setProfileSearch] = useState<PublicProfile[]>([])
+  const [section, setSection] = useState<SearchSections>("pwas")
 
   const handleOnSearchChange = useCallback(async (searchTerm: string) => {
     if (searchTerm) {
-      const { data } = await (await Axios()).get(`public/search/${searchTerm}`)
-      const { profiesData } = await (await Axios()).get(
+      const pwasResp = await (await Axios()).get(`public/search/${searchTerm}`)
+      const profileResp = await (await Axios()).get(
         `public/search/dev/${searchTerm}`
       )
-      setPwaSearchResults(data)
-      setProfileSearch(profiesData)
+      const profileData: PublicProfile[] = profileResp.data
+      const pwasData: PWA[] = pwasResp.data
+
+      console.log(profileData)
+      setPwaSearchResults(pwasData)
+      setProfileSearch(profileData)
     } else {
       setPwaSearchResults([])
       setProfileSearch([])
@@ -43,8 +57,8 @@ const Search: React.FC = () => {
 
   const renderProfileResults = useMemo(() => {
     return profileSearch.map((profile, i) => (
-      <IonCol>
-        <IonLabel>{profile.fullName}</IonLabel>
+      <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
+        <DevCard dev={profile} url=""></DevCard>
       </IonCol>
     ))
   }, [profileSearch])
@@ -61,7 +75,16 @@ const Search: React.FC = () => {
       </IonHeader>
       <IonContent className="content">
         <DebouncedSearch onChangeCallback={handleOnSearchChange} />
-        <IonRow>{renderSearchResults}</IonRow>
+        <IonSegment
+          value={section}
+          onIonChange={(e) => setSection(e.detail.value as SearchSections)}
+        >
+          <IonSegmentButton value="pwas">Apps</IonSegmentButton>
+          <IonSegmentButton value="profiles">Developers</IonSegmentButton>
+        </IonSegment>
+        <IonRow>
+          {section === "pwas" ? renderSearchResults : renderProfileResults}
+        </IonRow>
       </IonContent>
     </IonPage>
   )
