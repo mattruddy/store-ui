@@ -276,6 +276,14 @@ div.alert-radio-label.sc-ion-alert-md {
 
 ion-segment-button {
   color: var(--sub-color);
+  --color-hover: var(--title-color);
+  --color-focused: var(--title-color);
+  --background-hover: transparent;
+  --indicator-color: var(--store-border-color);
+}
+
+ion-segment-button.ios {
+  --indicator-color: transparent;
 }
 
 ion-title {
@@ -327,6 +335,10 @@ p {
 /* Fix color for p ios */
 .sc-ion-label-ios-s p {
   color: var(--sub-color);
+}
+
+.ios .segment-button-checked {
+  border: 1px solid var(--store-border-color);
 }
 
 .dark-theme {
