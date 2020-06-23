@@ -56,7 +56,6 @@ const PWAInfo: React.FC<ContainerProps> = ({
   github = { owner: "mattruddy", repo: "store-ui" },
 }) => {
   const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write")
-  const [stars, setStars] = useState<number | undefined>(undefined)
   const { stargazers_count } = useGitHubRepo(github.owner, github.repo)
 
   console.log(stargazers_count)
