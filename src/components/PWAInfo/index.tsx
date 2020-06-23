@@ -19,12 +19,7 @@ import ReactTagInput from "@pathofdev/react-tag-input"
 import "./styles.css"
 import { noSpecialChars, mdConverter } from "../../util"
 import ReactMde from "react-mde"
-import { useGitHubRepo } from "../../hooks/useGitHubRepo"
-
-interface GithubRepo {
-  owner: string
-  repo: string
-}
+import { useGitHubRepo, GithubRepo } from "../../hooks/useGitHubRepo"
 
 interface ContainerProps {
   pwa: PWA
@@ -38,7 +33,7 @@ interface ContainerProps {
   setCat?: (option: string) => void
   setDesc?: (description: string) => void
   setTags?: (tasg: string[]) => void
-  github?: GithubRepo
+  github: GithubRepo
 }
 
 const PWAInfo: React.FC<ContainerProps> = ({
@@ -56,7 +51,7 @@ const PWAInfo: React.FC<ContainerProps> = ({
   github = { owner: "mattruddy", repo: "store-ui" },
 }) => {
   const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write")
-  const { stargazers_count } = useGitHubRepo(github.owner, github.repo)
+  const { stargazers_count } = useGitHubRepo(github)
 
   console.log(stargazers_count)
 

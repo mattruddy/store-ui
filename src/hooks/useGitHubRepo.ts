@@ -1,15 +1,20 @@
 import { useEffect, useState } from "react"
 import Axios from "axios"
 
-type GitHubType = (owner: string, repo: string) => any
+export interface GithubRepo {
+  owner: string
+  repo: string
+}
 
-export const useGitHubRepo: GitHubType = (owner: string, repo: string) => {
+type GitHubType = (repoInfo: GithubRepo) => any
+
+export const useGitHubRepo: GitHubType = (repoInfo) => {
   const [gitHubData, setGitHubData] = useState<any>(undefined)
   useEffect(() => {
-    if (owner !== undefined && repo !== undefined) {
-      getData(owner, repo)
+    if (repoInfo !== undefined) {
+      getData(repoInfo.owner, repoInfo.repo)
     }
-  }, [owner, repo])
+  }, [repoInfo])
 
   const getData = async (owner: string, repo: string) => {
     try {
