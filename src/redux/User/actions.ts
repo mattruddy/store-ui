@@ -23,6 +23,7 @@ import {
   StoreNotification,
   Job,
   Education,
+  Degree,
 } from "../../util/types"
 import { ReduxCombinedState } from "../RootReducer"
 import { Action } from "redux"
@@ -403,6 +404,7 @@ export const thunkAddEducation = (
   school: string,
   major: string,
   gradDate: string,
+  degree: Degree,
   minor?: string
 ): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
   dispatch(setLoading(true))
@@ -411,6 +413,7 @@ export const thunkAddEducation = (
       school: school,
       major: major,
       minor: minor,
+      degree: degree,
       gradDate: gradDate,
     }
 

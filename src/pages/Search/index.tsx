@@ -9,16 +9,11 @@ import {
   IonButtons,
   IonBackButton,
   IonTitle,
-  IonLabel,
-  IonTabs,
-  IonTab,
-  IonTabBar,
-  IonTabButton,
   IonSegment,
   IonSegmentButton,
 } from "@ionic/react"
 import { PWACard, DebouncedSearch } from "../../components"
-import { PWA, Profile, PublicProfile } from "../../util/types"
+import { PWA, PublicProfile } from "../../util/types"
 import { Axios } from "../../redux/Actions"
 import DevCard from "../../components/DevCard"
 

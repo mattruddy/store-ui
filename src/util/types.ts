@@ -1,5 +1,12 @@
 import { AxiosRequestConfig } from "axios"
 
+export enum Degree {
+  ASSOCIATE,
+  BACHELOR,
+  MASTER,
+  DOCTORAL,
+}
+
 export interface DispatchObject {
   [key: string]: any
   type: string
