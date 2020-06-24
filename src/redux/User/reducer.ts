@@ -15,6 +15,8 @@ import {
   USER_SET_NOT_LOADING,
   USER_ADD_JOB,
   USER_ADD_EDUCATION,
+  USER_REMOVE_JOB,
+  USER_REMOVE_EDUCATION,
 } from "./types"
 import { AppActionTypes, REDUX_RESET } from "../App/types"
 
@@ -99,10 +101,24 @@ const userReducer = (
         jobs: [action.payload, ...state.jobs],
       }
 
+    case USER_REMOVE_JOB:
+      return {
+        ...state,
+        jobs: [...state.jobs.filter((x) => x.id !== action.payload)],
+      }
+
     case USER_ADD_EDUCATION:
       return {
         ...state,
         educations: [action.payload, ...state.educations],
+      }
+
+    case USER_REMOVE_EDUCATION:
+      return {
+        ...state,
+        educations: [
+          ...state.educations.filter((x) => x.id !== action.payload),
+        ],
       }
     case USER_CREATE_PROFILE:
       return {

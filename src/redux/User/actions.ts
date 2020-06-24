@@ -13,6 +13,8 @@ import {
   USER_SET_NOT_LOADING,
   USER_ADD_JOB,
   USER_ADD_EDUCATION,
+  USER_REMOVE_JOB,
+  USER_REMOVE_EDUCATION,
 } from "./types"
 import {
   PWA,
@@ -349,11 +351,22 @@ export const addJob = (job: Job) =>
     payload: job,
   } as const)
 
+export const removeJob = (jobId: number) =>
+  ({
+    type: USER_REMOVE_JOB,
+    payload: jobId,
+  } as const)
+
 export const addEducation = (education: Education) =>
   ({
     type: USER_ADD_EDUCATION,
     payload: education,
   } as const)
+
+export const removeEducation = (educationId: number) => ({
+  type: USER_REMOVE_EDUCATION,
+  payload: educationId,
+})
 
 export const removeApp = (appId: number) =>
   ({
@@ -428,6 +441,39 @@ export const thunkAddEducation = (
   }
 }
 
+export const thunkDeleteEducation = (
+  educationId: number
+): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
+  dispatch(setLoading(true))
+  try {
+    const requestUrl = `secure/education/${educationId}`
+    const response = await (await Axios()).delete(requestUrl)
+    dispatch(removeApp(educationId))
+    dispatch(
+      setAlert({
+        message: `Education was removed`,
+        apiResponseStatus: response.status,
+        timeout: 3000,
+        show: true,
+        status: "success",
+      })
+    )
+  } catch (e) {
+    dispatch(
+      setAlert({
+        message: e.response.data.message,
+        apiResponseStatus: e.response.status,
+        timeout: 3000,
+        show: true,
+        status: "fail",
+      })
+    )
+    return console.error(e)
+  } finally {
+    dispatch(setLoading(false))
+  }
+}
+
 export const thunkAddJob = (
   company: string,
   title: string,
@@ -465,6 +511,39 @@ export const thunkAddJob = (
         status: "fail",
       })
     )
+  } finally {
+    dispatch(setLoading(false))
+  }
+}
+
+export const thunkDeleteJob = (
+  jobId: number
+): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
+  dispatch(setLoading(true))
+  try {
+    const requestUrl = `secure/job/${jobId}`
+    const response = await (await Axios()).delete(requestUrl)
+    dispatch(removeApp(jobId))
+    dispatch(
+      setAlert({
+        message: `Job was removed`,
+        apiResponseStatus: response.status,
+        timeout: 3000,
+        show: true,
+        status: "success",
+      })
+    )
+  } catch (e) {
+    dispatch(
+      setAlert({
+        message: e.response.data.message,
+        apiResponseStatus: e.response.status,
+        timeout: 3000,
+        show: true,
+        status: "fail",
+      })
+    )
+    return console.error(e)
   } finally {
     dispatch(setLoading(false))
   }

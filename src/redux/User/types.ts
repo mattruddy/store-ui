@@ -48,6 +48,8 @@ export const USER_SET_NOT = "USER_SET_NOT"
 export const USER_SET_NOT_LOADING = "USER_SET_NOT_LOADING"
 export const USER_ADD_JOB = "USER_ADD_JOB"
 export const USER_ADD_EDUCATION = "USER_ADD_EDUCATION"
+export const USER_REMOVE_JOB = "USER_REMOVE_JOB"
+export const USER_REMOVE_EDUCATION = "USER_REMOVE_EDUCATION"
 
 export interface setDarkMode {
   type: typeof USER_SET_DARKMODE
@@ -103,9 +105,19 @@ export interface AddJobAction {
   payload: Job
 }
 
+export interface RemoveJobAction {
+  type: typeof USER_REMOVE_JOB
+  payload: number
+}
+
 export interface AddEducationAction {
   type: typeof USER_ADD_EDUCATION
   payload: Education
+}
+
+export interface RemoveEdicationAction {
+  type: typeof USER_REMOVE_EDUCATION
+  payload: number
 }
 
 export interface RemoveAppAction {
@@ -130,7 +142,9 @@ export type UserActionTypes =
   | RemoveAppAction
   | AddAppAction
   | AddJobAction
+  | RemoveJobAction
   | AddEducationAction
+  | RemoveEdicationAction
   | ReplaceAppAction
   | SetLoadingAction
   | SetUserAction
