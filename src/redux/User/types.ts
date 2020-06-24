@@ -1,4 +1,11 @@
-import { PWA, Push, Profile, StoreNotification } from "../../util/types"
+import {
+  PWA,
+  Push,
+  Profile,
+  StoreNotification,
+  Job,
+  Education,
+} from "../../util/types"
 
 export interface UserState {
   token: string
@@ -15,6 +22,8 @@ export interface UserState {
   lastNotId: number
   notifications: StoreNotification[]
   notLoading: boolean
+  jobs: Job[]
+  educations: Education[]
 }
 
 export enum UserRole {
@@ -37,6 +46,8 @@ export const USER_CREATE_PROFILE = "USER_CREATE_PROFILE"
 export const USER_SET_NOT_ID = "USER_SET_NOT_ID"
 export const USER_SET_NOT = "USER_SET_NOT"
 export const USER_SET_NOT_LOADING = "USER_SET_NOT_LOADING"
+export const USER_ADD_JOB = "USER_ADD_JOB"
+export const USER_ADD_EDUCATION = "USER_ADD_EDUCATION"
 
 export interface setDarkMode {
   type: typeof USER_SET_DARKMODE
@@ -87,6 +98,16 @@ export interface AddAppAction {
   payload: PWA
 }
 
+export interface AddJobAction {
+  type: typeof USER_ADD_JOB
+  payload: Job
+}
+
+export interface AddEducationAction {
+  type: typeof USER_ADD_EDUCATION
+  payload: Education
+}
+
 export interface RemoveAppAction {
   type: typeof USER_REMOVE_APP
   payload: number
@@ -108,6 +129,8 @@ export type UserActionTypes =
   | SetPWAsAction
   | RemoveAppAction
   | AddAppAction
+  | AddJobAction
+  | AddEducationAction
   | ReplaceAppAction
   | SetLoadingAction
   | SetUserAction

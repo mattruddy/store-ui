@@ -5,6 +5,22 @@ export interface DispatchObject {
   type: string
 }
 
+export interface Education {
+  id: number
+  school: string
+  major: string
+  gradDate: Date
+  minor?: string
+}
+
+export interface Job {
+  id: number
+  company: string
+  title: string
+  start: Date
+  end?: Date
+}
+
 export interface Image {
   imageId: number
   url: string
@@ -55,6 +71,9 @@ export interface UserProfile {
   email: string
   pwas: PWA[]
   profile: Profile
+  role: string
+  jobs: Job[]
+  educations: Education[]
 }
 
 export interface HomePWAs {
@@ -99,6 +118,8 @@ export interface PublicProfile {
   fullName: string
   header: string
   profileId: number
+  educations: Education[]
+  jobs: Job[]
 }
 
 export interface AxiosCustomRequestConfig extends AxiosRequestConfig {

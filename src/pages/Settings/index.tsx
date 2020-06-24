@@ -16,12 +16,13 @@ import { FormItem } from "../../components"
 import ImageUploader from "react-images-upload"
 import { useDispatch, shallowEqual, useSelector } from "react-redux"
 import { ReduxCombinedState } from "../../redux/RootReducer"
-import { thunkCreateProfile } from "../../redux/User/actions"
+import { thunkCreateProfile, thunkAddJob } from "../../redux/User/actions"
 import { mdConverter } from "../../util"
 import ReactMde from "react-mde"
 import "react-mde/lib/styles/css/react-mde-all.css"
 import "./styles.css"
 import ReactGA from "react-ga"
+import JobForm from "../../components/JobForm"
 
 const Settings: React.FC = () => {
   const [fullName, setFullName] = useState<string>("")
@@ -77,6 +78,12 @@ const Settings: React.FC = () => {
           updateAvatar
         )
       )
+    },
+    [dispatch]
+  )
+  const createJob = useCallback(
+    async (company: string, title: string, start: string, end?: string) => {
+      dispatch(thunkAddJob(company, title, start, end))
     },
     [dispatch]
   )
@@ -145,6 +152,7 @@ const Settings: React.FC = () => {
             }
           />
         </div>
+        <JobForm onSubmit={createJob} />
         <form onSubmit={onSubmit}>
           <FormItem name="Avatar" showError={false} errorMessage="">
             <ImageUploader

@@ -11,8 +11,17 @@ import {
   USER_SET_NOT_ID,
   USER_SET_NOT,
   USER_SET_NOT_LOADING,
+  USER_ADD_JOB,
+  USER_ADD_EDUCATION,
 } from "./types"
-import { PWA, Push, Profile, StoreNotification } from "../../util/types"
+import {
+  PWA,
+  Push,
+  Profile,
+  StoreNotification,
+  Job,
+  Education,
+} from "../../util/types"
 import { ReduxCombinedState } from "../RootReducer"
 import { Action } from "redux"
 import { ThunkAction } from "redux-thunk"
@@ -334,6 +343,18 @@ export const addApp = (app: PWA) =>
     payload: app,
   } as const)
 
+export const addJob = (job: Job) =>
+  ({
+    type: USER_ADD_JOB,
+    payload: job,
+  } as const)
+
+export const addEducation = (education: Education) =>
+  ({
+    type: USER_ADD_EDUCATION,
+    payload: education,
+  } as const)
+
 export const removeApp = (appId: number) =>
   ({
     type: USER_REMOVE_APP,
@@ -360,6 +381,90 @@ export const thunkThirdPartyLogin = (
     dispatch(setData({ token, isLoggedIn: true }))
     await setRoleStorage(UserRole.Dev.toString())
     await setIsLoggedInStorage("true")
+  } finally {
+    dispatch(setLoading(false))
+  }
+}
+
+export const thunkAddEducation = (
+  school: string,
+  major: string,
+  gradDate: string,
+  minor?: string
+): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
+  dispatch(setLoading(true))
+  try {
+    const info = {
+      school: school,
+      major: major,
+      minor: minor,
+      gradDate: gradDate,
+    }
+
+    const requestUrl = "secure/education"
+    const response = await (await Axios()).post(requestUrl, info)
+    const { data } = response
+    dispatch(addEducation(data as Education))
+    dispatch(
+      setAlert({
+        message: `Education added`,
+        timeout: 3000,
+        show: true,
+        status: "success",
+      })
+    )
+  } catch (e) {
+    dispatch(
+      setAlert({
+        message: e.response.data.message,
+        apiResponseStatus: e.response.status,
+        timeout: 3000,
+        show: true,
+        status: "fail",
+      })
+    )
+  } finally {
+    dispatch(setLoading(false))
+  }
+}
+
+export const thunkAddJob = (
+  company: string,
+  title: string,
+  start: string,
+  end?: string
+): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
+  dispatch(setLoading(true))
+  try {
+    const info = {
+      company: company,
+      title: title,
+      start: start,
+      end: end,
+    }
+
+    const requestUrl = "secure/job"
+    const response = await (await Axios()).post(requestUrl, info)
+    const { data } = response
+    dispatch(addJob(data as Job))
+    dispatch(
+      setAlert({
+        message: `Job added`,
+        timeout: 3000,
+        show: true,
+        status: "success",
+      })
+    )
+  } catch (e) {
+    dispatch(
+      setAlert({
+        message: e.response.data.message,
+        apiResponseStatus: e.response.status,
+        timeout: 3000,
+        show: true,
+        status: "fail",
+      })
+    )
   } finally {
     dispatch(setLoading(false))
   }

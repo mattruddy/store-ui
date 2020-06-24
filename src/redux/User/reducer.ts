@@ -13,6 +13,8 @@ import {
   USER_SET_NOT_ID,
   USER_SET_NOT,
   USER_SET_NOT_LOADING,
+  USER_ADD_JOB,
+  USER_ADD_EDUCATION,
 } from "./types"
 import { AppActionTypes, REDUX_RESET } from "../App/types"
 
@@ -31,6 +33,8 @@ const DEFAULT_STATE_USER: UserState = {
   lastNotId: -1,
   notifications: [],
   notLoading: false,
+  jobs: [],
+  educations: [],
 }
 
 const userReducer = (
@@ -87,6 +91,18 @@ const userReducer = (
       return {
         ...state,
         pwas: [...state.pwas.filter((x) => x.appId !== action.payload)],
+      }
+
+    case USER_ADD_JOB:
+      return {
+        ...state,
+        jobs: [action.payload, ...state.jobs],
+      }
+
+    case USER_ADD_EDUCATION:
+      return {
+        ...state,
+        educations: [action.payload, ...state.educations],
       }
     case USER_CREATE_PROFILE:
       return {
