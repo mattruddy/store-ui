@@ -24,9 +24,11 @@ const EducationForm: React.FC<ContainerProps> = ({ onSubmit }) => {
   const [gradDate, setGradDate] = useState<string>()
   const [degree, setDegree] = useState<Degree>()
   const [minor, setMinor] = useState<string | undefined>()
+  const [isSubmit, setIsSubmit] = useState<boolean>(false)
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
+    setIsSubmit(true)
     onSubmit(school!, major!, degree!, gradDate!, minor)
   }
 
@@ -37,7 +39,7 @@ const EducationForm: React.FC<ContainerProps> = ({ onSubmit }) => {
         value={school}
         onChange={(e) => setSchool(e.detail.value)}
         maxLength={100}
-        showError={!school}
+        showError={isSubmit && !school}
         errorMessage="School is required"
       />
       <FormItem
@@ -45,7 +47,7 @@ const EducationForm: React.FC<ContainerProps> = ({ onSubmit }) => {
         value={major}
         onChange={(e) => setMajor(e.detail.value)}
         maxLength={100}
-        showError={!major}
+        showError={isSubmit && !major}
         errorMessage="Major is required"
       />
       <FormItem
@@ -58,24 +60,24 @@ const EducationForm: React.FC<ContainerProps> = ({ onSubmit }) => {
       />
       <FormItem
         name="Graduation Date"
-        showError={!gradDate}
+        showError={isSubmit && !gradDate}
         errorMessage="Graduation Date required"
       >
         <IonDatetime
           value={gradDate}
+          displayFormat="MMM, YYYY"
           onIonChange={(e) => setGradDate(e.detail.value!)}
         />
       </FormItem>
       <FormItem
         name="Degree"
-        showError={!degree}
+        showError={isSubmit && !degree}
         errorMessage="Degree is Required"
       >
         <IonSelect
           interfaceOptions={{
             header: "Degree",
           }}
-          placeholder="Bachelor"
           onIonChange={(e) => setDegree(e.detail.value)}
         >
           <IonSelectOption value={Degree.ASSOCIATE}>Associate</IonSelectOption>

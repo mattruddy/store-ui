@@ -7,6 +7,12 @@ export enum Degree {
   DOCTORAL,
 }
 
+export enum OccupationStatus {
+  HIRED,
+  LOOKING,
+  OPEN,
+}
+
 export interface DispatchObject {
   [key: string]: any
   type: string
@@ -102,14 +108,13 @@ export interface Push {
 
 export interface Profile {
   gitHub: string
-  linkedIn: string
-  twitter: string
   avatar: string
   about: string
   showEmail: boolean
   location: string
   fullName: string
   header: string
+  occupationStatus: OccupationStatus
 }
 
 export interface PublicProfile {
@@ -118,8 +123,6 @@ export interface PublicProfile {
   avatar: string
   email: string
   gitHub: string
-  linkedIn: string
-  twitter: string
   username: string
   location: string
   fullName: string
@@ -127,6 +130,7 @@ export interface PublicProfile {
   profileId: number
   educations: Education[]
   jobs: Job[]
+  occupationStatus: OccupationStatus
 }
 
 export interface AxiosCustomRequestConfig extends AxiosRequestConfig {

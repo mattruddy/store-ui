@@ -23,7 +23,7 @@ import "./styles.css"
 import ReactGA from "react-ga"
 import JobForm from "../../components/JobForm"
 import ProfileForm from "../../components/ProfileForm"
-import { Degree } from "../../util/types"
+import { Degree, OccupationStatus } from "../../util/types"
 import EducationForm from "../../components/EducationForm"
 
 type SettingSection = "profile" | "education" | "jobs"
@@ -50,27 +50,25 @@ const Settings: React.FC = () => {
   const createProfile = useCallback(
     async (
       updateGitHub: string,
-      updateLinkedIn: string,
-      updateTwitter: string,
       updateShowEmail: boolean,
       updateEmail: string,
       updateAbout: string,
       updateHeader: string | undefined,
       updateLocation: string | undefined,
       updateFullName: string | undefined,
+      updateOccupationStatus: OccupationStatus | undefined,
       updateAvatar: File | undefined
     ) => {
       dispatch(
         thunkCreateProfile(
           updateGitHub,
-          updateLinkedIn,
-          updateTwitter,
           updateShowEmail,
           updateEmail,
           updateAbout,
           updateHeader,
           updateLocation,
           updateFullName,
+          updateOccupationStatus,
           updateAvatar
         )
       )

@@ -162,8 +162,6 @@ const Profile: React.FC = () => {
               data={totalData}
               avatar={profile?.avatar}
               gitHub={profile?.gitHub}
-              twitter={profile?.twitter}
-              linkedIn={profile?.linkedIn}
               header={profile?.header}
               fullName={profile?.fullName}
               location={profile?.location}

@@ -74,8 +74,6 @@ const Developer: React.FC = () => {
         <ProfileCard
           isMyProfile={false}
           gitHub={profile.gitHub}
-          linkedIn={profile.linkedIn}
-          twitter={profile.twitter}
           email={profile.email}
           avatar={profile.avatar}
           isLoading={isLoading}

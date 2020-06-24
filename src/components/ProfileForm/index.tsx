@@ -1,9 +1,15 @@
 import React, { memo, FormEvent, useState, useEffect } from "react"
-import { IonButton, IonCheckbox, IonTextarea } from "@ionic/react"
+import {
+  IonButton,
+  IonCheckbox,
+  IonTextarea,
+  IonSelect,
+  IonSelectOption,
+} from "@ionic/react"
 import { FormItem } from ".."
 import ImageUploader from "react-images-upload"
 import ReactMde from "react-mde"
-import { Profile } from "../../util/types"
+import { Profile, OccupationStatus } from "../../util/types"
 import { mdConverter } from "../../util"
 
 interface ContainerProps {
@@ -12,14 +18,13 @@ interface ContainerProps {
   email: string | undefined
   onSubmit: (
     gitHub: string,
-    linkedIn: string,
-    twitter: string,
     showEmail: boolean,
     email: string,
     about: string,
     header: string,
     location: string,
     fullName: string,
+    occupationStatus: OccupationStatus,
     avatar: File | undefined
   ) => void
 }
@@ -32,8 +37,6 @@ const ProfileForm: React.FC<ContainerProps> = ({
 }) => {
   const [fullName, setFullName] = useState<string>("")
   const [gitHub, setGitHub] = useState<string>("")
-  const [linkedIn, setLinkedIn] = useState<string>("")
-  const [twitter, setTwitter] = useState<string>("")
   const [showEmail, setShowEmail] = useState<boolean>(false)
   const [avatar, setAvatar] = useState<File | undefined>(undefined)
   const [location, setLocation] = useState<string>("")
@@ -41,6 +44,7 @@ const ProfileForm: React.FC<ContainerProps> = ({
   const [about, setAbout] = useState<string>("")
   const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write")
   const [updateEmail, setUpdateEmail] = useState<string>("")
+  const [occupationStatus, setOccupationStatus] = useState<OccupationStatus>()
 
   useEffect(() => {
     if (status === "success") {
@@ -54,13 +58,12 @@ const ProfileForm: React.FC<ContainerProps> = ({
     }
     if (profile) {
       setGitHub(profile.gitHub)
-      setLinkedIn(profile.linkedIn)
-      setTwitter(profile.twitter)
       setShowEmail(profile.showEmail)
       setAbout(profile.about)
       setLocation(profile.location)
       setFullName(profile.fullName)
       setHeader(profile.header)
+      setOccupationStatus(profile.occupationStatus)
     }
   }, [email, profile])
 
@@ -68,14 +71,13 @@ const ProfileForm: React.FC<ContainerProps> = ({
     e.preventDefault()
     onSubmit(
       gitHub,
-      linkedIn,
-      twitter,
       showEmail,
       email!,
       about,
       header,
       location,
       fullName,
+      occupationStatus!,
       avatar
     )
   }
@@ -116,22 +118,6 @@ const ProfileForm: React.FC<ContainerProps> = ({
         maxLength={100}
       />
       <FormItem
-        name="LinkedIn"
-        value={linkedIn}
-        onChange={(e) => setLinkedIn(e.detail.value)}
-        showError={false}
-        errorMessage="Invalid LinkedIn Link"
-        maxLength={100}
-      />
-      <FormItem
-        name="Twitter"
-        value={twitter}
-        onChange={(e) => setTwitter(e.detail.value)}
-        showError={false}
-        errorMessage="Invalid Twitter Link"
-        maxLength={100}
-      />
-      <FormItem
         name="Email"
         value={updateEmail}
         onChange={(e) => setUpdateEmail(e.detail.value)}
@@ -153,6 +139,17 @@ const ProfileForm: React.FC<ContainerProps> = ({
         showError={false}
         errorMessage=""
       />
+      <FormItem name="Occupation Status" showError={false} errorMessage="">
+        <IonSelect onIonChange={(e) => setOccupationStatus(e.detail.value)}>
+          <IonSelectOption value={OccupationStatus.LOOKING}>
+            Looking
+          </IonSelectOption>
+          <IonSelectOption value={OccupationStatus.OPEN}>Open</IonSelectOption>
+          <IonSelectOption value={OccupationStatus.HIRED}>
+            Hired
+          </IonSelectOption>
+        </IonSelect>
+      </FormItem>
       <FormItem name="Header (optional)" showError={false} errorMessage="">
         <IonTextarea
           value={header}

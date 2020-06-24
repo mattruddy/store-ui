@@ -24,6 +24,7 @@ import {
   Job,
   Education,
   Degree,
+  OccupationStatus,
 } from "../../util/types"
 import { ReduxCombinedState } from "../RootReducer"
 import { Action } from "redux"
@@ -152,14 +153,13 @@ export const thunkLogin = (
 
 export const thunkCreateProfile = (
   gitHub: string,
-  linkedIn: string,
-  twitter: string,
   showEmail: boolean,
   email: string,
   about: string,
   header: string | undefined,
   location: string | undefined,
   fullName: string | undefined,
+  occupationStatus: OccupationStatus | undefined,
   avatar?: File
 ): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
   dispatch(setLoading(true))
@@ -167,14 +167,13 @@ export const thunkCreateProfile = (
     const url = "secure/profile"
     const data = {
       gitHub,
-      linkedIn,
-      twitter,
       showEmail,
       about,
       email,
       header,
       location,
       fullName,
+      occupationStatus,
     }
     const fd = new FormData()
     fd.append("info", JSON.stringify(data))

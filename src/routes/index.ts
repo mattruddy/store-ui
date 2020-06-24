@@ -13,7 +13,7 @@ const RouteMap = {
   PWAS: "/pwas/:category?",
   HOME: "/home",
   SEARCH: "/search",
-  SETTINGS: "/settings",
+  SETTINGS: "/settings/:section?",
   ADD: "/add",
   DEVELOPER: "/dev/:username",
   NOTIFICATIONS: "/notifications",

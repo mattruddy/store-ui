@@ -1,8 +1,6 @@
 import React, { useMemo, memo } from "react"
 import {
   logoGithub,
-  logoLinkedin,
-  logoTwitter,
   mailOutline,
   locationOutline,
 } from "ionicons/icons"
@@ -22,8 +20,6 @@ interface ContainerProps {
   isMyProfile: boolean
   avatar?: string
   gitHub?: string
-  twitter?: string
-  linkedIn?: string
   location?: string
   fullName?: string
   header?: string
@@ -37,12 +33,10 @@ interface ContainerProps {
 const ProfileCard: React.FC<ContainerProps> = ({
   isMyProfile,
   avatar,
-  twitter,
   gitHub,
   location,
   header,
   fullName,
-  linkedIn,
   email,
   username,
   isLoading,
@@ -90,20 +84,6 @@ const ProfileCard: React.FC<ContainerProps> = ({
                         url={gitHub}
                         logo={logoGithub}
                         className="ion-color-github"
-                      />
-                    )}
-                    {linkedIn && (
-                      <LinkItem
-                        url={linkedIn}
-                        logo={logoLinkedin}
-                        color="linkedin"
-                      />
-                    )}
-                    {twitter && (
-                      <LinkItem
-                        url={twitter}
-                        logo={logoTwitter}
-                        color="twitter"
                       />
                     )}
                   </div>
