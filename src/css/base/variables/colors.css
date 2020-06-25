@@ -355,6 +355,10 @@ ol {
   color: var(--text-color);
 }
 
+ion-footer {
+  background: var(--background-color);
+}
+
 /* Fix color for p ios */
 .sc-ion-label-ios-s p {
   color: var(--text-color);

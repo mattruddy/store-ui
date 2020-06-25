@@ -89,7 +89,7 @@ const About: React.FC = () => (
       </IonCard>
     </IonContent>
     <IonFooter className="ion-no-border">
-      <p>&copy; 2020 PWA Store</p>
+      <p style={{ padding: "8px" }}>&copy; 2020 PWA Store</p>
     </IonFooter>
   </IonPage>
 )
