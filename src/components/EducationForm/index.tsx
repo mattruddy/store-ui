@@ -1,4 +1,4 @@
-import React, { memo, FormEvent, useState } from "react"
+import React, { memo, FormEvent, useState, useEffect } from "react"
 import {
   IonButton,
   IonDatetime,
@@ -7,8 +7,10 @@ import {
 } from "@ionic/react"
 import { FormItem } from ".."
 import { Degree } from "../../util/types"
+import { getDateAfterYears } from "../../util"
 
 interface ContainerProps {
+  status: "success" | "fail" | undefined
   onSubmit: (
     school: string,
     major: string,
@@ -18,12 +20,22 @@ interface ContainerProps {
   ) => void
 }
 
-const EducationForm: React.FC<ContainerProps> = ({ onSubmit }) => {
+const EducationForm: React.FC<ContainerProps> = ({ status, onSubmit }) => {
   const [school, setSchool] = useState<string>()
   const [major, setMajor] = useState<string>()
   const [gradDate, setGradDate] = useState<string>()
   const [degree, setDegree] = useState<Degree>()
   const [minor, setMinor] = useState<string | undefined>()
+
+  useEffect(() => {
+    if (status === "success") {
+      setSchool(undefined)
+      setDegree(undefined)
+      setGradDate(undefined)
+      setMinor(undefined)
+      setMajor(undefined)
+    }
+  }, [status])
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
@@ -53,6 +65,7 @@ const EducationForm: React.FC<ContainerProps> = ({ onSubmit }) => {
       <FormItem name="Graduation Date">
         <IonDatetime
           value={gradDate}
+          max={getDateAfterYears(4)}
           displayFormat="MMM, YYYY"
           onIonChange={(e) => setGradDate(e.detail.value!)}
         />
@@ -62,6 +75,7 @@ const EducationForm: React.FC<ContainerProps> = ({ onSubmit }) => {
           interfaceOptions={{
             header: "Degree",
           }}
+          value={degree}
           onIonChange={(e) => setDegree(e.detail.value)}
         >
           <IonSelectOption value={Degree.ASSOCIATE}>Associate</IonSelectOption>

@@ -2,6 +2,7 @@ import loadImage from "blueimp-load-image"
 import moment from "moment"
 import ReactGA from "react-ga"
 import Showdown from "showdown"
+import { monthNames } from "./types"
 
 const blobToFile = (blob: Blob, fileName: string): File => {
   const b: any = blob
@@ -18,6 +19,19 @@ const removeMarkdown = (input: string) =>
 const dateFormatter = (date: Date) => {
   const momentDate = moment(date.toString())
   return momentDate.format("MM/DD/YY h:mm a")
+}
+
+const getDateAfterYears = (years: number): string => {
+  const today = new Date()
+  today.setFullYear(today.getFullYear() + years)
+  return today.toISOString()
+}
+
+const getFormattedDate = (d: Date): string => {
+  const date = new Date(d)
+  const month = monthNames[date.getUTCMonth()]
+  const year = date.getUTCFullYear()
+  return `${month} ${year}`
 }
 
 const dateNoTimeFormatter = (date: Date) => {
@@ -148,4 +162,6 @@ export {
   mdConverter,
   removeMarkdown,
   dateNoTimeFormatter,
+  getDateAfterYears,
+  getFormattedDate,
 }

@@ -17,6 +17,8 @@ import {
   thunkCreateProfile,
   thunkAddJob,
   thunkAddEducation,
+  thunkDeleteEducation,
+  thunkDeleteJob,
 } from "../../redux/User/actions"
 import "react-mde/lib/styles/css/react-mde-all.css"
 import "./styles.css"
@@ -27,6 +29,9 @@ import { Degree, OccupationStatus } from "../../util/types"
 import EducationForm from "../../components/EducationForm"
 import { useParams, useHistory } from "react-router"
 import { GetSettingSectionUrl } from "../../routes"
+import EducationCard from "../../components/EducationCard"
+import FormCollapse from "../../components/FormCollapse"
+import JobCard from "../../components/JobCard"
 
 type SettingSection = "profile" | "education" | "jobs"
 
@@ -35,15 +40,17 @@ const Settings: React.FC = () => {
   const { section } = useParams()
   const history = useHistory()
 
-  const { email, profile, isLoading, status } = useSelector(
+  const { email, profile, isLoading, status, educations, jobs } = useSelector(
     ({
-      user: { email, profile, loading },
+      user: { email, profile, loading, educations, jobs },
       alerts: { status },
     }: ReduxCombinedState) => ({
       email: email,
       profile: profile,
       status: status,
       isLoading: loading,
+      educations: educations,
+      jobs: jobs,
     }),
     shallowEqual
   )
@@ -83,6 +90,12 @@ const Settings: React.FC = () => {
     },
     [dispatch]
   )
+  const deleteJob = useCallback(
+    async (id: number) => {
+      dispatch(thunkDeleteJob(id))
+    },
+    [dispatch]
+  )
   const createEducation = useCallback(
     async (
       school: string,
@@ -92,6 +105,12 @@ const Settings: React.FC = () => {
       minor?: string
     ) => {
       dispatch(thunkAddEducation(school, major, gradDate, degree, minor))
+    },
+    [dispatch]
+  )
+  const deleteEducation = useCallback(
+    async (id: number) => {
+      dispatch(thunkDeleteEducation(id))
     },
     [dispatch]
   )
@@ -146,9 +165,29 @@ const Settings: React.FC = () => {
             onSubmit={createProfile}
           />
         )}
-        {selectedSection === "jobs" && <JobForm onSubmit={createJob} />}
         {selectedSection === "education" && (
-          <EducationForm onSubmit={createEducation} />
+          <>
+            <FormCollapse title="Education">
+              <EducationForm status={status} onSubmit={createEducation} />
+            </FormCollapse>
+            {educations.map((ed, idx) => (
+              <EducationCard
+                key={idx}
+                education={ed}
+                onDelete={deleteEducation}
+              />
+            ))}
+          </>
+        )}
+        {selectedSection === "jobs" && (
+          <>
+            <FormCollapse title="Job">
+              <JobForm status={status} onSubmit={createJob} />
+            </FormCollapse>
+            {jobs.map((job, idx) => (
+              <JobCard key={idx} job={job} onDelete={deleteJob} />
+            ))}
+          </>
         )}
       </IonContent>
     </IonPage>

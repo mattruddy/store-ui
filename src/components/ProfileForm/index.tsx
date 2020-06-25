@@ -102,7 +102,7 @@ const ProfileForm: React.FC<ContainerProps> = ({
         />
       </FormItem>
       <FormItem
-        name="Full Name (optional)"
+        name="Full Name"
         value={fullName}
         onChange={(e) => setFullName(e.detail!.value)}
         showError={false}
@@ -132,7 +132,7 @@ const ProfileForm: React.FC<ContainerProps> = ({
         />
       </FormItem>
       <FormItem
-        name="Location (optional)"
+        name="Location"
         value={location}
         onChange={(e) => setLocation(e.detail.value)}
         maxLength={50}
@@ -153,7 +153,7 @@ const ProfileForm: React.FC<ContainerProps> = ({
           </IonSelectOption>
         </IonSelect>
       </FormItem>
-      <FormItem name="Header (optional)" showError={false} errorMessage="">
+      <FormItem name="Header" showError={false} errorMessage="">
         <IonTextarea
           value={header}
           onIonChange={(e) => setHeader(e.detail.value!)}
@@ -162,7 +162,7 @@ const ProfileForm: React.FC<ContainerProps> = ({
         />
       </FormItem>
       <FormItem
-        name="This is your section to add what ever you want in markdown"
+        name="Personal section via markdown"
         showError={about?.trim() === ""}
         errorMessage="About section is required"
       >

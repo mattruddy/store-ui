@@ -1,8 +1,9 @@
-import React, { memo, FormEvent, useState } from "react"
-import { IonButton, IonDatetime } from "@ionic/react"
+import React, { memo, FormEvent, useState, useEffect } from "react"
+import { IonButton, IonDatetime, IonCheckbox } from "@ionic/react"
 import { FormItem } from ".."
 
 interface ContainerProps {
+  status: "success" | "fail" | undefined
   onSubmit: (
     company: string,
     title: string,
@@ -11,11 +12,22 @@ interface ContainerProps {
   ) => void
 }
 
-const JobForm: React.FC<ContainerProps> = ({ onSubmit }) => {
+const JobForm: React.FC<ContainerProps> = ({ status, onSubmit }) => {
   const [company, setCompany] = useState<string>()
   const [title, setTitle] = useState<string>()
   const [start, setStart] = useState<string>()
   const [end, setEnd] = useState<string | undefined>()
+  const [isPresent, setIsPresent] = useState<boolean>(true)
+
+  useEffect(() => {
+    if (status === "success") {
+      setCompany(undefined)
+      setTitle(undefined)
+      setStart(undefined)
+      setEnd(undefined)
+      setIsPresent(true)
+    }
+  }, [status])
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
@@ -39,11 +51,27 @@ const JobForm: React.FC<ContainerProps> = ({ onSubmit }) => {
       <FormItem name="Start Date">
         <IonDatetime
           value={start}
+          displayFormat="MMM, YYYY"
           onIonChange={(e) => setStart(e.detail.value!)}
         />
       </FormItem>
+      <FormItem name="Present?">
+        <IonCheckbox
+          checked={isPresent}
+          onIonChange={(e) => setIsPresent(e.detail.checked)}
+        />
+      </FormItem>
+      {!isPresent && (
+        <FormItem name="End Date">
+          <IonDatetime
+            value={end}
+            displayFormat="MMM, YYYY"
+            onIonChange={(e) => setEnd(e.detail.value!)}
+          />
+        </FormItem>
+      )}
       <IonButton
-        disabled={!company || !title || !start}
+        disabled={!company || !title || !start || (!isPresent && !end)}
         expand="block"
         fill="outline"
         color="dark"

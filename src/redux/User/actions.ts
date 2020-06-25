@@ -215,7 +215,7 @@ export const thunkLoadProfile = (): ThunkAction<
     const url = `secure/profile`
     const resp = await (await Axios()).get(url)
     const {
-      data: { username, pageResponses, email, profile },
+      data: { username, pageResponses, email, profile, educations, jobs },
     } = resp
     dispatch(
       setData({
@@ -223,6 +223,8 @@ export const thunkLoadProfile = (): ThunkAction<
         username,
         pwas: pageResponses as PWA[],
         profile: profile as Profile,
+        educations: educations as Education[],
+        jobs: jobs as Job[],
       })
     )
     await setEmailStorage(email)
@@ -450,7 +452,7 @@ export const thunkDeleteEducation = (
   try {
     const requestUrl = `secure/education/${educationId}`
     const response = await (await Axios()).delete(requestUrl)
-    dispatch(removeApp(educationId))
+    dispatch(removeEducation(educationId))
     dispatch(
       setAlert({
         message: `Education was removed`,
@@ -525,7 +527,7 @@ export const thunkDeleteJob = (
   try {
     const requestUrl = `secure/job/${jobId}`
     const response = await (await Axios()).delete(requestUrl)
-    dispatch(removeApp(jobId))
+    dispatch(removeJob(jobId))
     dispatch(
       setAlert({
         message: `Job was removed`,

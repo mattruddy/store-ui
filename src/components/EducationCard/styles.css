@@ -1,0 +1,7 @@
+.CardFabButton {
+  position: absolute;
+  left: 92%;
+  top: -8%;
+  --box-shadow: none;
+  --background: transparent;
+}

@@ -1,5 +1,20 @@
 import { AxiosRequestConfig } from "axios"
 
+export const monthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+]
+
 export enum Degree {
   ASSOCIATE,
   BACHELOR,
@@ -23,6 +38,7 @@ export interface Education {
   school: string
   major: string
   gradDate: Date
+  degree: Degree
   minor?: string
 }
 
