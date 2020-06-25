@@ -24,7 +24,6 @@ import ImageUploader from "react-images-upload"
 import { useParams, useHistory } from "react-router"
 import { Image, PWA } from "../../util/types"
 import { pencil, options, trash, close, checkmark } from "ionicons/icons"
-import { fixFilesRotation } from "../../util"
 import { ScreenshotSlider, PWAInfo } from "../../components"
 import { RouteMap, GetMyPWADetailUrl } from "../../routes"
 import { ReduxCombinedState } from "../../redux/RootReducer"
@@ -98,9 +97,8 @@ const MyPWA: React.FC = () => {
     setIsLoading(false)
   }, [status])
 
-  const onFileChange = async (files: File[]) => {
-    const fixedFiles = (await fixFilesRotation(files)) as File[]
-    setAddedImages(fixedFiles)
+  const onFileChange = (files: File[]) => {
+    setAddedImages(files)
   }
 
   const updateStateProperties = () => {
