@@ -1,9 +1,5 @@
 import React, { useMemo, memo } from "react"
-import {
-  logoGithub,
-  mailOutline,
-  locationOutline,
-} from "ionicons/icons"
+import { logoGithub, mailOutline, locationOutline } from "ionicons/icons"
 import LinkItem from "./LinkItem"
 import "./styles.css"
 import { IonRow, IonCol, IonButton, IonIcon, IonGrid } from "@ionic/react"
@@ -109,7 +105,11 @@ const ProfileCard: React.FC<ContainerProps> = ({
             )}
             {isMyProfile && (
               <div>
-                <IonButton fill="outline" color="dark" routerLink="/settings">
+                <IonButton
+                  fill="outline"
+                  color="dark"
+                  routerLink="/settings/profile"
+                >
                   Edit
                 </IonButton>
               </div>

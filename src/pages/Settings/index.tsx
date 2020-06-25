@@ -25,13 +25,15 @@ import JobForm from "../../components/JobForm"
 import ProfileForm from "../../components/ProfileForm"
 import { Degree, OccupationStatus } from "../../util/types"
 import EducationForm from "../../components/EducationForm"
+import { useParams, useHistory } from "react-router"
+import { GetSettingSectionUrl } from "../../routes"
 
 type SettingSection = "profile" | "education" | "jobs"
 
 const Settings: React.FC = () => {
-  const [selectedSection, setSelectedSection] = useState<SettingSection>(
-    "profile"
-  )
+  const [selectedSection, setSelectedSection] = useState<SettingSection>()
+  const { section } = useParams()
+  const history = useHistory()
 
   const { email, profile, isLoading, status } = useSelector(
     ({
@@ -95,6 +97,12 @@ const Settings: React.FC = () => {
   )
 
   useEffect(() => {
+    if (section) {
+      setSelectedSection(section)
+    }
+  }, [section])
+
+  useEffect(() => {
     ReactGA.pageview(`settings`)
   }, [])
 
@@ -113,7 +121,7 @@ const Settings: React.FC = () => {
         <IonSegment
           value={selectedSection}
           onIonChange={(e) =>
-            setSelectedSection(e.detail.value as SettingSection)
+            history.replace(GetSettingSectionUrl(e.detail.value!))
           }
         >
           <IonSegmentButton value="profile">Profile</IonSegmentButton>
@@ -138,7 +146,6 @@ const Settings: React.FC = () => {
             onSubmit={createProfile}
           />
         )}
-        {selectedSection === "education"}
         {selectedSection === "jobs" && <JobForm onSubmit={createJob} />}
         {selectedSection === "education" && (
           <EducationForm onSubmit={createEducation} />
