@@ -336,7 +336,14 @@ ion-card-title {
   --color: var(--text-color);
 }
 
-p {
+strong {
+  font-weight: bolder;
+}
+
+p,
+li,
+ul,
+ol {
   color: var(--text-color);
 }
 
