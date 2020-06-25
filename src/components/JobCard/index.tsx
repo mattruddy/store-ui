@@ -10,7 +10,7 @@ import {
 } from "@ionic/react"
 import { Job } from "../../util/types"
 import { trash } from "ionicons/icons"
-import { getFormattedDate } from "../../util"
+import { dateFormatterMMMYYYY } from "../../util"
 
 interface ContainerProps {
   job: Job
@@ -37,8 +37,8 @@ const JobCard: React.FC<ContainerProps> = ({ job, onDelete }) => {
         )}
         <IonCardTitle>{job.company}</IonCardTitle>
         <IonCardSubtitle>
-          {`${job.title} | ${getFormattedDate(job.start)} - ${
-            job.end ? getFormattedDate(job.end) : "present"
+          {`${job.title} | ${dateFormatterMMMYYYY(job.start)} - ${
+            job.end ? dateFormatterMMMYYYY(job.end) : "present"
           }`}
         </IonCardSubtitle>
       </IonCardHeader>

@@ -9,7 +9,7 @@ import {
   IonIcon,
 } from "@ionic/react"
 import { Education } from "../../util/types"
-import { capitalize, getFormattedDate } from "../../util"
+import { capitalize, dateFormatterMMMYYYY } from "../../util"
 import { trash } from "ionicons/icons"
 import "./styles.css"
 
@@ -40,7 +40,7 @@ const EducationCard: React.FC<ContainerProps> = ({ education, onDelete }) => {
         <IonCardSubtitle>
           {" "}
           {capitalize(education.degree.toString())} in {education.major} |{" "}
-          {getFormattedDate(education.gradDate)}
+          {dateFormatterMMMYYYY(education.gradDate)}
         </IonCardSubtitle>
         {education.minor && (
           <IonCardSubtitle>Minor - {education.minor}</IonCardSubtitle>

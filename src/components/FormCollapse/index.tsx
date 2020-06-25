@@ -16,7 +16,7 @@ const FormCollapse: React.FC<ContainerProps> = ({ title, children }) => {
 
   return (
     <>
-      <IonItem lines="none" button onClick={toggle}>
+      <IonItem lines="none" button onClick={toggle} detail={false}>
         {!isOpen ? (
           <>
             <IonIcon className="CollapseButtonIcon" icon={addCircleOutline} />{" "}

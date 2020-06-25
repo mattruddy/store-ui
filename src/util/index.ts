@@ -1,4 +1,3 @@
-import loadImage from "blueimp-load-image"
 import moment from "moment"
 import ReactGA from "react-ga"
 import Showdown from "showdown"
@@ -21,17 +20,15 @@ const dateFormatter = (date: Date) => {
   return momentDate.format("MM/DD/YY h:mm a")
 }
 
+const dateFormatterMMMYYYY = (date: Date) => {
+  const momentDate = moment(date.toString())
+  return momentDate.format("MMM YYYY")
+}
+
 const getDateAfterYears = (years: number): string => {
   const today = new Date()
   today.setFullYear(today.getFullYear() + years)
   return today.toISOString()
-}
-
-const getFormattedDate = (d: Date): string => {
-  const date = new Date(d)
-  const month = monthNames[date.getUTCMonth()]
-  const year = date.getUTCFullYear()
-  return `${month} ${year}`
 }
 
 const dateNoTimeFormatter = (date: Date) => {
@@ -163,5 +160,5 @@ export {
   removeMarkdown,
   dateNoTimeFormatter,
   getDateAfterYears,
-  getFormattedDate,
+  dateFormatterMMMYYYY,
 }
