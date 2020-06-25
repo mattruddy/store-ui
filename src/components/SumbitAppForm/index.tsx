@@ -39,6 +39,7 @@ const SubmitAppForm: React.FC<ContainerProps> = ({ onSubmit }) => {
   const [tags, setTags] = useState<string[]>([])
   const [testLoading, lightHouseTests, setTargetUrl] = useLighthouse()
   const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write")
+  const [repo, setRepo] = useState<string>("")
 
   const addApp = (e: FormEvent) => {
     e.preventDefault()
@@ -78,6 +79,15 @@ const SubmitAppForm: React.FC<ContainerProps> = ({ onSubmit }) => {
           errorMessage="Must be https"
         />
         <FormItem
+          name="GitHub Link (Optional)"
+          type="text"
+          maxLength={50}
+          value={repo}
+          onChange={(e) => setRepo(e.detail.value)}
+          showError={repo !== "" && !/^.*(github\.com\/).+\/.+/gi.test(repo)}
+          errorMessage="Invalid github."
+        />
+        <FormItem
           name="Category"
           showError={false}
           errorMessage="Category is required"
@@ -107,7 +117,7 @@ const SubmitAppForm: React.FC<ContainerProps> = ({ onSubmit }) => {
               onChange={setDesc}
               selectedTab={selectedTab}
               onTabChange={setSelectedTab}
-              generateMarkdownPreview={(md) =>
+              generateMarkdownPreview={() =>
                 Promise.resolve(mdConverter.makeHtml(desc))
               }
             />

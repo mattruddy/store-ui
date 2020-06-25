@@ -33,7 +33,7 @@ interface ContainerProps {
   setCat?: (option: string) => void
   setDesc?: (description: string) => void
   setTags?: (tasg: string[]) => void
-  github: GithubRepo
+  github?: GithubRepo
 }
 
 const PWAInfo: React.FC<ContainerProps> = ({
@@ -48,7 +48,7 @@ const PWAInfo: React.FC<ContainerProps> = ({
   setCat,
   setDesc,
   setTags,
-  github = { owner: "mattruddy", repo: "store-ui" },
+  github,
 }) => {
   const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write")
   const { stargazers_count } = useGitHubRepo(github)

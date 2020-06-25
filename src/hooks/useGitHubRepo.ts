@@ -6,9 +6,9 @@ export interface GithubRepo {
   repo: string
 }
 
-type GitHubType = (repoInfo: GithubRepo) => any
+type GitHubType = (repoInfo?: GithubRepo) => any
 
-export const useGitHubRepo: GitHubType = (repoInfo) => {
+export const useGitHubRepo: GitHubType = (repoInfo?) => {
   const [gitHubData, setGitHubData] = useState<any>(undefined)
   useEffect(() => {
     if (repoInfo !== undefined) {
