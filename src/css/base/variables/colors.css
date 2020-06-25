@@ -255,6 +255,10 @@ ion-toast {
   --box-shadow: none;
 }
 
+ion-card-subtitle {
+  --color: var(--sub-color);
+}
+
 ion-select {
   color: var(--text-color);
   --placeholder-opacity: 0.6;
@@ -333,12 +337,12 @@ ion-card-title {
 }
 
 p {
-  color: var(--sub-color);
+  color: var(--text-color);
 }
 
 /* Fix color for p ios */
 .sc-ion-label-ios-s p {
-  color: var(--sub-color);
+  color: var(--text-color);
 }
 
 .ios .segment-button-checked {
@@ -360,7 +364,7 @@ p {
   --pwa-title-color: #eeeeee !important;
   --rating-sender-color: #eeeeee !important;
   --text-color: #eeeeee !important;
-  --sub-color: #999999;
+  --sub-color: #b8b8b8;
   --ion-searchbar-color: #eeeeee !important;
   --tab-button-color: var(--text-color) !important;
 }
@@ -375,7 +379,7 @@ p {
   --pwa-title-color: #303028;
   --rating-sender-color: blue;
   --tab-button-color: var(--text-color);
-  --sub-color: #737373;
+  --sub-color: #444444;
   --title-color: var(--text-color);
 }
 
