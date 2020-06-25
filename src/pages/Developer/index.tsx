@@ -10,6 +10,10 @@ import {
   IonCol,
   IonBackButton,
   useIonViewDidEnter,
+  IonCard,
+  IonCardTitle,
+  IonCardHeader,
+  IonCardContent,
 } from "@ionic/react"
 import { useParams } from "react-router"
 import ProfileCard from "../../components/ProfileCard"
@@ -20,6 +24,8 @@ import { thunkGetDev } from "../../redux/PWAs/actions"
 import ReactGA from "react-ga"
 import { useInView } from "react-intersection-observer"
 import { Axios } from "../../redux/Actions"
+import EducationCard from "../../components/EducationCard"
+import JobCard from "../../components/JobCard"
 
 const Developer: React.FC = () => {
   const { username } = useParams()
@@ -93,12 +99,14 @@ const Developer: React.FC = () => {
 
   const renderAboutSection = useMemo(() => {
     return (
-      <div
-        style={{ margin: "0", paddingLeft: "16px" }}
-        dangerouslySetInnerHTML={{
-          __html: mdConverter.makeHtml(profile?.about!),
-        }}
-      />
+      <IonCard className="line-around">
+        <div
+          style={{ margin: "0", paddingLeft: "16px" }}
+          dangerouslySetInnerHTML={{
+            __html: mdConverter.makeHtml(profile?.about!),
+          }}
+        />
+      </IonCard>
     )
   }, [profile?.about])
 
@@ -118,6 +126,34 @@ const Developer: React.FC = () => {
             {renderProfileSection}
           </IonCol>
           <IonCol size="12">{renderAboutSection}</IonCol>
+          {profile?.educations && (
+            <IonCol size="12">
+              <IonCard className="line-around">
+                <IonCardHeader>
+                  <IonCardTitle>Education</IonCardTitle>
+                </IonCardHeader>
+                <IonCardContent>
+                  {profile.educations.map((education, idx) => (
+                    <EducationCard education={education} />
+                  ))}
+                </IonCardContent>
+              </IonCard>
+            </IonCol>
+          )}
+          {profile?.jobs && (
+            <IonCol size="12">
+              <IonCard className="line-around">
+                <IonCardHeader>
+                  <IonCardTitle>Employment</IonCardTitle>
+                </IonCardHeader>
+                <IonCardContent>
+                  {profile.jobs.map((job, idx) => (
+                    <JobCard job={job} />
+                  ))}
+                </IonCardContent>
+              </IonCard>
+            </IonCol>
+          )}
         </IonRow>
       </IonContent>
     </IonPage>
