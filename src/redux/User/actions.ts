@@ -482,6 +482,7 @@ export const thunkAddJob = (
   company: string,
   title: string,
   start: string,
+  description?: string,
   end?: string
 ): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
   dispatch(setLoading(true))
@@ -489,6 +490,7 @@ export const thunkAddJob = (
     const info = {
       company: company,
       title: title,
+      description: description,
       start: start,
       end: end,
     }

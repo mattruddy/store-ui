@@ -47,6 +47,7 @@ export interface Job {
   company: string
   title: string
   start: Date
+  description?: string
   end?: Date
 }
 

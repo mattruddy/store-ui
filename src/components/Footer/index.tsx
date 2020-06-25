@@ -2,7 +2,7 @@ import { memo } from "react"
 import React from "react"
 import "./styles.css"
 import { IonIcon, IonRouterLink } from "@ionic/react"
-import { logoTwitter, callOutline } from "ionicons/icons"
+import { logoTwitter, callSharp } from "ionicons/icons"
 
 const Footer: React.FC = () => {
   return (
@@ -10,7 +10,7 @@ const Footer: React.FC = () => {
       <div className="FooterLeft">
         <p>
           <IonRouterLink routerLink="/about">
-            <IonIcon style={{ marginRight: "5px" }} icon={callOutline} />
+            <IonIcon style={{ marginRight: "5px" }} icon={callSharp} />
             Contact Us
           </IonRouterLink>
         </p>

@@ -102,6 +102,7 @@ const AdminNotify: React.FC = () => {
                 <FormItem name="Description" showError={false} errorMessage="">
                   <div style={{ width: "100%", paddingTop: "16px" }}>
                     <ReactMde
+                      classes={{ grip: "hide", toolbar: "mde-toolbar" }}
                       value={body}
                       onChange={setBody}
                       selectedTab={selectedTab}

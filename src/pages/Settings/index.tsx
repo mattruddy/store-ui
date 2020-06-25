@@ -85,8 +85,14 @@ const Settings: React.FC = () => {
     [dispatch]
   )
   const createJob = useCallback(
-    async (company: string, title: string, start: string, end?: string) => {
-      dispatch(thunkAddJob(company, title, start, end))
+    async (
+      company: string,
+      title: string,
+      start: string,
+      desciption?: string,
+      end?: string
+    ) => {
+      dispatch(thunkAddJob(company, title, start, desciption, end))
     },
     [dispatch]
   )

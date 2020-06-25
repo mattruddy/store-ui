@@ -10,7 +10,7 @@ import {
 } from "@ionic/react"
 import { Job } from "../../util/types"
 import { trash } from "ionicons/icons"
-import { dateFormatterMMMYYYY } from "../../util"
+import { dateFormatterMMMYYYY, mdConverter } from "../../util"
 
 interface ContainerProps {
   job: Job
@@ -42,7 +42,15 @@ const JobCard: React.FC<ContainerProps> = ({ job, onDelete }) => {
           }`}
         </IonCardSubtitle>
       </IonCardHeader>
-      <IonCardContent></IonCardContent>
+      <IonCardContent>
+        {job.description && (
+          <div
+            dangerouslySetInnerHTML={{
+              __html: mdConverter.makeHtml(job.description),
+            }}
+          ></div>
+        )}
+      </IonCardContent>
     </IonCard>
   )
 }

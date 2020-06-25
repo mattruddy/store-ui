@@ -168,6 +168,7 @@ const ProfileForm: React.FC<ContainerProps> = ({
       >
         <div style={{ width: "100%", paddingTop: "16px" }}>
           <ReactMde
+            classes={{ grip: "hide", toolbar: "mde-toolbar" }}
             value={about}
             onChange={setAbout}
             selectedTab={selectedTab}

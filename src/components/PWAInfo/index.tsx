@@ -152,6 +152,7 @@ const PWAInfo: React.FC<ContainerProps> = ({
         >
           <div style={{ width: "100%", paddingTop: "16px" }}>
             <ReactMde
+              classes={{ grip: "hide", toolbar: "mde-toolbar" }}
               value={desc}
               onChange={setDesc}
               selectedTab={selectedTab}

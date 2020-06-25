@@ -336,6 +336,14 @@ ion-card-title {
   --color: var(--text-color);
 }
 
+.mde-toolbar {
+  background: var(--background-color) !important;
+}
+
+.mde-toolbar button {
+  color: var(--text-color) !important;
+}
+
 strong {
   font-weight: bolder;
 }

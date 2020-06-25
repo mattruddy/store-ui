@@ -21,6 +21,10 @@ ion-menu {
   --color: var(--text-color);
 }
 
+.hide {
+  display: none;
+}
+
 .h1-title {
   margin: 0;
   font-size: 22px;

@@ -1,6 +1,7 @@
 import React, { memo, FormEvent, useState, useEffect } from "react"
 import { IonButton, IonDatetime, IonCheckbox } from "@ionic/react"
 import { FormItem } from ".."
+import ReactMde from "react-mde"
 
 interface ContainerProps {
   status: "success" | "fail" | undefined
@@ -8,6 +9,7 @@ interface ContainerProps {
     company: string,
     title: string,
     start: string,
+    description?: string,
     end?: string
   ) => void
 }
@@ -15,6 +17,7 @@ interface ContainerProps {
 const JobForm: React.FC<ContainerProps> = ({ status, onSubmit }) => {
   const [company, setCompany] = useState<string>()
   const [title, setTitle] = useState<string>()
+  const [description, setDescription] = useState<string>()
   const [start, setStart] = useState<string>()
   const [end, setEnd] = useState<string | undefined>()
   const [isPresent, setIsPresent] = useState<boolean>(true)
@@ -23,6 +26,7 @@ const JobForm: React.FC<ContainerProps> = ({ status, onSubmit }) => {
     if (status === "success") {
       setCompany(undefined)
       setTitle(undefined)
+      setDescription(undefined)
       setStart(undefined)
       setEnd(undefined)
       setIsPresent(true)
@@ -31,7 +35,7 @@ const JobForm: React.FC<ContainerProps> = ({ status, onSubmit }) => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
-    onSubmit(company!, title!, start!, end)
+    onSubmit(company!, title!, start!, description, end)
   }
 
   return (
@@ -48,6 +52,16 @@ const JobForm: React.FC<ContainerProps> = ({ status, onSubmit }) => {
         onChange={(e) => setTitle(e.detail.value)}
         maxLength={100}
       />
+      <FormItem name="Description (optional)">
+        <div style={{ width: "100%", padding: "8px" }}>
+          <ReactMde
+            classes={{ grip: "hide", toolbar: "mde-toolbar" }}
+            value={description}
+            onChange={setDescription}
+            toolbarCommands={[]}
+          />
+        </div>
+      </FormItem>
       <FormItem name="Start Date">
         <IonDatetime
           value={start}
