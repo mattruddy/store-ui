@@ -328,6 +328,10 @@ ion-split-pane {
   --background: #121212;
 }
 
+ion-card-title {
+  --color: var(--text-color);
+}
+
 p {
   color: var(--sub-color);
 }
@@ -347,12 +351,10 @@ p {
   --store-border-color: #737373 !important;
   --background-color: #161616 !important;
   --ion-background-color: var(--background-color) !important;
-
   --ion-text-color: #eeeeee;
   --title-color: #eeeeee;
   --ion-color-step-50: #121212;
   --ion-toolbar-background: #121212;
-  /* --color: #eeeeee !important; */
   --ion-tab-bar-background: #121212 !important;
   --cat-text-color: #eeeeee;
   --pwa-title-color: #eeeeee !important;
@@ -381,27 +383,3 @@ p {
 .dark-theme strong {
   color: #eeeeee !important;
 }
-
-/* iOS dark-theme */
-
-/* .ios .dark-theme {
-  --ion-background-color: #121212;
-  --ion-text-color: #eeeeee;
-  --ion-title-color: #eeeeee;
-  --ion-color-step-50: #121212;
-  --ion-toolbar-background: #161616;
-  --color: #eeeeee !important;
-  --ion-tab-bar-background: #121212 !important;
-}
-
-material design dark-theme
-
-.md .dark-theme {
-  --ion-background-color: #121212;
-  --ion-text-color: #eeeeee;
-  --ion-title-color: #eeeeee;
-  --ion-color-step-50: #121212;
-  --ion-toolbar-background: #121212;
-  --color: #eeeeee !important;
-  --ion-tab-bar-background: #121212 !important;
-} */
