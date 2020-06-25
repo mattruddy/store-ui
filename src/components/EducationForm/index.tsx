@@ -24,11 +24,9 @@ const EducationForm: React.FC<ContainerProps> = ({ onSubmit }) => {
   const [gradDate, setGradDate] = useState<string>()
   const [degree, setDegree] = useState<Degree>()
   const [minor, setMinor] = useState<string | undefined>()
-  const [isSubmit, setIsSubmit] = useState<boolean>(false)
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
-    setIsSubmit(true)
     onSubmit(school!, major!, degree!, gradDate!, minor)
   }
 
@@ -39,41 +37,27 @@ const EducationForm: React.FC<ContainerProps> = ({ onSubmit }) => {
         value={school}
         onChange={(e) => setSchool(e.detail.value)}
         maxLength={100}
-        showError={isSubmit && !school}
-        errorMessage="School is required"
       />
       <FormItem
         name="Major"
         value={major}
         onChange={(e) => setMajor(e.detail.value)}
         maxLength={100}
-        showError={isSubmit && !major}
-        errorMessage="Major is required"
       />
       <FormItem
         name="Minor (optional)"
         value={minor}
         onChange={(e) => setMinor(e.detail.value)}
         maxLength={100}
-        showError={false}
-        errorMessage=""
       />
-      <FormItem
-        name="Graduation Date"
-        showError={isSubmit && !gradDate}
-        errorMessage="Graduation Date required"
-      >
+      <FormItem name="Graduation Date">
         <IonDatetime
           value={gradDate}
           displayFormat="MMM, YYYY"
           onIonChange={(e) => setGradDate(e.detail.value!)}
         />
       </FormItem>
-      <FormItem
-        name="Degree"
-        showError={isSubmit && !degree}
-        errorMessage="Degree is Required"
-      >
+      <FormItem name="Degree">
         <IonSelect
           interfaceOptions={{
             header: "Degree",
@@ -86,8 +70,14 @@ const EducationForm: React.FC<ContainerProps> = ({ onSubmit }) => {
           <IonSelectOption value={Degree.DOCTORAL}>Doctoral</IonSelectOption>
         </IonSelect>
       </FormItem>
-      <IonButton expand="block" fill="outline" color="dark" type="submit">
-        Add Job
+      <IonButton
+        disabled={!school || !major || !gradDate || !degree}
+        expand="block"
+        fill="outline"
+        color="dark"
+        type="submit"
+      >
+        Add Education
       </IonButton>
     </form>
   )

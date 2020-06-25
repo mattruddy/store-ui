@@ -29,28 +29,26 @@ const JobForm: React.FC<ContainerProps> = ({ onSubmit }) => {
         value={company}
         onChange={(e) => setCompany(e.detail.value)}
         maxLength={100}
-        showError={!company}
-        errorMessage="Company is required"
       />
       <FormItem
         name="Title"
         value={title}
         onChange={(e) => setTitle(e.detail.value)}
         maxLength={100}
-        showError={!title}
-        errorMessage="Title is required"
       />
-      <FormItem
-        name="Start Date"
-        showError={!start}
-        errorMessage="Start Date required"
-      >
+      <FormItem name="Start Date">
         <IonDatetime
           value={start}
           onIonChange={(e) => setStart(e.detail.value!)}
         />
       </FormItem>
-      <IonButton expand="block" fill="outline" color="dark" type="submit">
+      <IonButton
+        disabled={!company || !title || !start}
+        expand="block"
+        fill="outline"
+        color="dark"
+        type="submit"
+      >
         Add Job
       </IonButton>
     </form>

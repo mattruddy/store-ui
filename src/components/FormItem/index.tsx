@@ -8,8 +8,8 @@ interface ContainerProps {
   maxLength?: number
   value?: string
   onChange?: (e: CustomEvent) => void
-  errorMessage: string
-  showError: boolean
+  errorMessage?: string
+  showError?: boolean
   children?: any
   lines?: "full" | "none"
 }

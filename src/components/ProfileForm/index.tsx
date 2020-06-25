@@ -140,7 +140,10 @@ const ProfileForm: React.FC<ContainerProps> = ({
         errorMessage=""
       />
       <FormItem name="Occupation Status" showError={false} errorMessage="">
-        <IonSelect onIonChange={(e) => setOccupationStatus(e.detail.value)}>
+        <IonSelect
+          value={occupationStatus}
+          onIonChange={(e) => setOccupationStatus(e.detail.value)}
+        >
           <IonSelectOption value={OccupationStatus.LOOKING}>
             Looking
           </IonSelectOption>
