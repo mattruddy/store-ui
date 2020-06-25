@@ -9,49 +9,11 @@ const blobToFile = (blob: Blob, fileName: string): File => {
   return new File([blob], fileName)
 }
 
-const fixFilesRotation = async (files: File[]) => {
-  for (let i = 0; i < files.length; i++) {
-    const blob = await fixRotation(files[i])
-    files[i] = blobToFile(blob as Blob, files[i].name)
-  }
-  return files
-}
-
-function fixRotation(file: File) {
-  return new Promise((resolve) => {
-    loadImage(
-      file,
-      (img, data) => {
-        if (data && data.exif) {
-          //@ts-ignorets
-          //console.log(data.exif.get("Orientation"))
-        }
-        ;(img as HTMLCanvasElement).toBlob((blob) => {
-          resolve(blob)
-        }, "image/jpeg")
-      },
-      { orientation: true }
-    )
-  })
-}
-
 const removeMarkdown = (input: string) =>
   input.replace(
     /(?:\[.*\]\(.*\))|(?:!\[.*\]\(.*\))|(?:```[a-z]*\n[\s\S]*?\n```)|[^\w\s]/gi,
     ""
   )
-
-const fixRoation = (src: string): string | undefined => {
-  let fixSrc
-  loadImage(
-    src,
-    (canvas) => {
-      fixSrc = (canvas as HTMLCanvasElement).toDataURL()
-    },
-    { orientation: true }
-  )
-  return fixSrc
-}
 
 const dateFormatter = (date: Date) => {
   const momentDate = moment(date.toString())
@@ -173,9 +135,6 @@ mdConverter.setFlavor("github")
 
 export {
   blobToFile,
-  fixFilesRotation,
-  fixRotation,
-  fixRoation,
   dateFormatter,
   shareUrl,
   copyStringToClipboard,
