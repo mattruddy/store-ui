@@ -61,6 +61,13 @@ const Home: React.FC = () => {
     return (
       <>
         <HomeRow
+          pwas={homeData.featuredApps}
+          title="Featured"
+          subtitle="Editors Choice"
+          linkTo="featured"
+          isLoading={isLoading}
+        />
+        <HomeRow
           pwas={homeData.topApps}
           title="Top"
           subtitle="Most popular"
@@ -72,13 +79,6 @@ const Home: React.FC = () => {
           title="Discover"
           subtitle="Currently trending"
           linkTo="trending"
-          isLoading={isLoading}
-        />
-        <HomeRow
-          pwas={homeData.newApps}
-          title="New"
-          subtitle="Fresh new uploads"
-          linkTo="new"
           isLoading={isLoading}
         />
       </>

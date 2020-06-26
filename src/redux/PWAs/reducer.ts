@@ -29,7 +29,7 @@ const DEFAULT_STATE_PWAS: PWAsState = {
   pwas: [],
   error: "",
   search: "",
-  home: { topApps: [], newApps: [], discoverApps: [] } as HomePWAs,
+  home: { topApps: [], featuredApps: [], discoverApps: [] } as HomePWAs,
   isRatingsPending: false,
   isDevPending: false,
   devs: [],

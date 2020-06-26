@@ -249,7 +249,7 @@ const thunkGetHomeData = (
       const response = await axiosInstance.get(url)
       const data: HomePWAs = response.data
       dispatch(setHomeData(data))
-      const joint = [...data.discoverApps, ...data.newApps, ...data.topApps]
+      const joint = [...data.discoverApps, ...data.featuredApps, ...data.topApps]
       dispatch(
         addPWAs(
           joint

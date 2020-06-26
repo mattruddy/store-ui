@@ -108,7 +108,7 @@ export interface UserProfile {
 
 export interface HomePWAs {
   topApps: PWA[]
-  newApps: PWA[]
+  featuredApps: PWA[]
   discoverApps: PWA[]
 }
 
