@@ -13,7 +13,7 @@ const RouteMap = {
   PWAS: "/pwas/:category?",
   HOME: "/home",
   SEARCH: "/search",
-  SETTINGS: "/settings/:section?",
+  SETTINGS: "/settings",
   ADD: "/add",
   DEVELOPER: "/dev/:username",
   NOTIFICATIONS: "/notifications",
@@ -34,13 +34,4 @@ const GetMyPWADetailUrl = (name?: string) => {
 const GetPwaCategoryUrl = (category: string) =>
   RouteMap.PWAS.replace(":category?", category)
 
-const GetSettingSectionUrl = (section: string) =>
-  RouteMap.SETTINGS.replace(":section?", section)
-
-export {
-  RouteMap,
-  GetPWADetailUrl,
-  GetMyPWADetailUrl,
-  GetPwaCategoryUrl,
-  GetSettingSectionUrl,
-}
+export { RouteMap, GetPWADetailUrl, GetMyPWADetailUrl, GetPwaCategoryUrl }

@@ -34,7 +34,9 @@ import JobCard from "../../components/JobCard"
 type SettingSection = "profile" | "education" | "jobs"
 
 const Settings: React.FC = () => {
-  const [selectedSection, setSelectedSection] = useState<SettingSection>()
+  const [selectedSection, setSelectedSection] = useState<SettingSection>(
+    "profile"
+  )
 
   const { email, profile, isLoading, status, educations, jobs } = useSelector(
     ({
