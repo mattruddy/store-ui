@@ -25,6 +25,10 @@ ion-menu {
   display: none;
 }
 
+.clickable {
+  cursor: pointer;
+}
+
 .h1-title {
   margin: 0;
   font-size: 22px;

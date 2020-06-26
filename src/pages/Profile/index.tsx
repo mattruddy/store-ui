@@ -17,13 +17,14 @@ import {
   IonAlert,
   IonCol,
   IonProgressBar,
+  IonGrid,
 } from "@ionic/react"
 import { useHistory } from "react-router"
 import { PWACard } from "../../components"
 import { RouteMap } from "../../routes"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { useSelector, useDispatch, shallowEqual } from "react-redux"
-import { thunkLogout, thunkAddPWA } from "../../redux/User/actions"
+import { thunkLogout } from "../../redux/User/actions"
 import "./styles.css"
 import Popover from "../../components/Popover"
 import {
@@ -155,23 +156,25 @@ const Profile: React.FC = () => {
         {isLoading && <IonProgressBar type="indeterminate" color="primary" />}
       </IonHeader>
       <IonContent class="content">
-        <IonRow>
-          <IonCol ref={ref} className="ProfileCardCol" size="12">
-            <ProfileCard
-              isMyProfile={true}
-              data={totalData}
-              avatar={profile?.avatar}
-              gitHub={profile?.gitHub}
-              header={profile?.header}
-              fullName={profile?.fullName}
-              location={profile?.location}
-              email={email}
-              username={username}
-              isLoading={isLoading}
-            />
-          </IonCol>
-          <IonCol size="12">{renderAppsSections}</IonCol>
-        </IonRow>
+        <IonGrid>
+          <IonRow>
+            <IonCol ref={ref} className="ProfileCardCol" size="12">
+              <ProfileCard
+                isMyProfile={true}
+                data={totalData}
+                avatar={profile?.avatar}
+                gitHub={profile?.gitHub}
+                header={profile?.header}
+                fullName={profile?.fullName}
+                location={profile?.location}
+                email={email}
+                username={username}
+                isLoading={isLoading}
+              />
+            </IonCol>
+            <IonCol size="12">{renderAppsSections}</IonCol>
+          </IonRow>
+        </IonGrid>
       </IonContent>
       <IonAlert
         isOpen={showAlert}

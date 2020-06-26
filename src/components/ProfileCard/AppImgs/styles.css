@@ -1,17 +1,12 @@
 .ProfileAppsContainer {
   display: flex;
-  margin-left: 24px;
   margin-bottom: 8px;
   align-items: center;
 }
 
 .ProfileAppsRow {
-  overflow-x: auto;
-  overflow-y: hidden;
-  white-space: nowrap;
   width: 100%;
   margin-top: 8px;
-  -webkit-overflow-scrolling: touch;
 }
 
 .ProfileAppsRow img {

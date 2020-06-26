@@ -1,5 +1,4 @@
-import React, { memo, FormEvent, useState } from "react"
-import { Collapse } from "react-collapse"
+import React, { memo, useState } from "react"
 import { IonItem, IonIcon } from "@ionic/react"
 import { addCircleOutline, closeCircleOutline } from "ionicons/icons"
 import "./styles.css"
@@ -29,7 +28,7 @@ const FormCollapse: React.FC<ContainerProps> = ({ title, children }) => {
           </>
         )}
       </IonItem>
-      <Collapse isOpened={isOpen}>{children}</Collapse>
+      <div className={isOpen ? "" : "hide"}>{children}</div>
     </>
   )
 }

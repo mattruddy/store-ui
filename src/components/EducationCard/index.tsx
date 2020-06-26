@@ -25,7 +25,7 @@ const EducationCard: React.FC<ContainerProps> = ({ education, onDelete }) => {
   }
 
   return (
-    <IonCard className="line-around">
+    <IonCard className="EducationCard bottom-line-border">
       <IonCardHeader>
         {onDelete && (
           <IonFabButton
@@ -38,9 +38,10 @@ const EducationCard: React.FC<ContainerProps> = ({ education, onDelete }) => {
         )}
         <IonCardTitle>{education.school}</IonCardTitle>
         <IonCardSubtitle>
-          {" "}
-          {capitalize(education.degree.toString())} in {education.major} |{" "}
-          {dateFormatterMMMYYYY(education.gradDate)}
+          <p>
+            {capitalize(education.degree.toString())}s in {education.major}
+          </p>
+          <p>{dateFormatterMMMYYYY(education.gradDate)}</p>
         </IonCardSubtitle>
         {education.minor && (
           <IonCardSubtitle>Minor - {education.minor}</IonCardSubtitle>

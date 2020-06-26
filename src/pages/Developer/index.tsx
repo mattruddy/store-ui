@@ -14,6 +14,8 @@ import {
   IonCardTitle,
   IonCardHeader,
   IonCardContent,
+  IonGrid,
+  IonIcon,
 } from "@ionic/react"
 import { useParams } from "react-router"
 import ProfileCard from "../../components/ProfileCard"
@@ -26,10 +28,14 @@ import { useInView } from "react-intersection-observer"
 import { Axios } from "../../redux/Actions"
 import EducationCard from "../../components/EducationCard"
 import JobCard from "../../components/JobCard"
+import { addCircle } from "ionicons/icons"
 
 const Developer: React.FC = () => {
   const { username } = useParams()
   const [notFound, setNotFound] = useState<boolean>(false)
+  const [hideAbout, setHideAbout] = useState<boolean>(false)
+  const [hideEmployment, setHideEmployment] = useState<boolean>(false)
+  const [hideEducation, setHideEducation] = useState<boolean>(false)
   const [ref, inView] = useInView()
 
   const { profile, isLoading } = useSelector(
@@ -99,7 +105,7 @@ const Developer: React.FC = () => {
 
   const renderAboutSection = useMemo(() => {
     return (
-      <IonCard className="line-around">
+      <IonCard className="">
         <div
           style={{ margin: "0", paddingLeft: "16px" }}
           dangerouslySetInnerHTML={{
@@ -121,40 +127,66 @@ const Developer: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent class="content">
-        <IonRow>
-          <IonCol size="12" ref={ref}>
-            {renderProfileSection}
-          </IonCol>
-          <IonCol size="12">{renderAboutSection}</IonCol>
-          {profile?.educations && (
-            <IonCol size="12">
+        <IonGrid>
+          <IonRow>
+            <IonCol className="bottom-line-border" size="12" ref={ref}>
+              {renderProfileSection}
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol
+              size="12"
+              sizeMd={(profile?.jobs || profile?.educations) && "7"}
+            >
               <IonCard className="line-around">
-                <IonCardHeader>
-                  <IonCardTitle>Education</IonCardTitle>
+                <IonCardHeader
+                  onClick={() => setHideAbout(!hideAbout)}
+                  className="bottom-line-border clickable"
+                >
+                  <IonCardTitle>Resume</IonCardTitle>
                 </IonCardHeader>
-                <IonCardContent>
-                  {profile.educations.map((education, idx) => (
-                    <EducationCard education={education} />
-                  ))}
+                <IonCardContent className={hideAbout ? "hide" : ""}>
+                  {renderAboutSection}
                 </IonCardContent>
               </IonCard>
             </IonCol>
-          )}
-          {profile?.jobs && (
-            <IonCol size="12">
-              <IonCard className="line-around">
-                <IonCardHeader>
-                  <IonCardTitle>Employment</IonCardTitle>
-                </IonCardHeader>
-                <IonCardContent>
-                  {profile.jobs.map((job, idx) => (
-                    <JobCard job={job} />
-                  ))}
-                </IonCardContent>
-              </IonCard>
+            <IonCol
+              size="12"
+              sizeMd={(profile?.jobs || profile?.educations) && "5"}
+            >
+              {profile?.educations && profile.educations.length > 0 && (
+                <IonCard className="line-around">
+                  <IonCardHeader
+                    onClick={() => setHideEducation(!hideEducation)}
+                    className="bottom-line-border clickable"
+                  >
+                    <IonCardTitle>Education</IonCardTitle>
+                  </IonCardHeader>
+                  <IonCardContent className={hideEducation ? "hide" : ""}>
+                    {profile.educations.map((education, idx) => (
+                      <EducationCard education={education} />
+                    ))}
+                  </IonCardContent>
+                </IonCard>
+              )}
+              {profile?.jobs && profile.jobs.length > 0 && (
+                <IonCard className="line-around">
+                  <IonCardHeader
+                    onClick={() => setHideEmployment(!hideEmployment)}
+                    className="bottom-line-border clickable"
+                  >
+                    <IonCardTitle>Employment</IonCardTitle>
+                  </IonCardHeader>
+                  <IonCardContent className={hideEmployment ? "hide" : ""}>
+                    {profile.jobs.map((job, idx) => (
+                      <JobCard job={job} />
+                    ))}
+                  </IonCardContent>
+                </IonCard>
+              )}
             </IonCol>
-          )}
-        </IonRow>
+          </IonRow>
+        </IonGrid>
       </IonContent>
     </IonPage>
   )

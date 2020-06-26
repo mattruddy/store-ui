@@ -40,86 +40,88 @@ const ProfileCard: React.FC<ContainerProps> = ({
   pwas,
 }) => {
   return (
-    <IonGrid fixed>
-      <IonRow className="bottom-line-border">
-        <IonCol size="12">
-          <div className="ProfileCardLeft">
-            {!isLoading && (
-              <img
-                alt="avatar"
-                className="ProfileCardImg icon line-around"
-                src={avatar ? avatar : "assets/icon/apple-touch-icon.png"}
-              />
+    <IonRow>
+      <IonCol size="12" sizeMd={pwas && "8"}>
+        <div className="ProfileCardLeft">
+          {!isLoading && (
+            <img
+              alt="avatar"
+              className="ProfileCardImg icon line-around"
+              src={avatar ? avatar : "assets/icon/apple-touch-icon.png"}
+            />
+          )}
+          <div className="ProfileCardLeftInfo">
+            {username && (
+              <>
+                <div>
+                  <h1
+                    className={`${fullName ? "" : "text-color"}`}
+                    style={{ paddingLeft: "8px", margin: "0" }}
+                  >
+                    {fullName ? fullName : `@${username}`}
+                  </h1>
+                  {fullName && (
+                    <h4
+                      className="text-color"
+                      style={{
+                        margin: "0",
+                        paddingLeft: "8px",
+                      }}
+                    >{`@${username}`}</h4>
+                  )}
+                </div>
+                <div className="ProfileLinksCont">
+                  {email && (
+                    <LinkItem url={`mailto:${email}`} logo={mailOutline} />
+                  )}
+                  {gitHub && (
+                    <LinkItem
+                      url={gitHub}
+                      logo={logoGithub}
+                      className="ion-color-github"
+                    />
+                  )}
+                </div>
+              </>
             )}
-            <div className="ProfileCardLeftInfo">
-              {username && (
-                <>
-                  <div>
-                    <h1
-                      className={`${fullName ? "" : "text-color"}`}
-                      style={{ paddingLeft: "8px", margin: "0" }}
-                    >
-                      {fullName ? fullName : `@${username}`}
-                    </h1>
-                    {fullName && (
-                      <h4
-                        className="text-color"
-                        style={{
-                          margin: "0",
-                          paddingLeft: "8px",
-                        }}
-                      >{`@${username}`}</h4>
-                    )}
-                  </div>
-                  <div className="ProfileLinksCont">
-                    {email && (
-                      <LinkItem url={`mailto:${email}`} logo={mailOutline} />
-                    )}
-                    {gitHub && (
-                      <LinkItem
-                        url={gitHub}
-                        logo={logoGithub}
-                        className="ion-color-github"
-                      />
-                    )}
-                  </div>
-                </>
-              )}
-            </div>
           </div>
-          {location && (
-            <div className="text-color">
-              <IonIcon icon={locationOutline} />
-              {location}
+        </div>
+        {location && (
+          <div className="text-color">
+            <IonIcon icon={locationOutline} />
+            {location}
+          </div>
+        )}
+        <div className="ProfileSubTitleBlock">
+          {header && (
+            <div
+              style={{
+                padding: "8px",
+              }}
+            >
+              {header}
             </div>
           )}
-          <div className="ProfileSubTitleBlock">
-            {header && (
-              <div
-                style={{
-                  padding: "8px",
-                }}
+          {isMyProfile && (
+            <div>
+              <IonButton
+                fill="outline"
+                color="dark"
+                routerLink="/settings/profile"
               >
-                {header}
-              </div>
-            )}
-            {isMyProfile && (
-              <div>
-                <IonButton
-                  fill="outline"
-                  color="dark"
-                  routerLink="/settings/profile"
-                >
-                  Edit
-                </IonButton>
-              </div>
-            )}
-          </div>
+                Edit
+              </IonButton>
+            </div>
+          )}
+        </div>
+      </IonCol>
+      {pwas && (
+        <IonCol size="12" sizeMd="4">
+          <AppImgs pwas={pwas} />
         </IonCol>
-        {data && <DataBox data={data} />}
-        {pwas && <AppImgs pwas={pwas} />}
-      </IonRow>
-    </IonGrid>
+      )}
+      {data && <DataBox data={data} />}
+    </IonRow>
   )
 }
 

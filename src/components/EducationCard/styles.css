@@ -1,7 +1,12 @@
+.EducationCard {
+  border-radius: 0;
+}
+
 .CardFabButton {
   position: absolute;
   top: 0;
   right: 0;
   --box-shadow: none;
   --background: transparent;
+  z-index: 1000000;
 }
