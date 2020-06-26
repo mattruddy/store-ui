@@ -47,7 +47,6 @@ const EducationCard: React.FC<ContainerProps> = ({ education, onDelete }) => {
           <IonCardSubtitle>Minor - {education.minor}</IonCardSubtitle>
         )}
       </IonCardHeader>
-      <IonCardContent></IonCardContent>
     </IonCard>
   )
 }

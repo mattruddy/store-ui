@@ -68,17 +68,17 @@ const Home: React.FC = () => {
           isLoading={isLoading}
         />
         <HomeRow
-          pwas={homeData.topApps}
-          title="Top"
-          subtitle="Most popular"
-          linkTo=""
-          isLoading={isLoading}
-        />
-        <HomeRow
           pwas={homeData.discoverApps}
           title="Discover"
           subtitle="Currently trending"
           linkTo="trending"
+          isLoading={isLoading}
+        />
+        <HomeRow
+          pwas={homeData.topApps}
+          title="Top"
+          subtitle="Most popular"
+          linkTo=""
           isLoading={isLoading}
         />
       </>

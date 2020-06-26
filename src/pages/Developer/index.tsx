@@ -15,7 +15,6 @@ import {
   IonCardHeader,
   IonCardContent,
   IonGrid,
-  IonIcon,
 } from "@ionic/react"
 import { useParams } from "react-router"
 import ProfileCard from "../../components/ProfileCard"
@@ -28,8 +27,7 @@ import { useInView } from "react-intersection-observer"
 import { Axios } from "../../redux/Actions"
 import EducationCard from "../../components/EducationCard"
 import JobCard from "../../components/JobCard"
-import { addCircle } from "ionicons/icons"
-import DevAppsCard from "../../components/DevAppsCard"
+import { PWACard } from "../../components"
 
 const Developer: React.FC = () => {
   const { username } = useParams()
@@ -106,14 +104,12 @@ const Developer: React.FC = () => {
 
   const renderAboutSection = useMemo(() => {
     return (
-      <IonCard className="">
-        <div
-          style={{ margin: "0", paddingLeft: "16px" }}
-          dangerouslySetInnerHTML={{
-            __html: mdConverter.makeHtml(profile?.about!),
-          }}
-        />
-      </IonCard>
+      <div
+        style={{ margin: "0", paddingLeft: "16px" }}
+        dangerouslySetInnerHTML={{
+          __html: mdConverter.makeHtml(profile?.about!),
+        }}
+      />
     )
   }, [profile?.about])
 
@@ -151,7 +147,7 @@ const Developer: React.FC = () => {
                     <IonRow>
                       {profile.apps.map((app, idx) => (
                         <IonCol size="6">
-                          <DevAppsCard key={idx} app={app} />
+                          <PWACard isMyPwa={false} url="/pwa" pwa={app} />
                         </IonCol>
                       ))}
                     </IonRow>
@@ -174,21 +170,6 @@ const Developer: React.FC = () => {
               size="12"
               sizeMd={(profile?.jobs || profile?.educations) && "5"}
             >
-              {profile?.educations && profile.educations.length > 0 && (
-                <IonCard className="line-around">
-                  <IonCardHeader
-                    onClick={() => setHideEducation(!hideEducation)}
-                    className="bottom-line-border clickable"
-                  >
-                    <IonCardTitle>Education</IonCardTitle>
-                  </IonCardHeader>
-                  <IonCardContent className={hideEducation ? "hide" : ""}>
-                    {profile.educations.map((education, idx) => (
-                      <EducationCard education={education} />
-                    ))}
-                  </IonCardContent>
-                </IonCard>
-              )}
               {profile?.jobs && profile.jobs.length > 0 && (
                 <IonCard className="line-around">
                   <IonCardHeader
@@ -200,6 +181,21 @@ const Developer: React.FC = () => {
                   <IonCardContent className={hideEmployment ? "hide" : ""}>
                     {profile.jobs.map((job, idx) => (
                       <JobCard job={job} />
+                    ))}
+                  </IonCardContent>
+                </IonCard>
+              )}
+              {profile?.educations && profile.educations.length > 0 && (
+                <IonCard className="line-around">
+                  <IonCardHeader
+                    onClick={() => setHideEducation(!hideEducation)}
+                    className="bottom-line-border clickable"
+                  >
+                    <IonCardTitle>Education</IonCardTitle>
+                  </IonCardHeader>
+                  <IonCardContent className={hideEducation ? "hide" : ""}>
+                    {profile.educations.map((education, idx) => (
+                      <EducationCard education={education} />
                     ))}
                   </IonCardContent>
                 </IonCard>
