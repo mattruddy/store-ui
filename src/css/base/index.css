@@ -78,6 +78,12 @@ ion-menu {
   border-bottom: 1px solid var(--store-border-color);
 }
 
+.bottom-wrap-border {
+  border-bottom: 1px solid var(--store-border-color);
+  border-left: 1px solid var(--store-border-color);
+  border-right: 1px solid var(--store-border-color);
+}
+
 .right-line-border {
   border-right: 1px solid var(--store-border-color);
 }
