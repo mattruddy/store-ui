@@ -9,6 +9,7 @@ const RouteMap = {
   ABOUT: "/about",
   ADMIN_PWAS: "/admin/pwas",
   ADMIN_NOTIFY: "/admin/notify",
+  ADMIN_FEATURE: "/admin/feature",
   CATEGORIES: "/categories",
   PWAS: "/pwas/:category?",
   HOME: "/home",

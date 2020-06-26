@@ -26,7 +26,7 @@ import {
   IonButtons,
   IonIcon,
 } from "@ionic/react"
-import { withRouter } from "react-router"
+import { withRouter, useHistory } from "react-router"
 import { PWA, StoreNotification } from "../../util/types"
 import { useSelector, shallowEqual } from "react-redux"
 import { ReduxCombinedState } from "../../redux/RootReducer"
@@ -37,13 +37,22 @@ import { mdConverter } from "../../util"
 import NotifyList from "../../components/NotifyList"
 import { async } from "q"
 import { RouteMap } from "../../routes"
-import { newspaper } from "ionicons/icons"
+import {
+  newspaper,
+  ellipsisVertical,
+  medal,
+  notifications as notifyIcon,
+} from "ionicons/icons"
+import Popover from "../../components/Popover"
 
 const AdminNotify: React.FC = () => {
   const [notifications, setNotifications] = useState<StoreNotification[]>([])
   const [subject, setSubject] = useState("")
   const [body, setBody] = useState("")
   const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write")
+  const [showPopover, setShowPopover] = useState(false)
+
+  const history = useHistory()
 
   const { isLoggedIn, loading } = useSelector(
     ({ user: { isLoggedIn, notLoading } }: ReduxCombinedState) => ({
@@ -81,6 +90,34 @@ const AdminNotify: React.FC = () => {
       setNotifications((curr) => [...curr.filter((x) => x.id !== id)])
     }
   }
+
+  const renderPopover = useMemo(
+    () => (
+      <Popover
+        showPopover={showPopover}
+        setShowPopover={setShowPopover}
+        icon={ellipsisVertical}
+        items={[
+          {
+            name: "Notifications",
+            action: () => history.push(RouteMap.ADMIN_NOTIFY),
+            icon: notifyIcon,
+          },
+          {
+            name: "App Approval",
+            action: () => history.push(RouteMap.ADMIN_PWAS),
+            icon: newspaper,
+          },
+          {
+            name: "App Feature",
+            action: () => history.push(RouteMap.ADMIN_FEATURE),
+            icon: medal,
+          },
+        ]}
+      />
+    ),
+    [showPopover]
+  )
 
   const renderCreate = useMemo(
     () => (
@@ -130,11 +167,7 @@ const AdminNotify: React.FC = () => {
       <IonHeader className="ion-no-border bottom-line-border">
         <IonToolbar>
           <IonTitle>Notifications Admin</IonTitle>
-          <IonButtons slot="end">
-            <IonButton routerLink={RouteMap.ADMIN_PWAS}>
-              <IonIcon icon={newspaper} />
-            </IonButton>
-          </IonButtons>
+          <IonButtons slot="end">{renderPopover}</IonButtons>
         </IonToolbar>
       </IonHeader>
       <IonContent>
