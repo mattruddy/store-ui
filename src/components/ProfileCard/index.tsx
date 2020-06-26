@@ -2,9 +2,8 @@ import React, { useMemo, memo } from "react"
 import { logoGithub, mailOutline, locationOutline } from "ionicons/icons"
 import LinkItem from "./LinkItem"
 import "./styles.css"
-import { IonRow, IonCol, IonButton, IonIcon, IonGrid } from "@ionic/react"
+import { IonRow, IonCol, IonButton, IonIcon } from "@ionic/react"
 import { PWA } from "../../util/types"
-import AppImgs from "./AppImgs"
 import DataBox from "./DataBox"
 
 export interface TotalAppData {
@@ -20,7 +19,6 @@ interface ContainerProps {
   fullName?: string
   header?: string
   data?: TotalAppData
-  pwas?: PWA[]
   email?: string | undefined
   username: string
   isLoading?: boolean
@@ -37,11 +35,10 @@ const ProfileCard: React.FC<ContainerProps> = ({
   username,
   isLoading,
   data,
-  pwas,
 }) => {
   return (
     <IonRow>
-      <IonCol size="12" sizeMd={pwas && "8"}>
+      <IonCol size="12">
         <div className="ProfileCardLeft">
           {!isLoading && (
             <img
@@ -115,11 +112,6 @@ const ProfileCard: React.FC<ContainerProps> = ({
           )}
         </div>
       </IonCol>
-      {pwas && (
-        <IonCol size="12" sizeMd="4">
-          <AppImgs pwas={pwas} />
-        </IonCol>
-      )}
       {data && <DataBox data={data} />}
     </IonRow>
   )

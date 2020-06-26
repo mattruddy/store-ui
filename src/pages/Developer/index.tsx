@@ -29,6 +29,7 @@ import { Axios } from "../../redux/Actions"
 import EducationCard from "../../components/EducationCard"
 import JobCard from "../../components/JobCard"
 import { addCircle } from "ionicons/icons"
+import DevAppsCard from "../../components/DevAppsCard"
 
 const Developer: React.FC = () => {
   const { username } = useParams()
@@ -36,6 +37,7 @@ const Developer: React.FC = () => {
   const [hideAbout, setHideAbout] = useState<boolean>(false)
   const [hideEmployment, setHideEmployment] = useState<boolean>(false)
   const [hideEducation, setHideEducation] = useState<boolean>(false)
+  const [hideApp, setHideApp] = useState<boolean>(false)
   const [ref, inView] = useInView()
 
   const { profile, isLoading } = useSelector(
@@ -89,7 +91,6 @@ const Developer: React.FC = () => {
           email={profile.email}
           avatar={profile.avatar}
           isLoading={isLoading}
-          pwas={profile.apps}
           username={profile.username}
           header={profile.header}
           fullName={profile.fullName}
@@ -138,6 +139,25 @@ const Developer: React.FC = () => {
               size="12"
               sizeMd={(profile?.jobs || profile?.educations) && "7"}
             >
+              {profile?.apps && profile.apps.length > 0 && (
+                <IonCard className="line-around">
+                  <IonCardHeader
+                    onClick={() => setHideApp(!hideApp)}
+                    className="bottom-line-border clickable"
+                  >
+                    <IonCardTitle>Apps</IonCardTitle>
+                  </IonCardHeader>
+                  <IonCardContent className={hideApp ? "hide" : ""}>
+                    <IonRow>
+                      {profile.apps.map((app, idx) => (
+                        <IonCol size="6">
+                          <DevAppsCard key={idx} app={app} />
+                        </IonCol>
+                      ))}
+                    </IonRow>
+                  </IonCardContent>
+                </IonCard>
+              )}
               <IonCard className="line-around">
                 <IonCardHeader
                   onClick={() => setHideAbout(!hideAbout)}
