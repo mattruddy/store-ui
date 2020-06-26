@@ -16,7 +16,19 @@ interface ContainerProps {
   status: "success" | "fail" | undefined
   profile: Profile | undefined
   email: string | undefined
-  onSubmit: (
+  onCreate: (
+    gitHub: string,
+    showEmail: boolean,
+    email: string,
+    about: string,
+    header: string,
+    location: string,
+    fullName: string,
+    occupationStatus: OccupationStatus,
+    avatar: File | undefined
+  ) => void
+  onUpdate: (
+    profileId: number,
     gitHub: string,
     showEmail: boolean,
     email: string,
@@ -33,7 +45,8 @@ const ProfileForm: React.FC<ContainerProps> = ({
   status,
   profile,
   email,
-  onSubmit,
+  onCreate,
+  onUpdate,
 }) => {
   const [fullName, setFullName] = useState<string>("")
   const [gitHub, setGitHub] = useState<string>("")
@@ -69,17 +82,30 @@ const ProfileForm: React.FC<ContainerProps> = ({
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
-    onSubmit(
-      gitHub,
-      showEmail,
-      email!,
-      about,
-      header,
-      location,
-      fullName,
-      occupationStatus!,
-      avatar
-    )
+    profile
+      ? onUpdate(
+          profile.profileId,
+          gitHub,
+          showEmail,
+          email!,
+          about,
+          header,
+          location,
+          fullName,
+          occupationStatus!,
+          avatar
+        )
+      : onCreate(
+          gitHub,
+          showEmail,
+          email!,
+          about,
+          header,
+          location,
+          fullName,
+          occupationStatus!,
+          avatar
+        )
   }
 
   return (

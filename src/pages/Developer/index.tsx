@@ -28,6 +28,7 @@ import { Axios } from "../../redux/Actions"
 import EducationCard from "../../components/EducationCard"
 import JobCard from "../../components/JobCard"
 import { PWACard } from "../../components"
+import DevContentCard from "../../components/DevContentCard"
 
 const Developer: React.FC = () => {
   const { username } = useParams()
@@ -135,70 +136,54 @@ const Developer: React.FC = () => {
               size="12"
               sizeMd={(profile?.jobs || profile?.educations) && "7"}
             >
+              <DevContentCard
+                title="Resume"
+                onClick={() => setHideAbout(!hideAbout)}
+                isHidden={hideAbout}
+              >
+                {renderAboutSection}
+              </DevContentCard>
               {profile?.apps && profile.apps.length > 0 && (
-                <IonCard className="line-around">
-                  <IonCardHeader
-                    onClick={() => setHideApp(!hideApp)}
-                    className="bottom-line-border clickable"
-                  >
-                    <IonCardTitle>Apps</IonCardTitle>
-                  </IonCardHeader>
-                  <IonCardContent className={hideApp ? "hide" : ""}>
-                    <IonRow>
-                      {profile.apps.map((app, idx) => (
-                        <IonCol size="6">
-                          <PWACard isMyPwa={false} url="/pwa" pwa={app} />
-                        </IonCol>
-                      ))}
-                    </IonRow>
-                  </IonCardContent>
-                </IonCard>
-              )}
-              <IonCard className="line-around">
-                <IonCardHeader
-                  onClick={() => setHideAbout(!hideAbout)}
-                  className="bottom-line-border clickable"
+                <DevContentCard
+                  title="Apps"
+                  onClick={() => setHideApp(!hideApp)}
+                  isHidden={hideApp}
                 >
-                  <IonCardTitle>Resume</IonCardTitle>
-                </IonCardHeader>
-                <IonCardContent className={hideAbout ? "hide" : ""}>
-                  {renderAboutSection}
-                </IonCardContent>
-              </IonCard>
+                  <IonRow>
+                    {profile.apps.map((app, idx) => (
+                      <IonCol size="6">
+                        <PWACard isMyPwa={false} url="/pwa" pwa={app} />
+                      </IonCol>
+                    ))}
+                  </IonRow>
+                </DevContentCard>
+              )}
             </IonCol>
             <IonCol
               size="12"
               sizeMd={(profile?.jobs || profile?.educations) && "5"}
             >
               {profile?.jobs && profile.jobs.length > 0 && (
-                <IonCard className="line-around">
-                  <IonCardHeader
-                    onClick={() => setHideEmployment(!hideEmployment)}
-                    className="bottom-line-border clickable"
-                  >
-                    <IonCardTitle>Employment</IonCardTitle>
-                  </IonCardHeader>
-                  <IonCardContent className={hideEmployment ? "hide" : ""}>
-                    {profile.jobs.map((job, idx) => (
-                      <JobCard job={job} />
-                    ))}
-                  </IonCardContent>
-                </IonCard>
+                <DevContentCard
+                  title="Employment"
+                  onClick={() => setHideEmployment(!hideEmployment)}
+                  isHidden={hideEmployment}
+                >
+                  {profile.jobs.map((job, idx) => (
+                    <JobCard job={job} />
+                  ))}
+                </DevContentCard>
               )}
               {profile?.educations && profile.educations.length > 0 && (
-                <IonCard className="line-around">
-                  <IonCardHeader
-                    onClick={() => setHideEducation(!hideEducation)}
-                    className="bottom-line-border clickable"
-                  >
-                    <IonCardTitle>Education</IonCardTitle>
-                  </IonCardHeader>
-                  <IonCardContent className={hideEducation ? "hide" : ""}>
-                    {profile.educations.map((education, idx) => (
-                      <EducationCard education={education} />
-                    ))}
-                  </IonCardContent>
-                </IonCard>
+                <DevContentCard
+                  title="Education"
+                  onClick={() => setHideEducation(!hideEducation)}
+                  isHidden={hideEducation}
+                >
+                  {profile.educations.map((education, idx) => (
+                    <EducationCard education={education} />
+                  ))}
+                </DevContentCard>
               )}
             </IonCol>
           </IonRow>
