@@ -27,8 +27,6 @@ import JobForm from "../../components/JobForm"
 import ProfileForm from "../../components/ProfileForm"
 import { Degree, OccupationStatus } from "../../util/types"
 import EducationForm from "../../components/EducationForm"
-import { useParams, useHistory } from "react-router"
-import { GetSettingSectionUrl } from "../../routes"
 import EducationCard from "../../components/EducationCard"
 import FormCollapse from "../../components/FormCollapse"
 import JobCard from "../../components/JobCard"
@@ -36,9 +34,9 @@ import JobCard from "../../components/JobCard"
 type SettingSection = "profile" | "education" | "jobs"
 
 const Settings: React.FC = () => {
-  const [selectedSection, setSelectedSection] = useState<SettingSection>()
-  const { section } = useParams()
-  const history = useHistory()
+  const [selectedSection, setSelectedSection] = useState<SettingSection>(
+    "profile"
+  )
 
   const { email, profile, isLoading, status, educations, jobs } = useSelector(
     ({
@@ -122,12 +120,6 @@ const Settings: React.FC = () => {
   )
 
   useEffect(() => {
-    if (section) {
-      setSelectedSection(section)
-    }
-  }, [section])
-
-  useEffect(() => {
     ReactGA.pageview(`settings`)
   }, [])
 
@@ -146,7 +138,7 @@ const Settings: React.FC = () => {
         <IonSegment
           value={selectedSection}
           onIonChange={(e) =>
-            history.replace(GetSettingSectionUrl(e.detail.value!))
+            setSelectedSection(e.detail.value as SettingSection)
           }
         >
           <IonSegmentButton value="profile">Profile</IonSegmentButton>
