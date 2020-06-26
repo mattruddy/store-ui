@@ -16,16 +16,16 @@ export const monthNames = [
 ]
 
 export enum Degree {
-  ASSOCIATE,
-  BACHELOR,
-  MASTER,
-  DOCTORAL,
+  ASSOCIATE = "ASSOCIATE",
+  BACHELOR = "BACHELOR",
+  MASTER = "MASTER",
+  DOCTORAL = "DOCTORAL",
 }
 
 export enum OccupationStatus {
-  HIRED,
-  LOOKING,
-  OPEN,
+  HIRED = "HIRED",
+  LOOKING = "LOOKING",
+  OPEN = "OPEN",
 }
 
 export interface DispatchObject {
