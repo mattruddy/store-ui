@@ -4,10 +4,14 @@ import {
   IonDatetime,
   IonSelect,
   IonSelectOption,
+  IonList,
+  IonItem,
+  IonLabel,
 } from "@ionic/react"
 import { FormItem } from ".."
 import { Degree } from "../../util/types"
 import { getDateAfterYears } from "../../util"
+import { Axios } from "../../redux/Actions"
 
 interface ContainerProps {
   status: "success" | "fail" | undefined
@@ -26,6 +30,7 @@ const EducationForm: React.FC<ContainerProps> = ({ status, onSubmit }) => {
   const [gradDate, setGradDate] = useState<string>()
   const [degree, setDegree] = useState<Degree>()
   const [minor, setMinor] = useState<string | undefined>()
+  const [search, setSearch] = useState<string[]>([])
 
   useEffect(() => {
     if (status === "success") {
@@ -42,20 +47,43 @@ const EducationForm: React.FC<ContainerProps> = ({ status, onSubmit }) => {
     onSubmit(school!, major!, degree!, gradDate!, minor)
   }
 
+  const onTypeChange = async (value: string) => {
+    const resp = await (await Axios()).get(`/public/search/school/${value}`)
+    setSearch(resp.data)
+  }
+
   return (
     <form onSubmit={handleSubmit}>
       <FormItem
         name="School"
         value={school}
-        onChange={(e) => setSchool(e.detail.value)}
+        onChange={(e) => {
+          setSchool(e.detail.value)
+          onTypeChange(e.detail.value)
+        }}
         maxLength={100}
       />
+      {search && school && !search.includes(school) && (
+        <IonList>
+          {search.map((x, i) => (
+            <IonItem
+              button
+              onClick={() => {
+                setSchool(x)
+                setSearch([])
+              }}
+            >
+              <IonLabel>{x}</IonLabel>
+            </IonItem>
+          ))}
+        </IonList>
+      )}
       <FormItem
         name="Major"
         value={major}
         onChange={(e) => setMajor(e.detail.value)}
         maxLength={100}
-      />
+      ></FormItem>
       <FormItem
         name="Minor (optional)"
         value={minor}
