@@ -219,8 +219,6 @@ const ProfileForm: React.FC<ContainerProps> = ({
               setTag("")
             }}
             validator={(tag) => {
-              console.log(tag)
-              setTag(tag)
               return tag.length <= 30
             }}
             removeOnBackspace={true}
@@ -231,7 +229,14 @@ const ProfileForm: React.FC<ContainerProps> = ({
       </FormItem>
       <Selectables
         input={tag}
-        onSelect={(value) => setTags((curr) => [...curr, value])}
+        onSelect={(value) => {
+          setTags((curr) => [...curr, value])
+          setTag("")
+          const inputRef = ref.current.inputRef as React.RefObject<
+            HTMLInputElement
+          >
+          if (inputRef.current) inputRef.current.value = ""
+        }}
         url={`/public/search/tech`}
       />
       <FormItem name="Header" showError={false} errorMessage="">
