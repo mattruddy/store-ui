@@ -5,24 +5,26 @@ import {
   IonChip,
   IonLabel,
   IonRouterLink,
+  IonFabButton,
 } from "@ionic/react"
 import { ShareUrl, FormItem } from "../"
 import { PWA } from "../../util/types"
 import ReactGA from "react-ga"
 
-//@ts-ignore
-import StarRatings from "react-star-ratings"
-import { openOutline } from "ionicons/icons"
+import { openOutline, starOutline, starSharp } from "ionicons/icons"
 import { Axios } from "../../redux/Actions"
 import CategoryOptions from "../CategoryOptions"
 import ReactTagInput from "@pathofdev/react-tag-input"
 import "./styles.css"
 import { noSpecialChars, mdConverter } from "../../util"
 import ReactMde from "react-mde"
+import StarsListModal from "../StarsListModal"
 
 interface ContainerProps {
   pwa: PWA
   isMyPwa: boolean
+  isLoggedIn?: boolean | undefined
+  onStar?: (star: number, comment?: string | undefined) => void
   isEdit?: boolean
   name?: string
   cat?: string
@@ -37,6 +39,8 @@ interface ContainerProps {
 const PWAInfo: React.FC<ContainerProps> = ({
   pwa,
   isMyPwa,
+  isLoggedIn,
+  onStar,
   isEdit = false,
   name,
   cat,
@@ -48,6 +52,7 @@ const PWAInfo: React.FC<ContainerProps> = ({
   setTags,
 }) => {
   const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write")
+  const [isOpen, setIsOpen] = useState<boolean>(false)
 
   const onInstall = () => {
     if (!isMyPwa) {
@@ -101,19 +106,23 @@ const PWAInfo: React.FC<ContainerProps> = ({
       {pwa.username && (
         <div style={{ marginLeft: "8px", marginBottom: "10px" }}>
           <IonRouterLink routerLink={`/dev/${pwa.username}`}>
-            Developer Info
+            {`${pwa.fullName ? pwa.fullName : pwa.username}`}
           </IonRouterLink>
         </div>
       )}
-      <div style={{ marginLeft: "10px" }}>
-        <StarRatings
-          rating={pwa.averageRating}
-          starDimension="20px"
-          starSpacing="2px"
-          starRatedColor="var(--light-rating)"
-          starEmptyColor="var(--dark-rating)"
-        />
-        <span style={{ marginLeft: "5px" }}>({pwa.ratingsCount})</span>
+      <div className="InfoStarBlock">
+        <IonFabButton
+          className="InfoStarIcon"
+          disabled={!isLoggedIn}
+          onClick={() => onStar && onStar(1)}
+        >
+          <IonIcon
+            icon={`${pwa.appRatings.hasRated ? starSharp : starOutline}`}
+          />
+        </IonFabButton>
+        <IonFabButton className="InfoStarIcon" onClick={() => setIsOpen(true)}>
+          {pwa.ratingsCount}
+        </IonFabButton>
       </div>
       <div className="PWAShareContainer">
         <ShareUrl title={pwa.name} url={window.location.href} />
@@ -172,6 +181,11 @@ const PWAInfo: React.FC<ContainerProps> = ({
           }}
         />
       )}
+      <StarsListModal
+        isOpen={isOpen}
+        onDidDismiss={() => setIsOpen(false)}
+        ratings={pwa.appRatings.ratings}
+      />
     </>
   )
 }

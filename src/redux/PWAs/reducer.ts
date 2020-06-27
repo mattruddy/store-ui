@@ -18,7 +18,7 @@ import {
   DEV_COMPLETE,
 } from "./types"
 import { AppActionTypes, REDUX_RESET } from "../App/types"
-import { HomePWAs, PWA } from "../../util/types"
+import { HomePWAs, PWA, AppRatings } from "../../util/types"
 
 const DEFAULT_STATE_PWAS: PWAsState = {
   count: 0,
@@ -57,7 +57,7 @@ const pwasReducer = (
       if (!oldPwa) return state
       const newPwa = {
         ...oldPwa,
-        ratings: [...oldPwa.ratings, ...action.payload.ratings],
+        appRatings: action.payload.ratings,
       } as PWA
       return {
         ...state,
@@ -71,11 +71,15 @@ const pwasReducer = (
       if (!oPwa) return state
       const nPwa = {
         ...oPwa,
-        ratings: action.payload.newRating.rating.comment
-          ? [action.payload.newRating.rating, ...oPwa.ratings]
-          : [...oPwa.ratings],
-        averageRating: action.payload.newRating.averageStar,
-        ratingsCount: action.payload.newRating.ratingCount,
+        appRatings: {
+          hasRated: action.payload.newRating.liked,
+          ratings: action.payload.newRating.liked
+            ? [action.payload.newRating.rating, ...oPwa.appRatings.ratings]
+            : oPwa.appRatings.ratings,
+        } as AppRatings,
+        ratingsCount: action.payload.newRating.liked
+          ? oPwa.ratingsCount + 1
+          : oPwa.ratingsCount - 1,
       } as PWA
       return {
         ...state,
@@ -83,6 +87,34 @@ const pwasReducer = (
           ...state.pwas.filter((x) => x.appId !== action.payload.appId),
           nPwa,
         ],
+        home: {
+          discoverApps: state.home.discoverApps.find(
+            (x) => x.appId === nPwa.appId
+          )
+            ? [
+                ...state.home.discoverApps.filter(
+                  (x) => x.appId !== nPwa.appId
+                ),
+                nPwa,
+              ]
+            : state.home.discoverApps,
+          topApps: state.home.topApps.find((x) => x.appId === nPwa.appId)
+            ? [
+                ...state.home.topApps.filter((x) => x.appId !== nPwa.appId),
+                nPwa,
+              ]
+            : state.home.topApps,
+          featuredApps: state.home.featuredApps.find(
+            (x) => x.appId === nPwa.appId
+          )
+            ? [
+                ...state.home.featuredApps.filter(
+                  (x) => x.appId !== nPwa.appId
+                ),
+                nPwa,
+              ]
+            : state.home.featuredApps,
+        } as HomePWAs,
       }
     case RATINGS_COMPLETE:
       return { ...state, isRatingsPending: false }

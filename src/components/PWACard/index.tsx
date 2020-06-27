@@ -5,12 +5,12 @@ import {
   IonCardHeader,
   IonCardTitle,
   IonCardSubtitle,
+  IonIcon,
 } from "@ionic/react"
-//@ts-ignore
-import StarRatings from "react-star-ratings"
 import { PWA } from "../../util/types"
 import "./styles.css"
 import { Axios } from "../../redux/Actions"
+import { starOutline } from "ionicons/icons"
 
 interface ContainerProps {
   pwa: PWA
@@ -45,14 +45,12 @@ const PWACard: React.FC<ContainerProps> = ({ pwa, url, isMyPwa }) => {
         </div>
 
         <div className="PWACardContent">
-          <StarRatings
-            rating={pwa.averageRating}
-            stars={5}
-            starDimension="15px"
-            starSpacing="2px"
-            starRatedColor="var(--light-rating)"
-            starEmptyColor="var(--dark-rating)"
-          />
+          {pwa.ratingsCount > 0 && (
+            <>
+              <IonIcon className="PWACardStar" icon={starOutline} />
+              <span>{pwa.ratingsCount}</span>
+            </>
+          )}
         </div>
       </IonCardContent>
     </IonCard>

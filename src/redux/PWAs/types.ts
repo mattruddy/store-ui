@@ -4,6 +4,7 @@ import {
   Rating,
   NewRating,
   PublicProfile,
+  AppRatings,
 } from "../../util/types"
 
 export interface PWASection {
@@ -75,7 +76,7 @@ export interface CompletePWAsAction {
 
 export interface AddRatingsAction {
   type: typeof RATINGS_ADD
-  payload: { ratings: Rating[]; appId: number }
+  payload: { ratings: AppRatings; appId: number }
 }
 
 export interface AddRatingAction {
