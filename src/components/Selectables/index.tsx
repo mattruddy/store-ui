@@ -12,7 +12,9 @@ const Selectables: React.FC<SelectableProps> = ({ input, onSelect, url }) => {
   const [search, setSearch] = useState<string[]>([])
 
   useEffect(() => {
+    if (!input) return
     ;(async () => {
+      console.log(input)
       const resp = await (await Axios()).get(`${url}/${input}`)
       setSearch(resp.data)
     })()
@@ -30,6 +32,7 @@ const Selectables: React.FC<SelectableProps> = ({ input, onSelect, url }) => {
               onClick={() => {
                 onSelect(x)
               }}
+              key={i}
             >
               <IonLabel style={{ margin: "0px" }}>
                 <small>{x}</small>

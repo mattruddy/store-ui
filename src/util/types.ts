@@ -132,6 +132,7 @@ export interface Profile {
   fullName: string
   header: string
   occupationStatus: OccupationStatus
+  techs: string[]
 }
 
 export interface PublicProfile {
