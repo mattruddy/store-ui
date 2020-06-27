@@ -14,7 +14,6 @@ const Selectables: React.FC<SelectableProps> = ({ input, onSelect, url }) => {
   useEffect(() => {
     if (!input) return
     ;(async () => {
-      console.log(input)
       const resp = await (await Axios()).get(`${url}/${input}`)
       setSearch(resp.data)
     })()
