@@ -33,6 +33,7 @@ import {
   addCircleOutline,
   settingsOutline,
   ellipsisVertical,
+  personOutline,
 } from "ionicons/icons"
 import ProfileCard, { TotalAppData } from "../../components/ProfileCard"
 import { useInView } from "react-intersection-observer"
@@ -140,6 +141,14 @@ const Profile: React.FC = () => {
                   icon: settingsOutline,
                 },
                 {
+                  name: "Public Profile",
+                  action: () =>
+                    history.push(
+                      `${RouteMap.DEVELOPER.replace(":username", username)}`
+                    ),
+                  icon: personOutline,
+                },
+                {
                   name: "Support",
                   action: () => history.push(RouteMap.SUPPORT),
                   icon: peopleOutline,
@@ -168,6 +177,7 @@ const Profile: React.FC = () => {
                 fullName={profile?.fullName}
                 location={profile?.location}
                 email={email}
+                occupationStatus={profile?.occupationStatus}
                 username={username}
                 isLoading={isLoading}
               />

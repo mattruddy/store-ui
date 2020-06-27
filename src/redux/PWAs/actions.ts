@@ -182,7 +182,10 @@ const thunkAddRating = (
   } = getState()
   dispatch(loadingRatings())
   try {
-    const url = `/${isLoggedIn ? "secure" : "public"}/pwa/rating/${appId}`
+    if (!isLoggedIn) {
+      return
+    }
+    const url = `/secure/pwa/rating/${appId}`
     const axiosInstance = await Axios()
     const requestData = comment
       ? { star: starValue, comment: comment }
@@ -249,7 +252,11 @@ const thunkGetHomeData = (
       const response = await axiosInstance.get(url)
       const data: HomePWAs = response.data
       dispatch(setHomeData(data))
-      const joint = [...data.discoverApps, ...data.featuredApps, ...data.topApps]
+      const joint = [
+        ...data.discoverApps,
+        ...data.featuredApps,
+        ...data.topApps,
+      ]
       dispatch(
         addPWAs(
           joint

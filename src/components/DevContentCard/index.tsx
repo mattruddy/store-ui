@@ -7,7 +7,12 @@ import {
   IonIcon,
 } from "@ionic/react"
 import React from "react"
-import { closeCircleOutline, addCircleOutline } from "ionicons/icons"
+import {
+  closeCircleOutline,
+  addCircleOutline,
+  chevronDownOutline,
+  chevronUpOutline,
+} from "ionicons/icons"
 
 interface ContainerProps {
   title: string
@@ -25,7 +30,15 @@ const DevContentCard: React.FC<ContainerProps> = ({
   return (
     <IonCard className="line-around">
       <IonCardHeader onClick={onClick} className="bottom-line-border clickable">
-        <IonCardTitle>{title}</IonCardTitle>
+        <IonCardTitle>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <IonIcon
+              style={{ paddingRight: "8px" }}
+              icon={!isHidden ? chevronDownOutline : chevronUpOutline}
+            />
+            <span>{title}</span>
+          </div>
+        </IonCardTitle>
       </IonCardHeader>
       <IonCardContent className={isHidden ? "hide" : ""}>
         {children}

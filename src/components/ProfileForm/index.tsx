@@ -9,7 +9,11 @@ import {
 import { FormItem } from ".."
 import ImageUploader from "react-images-upload"
 import ReactMde from "react-mde"
-import { Profile, OccupationStatus } from "../../util/types"
+import {
+  Profile,
+  OccupationStatus,
+  OccupationStatusEnumProps,
+} from "../../util/types"
 import { mdConverter } from "../../util"
 
 interface ContainerProps {
@@ -170,12 +174,14 @@ const ProfileForm: React.FC<ContainerProps> = ({
           value={occupationStatus}
           onIonChange={(e) => setOccupationStatus(e.detail.value)}
         >
-          <IonSelectOption value={OccupationStatus.LOOKING}>
-            Looking
-          </IonSelectOption>
-          <IonSelectOption value={OccupationStatus.OPEN}>Open</IonSelectOption>
           <IonSelectOption value={OccupationStatus.HIRED}>
-            Hired
+            {OccupationStatusEnumProps[OccupationStatus.HIRED]}
+          </IonSelectOption>
+          <IonSelectOption value={OccupationStatus.OPEN}>
+            {OccupationStatusEnumProps[OccupationStatus.OPEN]}
+          </IonSelectOption>
+          <IonSelectOption value={OccupationStatus.LOOKING}>
+            {OccupationStatusEnumProps[OccupationStatus.LOOKING]}
           </IonSelectOption>
         </IonSelect>
       </FormItem>
@@ -184,15 +190,18 @@ const ProfileForm: React.FC<ContainerProps> = ({
           value={header}
           onIonChange={(e) => setHeader(e.detail.value!)}
           maxlength={200}
+          rows={4}
           spellCheck={true}
         />
       </FormItem>
       <FormItem
-        name="Personal section via markdown"
+        name="Resume (editable via markdown)"
         showError={about?.trim() === ""}
         errorMessage="About section is required"
       >
-        <div style={{ width: "100%", paddingTop: "16px" }}>
+        <div
+          style={{ width: "100%", paddingTop: "16px", paddingBottom: "16px" }}
+        >
           <ReactMde
             classes={{ grip: "hide", toolbar: "mde-toolbar" }}
             value={about}

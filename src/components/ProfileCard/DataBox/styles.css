@@ -22,6 +22,7 @@
 }
 
 .DataRowLeft {
+  text-align: center;
   border-right: 1px solid var(--store-border-color);
   border-bottom: none;
 }

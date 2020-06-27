@@ -91,6 +91,7 @@ const Developer: React.FC = () => {
           avatar={profile.avatar}
           isLoading={isLoading}
           username={profile.username}
+          occupationStatus={profile.occupationStatus}
           header={profile.header}
           fullName={profile.fullName}
           location={profile.location}
@@ -106,7 +107,7 @@ const Developer: React.FC = () => {
   const renderAboutSection = useMemo(() => {
     return (
       <div
-        style={{ margin: "0", paddingLeft: "16px" }}
+        style={{ paddingTop: "16px" }}
         dangerouslySetInnerHTML={{
           __html: mdConverter.makeHtml(profile?.about!),
         }}
@@ -134,15 +135,22 @@ const Developer: React.FC = () => {
           <IonRow>
             <IonCol
               size="12"
-              sizeMd={(profile?.jobs || profile?.educations) && "7"}
+              sizeMd={
+                (profile?.jobs && profile?.jobs.length > 0) ||
+                (profile?.educations && profile?.educations.length > 0)
+                  ? "7"
+                  : "12"
+              }
             >
-              <DevContentCard
-                title="Resume"
-                onClick={() => setHideAbout(!hideAbout)}
-                isHidden={hideAbout}
-              >
-                {renderAboutSection}
-              </DevContentCard>
+              {profile?.about && (
+                <DevContentCard
+                  title="Resume"
+                  onClick={() => setHideAbout(!hideAbout)}
+                  isHidden={hideAbout}
+                >
+                  {renderAboutSection}
+                </DevContentCard>
+              )}
               {profile?.apps && profile.apps.length > 0 && (
                 <DevContentCard
                   title="Apps"

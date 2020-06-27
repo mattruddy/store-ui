@@ -101,7 +101,9 @@ const SubmitAppForm: React.FC<ContainerProps> = ({ onSubmit }) => {
           showError={desc.length > 1500}
           errorMessage="Description cannot be more than 1500 characters"
         >
-          <div style={{ width: "100%", paddingTop: "16px" }}>
+          <div
+            style={{ width: "100%", paddingTop: "16px", paddingBottom: "16px" }}
+          >
             <ReactMde
               classes={{ grip: "hide", toolbar: "mde-toolbar" }}
               value={desc}

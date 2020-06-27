@@ -28,6 +28,12 @@ export enum OccupationStatus {
   OPEN = "OPEN",
 }
 
+export const OccupationStatusEnumProps: Record<string, string> = {
+  HIRED: "Hired, not looking",
+  LOOKING: "Looking for opportunities",
+  OPEN: "Open to opportunities",
+}
+
 export interface DispatchObject {
   [key: string]: any
   type: string
