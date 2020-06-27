@@ -19,6 +19,7 @@ import {
   thunkAddEducation,
   thunkDeleteEducation,
   thunkDeleteJob,
+  thunkUpdateProfile,
 } from "../../redux/User/actions"
 import "react-mde/lib/styles/css/react-mde-all.css"
 import "./styles.css"
@@ -78,6 +79,36 @@ const Settings: React.FC = () => {
           updateFullName,
           updateOccupationStatus,
           updateTechs,
+          updateAvatar
+        )
+      )
+    },
+    [dispatch]
+  )
+  const updateProfile = useCallback(
+    async (
+      profileId: number,
+      updateGitHub: string,
+      updateShowEmail: boolean,
+      updateEmail: string,
+      updateAbout: string,
+      updateHeader: string | undefined,
+      updateLocation: string | undefined,
+      updateFullName: string | undefined,
+      updateOccupationStatus: OccupationStatus | undefined,
+      updateAvatar: File | undefined
+    ) => {
+      dispatch(
+        thunkUpdateProfile(
+          profileId,
+          updateGitHub,
+          updateShowEmail,
+          updateEmail,
+          updateAbout,
+          updateHeader,
+          updateLocation,
+          updateFullName,
+          updateOccupationStatus,
           updateAvatar
         )
       )
@@ -162,7 +193,8 @@ const Settings: React.FC = () => {
             profile={profile}
             email={email}
             status={status}
-            onSubmit={createProfile}
+            onCreate={createProfile}
+            onUpdate={updateProfile}
           />
         )}
         {selectedSection === "education" && (

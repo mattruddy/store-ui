@@ -9,7 +9,11 @@ import {
 import { FormItem } from ".."
 import ImageUploader from "react-images-upload"
 import ReactMde from "react-mde"
-import { Profile, OccupationStatus } from "../../util/types"
+import {
+  Profile,
+  OccupationStatus,
+  OccupationStatusEnumProps,
+} from "../../util/types"
 import { mdConverter } from "../../util"
 import ReactTagInput from "@pathofdev/react-tag-input"
 import Selectables from "../Selectables"
@@ -18,7 +22,20 @@ interface ContainerProps {
   status: "success" | "fail" | undefined
   profile: Profile | undefined
   email: string | undefined
-  onSubmit: (
+  onCreate: (
+    gitHub: string,
+    showEmail: boolean,
+    email: string,
+    about: string,
+    header: string,
+    location: string,
+    fullName: string,
+    occupationStatus: OccupationStatus,
+    avatar: File | undefined,
+    techs: string[]
+  ) => void
+  onUpdate: (
+    profileId: number,
     gitHub: string,
     showEmail: boolean,
     email: string,
@@ -36,7 +53,8 @@ const ProfileForm: React.FC<ContainerProps> = ({
   status,
   profile,
   email,
-  onSubmit,
+  onCreate,
+  onUpdate,
 }) => {
   const [fullName, setFullName] = useState<string>("")
   const [gitHub, setGitHub] = useState<string>("")
@@ -55,7 +73,6 @@ const ProfileForm: React.FC<ContainerProps> = ({
   const onInputChange = (passThrough: any) => (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    console.log(e.target.value)
     setTag(e.target.value)
     return passThrough(e)
   }
@@ -91,18 +108,32 @@ const ProfileForm: React.FC<ContainerProps> = ({
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
-    onSubmit(
-      gitHub,
-      showEmail,
-      email!,
-      about,
-      header,
-      location,
-      fullName,
-      occupationStatus!,
-      avatar,
-      tags
-    )
+    profile
+      ? onUpdate(
+          profile.profileId,
+          gitHub,
+          showEmail,
+          email!,
+          about,
+          header,
+          location,
+          fullName,
+          occupationStatus!,
+          avatar,
+          tags
+        )
+      : onCreate(
+          gitHub,
+          showEmail,
+          email!,
+          about,
+          header,
+          location,
+          fullName,
+          occupationStatus!,
+          avatar,
+          tags
+        )
   }
 
   return (
@@ -167,12 +198,14 @@ const ProfileForm: React.FC<ContainerProps> = ({
           value={occupationStatus}
           onIonChange={(e) => setOccupationStatus(e.detail.value)}
         >
-          <IonSelectOption value={OccupationStatus.LOOKING}>
-            Looking
-          </IonSelectOption>
-          <IonSelectOption value={OccupationStatus.OPEN}>Open</IonSelectOption>
           <IonSelectOption value={OccupationStatus.HIRED}>
-            Hired
+            {OccupationStatusEnumProps[OccupationStatus.HIRED]}
+          </IonSelectOption>
+          <IonSelectOption value={OccupationStatus.OPEN}>
+            {OccupationStatusEnumProps[OccupationStatus.OPEN]}
+          </IonSelectOption>
+          <IonSelectOption value={OccupationStatus.LOOKING}>
+            {OccupationStatusEnumProps[OccupationStatus.LOOKING]}
           </IonSelectOption>
         </IonSelect>
       </FormItem>
@@ -206,15 +239,18 @@ const ProfileForm: React.FC<ContainerProps> = ({
           value={header}
           onIonChange={(e) => setHeader(e.detail.value!)}
           maxlength={200}
+          rows={4}
           spellCheck={true}
         />
       </FormItem>
       <FormItem
-        name="Personal section via markdown"
+        name="Resume (editable via markdown)"
         showError={about?.trim() === ""}
         errorMessage="About section is required"
       >
-        <div style={{ width: "100%", paddingTop: "16px" }}>
+        <div
+          style={{ width: "100%", paddingTop: "16px", paddingBottom: "16px" }}
+        >
           <ReactMde
             classes={{ grip: "hide", toolbar: "mde-toolbar" }}
             value={about}

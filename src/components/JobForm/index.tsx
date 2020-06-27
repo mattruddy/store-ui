@@ -59,7 +59,7 @@ const JobForm: React.FC<ContainerProps> = ({ status, onSubmit }) => {
         maxLength={100}
       />
       <FormItem name="Description (optional)">
-        <div style={{ width: "100%", padding: "8px" }}>
+        <div style={{ width: "100%", padding: "16px" }}>
           <ReactMde
             classes={{ grip: "hide", toolbar: "mde-toolbar" }}
             value={description}

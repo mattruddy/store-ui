@@ -46,6 +46,10 @@ ion-menu {
   color: var(--text-color);
 }
 
+.sub-color {
+  color: var(--sub-color);
+}
+
 .react-tag-input {
   background: inherit !important;
   border: none !important;

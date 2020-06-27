@@ -95,7 +95,7 @@ const PWAInfo: React.FC<ContainerProps> = ({
           target="_blank"
           onClick={onInstall}
         >
-          FREE <IonIcon style={{ marginLeft: "10px" }} icon={openOutline} />
+          VIEW <IonIcon style={{ marginLeft: "10px" }} icon={openOutline} />
         </IonButton>
       </div>
       {pwa.username && (

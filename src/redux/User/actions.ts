@@ -185,6 +185,60 @@ export const thunkCreateProfile = (
     dispatch(setData({ email }))
     dispatch(
       setAlert({
+        message: "Profile Created",
+        timeout: 3000,
+        show: true,
+        status: "success",
+      })
+    )
+  } catch (e) {
+    dispatch(
+      setAlert({
+        message: e.response.data.message,
+        apiResponseStatus: e.response.status,
+        timeout: 3000,
+        show: true,
+      })
+    )
+    return console.error(e)
+  } finally {
+    dispatch(setLoading(false))
+  }
+}
+
+export const thunkUpdateProfile = (
+  profileId: number,
+  gitHub: string,
+  showEmail: boolean,
+  email: string,
+  about: string,
+  header: string | undefined,
+  location: string | undefined,
+  fullName: string | undefined,
+  occupationStatus: OccupationStatus | undefined,
+  avatar?: File
+): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
+  dispatch(setLoading(true))
+  try {
+    const url = `secure/profile/${profileId}`
+    const data = {
+      gitHub,
+      showEmail,
+      about,
+      email,
+      header,
+      location,
+      fullName,
+      occupationStatus,
+    }
+    const fd = new FormData()
+    fd.append("info", JSON.stringify(data))
+    avatar && fd.append("avatar", avatar)
+    const resp = await (await AxiosForm(fd)).put(url, fd)
+    dispatch(setProfile(resp.data as Profile))
+    dispatch(setData({ email }))
+    dispatch(
+      setAlert({
         message: "Profile Updated",
         timeout: 3000,
         show: true,

@@ -130,15 +130,16 @@ const PWAs: React.FC<RouteComponentProps> = () => {
             <IonRow>{renderPwaList}</IonRow>
           </IonCol>
         </IonRow>
-        {category?.toLowerCase() !== "trending" && (
-          <IonInfiniteScroll
-            ref={scrollEl}
-            threshold="100px"
-            onIonInfinite={loadMorePwas}
-          >
-            <IonInfiniteScrollContent />
-          </IonInfiniteScroll>
-        )}
+        {category?.toLowerCase() !== "trending" &&
+          category?.toLowerCase() !== "featured" && (
+            <IonInfiniteScroll
+              ref={scrollEl}
+              threshold="100px"
+              onIonInfinite={loadMorePwas}
+            >
+              <IonInfiniteScrollContent />
+            </IonInfiniteScroll>
+          )}
       </IonContent>
     </IonPage>
   )
