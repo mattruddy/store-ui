@@ -160,6 +160,7 @@ export const thunkCreateProfile = (
   location: string | undefined,
   fullName: string | undefined,
   occupationStatus: OccupationStatus | undefined,
+  techs: string[],
   avatar?: File
 ): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
   dispatch(setLoading(true))
@@ -174,6 +175,7 @@ export const thunkCreateProfile = (
       location,
       fullName,
       occupationStatus,
+      techs,
     }
     const fd = new FormData()
     fd.append("info", JSON.stringify(data))
@@ -246,7 +248,7 @@ export const thunkUpdateProfile = (
   } catch (e) {
     dispatch(
       setAlert({
-        message: e.response.data.message,
+        message: e.response.data.message || "Error",
         apiResponseStatus: e.response.status,
         timeout: 3000,
         show: true,

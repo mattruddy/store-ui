@@ -1,4 +1,4 @@
-import React, { memo, FormEvent, useState, useEffect } from "react"
+import React, { memo, FormEvent, useState, useEffect, useRef } from "react"
 import {
   IonButton,
   IonCheckbox,
@@ -15,6 +15,8 @@ import {
   OccupationStatusEnumProps,
 } from "../../util/types"
 import { mdConverter } from "../../util"
+import ReactTagInput from "@pathofdev/react-tag-input"
+import Selectables from "../Selectables"
 
 interface ContainerProps {
   status: "success" | "fail" | undefined
@@ -29,7 +31,8 @@ interface ContainerProps {
     location: string,
     fullName: string,
     occupationStatus: OccupationStatus,
-    avatar: File | undefined
+    avatar: File | undefined,
+    techs: string[]
   ) => void
   onUpdate: (
     profileId: number,
@@ -41,7 +44,8 @@ interface ContainerProps {
     location: string,
     fullName: string,
     occupationStatus: OccupationStatus,
-    avatar: File | undefined
+    avatar: File | undefined,
+    techs: string[]
   ) => void
 }
 
@@ -62,6 +66,23 @@ const ProfileForm: React.FC<ContainerProps> = ({
   const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write")
   const [updateEmail, setUpdateEmail] = useState<string>("")
   const [occupationStatus, setOccupationStatus] = useState<OccupationStatus>()
+  const [tags, setTags] = useState<string[]>([])
+  const [tag, setTag] = useState<string>("")
+  const ref = useRef<any>(null)
+
+  const onInputChange = (passThrough: any) => (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setTag(e.target.value)
+    return passThrough(e)
+  }
+
+  useEffect(() => {
+    if (ref.current) {
+      const ogFunc = ref.current.onInputChange
+      ref.current.onInputChange = onInputChange(ogFunc)
+    }
+  }, [ref])
 
   useEffect(() => {
     if (status === "success") {
@@ -81,6 +102,7 @@ const ProfileForm: React.FC<ContainerProps> = ({
       setFullName(profile.fullName)
       setHeader(profile.header)
       setOccupationStatus(profile.occupationStatus)
+      setTags(profile.techs)
     }
   }, [email, profile])
 
@@ -97,7 +119,8 @@ const ProfileForm: React.FC<ContainerProps> = ({
           location,
           fullName,
           occupationStatus!,
-          avatar
+          avatar,
+          tags
         )
       : onCreate(
           gitHub,
@@ -108,7 +131,8 @@ const ProfileForm: React.FC<ContainerProps> = ({
           location,
           fullName,
           occupationStatus!,
-          avatar
+          avatar,
+          tags
         )
   }
 
@@ -185,6 +209,36 @@ const ProfileForm: React.FC<ContainerProps> = ({
           </IonSelectOption>
         </IonSelect>
       </FormItem>
+      <FormItem name="Tags" showError={false} errorMessage="">
+        <div style={{ padding: "15px", width: "100%" }}>
+          <ReactTagInput
+            ref={ref}
+            tags={tags}
+            onChange={(tags) => {
+              setTags(tags)
+              setTag("")
+            }}
+            validator={(tag) => {
+              return tag.length <= 30
+            }}
+            removeOnBackspace={true}
+            maxTags={5}
+            placeholder="Enter to add"
+          />
+        </div>
+      </FormItem>
+      <Selectables
+        input={tag}
+        onSelect={(value) => {
+          setTags((curr) => [...curr, value])
+          setTag("")
+          const inputRef = ref.current.inputRef as React.RefObject<
+            HTMLInputElement
+          >
+          if (inputRef.current) inputRef.current.value = ""
+        }}
+        url={`/public/search/tech`}
+      />
       <FormItem name="Header" showError={false} errorMessage="">
         <IonTextarea
           value={header}
