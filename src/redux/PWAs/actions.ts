@@ -211,10 +211,16 @@ const thunkAddRating = (
     const pwa = getState().pwas.pwas.find((x) => x.appId === appId)
     if (rating.liked) {
       dispatch(addRating(rating, appId))
-      dispatch(thunkAppStarred(pwa!))
+      if (pwa && !getState().user.pwas.find((x) => x.appId === pwa.appId)) {
+        pwa.ratingsCount = pwa.ratingsCount + 1
+        dispatch(thunkAppStarred(pwa!))
+      }
     } else {
       dispatch(removeRating(appId, username))
-      dispatch(thunkRemoveStarred(pwa!.appId))
+      if (pwa) {
+        pwa.ratingsCount = pwa.ratingsCount - 1
+        dispatch(thunkRemoveStarred(pwa.appId))
+      }
     }
     dispatch(
       setAlert({

@@ -124,10 +124,10 @@ export const thunkLogin = (
     const {
       data: { token },
     } = response
-    dispatch(setData({ token, username, isLoggedIn: true }))
     await setTokenStorage(token)
     await setUsernameStorage(username)
     await setIsLoggedInStorage("true")
+    dispatch(setData({ token, username, isLoggedIn: true }))
     dispatch(
       setAlert({
         message: "Logged In",
