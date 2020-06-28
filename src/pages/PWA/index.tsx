@@ -1,11 +1,4 @@
-import React, {
-  useState,
-  useMemo,
-  memo,
-  Fragment,
-  useEffect,
-  useCallback,
-} from "react"
+import React, { useState, memo, Fragment, useEffect, useCallback } from "react"
 import {
   IonContent,
   IonHeader,
@@ -14,7 +7,6 @@ import {
   useIonViewDidEnter,
   IonBackButton,
   IonButtons,
-  IonList,
   IonGrid,
   IonRow,
   IonCol,
@@ -28,7 +20,7 @@ import {
   thunkGetDev,
 } from "../../redux/PWAs/actions"
 import { RouteComponentProps, withRouter } from "react-router"
-import { ScreenshotSlider, Rating, PWAInfo, RatingItem } from "../../components"
+import { ScreenshotSlider, PWAInfo } from "../../components"
 import ReactGA from "react-ga"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { useSelector, shallowEqual, useDispatch } from "react-redux"
@@ -46,7 +38,6 @@ const PWA: React.FC<OwnProps> = ({
   match: {
     params: { pwaName },
   },
-  history,
 }) => {
   const [notFound, setNotFound] = useState<boolean>(false)
   const [hasFetchedRatings, setHasFetchedRatings] = useState<boolean>(false)
@@ -56,10 +47,11 @@ const PWA: React.FC<OwnProps> = ({
       return pwaName.replace(/-/g, " ").toLowerCase() === x.name.toLowerCase()
     })
 
-  const { pwa, dev } = useSelector(
-    ({ pwas: { pwas, devs } }: ReduxCombinedState) => ({
+  const { pwa, dev, isLoggedIn } = useSelector(
+    ({ pwas: { pwas, devs }, user: { isLoggedIn } }: ReduxCombinedState) => ({
       pwa: findPWA(pwas),
       dev: devs.find((x) => x.username === findPWA(pwas)?.username),
+      isLoggedIn: isLoggedIn,
     }),
     shallowEqual
   )
@@ -118,26 +110,16 @@ const PWA: React.FC<OwnProps> = ({
     }
   }
 
-  const renderRatings = useMemo(() => {
+  useEffect(() => {
     if (!pwa) return
-    if (!hasFetchedRatings && pwa.ratings && pwa.ratings.length < 1) {
+    if (
+      !hasFetchedRatings &&
+      pwa.appRatings &&
+      pwa.appRatings.ratings.length < 1
+    ) {
       setHasFetchedRatings(true)
       getRatings(pwa.appId)
     }
-    return pwa.ratings.length > 0 ? (
-      pwa.ratings.map((rating, i) => <RatingItem key={i} rating={rating} />)
-    ) : (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <p>
-          <i>No Reviews Yet</i>
-        </p>
-      </div>
-    )
   }, [pwa, hasFetchedRatings])
 
   return (
@@ -160,16 +142,15 @@ const PWA: React.FC<OwnProps> = ({
             {pwa ? (
               <Fragment>
                 <IonCol size="12">
-                  <PWAInfo pwa={pwa} isMyPwa={false} />
+                  <PWAInfo
+                    pwa={pwa}
+                    isMyPwa={false}
+                    onStar={onRatingSubmit}
+                    isLoggedIn={isLoggedIn}
+                  />
                 </IonCol>
-                <IonCol size="12" sizeMd="6" pushMd="6">
+                <IonCol size="12">
                   <ScreenshotSlider images={pwa.screenshots} />
-                </IonCol>
-                <IonCol size="12" sizeMd="6" pullMd="6">
-                  <Rating onSubmit={onRatingSubmit} />
-                  <IonList style={{ background: "inherit" }}>
-                    {renderRatings}
-                  </IonList>
                 </IonCol>
               </Fragment>
             ) : (
@@ -187,4 +168,4 @@ const PWA: React.FC<OwnProps> = ({
   )
 }
 
-export default withRouter(memo(PWA))
+export default memo(PWA)

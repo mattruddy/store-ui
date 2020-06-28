@@ -63,6 +63,7 @@ export interface Image {
 }
 
 export interface NewRating {
+  liked: boolean
   averageStar: number
   ratingCount: number
   rating: Rating
@@ -73,6 +74,11 @@ export interface StoreNotification {
   body: string
   createdAt: Date
   id: number
+}
+
+export interface AppRatings {
+  ratings: Rating[]
+  hasRated: boolean
 }
 
 export interface Rating {
@@ -93,13 +99,14 @@ export interface PWA {
   status: string
   screenshots: Image[]
   reason: string
-  ratings: Rating[]
+  appRatings: AppRatings
   averageRating: number
   ratingsCount: number
   tags: string[]
   pageViews: number
   installs: number
   username: string
+  fullName: string
 }
 
 export interface UserProfile {

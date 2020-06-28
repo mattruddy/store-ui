@@ -1,11 +1,11 @@
 import React, { memo, Fragment } from "react"
 import {
-  IonButton,
   IonRow,
   IonCol,
   IonIcon,
   IonNote,
   IonRouterLink,
+  IonFabButton,
 } from "@ionic/react"
 import { PWA } from "../../util/types"
 import { PWACard } from ".."
@@ -31,12 +31,12 @@ const HomeRow: React.FC<ContainerProps> = ({
     <Fragment>
       <div className="HomeRowHeader">
         <h1 className="HomeRowHeaderTitle">{title}</h1>
-        <IonRouterLink
+        <IonFabButton
           className="HomeViewMoreLink"
           routerLink={GetPwaCategoryUrl(linkTo)}
         >
           <IonIcon color="dark" icon={arrowForward} />
-        </IonRouterLink>
+        </IonFabButton>
       </div>
       <IonNote className="HomeRowHeaderSubTitle">{subtitle}</IonNote>
       <IonRow className="HomeRow bottom-line-border">

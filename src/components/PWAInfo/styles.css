@@ -19,6 +19,16 @@
   justify-content: space-around;
 }
 
+.InfoStarBlock {
+  display: flex;
+  align-items: center;
+}
+
+.InfoStarIcon {
+  --box-shadow: none;
+  --background: inherit;
+}
+
 .PWAShareContainer {
   display: flex;
   flex-direction: row;
