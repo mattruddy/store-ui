@@ -18,11 +18,11 @@ import ReactTagInput from "@pathofdev/react-tag-input"
 import "./styles.css"
 import { noSpecialChars, mdConverter } from "../../util"
 import ReactMde from "react-mde"
-import StarsListModal from "../StarsListModal"
 
 interface ContainerProps {
   pwa: PWA
   isMyPwa: boolean
+  openModal?: () => void
   isLoggedIn?: boolean | undefined
   onStar?: (star: number, comment?: string | undefined) => void
   isEdit?: boolean
@@ -39,6 +39,7 @@ interface ContainerProps {
 const PWAInfo: React.FC<ContainerProps> = ({
   pwa,
   isMyPwa,
+  openModal,
   isLoggedIn,
   onStar,
   isEdit = false,
@@ -52,7 +53,6 @@ const PWAInfo: React.FC<ContainerProps> = ({
   setTags,
 }) => {
   const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write")
-  const [isOpen, setIsOpen] = useState<boolean>(false)
 
   const onInstall = () => {
     if (!isMyPwa) {
@@ -120,7 +120,7 @@ const PWAInfo: React.FC<ContainerProps> = ({
             icon={`${pwa.appRatings.hasRated ? starSharp : starOutline}`}
           />
         </IonFabButton>
-        <IonFabButton className="InfoStarIcon" onClick={() => setIsOpen(true)}>
+        <IonFabButton className="InfoStarIcon" onClick={openModal}>
           {pwa.ratingsCount}
         </IonFabButton>
       </div>
@@ -181,11 +181,6 @@ const PWAInfo: React.FC<ContainerProps> = ({
           }}
         />
       )}
-      <StarsListModal
-        isOpen={isOpen}
-        onDidDismiss={() => setIsOpen(false)}
-        ratings={pwa.appRatings.ratings}
-      />
     </>
   )
 }

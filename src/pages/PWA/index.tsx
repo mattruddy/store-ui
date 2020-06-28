@@ -25,6 +25,7 @@ import ReactGA from "react-ga"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { useSelector, shallowEqual, useDispatch } from "react-redux"
 import { PWA as PWAType } from "../../util/types"
+import StarsListModal from "../../components/StarsListModal"
 
 const stars = ["ONE", "TWO", "THREE", "FOUR", "FIVE"]
 
@@ -41,6 +42,7 @@ const PWA: React.FC<OwnProps> = ({
 }) => {
   const [notFound, setNotFound] = useState<boolean>(false)
   const [hasFetchedRatings, setHasFetchedRatings] = useState<boolean>(false)
+  const [isOpen, setIsOpen] = useState<boolean>(false)
 
   const findPWA = (pwas: PWAType[]) =>
     pwas.find((x) => {
@@ -122,6 +124,8 @@ const PWA: React.FC<OwnProps> = ({
     }
   }, [pwa, hasFetchedRatings])
 
+  console.log(pwa?.appRatings.ratings)
+
   return (
     <IonPage>
       <IonHeader className="ion-no-border bottom-line-border">
@@ -147,6 +151,7 @@ const PWA: React.FC<OwnProps> = ({
                     isMyPwa={false}
                     onStar={onRatingSubmit}
                     isLoggedIn={isLoggedIn}
+                    openModal={() => setIsOpen(true)}
                   />
                 </IonCol>
                 <IonCol size="12">
@@ -164,6 +169,13 @@ const PWA: React.FC<OwnProps> = ({
           </IonRow>
         </IonGrid>
       </IonContent>
+      {pwa && pwa.appRatings && (
+        <StarsListModal
+          isOpen={isOpen}
+          onDidDismiss={() => setIsOpen(false)}
+          ratings={pwa.appRatings.ratings}
+        />
+      )}
     </IonPage>
   )
 }

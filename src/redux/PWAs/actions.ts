@@ -13,6 +13,7 @@ import {
   DEV_ADD,
   DEV_PENDING,
   DEV_COMPLETE,
+  RATING_REMOVE,
 } from "./types"
 import { Axios } from "../Actions"
 import { Action } from "redux"
@@ -27,12 +28,7 @@ import {
 import { ReduxCombinedState } from "../RootReducer"
 import ReactGA from "react-ga"
 import { setAlert } from "../Alerts/actions"
-import {
-  setUserAddStarred,
-  setUserRemoveStarred,
-  thunkRemoveStarred,
-  thunkAppStarred,
-} from "../User/actions"
+import { thunkRemoveStarred, thunkAppStarred } from "../User/actions"
 
 const loadingPWAs = () => ({ type: PWAS_PENDING })
 
@@ -54,6 +50,11 @@ const addRatings = (ratings: AppRatings, appId: number) => ({
 const addRating = (newRating: NewRating, appId: number) => ({
   type: RATING_ADD,
   payload: { newRating, appId },
+})
+
+const removeRating = (appId: number, username: string) => ({
+  type: RATING_REMOVE,
+  payload: { appId, username },
 })
 
 const addPWASection = (data: PWASection) => ({
@@ -161,7 +162,7 @@ const thunkGetRatings = (
   getState
 ) => {
   const {
-    user: { isLoggedIn },
+    user: { isLoggedIn, username },
   } = getState()
   dispatch(loadingRatings())
   try {
@@ -188,7 +189,7 @@ const thunkAddRating = (
   getState
 ) => {
   const {
-    user: { isLoggedIn },
+    user: { isLoggedIn, username },
   } = getState()
   dispatch(loadingRatings())
   try {
@@ -206,11 +207,13 @@ const thunkAddRating = (
     })
     const response = await axiosInstance.post(url, requestData)
     const { data } = response
-    dispatch(addRating(data as NewRating, appId))
+    const rating = data as NewRating
     const pwa = getState().pwas.pwas.find((x) => x.appId === appId)
-    if ((data as NewRating).liked) {
+    if (rating.liked) {
+      dispatch(addRating(rating, appId))
       dispatch(thunkAppStarred(pwa!))
     } else {
+      dispatch(removeRating(appId, username))
       dispatch(thunkRemoveStarred(pwa!.appId))
     }
     dispatch(
