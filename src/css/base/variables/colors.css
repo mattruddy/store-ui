@@ -309,6 +309,10 @@ ion-toast {
   --border-color: var(--store-border-color);
 }
 
+.primary-color {
+  --color: var(--ion-color-primary);
+}
+
 textarea {
   background-color: var(--background-color);
 }

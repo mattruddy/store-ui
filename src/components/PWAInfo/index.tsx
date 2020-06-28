@@ -120,7 +120,10 @@ const PWAInfo: React.FC<ContainerProps> = ({
             icon={`${pwa.appRatings.hasRated ? starSharp : starOutline}`}
           />
         </IonFabButton>
-        <IonFabButton className="InfoStarIcon" onClick={openModal}>
+        <IonFabButton
+          className="InfoStarIcon primary-color"
+          onClick={openModal}
+        >
           {pwa.ratingsCount}
         </IonFabButton>
       </div>
