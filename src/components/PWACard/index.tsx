@@ -16,9 +16,15 @@ interface ContainerProps {
   pwa: PWA
   url: string
   isMyPwa: boolean
+  height?: number
 }
 
-const PWACard: React.FC<ContainerProps> = ({ pwa, url, isMyPwa }) => {
+const PWACard: React.FC<ContainerProps> = ({
+  pwa,
+  url,
+  isMyPwa,
+  height = 120,
+}) => {
   const href = `${url}/${pwa.name.replace(/ /g, "-")}`
 
   const sendPageView = async () =>
@@ -31,7 +37,12 @@ const PWACard: React.FC<ContainerProps> = ({ pwa, url, isMyPwa }) => {
       onClick={sendPageView}
     >
       <IonCardHeader className="PWACardHeader PWACardContent">
-        <img alt="icon" className="PWACardImage" src={pwa.icon} />
+        <img
+          height={height}
+          alt="icon"
+          className="PWACardImage"
+          src={pwa.icon}
+        />
       </IonCardHeader>
       <IonCardContent>
         <div className="PWACardContent">
