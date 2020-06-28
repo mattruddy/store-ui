@@ -232,10 +232,15 @@ const ProfileForm: React.FC<ContainerProps> = ({
         onSelect={(value) => {
           setTags((curr) => [...curr, value])
           setTag("")
-          const inputRef = ref.current.inputRef as React.RefObject<
-            HTMLInputElement
-          >
-          if (inputRef.current) inputRef.current.value = ""
+          setTimeout(() => {
+            const inputRef = ref.current.inputRef as React.RefObject<
+              HTMLInputElement
+            >
+            if (inputRef.current) {
+              inputRef.current.value = ""
+              console.log(inputRef.current.value)
+            }
+          }, 200)
         }}
         url={`/public/search/tech`}
       />
