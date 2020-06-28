@@ -24,6 +24,7 @@ export interface UserState {
   notLoading: boolean
   jobs: Job[]
   educations: Education[]
+  starredApps: PWA[]
 }
 
 export enum UserRole {
@@ -50,6 +51,18 @@ export const USER_ADD_JOB = "USER_ADD_JOB"
 export const USER_ADD_EDUCATION = "USER_ADD_EDUCATION"
 export const USER_REMOVE_JOB = "USER_REMOVE_JOB"
 export const USER_REMOVE_EDUCATION = "USER_REMOVE_EDUCATION"
+export const USER_ADD_STARRED = "USER_ADD_STARRED"
+export const USER_REMOVE_STARRED = "USER_REMOVE_STARRED"
+
+export interface setUserAddStarred {
+  type: typeof USER_ADD_STARRED
+  payload: PWA
+}
+
+export interface setUserRemoveStarred {
+  type: typeof USER_REMOVE_STARRED
+  payload: number
+}
 
 export interface setDarkMode {
   type: typeof USER_SET_DARKMODE
@@ -153,3 +166,5 @@ export type UserActionTypes =
   | SetNotIdAction
   | SetNotAction
   | SetNotLoadingAction
+  | setUserAddStarred
+  | setUserRemoveStarred

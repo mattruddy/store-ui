@@ -84,7 +84,6 @@ export interface AppRatings {
 export interface Rating {
   from: string
   star: number
-  comment: string
   createdAt: Date
   linkable: boolean
 }
@@ -113,6 +112,7 @@ export interface UserProfile {
   username: string
   email: string
   pwas: PWA[]
+  starredApps: PWA[]
   profile: Profile
   role: string
   jobs: Job[]

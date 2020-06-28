@@ -27,6 +27,12 @@ import {
 import { ReduxCombinedState } from "../RootReducer"
 import ReactGA from "react-ga"
 import { setAlert } from "../Alerts/actions"
+import {
+  setUserAddStarred,
+  setUserRemoveStarred,
+  thunkRemoveStarred,
+  thunkAppStarred,
+} from "../User/actions"
 
 const loadingPWAs = () => ({ type: PWAS_PENDING })
 
@@ -201,6 +207,12 @@ const thunkAddRating = (
     const response = await axiosInstance.post(url, requestData)
     const { data } = response
     dispatch(addRating(data as NewRating, appId))
+    const pwa = getState().pwas.pwas.find((x) => x.appId === appId)
+    if ((data as NewRating).liked) {
+      dispatch(thunkAppStarred(pwa!))
+    } else {
+      dispatch(thunkRemoveStarred(pwa!.appId))
+    }
     dispatch(
       setAlert({
         message: `${(data as NewRating).liked ? "Starred" : "Unstarred"}`,

@@ -37,9 +37,14 @@ import {
 } from "ionicons/icons"
 import ProfileCard, { TotalAppData } from "../../components/ProfileCard"
 import { useInView } from "react-intersection-observer"
+import DevContentCard from "../../components/DevContentCard"
 const Profile: React.FC = () => {
   const [showAlert, setShowAlert] = useState<boolean>(false)
   const [showPopover, setShowPopover] = useState<boolean>(false)
+  const [hideApproved, setHideApproved] = useState<boolean>(false)
+  const [hidePending, setHidePending] = useState<boolean>(false)
+  const [hideDenied, setHideDenied] = useState<boolean>(false)
+  const [hideStar, setHideStar] = useState<boolean>(false)
   const [ref, inView] = useInView()
   const history = useHistory()
 
@@ -51,9 +56,18 @@ const Profile: React.FC = () => {
     profile,
     email,
     totalData,
+    starredApps,
   } = useSelector(
     ({
-      user: { pwas, username, loading, isLoggedIn, profile, email },
+      user: {
+        pwas,
+        username,
+        loading,
+        isLoggedIn,
+        profile,
+        email,
+        starredApps,
+      },
     }: ReduxCombinedState) => ({
       pwas: pwas,
       username: username,
@@ -61,6 +75,7 @@ const Profile: React.FC = () => {
       isLoggedIn: isLoggedIn,
       profile: profile,
       email: email,
+      starredApps: starredApps,
       totalData: pwas.reduce<TotalAppData>(
         (tot, currentPwa) => ({
           totalInstalls: tot.totalInstalls + currentPwa.installs,
@@ -108,15 +123,43 @@ const Profile: React.FC = () => {
     () =>
       pwas && (
         <Fragment>
-          <h2 style={{ marginLeft: "32px" }}>Approved</h2>
-          <IonRow>{filterPwa("APPROVED")}</IonRow>
-          <h2 style={{ marginLeft: "32px" }}>Pending</h2>
-          <IonRow>{filterPwa("PENDING")}</IonRow>
-          <h2 style={{ marginLeft: "32px" }}>Denied</h2>
-          <IonRow>{filterPwa("DENIED")}</IonRow>
+          <DevContentCard
+            title="Approved"
+            isHidden={hideApproved}
+            onClick={() => setHideApproved(!hideApproved)}
+          >
+            <IonRow>{filterPwa("APPROVED")}</IonRow>
+          </DevContentCard>
+          <DevContentCard
+            title="Pending"
+            isHidden={hidePending}
+            onClick={() => setHidePending(!hidePending)}
+          >
+            <IonRow>{filterPwa("PENDING")}</IonRow>
+          </DevContentCard>
+          <DevContentCard
+            title="Denied"
+            isHidden={hideDenied}
+            onClick={() => setHideDenied(!hideDenied)}
+          >
+            <IonRow>{filterPwa("DENIED")}</IonRow>
+          </DevContentCard>
+          <DevContentCard
+            title="Starred"
+            isHidden={hideStar}
+            onClick={() => setHideStar(!hideStar)}
+          >
+            <IonRow>
+              {starredApps.map((app, idx) => (
+                <IonCol key={idx} size="6" sizeLg="4">
+                  <PWACard pwa={app} url="/pwa" isMyPwa={false} />
+                </IonCol>
+              ))}
+            </IonRow>
+          </DevContentCard>
         </Fragment>
       ),
-    [pwas]
+    [pwas, starredApps, hideApproved, hidePending, hideDenied, hideStar]
   )
 
   return (

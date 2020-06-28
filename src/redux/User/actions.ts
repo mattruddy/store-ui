@@ -15,6 +15,8 @@ import {
   USER_ADD_EDUCATION,
   USER_REMOVE_JOB,
   USER_REMOVE_EDUCATION,
+  USER_ADD_STARRED,
+  USER_REMOVE_STARRED,
 } from "./types"
 import {
   PWA,
@@ -271,7 +273,15 @@ export const thunkLoadProfile = (): ThunkAction<
     const url = `secure/profile`
     const resp = await (await Axios()).get(url)
     const {
-      data: { username, pageResponses, email, profile, educations, jobs },
+      data: {
+        username,
+        pageResponses,
+        email,
+        profile,
+        educations,
+        jobs,
+        starredApps,
+      },
     } = resp
     dispatch(
       setData({
@@ -281,6 +291,7 @@ export const thunkLoadProfile = (): ThunkAction<
         profile: profile as Profile,
         educations: educations as Education[],
         jobs: jobs as Job[],
+        starredApps: starredApps as PWA[],
       })
     )
     await setEmailStorage(email)
@@ -361,6 +372,17 @@ export const thunkSetDarkMode = (
   await setDarkModeStorage(darkMode ? "true" : "false")
 }
 
+export const thunkAppStarred = (
+  pwa: PWA
+): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
+  dispatch(setUserAddStarred(pwa))
+}
+export const thunkRemoveStarred = (
+  appId: number
+): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
+  dispatch(setUserRemoveStarred(appId))
+}
+
 export const setLoading = (isLoading: boolean) =>
   ({
     type: USER_SET_LOADING,
@@ -384,6 +406,17 @@ export const setPWAS = (pwas: PWA[] | undefined) =>
     type: USER_SET_PWAS,
     payload: pwas,
   } as const)
+
+export const setUserAddStarred = (pwa: PWA) =>
+  ({
+    type: USER_ADD_STARRED,
+    payload: pwa,
+  } as const)
+
+export const setUserRemoveStarred = (appId: number) => ({
+  type: USER_REMOVE_STARRED,
+  payload: appId,
+})
 
 export const setProfile = (profile: Profile | undefined) =>
   ({
