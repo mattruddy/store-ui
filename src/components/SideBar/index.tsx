@@ -16,6 +16,7 @@ import {
   calendarOutline,
   home,
   search,
+  flameOutline,
 } from "ionicons/icons"
 import { useLocation } from "react-router"
 import { GetPwaCategoryUrl, RouteMap } from "../../routes"
@@ -24,9 +25,10 @@ import "./styles.css"
 export const standardCategories = [
   { category: "SEARCH", value: "search", icon: search },
   { category: "HOME", value: "home", icon: home },
+  { category: "FEATURED", value: "FEATURED", icon: flameOutline },
+  { category: "DISCOVER", value: "TRENDING", icon: flashlightOutline },
   { category: "TOP", value: "", icon: ribbonOutline },
   { category: "NEW", value: "NEW", icon: calendarOutline },
-  { category: "DISCOVER", value: "TRENDING", icon: flashlightOutline },
 ]
 
 const SideBar: React.FC = () => {
