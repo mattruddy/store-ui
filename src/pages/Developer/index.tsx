@@ -144,7 +144,7 @@ const Developer: React.FC = () => {
             >
               {profile?.about && (
                 <DevContentCard
-                  title="Resume"
+                  title="Biography"
                   onClick={() => setHideAbout(!hideAbout)}
                   isHidden={hideAbout}
                 >

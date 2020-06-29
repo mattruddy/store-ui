@@ -254,7 +254,7 @@ const ProfileForm: React.FC<ContainerProps> = ({
         />
       </FormItem>
       <FormItem
-        name="Resume (about you, activities, awards, ect.)"
+        name="Biography"
         showError={about?.trim() === ""}
         errorMessage="About section is required"
       >

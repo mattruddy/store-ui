@@ -91,7 +91,7 @@ const Home: React.FC = () => {
         <div className="HomeHeader">
           <div>
             <h1>DevStore</h1>
-            <IonNote>Unveil, Discovery and Share Applications</IonNote>
+            <IonNote>Build, Discovery and Share Applications</IonNote>
           </div>
           <div>
             <IonButtons>
