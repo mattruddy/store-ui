@@ -8,14 +8,14 @@ import {
 } from "@ionic/react"
 import React from "react"
 import {
-  closeCircleOutline,
-  addCircleOutline,
   chevronDownOutline,
   chevronUpOutline,
 } from "ionicons/icons"
 
 interface ContainerProps {
-  title: string
+  title?: string
+  icon?: string
+  count?: number
   onClick: () => void
   isHidden: boolean
   children: any
@@ -23,6 +23,8 @@ interface ContainerProps {
 
 const DevContentCard: React.FC<ContainerProps> = ({
   title,
+  icon,
+  count,
   onClick,
   isHidden,
   children,
@@ -36,7 +38,16 @@ const DevContentCard: React.FC<ContainerProps> = ({
               style={{ paddingRight: "8px" }}
               icon={!isHidden ? chevronDownOutline : chevronUpOutline}
             />
-            <span>{title}</span>
+            <span>
+              {icon ? (
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <IonIcon style={{ paddingRight: "8px" }} icon={icon} />
+                  <span>{count}</span>
+                </div>
+              ) : (
+                title
+              )}
+            </span>
           </div>
         </IonCardTitle>
       </IonCardHeader>

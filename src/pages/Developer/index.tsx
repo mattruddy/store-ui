@@ -159,8 +159,13 @@ const Developer: React.FC = () => {
                 >
                   <IonRow>
                     {profile.apps.map((app, idx) => (
-                      <IonCol size="6">
-                        <PWACard isMyPwa={false} url="/pwa" pwa={app} />
+                      <IonCol size="6" sizeLg="4">
+                        <PWACard
+                          isMyPwa={false}
+                          url="/pwa"
+                          pwa={app}
+                          height={100}
+                        />
                       </IonCol>
                     ))}
                   </IonRow>

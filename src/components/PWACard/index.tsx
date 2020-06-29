@@ -56,12 +56,10 @@ const PWACard: React.FC<ContainerProps> = ({
         </div>
 
         <div className="PWACardContent">
-          {pwa.ratingsCount > 0 && (
-            <>
-              <IonIcon className="PWACardStar" icon={starOutline} />
-              <span>{pwa.ratingsCount}</span>
-            </>
-          )}
+          <>
+            <IonIcon className="PWACardStar" icon={starOutline} />
+            <span>{pwa.ratingsCount}</span>
+          </>
         </div>
       </IonCardContent>
     </IonCard>

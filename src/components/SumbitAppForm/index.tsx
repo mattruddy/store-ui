@@ -167,53 +167,16 @@ const SubmitAppForm: React.FC<ContainerProps> = ({ onSubmit }) => {
             {testLoading ? <IonSpinner /> : <p>Run Lighthouse PWA Check</p>}
           </IonButton>
         )}
-        {lightHouseTests.some((x) => x.url === url && !x.error) && (
-          <Lighthouse
-            installable={
-              lightHouseTests.find((x) => x.url === url)!.installable
-            }
-            iosIcon={lightHouseTests.find((x) => x.url === url)!.iosIcon}
-            runsOffline={
-              lightHouseTests.find((x) => x.url === url)!.worksOffline
-            }
-          />
-        )}
-        {lightHouseTests.some((x) => x.url === url && x.error) && (
-          <IonRow>
-            <IonCol>
-              <IonText color="danger">
-                <p>
-                  There was an error running your site through Lighthouse.
-                  Please contact support if you think this is a problem with the
-                  store.
-                </p>
-              </IonText>
-            </IonCol>
-          </IonRow>
-        )}
-        {lightHouseTests.some((x) => x.url === url && !x.error) &&
-          (lightHouseTests.some((x) => x.url === url && x.pass) ? (
-            <IonButton
-              className="button-no-shadow"
-              expand="block"
-              fill="outline"
-              color="dark"
-              disabled={
-                !validAppUpload(name, desc, url, cat, icon, screenshots)
-              }
-              onClick={addApp}
-            >
-              Submit
-            </IonButton>
-          ) : (
-            <IonRow>
-              <IonCol>
-                <IonText color="danger">
-                  <p>Your app has not passed the proper tests on Lighthouse.</p>
-                </IonText>
-              </IonCol>
-            </IonRow>
-          ))}
+        <IonButton
+          className="button-no-shadow"
+          expand="block"
+          fill="outline"
+          color="dark"
+          disabled={!validAppUpload(name, desc, url, cat, icon, screenshots)}
+          onClick={addApp}
+        >
+          Submit
+        </IonButton>
       </IonList>
     </form>
   )

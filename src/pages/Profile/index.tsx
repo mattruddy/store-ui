@@ -34,6 +34,7 @@ import {
   settingsOutline,
   ellipsisVertical,
   personOutline,
+  starOutline,
 } from "ionicons/icons"
 import ProfileCard, { TotalAppData } from "../../components/ProfileCard"
 import { useInView } from "react-intersection-observer"
@@ -124,28 +125,15 @@ const Profile: React.FC = () => {
       pwas && (
         <Fragment>
           <DevContentCard
-            title="Approved"
+            title="My Apps"
             isHidden={hideApproved}
             onClick={() => setHideApproved(!hideApproved)}
           >
             <IonRow>{filterPwa("APPROVED")}</IonRow>
           </DevContentCard>
           <DevContentCard
-            title="Pending"
-            isHidden={hidePending}
-            onClick={() => setHidePending(!hidePending)}
-          >
-            <IonRow>{filterPwa("PENDING")}</IonRow>
-          </DevContentCard>
-          <DevContentCard
-            title="Denied"
-            isHidden={hideDenied}
-            onClick={() => setHideDenied(!hideDenied)}
-          >
-            <IonRow>{filterPwa("DENIED")}</IonRow>
-          </DevContentCard>
-          <DevContentCard
-            title="Starred"
+            icon={starOutline}
+            count={starredApps.length}
             isHidden={hideStar}
             onClick={() => setHideStar(!hideStar)}
           >
