@@ -133,9 +133,8 @@ const Developer: React.FC = () => {
       </IonHeader>
       <IonContent class="content">
         <IonGrid>
-          <IonRow>
+          <IonRow className="bottom-line-border">
             <IonCol
-              className="bottom-line-border"
               size="12"
               sizeMd={profile && profile.techs.length > 0 ? "8" : "12"}
               ref={ref}
