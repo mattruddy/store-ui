@@ -4,15 +4,12 @@ import {
   mailOutline,
   locationOutline,
   pinOutline,
+  businessOutline,
 } from "ionicons/icons"
 import LinkItem from "./LinkItem"
 import "./styles.css"
 import { IonButton, IonIcon } from "@ionic/react"
-import {
-  PWA,
-  OccupationStatus,
-  OccupationStatusEnumProps,
-} from "../../util/types"
+import { OccupationStatus, OccupationStatusEnumProps } from "../../util/types"
 import DataBox from "./DataBox"
 
 export interface TotalAppData {
@@ -95,7 +92,13 @@ const ProfileCard: React.FC<ContainerProps> = ({
       </div>
       {occupationStatus && (
         <div style={{ paddingBottom: "5px" }} className="sub-color">
-          <IonIcon icon={pinOutline} />{" "}
+          <IonIcon
+            icon={
+              occupationStatus === OccupationStatus.COMPANY
+                ? businessOutline
+                : pinOutline
+            }
+          />{" "}
           {OccupationStatusEnumProps[occupationStatus]}
         </div>
       )}

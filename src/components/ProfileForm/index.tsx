@@ -156,7 +156,7 @@ const ProfileForm: React.FC<ContainerProps> = ({
         />
       </FormItem>
       <FormItem
-        name="Full Name"
+        name="Full Name or Company"
         value={fullName}
         onChange={(e) => setFullName(e.detail!.value)}
         maxLength={30}
@@ -200,6 +200,9 @@ const ProfileForm: React.FC<ContainerProps> = ({
           </IonSelectOption>
           <IonSelectOption value={OccupationStatus.LOOKING}>
             {OccupationStatusEnumProps[OccupationStatus.LOOKING]}
+          </IonSelectOption>
+          <IonSelectOption value={OccupationStatus.COMPANY}>
+            {OccupationStatusEnumProps[OccupationStatus.COMPANY]}
           </IonSelectOption>
         </IonSelect>
       </FormItem>
