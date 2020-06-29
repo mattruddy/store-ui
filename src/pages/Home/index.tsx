@@ -90,7 +90,7 @@ const Home: React.FC = () => {
       <HidingHeader hideDecimal={hideDecimal}>
         <div className="HomeHeader">
           <div>
-            <h1>DevStore</h1>
+            <h1>AppShare</h1>
             <IonNote>Build, Discovery and Share Applications</IonNote>
           </div>
           <div>
