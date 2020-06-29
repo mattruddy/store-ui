@@ -310,7 +310,7 @@ ion-toast {
 }
 
 .primary-color {
-  --color: var(--ion-color-primary);
+  --color: var(--ion-color-primary) !important;
 }
 
 textarea {

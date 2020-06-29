@@ -104,7 +104,7 @@ const PWAInfo: React.FC<ContainerProps> = ({
         </IonButton>
       </div>
       {pwa.username && (
-        <div style={{ marginLeft: "8px", marginBottom: "10px" }}>
+        <div style={{ marginLeft: "8px" }}>
           <IonRouterLink routerLink={`/dev/${pwa.username}`}>
             {`${pwa.fullName ? pwa.fullName : pwa.username}`}
           </IonRouterLink>
@@ -127,9 +127,6 @@ const PWAInfo: React.FC<ContainerProps> = ({
           {pwa.ratingsCount}
         </IonFabButton>
       </div>
-      <div className="PWAShareContainer">
-        <ShareUrl title={pwa.name} url={window.location.href} />
-      </div>
       {isEdit ? (
         <FormItem name="Tags" showError={false} errorMessage="">
           <div style={{ padding: "10px", width: "100%" }}>
@@ -148,21 +145,26 @@ const PWAInfo: React.FC<ContainerProps> = ({
           </div>
         </FormItem>
       ) : (
-        <div style={{ padding: "10px" }}>
-          {pwa.tags.map((x, i) => (
-            <IonChip key={i}>
-              <IonLabel>{x}</IonLabel>
-            </IonChip>
-          ))}
-        </div>
+        pwa.tags.length > 0 && (
+          <div>
+            {pwa.tags.map((x, i) => (
+              <IonChip key={i}>
+                <IonLabel>{x}</IonLabel>
+              </IonChip>
+            ))}
+          </div>
+        )
       )}
+      <div className="PWAShareContainer">
+        <ShareUrl title={pwa.name} url={window.location.href} />
+      </div>
       {isEdit ? (
         <FormItem
           name="Description"
           showError={!desc || desc.length > 1500}
           errorMessage="Description is required and max length is 1500 characters"
         >
-          <div style={{ width: "100%", paddingTop: "16px" }}>
+          <div style={{ width: "100%", height: "100%", paddingTop: "16px" }}>
             <ReactMde
               classes={{ grip: "hide", toolbar: "mde-toolbar" }}
               value={desc}
