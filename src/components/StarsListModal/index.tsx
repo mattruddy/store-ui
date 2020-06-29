@@ -9,8 +9,10 @@ import {
   IonItem,
   IonButtons,
   IonButton,
+  IonIcon,
 } from "@ionic/react"
 import { Rating } from "../../util/types"
+import { starOutline } from "ionicons/icons"
 
 interface ContainerProps {
   isOpen: boolean
@@ -27,7 +29,9 @@ const StarsListModal: React.FC<ContainerProps> = ({
     <IonModal swipeToClose={true} isOpen={isOpen} onDidDismiss={onDidDismiss}>
       <IonHeader className="ion-no-border bottom-line-border">
         <IonToolbar>
-          <IonTitle>Stars</IonTitle>
+          <IonTitle>
+            <IonIcon size="large" icon={starOutline} />
+          </IonTitle>
           <IonButtons slot="end">
             <IonButton onClick={onDidDismiss}>Close</IonButton>
           </IonButtons>

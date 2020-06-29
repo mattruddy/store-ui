@@ -66,14 +66,14 @@ const ProfileForm: React.FC<ContainerProps> = ({
   const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write")
   const [updateEmail, setUpdateEmail] = useState<string>("")
   const [occupationStatus, setOccupationStatus] = useState<OccupationStatus>()
-  const [tags, setTags] = useState<string[]>([])
-  const [tag, setTag] = useState<string>("")
+  const [techs, setTechs] = useState<string[]>([])
+  const [tech, setTech] = useState<string>("")
   const ref = useRef<any>(null)
 
   const onInputChange = (passThrough: any) => (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setTag(e.target.value)
+    setTech(e.target.value)
     return passThrough(e)
   }
 
@@ -102,7 +102,7 @@ const ProfileForm: React.FC<ContainerProps> = ({
       setFullName(profile.fullName)
       setHeader(profile.header)
       setOccupationStatus(profile.occupationStatus)
-      setTags(profile.techs)
+      setTechs(profile.techs)
     }
   }, [email, profile])
 
@@ -120,7 +120,7 @@ const ProfileForm: React.FC<ContainerProps> = ({
           fullName,
           occupationStatus!,
           avatar,
-          tags
+          techs
         )
       : onCreate(
           gitHub,
@@ -132,7 +132,7 @@ const ProfileForm: React.FC<ContainerProps> = ({
           fullName,
           occupationStatus!,
           avatar,
-          tags
+          techs
         )
   }
 
@@ -159,27 +159,21 @@ const ProfileForm: React.FC<ContainerProps> = ({
         name="Full Name"
         value={fullName}
         onChange={(e) => setFullName(e.detail!.value)}
-        showError={false}
         maxLength={30}
-        errorMessage=""
       />
       <FormItem
         name="GitHub"
         value={gitHub}
         onChange={(e) => setGitHub(e.detail.value)}
-        showError={false}
-        errorMessage="Invalid GitHub Link"
         maxLength={100}
       />
       <FormItem
         name="Email"
         value={updateEmail}
         onChange={(e) => setUpdateEmail(e.detail.value)}
-        showError={false}
-        errorMessage=""
         maxLength={50}
       />
-      <FormItem name="Display Email?" showError={false} errorMessage="">
+      <FormItem name="Display Email?">
         <IonCheckbox
           checked={showEmail}
           onIonChange={(e) => setShowEmail(e.detail.checked)}
@@ -193,7 +187,7 @@ const ProfileForm: React.FC<ContainerProps> = ({
         showError={false}
         errorMessage=""
       />
-      <FormItem name="Occupation Status" showError={false} errorMessage="">
+      <FormItem name="Occupation Status">
         <IonSelect
           value={occupationStatus}
           onIonChange={(e) => setOccupationStatus(e.detail.value)}
@@ -209,14 +203,14 @@ const ProfileForm: React.FC<ContainerProps> = ({
           </IonSelectOption>
         </IonSelect>
       </FormItem>
-      <FormItem name="Tags" showError={false} errorMessage="">
+      <FormItem name="Top Technologies">
         <div style={{ padding: "15px", width: "100%" }}>
           <ReactTagInput
             ref={ref}
-            tags={tags}
+            tags={techs}
             onChange={(tags) => {
-              setTags(tags)
-              setTag("")
+              setTechs(tags)
+              setTech("")
             }}
             validator={(tag) => {
               return tag.length <= 30
@@ -228,23 +222,22 @@ const ProfileForm: React.FC<ContainerProps> = ({
         </div>
       </FormItem>
       <Selectables
-        input={tag}
+        input={tech}
         onSelect={(value) => {
-          setTags((curr) => [...curr, value])
-          setTag("")
+          setTechs((curr) => [...curr, value])
+          setTech("")
           setTimeout(() => {
             const inputRef = ref.current.inputRef as React.RefObject<
               HTMLInputElement
             >
             if (inputRef.current) {
               inputRef.current.value = ""
-              console.log(inputRef.current.value)
             }
           }, 200)
         }}
         url={`/public/search/tech`}
       />
-      <FormItem name="Header" showError={false} errorMessage="">
+      <FormItem name="Header">
         <IonTextarea
           value={header}
           onIonChange={(e) => setHeader(e.detail.value!)}
@@ -256,7 +249,7 @@ const ProfileForm: React.FC<ContainerProps> = ({
       <FormItem
         name="Biography"
         showError={about?.trim() === ""}
-        errorMessage="About section is required"
+        errorMessage="Biography section is required"
       >
         <div
           style={{ width: "100%", paddingTop: "16px", paddingBottom: "16px" }}

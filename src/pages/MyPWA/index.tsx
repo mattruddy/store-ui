@@ -44,13 +44,13 @@ const MyPWA: React.FC = () => {
   const [tags, setTags] = useState<string[]>([])
   const [showDeleteAlert, setShowDeleteAlter] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const { id } = useParams()
+  const { appName } = useParams()
   const history = useHistory()
 
   const { pwa, status } = useSelector(
     ({ user: { pwas }, alerts: { status } }: ReduxCombinedState) => ({
       pwa: (() => {
-        const removeDashName = id!.replace(/-/g, " ")
+        const removeDashName = appName?.replace(/-/g, " ")
         return pwas.find(
           (x) => x.name.toLowerCase() === removeDashName.toLowerCase()
         ) as PWA

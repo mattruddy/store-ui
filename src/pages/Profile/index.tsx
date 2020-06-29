@@ -39,12 +39,11 @@ import {
 import ProfileCard, { TotalAppData } from "../../components/ProfileCard"
 import { useInView } from "react-intersection-observer"
 import DevContentCard from "../../components/DevContentCard"
+import { PWA } from "../../util/types"
 const Profile: React.FC = () => {
   const [showAlert, setShowAlert] = useState<boolean>(false)
   const [showPopover, setShowPopover] = useState<boolean>(false)
-  const [hideApproved, setHideApproved] = useState<boolean>(false)
-  const [hidePending, setHidePending] = useState<boolean>(false)
-  const [hideDenied, setHideDenied] = useState<boolean>(false)
+  const [hideApps, setHideApps] = useState<boolean>(false)
   const [hideStar, setHideStar] = useState<boolean>(false)
   const [ref, inView] = useInView()
   const history = useHistory()
@@ -97,25 +96,16 @@ const Profile: React.FC = () => {
     }
   }, [isLoggedIn])
 
-  const filterPwa = (filter: string) => {
-    const filteredPwas = pwas && pwas.filter((pwa) => pwa.status === filter)
-    return filteredPwas.length > 0 ? (
-      filteredPwas.map((pwa, idx) => (
+  const loadApps = (apps: PWA[], url: string) => {
+    return apps.length > 0 ? (
+      apps.map((app, idx) => (
         <IonCol key={idx} size="6" sizeLg="4">
-          <PWACard url="/mypwa" pwa={pwa} isMyPwa={true} height={90} />
-          {filter === "DENIED" && (
-            <Fragment>
-              <span>
-                <strong>Reason</strong>
-              </span>
-              <p>{pwa.reason}</p>
-            </Fragment>
-          )}
+          <PWACard url={url} pwa={app} isMyPwa={true} height={90} />
         </IonCol>
       ))
     ) : (
       <IonCol>
-        <small className="NoAppsNote">{`No ${filter.toLowerCase()} apps yet`}</small>
+        <small className="NoAppsNote">No apps yet</small>
       </IonCol>
     )
   }
@@ -126,29 +116,28 @@ const Profile: React.FC = () => {
         <Fragment>
           <DevContentCard
             title="My Apps"
-            isHidden={hideApproved}
-            onClick={() => setHideApproved(!hideApproved)}
+            isHidden={hideApps}
+            onClick={() => setHideApps(!hideApps)}
           >
-            <IonRow>{filterPwa("APPROVED")}</IonRow>
-          </DevContentCard>
-          <DevContentCard
-            icon={starOutline}
-            count={starredApps.length}
-            isHidden={hideStar}
-            onClick={() => setHideStar(!hideStar)}
-          >
-            <IonRow>
-              {starredApps.map((app, idx) => (
-                <IonCol key={idx} size="6" sizeLg="4">
-                  <PWACard pwa={app} url="/pwa" isMyPwa={false} height={90} />
-                </IonCol>
-              ))}
-            </IonRow>
+            <IonRow>{loadApps(pwas, "/mypwa")}</IonRow>
           </DevContentCard>
         </Fragment>
       ),
-    [pwas, starredApps, hideApproved, hidePending, hideDenied, hideStar]
+    [pwas, hideApps]
   )
+
+  const renderStarredAppsSection = useMemo(() => {
+    return (
+      <DevContentCard
+        icon={starOutline}
+        count={starredApps.length}
+        isHidden={hideStar}
+        onClick={() => setHideStar(!hideStar)}
+      >
+        <IonRow>{loadApps(starredApps, "/pwa")}</IonRow>
+      </DevContentCard>
+    )
+  }, [starredApps, hideStar])
 
   return (
     <IonPage>
@@ -213,7 +202,10 @@ const Profile: React.FC = () => {
                 isLoading={isLoading}
               />
             </IonCol>
-            <IonCol size="12">{renderAppsSections}</IonCol>
+            <IonCol size="12">
+              {renderAppsSections}
+              {renderStarredAppsSection}
+            </IonCol>
           </IonRow>
         </IonGrid>
       </IonContent>

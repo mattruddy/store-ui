@@ -110,6 +110,7 @@ const ProfileCard: React.FC<ContainerProps> = ({
           <p
             style={{
               padding: "8px",
+              paddingLeft: "24px",
             }}
           >
             {header}

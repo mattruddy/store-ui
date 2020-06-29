@@ -27,6 +27,7 @@
 .InfoStarIcon {
   --box-shadow: none;
   --background: inherit;
+  --color: #d4af37;
 }
 
 .PWAShareContainer {
