@@ -224,7 +224,7 @@ const thunkAddRating = (
     }
     dispatch(
       setAlert({
-        message: `${(data as NewRating).liked ? "Starred" : "Unstarred"}`,
+        message: `${rating.liked ? "Starred" : "Unstarred"}`,
         apiResponseStatus: response.status,
         timeout: 1000,
         show: true,

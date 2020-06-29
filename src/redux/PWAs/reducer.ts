@@ -92,26 +92,26 @@ const pwasReducer = (
             (x) => x.appId === nPwa.appId
           )
             ? [
+                nPwa,
                 ...state.home.discoverApps.filter(
                   (x) => x.appId !== nPwa.appId
                 ),
-                nPwa,
               ]
             : state.home.discoverApps,
           topApps: state.home.topApps.find((x) => x.appId === nPwa.appId)
             ? [
-                ...state.home.topApps.filter((x) => x.appId !== nPwa.appId),
                 nPwa,
+                ...state.home.topApps.filter((x) => x.appId !== nPwa.appId),
               ]
             : state.home.topApps,
           featuredApps: state.home.featuredApps.find(
             (x) => x.appId === nPwa.appId
           )
             ? [
+                nPwa,
                 ...state.home.featuredApps.filter(
                   (x) => x.appId !== nPwa.appId
                 ),
-                nPwa,
               ]
             : state.home.featuredApps,
         } as HomePWAs,
@@ -133,6 +133,7 @@ const pwasReducer = (
         } as AppRatings,
         ratingsCount: oPwaRemove.ratingsCount - 1,
       } as PWA
+
       return {
         ...state,
         pwas: [
@@ -144,28 +145,28 @@ const pwasReducer = (
             (x) => x.appId === nPwaRemove.appId
           )
             ? [
+                nPwaRemove,
                 ...state.home.discoverApps.filter(
                   (x) => x.appId !== nPwaRemove.appId
                 ),
-                nPwaRemove,
               ]
             : state.home.discoverApps,
           topApps: state.home.topApps.find((x) => x.appId === nPwaRemove.appId)
             ? [
+                nPwaRemove,
                 ...state.home.topApps.filter(
                   (x) => x.appId !== nPwaRemove.appId
                 ),
-                nPwaRemove,
               ]
             : state.home.topApps,
           featuredApps: state.home.featuredApps.find(
             (x) => x.appId === nPwaRemove.appId
           )
             ? [
+                nPwaRemove,
                 ...state.home.featuredApps.filter(
                   (x) => x.appId !== nPwaRemove.appId
                 ),
-                nPwaRemove,
               ]
             : state.home.featuredApps,
         } as HomePWAs,

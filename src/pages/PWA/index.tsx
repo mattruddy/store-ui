@@ -30,14 +30,14 @@ import StarsListModal from "../../components/StarsListModal"
 const stars = ["ONE", "TWO", "THREE", "FOUR", "FIVE"]
 
 interface MatchParams {
-  pwaName: string
+  appName: string
 }
 
 interface OwnProps extends RouteComponentProps<MatchParams> {}
 
 const PWA: React.FC<OwnProps> = ({
   match: {
-    params: { pwaName },
+    params: { appName },
   },
 }) => {
   const [notFound, setNotFound] = useState<boolean>(false)
@@ -46,7 +46,7 @@ const PWA: React.FC<OwnProps> = ({
 
   const findPWA = (pwas: PWAType[]) =>
     pwas.find((x) => {
-      return pwaName.replace(/-/g, " ").toLowerCase() === x.name.toLowerCase()
+      return appName.replace(/-/g, " ").toLowerCase() === x.name.toLowerCase()
     })
 
   const { pwa, dev, isLoggedIn } = useSelector(
@@ -81,7 +81,7 @@ const PWA: React.FC<OwnProps> = ({
     ;(async () => {
       if (!notFound) {
         if (!pwa) {
-          const fetchedPwa = await addPWA(pwaName)
+          const fetchedPwa = await addPWA(appName)
           if (!fetchedPwa) {
             setNotFound(true)
           }
@@ -102,7 +102,7 @@ const PWA: React.FC<OwnProps> = ({
   }, [pwa, dev])
 
   useIonViewDidEnter(() => {
-    ReactGA.pageview(pwaName)
+    ReactGA.pageview(appName)
   }, [])
 
   const onRatingSubmit = async (star: number, comment?: string) => {
