@@ -39,6 +39,7 @@ const PWACard: React.FC<ContainerProps> = ({
       <IonCardHeader className="PWACardHeader PWACardContent">
         <img
           height={height}
+          width={height}
           alt="icon"
           className="PWACardImage"
           src={pwa.icon}
