@@ -1,8 +1,9 @@
 import React, { memo, FormEvent, useState, useEffect } from "react"
-import { IonButton, IonDatetime, IonCheckbox } from "@ionic/react"
+import { IonButton, IonDatetime, IonCheckbox, IonSearchbar } from "@ionic/react"
 import { FormItem } from ".."
 import ReactMde from "react-mde"
 import Selectables from "../Selectables"
+import "./styles.css"
 
 interface ContainerProps {
   status: "success" | "fail" | undefined
@@ -41,17 +42,23 @@ const JobForm: React.FC<ContainerProps> = ({ status, onSubmit }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <FormItem
-        name="Company"
-        value={company}
-        onChange={(e) => setCompany(e.detail.value)}
-        maxLength={100}
-      />
-      <Selectables
-        input={company || ""}
-        onSelect={setCompany}
-        url={`/public/search/company`}
-      />
+      <FormItem name="Company">
+        <IonSearchbar
+          className="JobFormSearch"
+          value={company}
+          onIonChange={(e) => setCompany(e.detail.value)}
+          debounce={300}
+          placeholder=""
+          searchIcon="none"
+        />
+        <div style={{ width: "100%" }}>
+          <Selectables
+            input={company || ""}
+            onSelect={setCompany}
+            url={`/public/search/company`}
+          />
+        </div>
+      </FormItem>
       <FormItem
         name="Title"
         value={title}

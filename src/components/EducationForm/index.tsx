@@ -4,11 +4,13 @@ import {
   IonDatetime,
   IonSelect,
   IonSelectOption,
+  IonSearchbar,
 } from "@ionic/react"
 import { FormItem } from ".."
 import { Degree } from "../../util/types"
 import { getDateAfterYears } from "../../util"
 import Selectables from "../Selectables"
+import "./styles.css"
 
 interface ContainerProps {
   status: "success" | "fail" | undefined
@@ -45,19 +47,23 @@ const EducationForm: React.FC<ContainerProps> = ({ status, onSubmit }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <FormItem
-        name="School"
-        value={school}
-        onChange={(e) => {
-          setSchool(e.detail.value)
-        }}
-        maxLength={100}
-      />
-      <Selectables
-        input={school || ""}
-        onSelect={setSchool}
-        url={`/public/search/school`}
-      />
+      <FormItem name="School">
+        <IonSearchbar
+          className="EducationFormSearch"
+          value={school}
+          onIonChange={(e) => setSchool(e.detail.value)}
+          searchIcon="none"
+          placeholder=""
+          debounce={300}
+        />
+        <div style={{ width: "100%" }}>
+          <Selectables
+            input={school || ""}
+            onSelect={setSchool}
+            url={`/public/search/school`}
+          />
+        </div>
+      </FormItem>
       <FormItem
         name="Major"
         value={major}
