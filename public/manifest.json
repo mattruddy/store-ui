@@ -1,6 +1,6 @@
 {
-  "short_name": "PWA Store",
-  "name": "PWA Store",
+  "short_name": "DevStore",
+  "name": "DevStore",
   "icons": [
     {
       "src": "assets/icon/logo-144.png",

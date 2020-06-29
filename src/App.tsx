@@ -362,7 +362,7 @@ const IonicApp: React.FC = () => {
           <IonToast
             isOpen={hasUpdate}
             position="top"
-            message={"There is a new version of the PWA Store available"}
+            message={"There is a new version of DevStore available"}
             buttons={[
               {
                 side: "end",

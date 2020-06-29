@@ -161,7 +161,7 @@ const PWA: React.FC<OwnProps> = ({
             ) : (
               notFound && (
                 <IonCol>
-                  <h1 className="HomeCardsHeader">PWA Store</h1>
+                  <h1 className="HomeCardsHeader">DevStore</h1>
                   <IonNote color="danger">App not found</IonNote>
                 </IonCol>
               )

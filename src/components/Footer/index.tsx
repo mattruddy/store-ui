@@ -40,7 +40,7 @@ const Footer: React.FC = () => {
             Twitter
           </IonRouterLink>
         </p>
-        <p>&copy; 2020 PWA Store</p>
+        <p>&copy; 2020 DevStore</p>
       </div>
     </div>
   )
