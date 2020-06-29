@@ -19,7 +19,7 @@ import {
   thunkAddRating,
   thunkGetDev,
 } from "../../redux/PWAs/actions"
-import { RouteComponentProps, withRouter } from "react-router"
+import { RouteComponentProps } from "react-router"
 import { ScreenshotSlider, PWAInfo } from "../../components"
 import ReactGA from "react-ga"
 import { ReduxCombinedState } from "../../redux/RootReducer"
@@ -123,8 +123,6 @@ const PWA: React.FC<OwnProps> = ({
       getRatings(pwa.appId)
     }
   }, [pwa, hasFetchedRatings])
-
-  console.log(pwa?.appRatings.ratings)
 
   return (
     <IonPage>

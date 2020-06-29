@@ -163,6 +163,7 @@ export interface PublicProfile {
   educations: Education[]
   jobs: Job[]
   occupationStatus: OccupationStatus
+  techs: string[]
 }
 
 export interface AxiosCustomRequestConfig extends AxiosRequestConfig {

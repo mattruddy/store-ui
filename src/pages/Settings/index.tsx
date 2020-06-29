@@ -96,7 +96,8 @@ const Settings: React.FC = () => {
       updateLocation: string | undefined,
       updateFullName: string | undefined,
       updateOccupationStatus: OccupationStatus | undefined,
-      updateAvatar: File | undefined
+      updateAvatar: File | undefined,
+      updateTechs: string[] | undefined
     ) => {
       dispatch(
         thunkUpdateProfile(
@@ -109,6 +110,7 @@ const Settings: React.FC = () => {
           updateLocation,
           updateFullName,
           updateOccupationStatus,
+          updateTechs,
           updateAvatar
         )
       )

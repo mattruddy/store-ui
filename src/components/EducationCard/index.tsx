@@ -2,7 +2,6 @@ import React, { memo } from "react"
 import {
   IonCard,
   IonCardHeader,
-  IonCardContent,
   IonCardTitle,
   IonCardSubtitle,
   IonFabButton,

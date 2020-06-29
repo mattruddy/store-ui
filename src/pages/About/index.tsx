@@ -5,13 +5,7 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
-  IonLabel,
-  IonItemDivider,
-  IonIcon,
   IonRouterLink,
-  IonGrid,
-  IonRow,
-  IonImg,
   IonButtons,
   IonBackButton,
   IonFooter,
@@ -19,18 +13,7 @@ import {
   IonCardHeader,
   IonCardTitle,
   IonCardContent,
-  IonCardSubtitle,
 } from "@ionic/react"
-import { Icon } from "@iconify/react"
-import appleSafari from "@iconify/icons-mdi/apple-safari"
-import {
-  add,
-  addCircleOutline,
-  ellipsisVertical,
-  menu,
-  logoTwitter,
-} from "ionicons/icons"
-import { RouteMap } from "../../routes"
 
 const styles = {
   row: { color: "rgb(153, 153, 153)" },
@@ -62,6 +45,7 @@ const About: React.FC = () => (
         </IonCardHeader>
         <IonCardContent>
           <img
+            alt="mattruddyimg"
             style={{ borderRadius: "6px" }}
             height="180px"
             width="140px"
@@ -80,6 +64,7 @@ const About: React.FC = () => (
         </IonCardHeader>
         <IonCardContent>
           <img
+            alt="agimg"
             style={{ borderRadius: "6px" }}
             height="140px"
             width="140px"

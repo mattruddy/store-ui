@@ -10,11 +10,9 @@ import {
   IonCol,
   IonBackButton,
   useIonViewDidEnter,
-  IonCard,
-  IonCardTitle,
-  IonCardHeader,
-  IonCardContent,
   IonGrid,
+  IonChip,
+  IonLabel,
 } from "@ionic/react"
 import { useParams } from "react-router"
 import ProfileCard from "../../components/ProfileCard"
@@ -113,7 +111,15 @@ const Developer: React.FC = () => {
         }}
       />
     )
-  }, [profile?.about])
+  }, [profile])
+
+  const renderTechsSection = useMemo(() => {
+    return profile?.techs.map((tech, idx) => (
+      <IonChip key={idx}>
+        <IonLabel>{tech}</IonLabel>
+      </IonChip>
+    ))
+  }, [profile])
 
   return (
     <IonPage>
@@ -128,9 +134,19 @@ const Developer: React.FC = () => {
       <IonContent class="content">
         <IonGrid>
           <IonRow>
-            <IonCol className="bottom-line-border" size="12" ref={ref}>
+            <IonCol
+              className="bottom-line-border"
+              size="12"
+              sizeMd={profile && profile.techs.length > 0 ? "8" : "12"}
+              ref={ref}
+            >
               {renderProfileSection}
             </IonCol>
+            {profile && profile.techs.length > 0 && (
+              <IonCol size="12" sizeMd="4">
+                {renderTechsSection}
+              </IonCol>
+            )}
           </IonRow>
           <IonRow>
             <IonCol
@@ -159,7 +175,7 @@ const Developer: React.FC = () => {
                 >
                   <IonRow>
                     {profile.apps.map((app, idx) => (
-                      <IonCol size="6" sizeLg="4">
+                      <IonCol key={idx} size="6" sizeLg="4">
                         <PWACard
                           isMyPwa={false}
                           url="/pwa"
@@ -183,7 +199,7 @@ const Developer: React.FC = () => {
                   isHidden={hideEmployment}
                 >
                   {profile.jobs.map((job, idx) => (
-                    <JobCard job={job} />
+                    <JobCard key={idx} job={job} />
                   ))}
                 </DevContentCard>
               )}
@@ -194,7 +210,7 @@ const Developer: React.FC = () => {
                   isHidden={hideEducation}
                 >
                   {profile.educations.map((education, idx) => (
-                    <EducationCard education={education} />
+                    <EducationCard key={idx} education={education} />
                   ))}
                 </DevContentCard>
               )}

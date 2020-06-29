@@ -2,9 +2,6 @@ import React, { memo, useState, FormEvent } from "react"
 import {
   IonButton,
   IonList,
-  IonRow,
-  IonCol,
-  IonText,
   IonSpinner,
 } from "@ionic/react"
 import FormItem from "../FormItem"
@@ -12,7 +9,6 @@ import ReactTagInput from "@pathofdev/react-tag-input"
 import ImageUploader from "react-images-upload"
 import CategoryOptions from "../CategoryOptions"
 import { useLighthouse } from "../../hooks/useLightHouse"
-import { Lighthouse } from ".."
 import { noSpecialChars, validAppUpload, mdConverter } from "../../util"
 import "@pathofdev/react-tag-input/build/index.css"
 import ReactMde from "react-mde"

@@ -218,6 +218,7 @@ export const thunkUpdateProfile = (
   location: string | undefined,
   fullName: string | undefined,
   occupationStatus: OccupationStatus | undefined,
+  techs: string[] | undefined,
   avatar?: File
 ): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
   dispatch(setLoading(true))
@@ -232,6 +233,7 @@ export const thunkUpdateProfile = (
       location,
       fullName,
       occupationStatus,
+      techs,
     }
     const fd = new FormData()
     fd.append("info", JSON.stringify(data))

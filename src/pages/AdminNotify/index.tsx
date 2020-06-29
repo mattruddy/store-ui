@@ -3,7 +3,6 @@ import React, {
   memo,
   useEffect,
   useMemo,
-  Fragment,
   FormEvent,
 } from "react"
 import {
@@ -12,22 +11,15 @@ import {
   IonPage,
   IonToolbar,
   IonTitle,
-  IonSelect,
-  IonSelectOption,
   IonButton,
-  IonItem,
-  IonLabel,
-  IonTextarea,
-  IonImg,
   IonRow,
   IonCol,
   IonCard,
   IonCardHeader,
   IonButtons,
-  IonIcon,
 } from "@ionic/react"
-import { withRouter, useHistory } from "react-router"
-import { PWA, StoreNotification } from "../../util/types"
+import { useHistory } from "react-router"
+import { StoreNotification } from "../../util/types"
 import { useSelector, shallowEqual } from "react-redux"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { Axios } from "../../redux/Actions"
@@ -35,7 +27,6 @@ import { FormItem } from "../../components"
 import ReactMde from "react-mde"
 import { mdConverter } from "../../util"
 import NotifyList from "../../components/NotifyList"
-import { async } from "q"
 import { RouteMap } from "../../routes"
 import {
   newspaper,

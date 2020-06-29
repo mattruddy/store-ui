@@ -2,7 +2,6 @@ import React, {
   useEffect,
   useCallback,
   useRef,
-  HtmlHTMLAttributes,
 } from "react"
 import { Redirect, Route } from "react-router-dom"
 import {
@@ -24,7 +23,6 @@ import {
   person,
   home,
   logIn,
-  informationCircle,
   search,
   notifications,
   alert,
@@ -62,7 +60,6 @@ import Settings from "./pages/Settings"
 import Developer from "./pages/Developer"
 import AddPWA from "./pages/AddPWA"
 import Notifications from "./pages/Notifications"
-import AdminFeatured from "./pages/AdminFeature"
 import AdminFeature from "./pages/AdminFeature"
 
 const App: React.FC = () => {

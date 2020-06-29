@@ -1,4 +1,4 @@
-import React, { useMemo, memo } from "react"
+import React, { memo } from "react"
 import {
   logoGithub,
   mailOutline,
@@ -7,7 +7,7 @@ import {
 } from "ionicons/icons"
 import LinkItem from "./LinkItem"
 import "./styles.css"
-import { IonRow, IonCol, IonButton, IonIcon } from "@ionic/react"
+import { IonButton, IonIcon } from "@ionic/react"
 import {
   PWA,
   OccupationStatus,
