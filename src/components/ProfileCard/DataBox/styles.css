@@ -1,28 +1,10 @@
-.DataLeftCol {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.DataRow {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.DataCol {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
-.DataLeftCol {
-  display: inline;
-}
-
 .DataRowLeft {
-  text-align: center;
+  display: flex;
+  justify-content: space-evenly;
   border-right: 1px solid var(--store-border-color);
-  border-bottom: none;
+}
+
+.DataRowRight {
+  display: flex;
+  justify-content: space-evenly;
 }
