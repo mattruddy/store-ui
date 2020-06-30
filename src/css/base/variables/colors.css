@@ -278,6 +278,10 @@ div.alert-radio-label.sc-ion-alert-md {
   color: var(--text-color);
 }
 
+ion-fab-button {
+  --background-activated: none;
+}
+
 ion-segment-button {
   color: var(--sub-color);
   --color-hover: var(--title-color);
@@ -346,10 +350,6 @@ ion-card-title {
 
 .mde-toolbar button {
   color: var(--text-color) !important;
-}
-
-strong {
-  font-weight: bolder;
 }
 
 p,
