@@ -49,7 +49,7 @@ const AddPWA: React.FC = () => {
           <IonButtons slot="start">
             <IonBackButton defaultHref={RouteMap.PROFILE} />
           </IonButtons>
-          <IonTitle>Add PWA</IonTitle>
+          <IonTitle>Add App</IonTitle>
         </IonToolbar>
         {isLoading && <IonProgressBar type="indeterminate" color="primary" />}
       </IonHeader>

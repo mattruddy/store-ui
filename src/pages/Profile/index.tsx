@@ -151,7 +151,7 @@ const Profile: React.FC = () => {
               icon={ellipsisVertical}
               items={[
                 {
-                  name: "Add PWA",
+                  name: "Add App",
                   action: () => history.push(RouteMap.ADD),
                   icon: addCircleOutline,
                 },
