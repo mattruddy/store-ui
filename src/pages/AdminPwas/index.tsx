@@ -10,12 +10,10 @@ import {
   IonButton,
   IonItem,
   IonLabel,
-  IonTextarea,
   IonImg,
   IonRow,
   IonCol,
   IonButtons,
-  IonCheckbox,
 } from "@ionic/react"
 import { useHistory } from "react-router"
 import { PWA } from "../../util/types"
@@ -23,7 +21,6 @@ import { useSelector, shallowEqual } from "react-redux"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { Axios } from "../../redux/Actions"
 import {
-  pencil,
   ellipsisVertical,
   notifications,
   newspaper,
@@ -31,13 +28,10 @@ import {
 } from "ionicons/icons"
 import { RouteMap } from "../../routes"
 import Popover from "../../components/Popover"
-import { FormItem } from "../../components"
 
 const AdminPwas: React.FC = () => {
   const [pwas, setPwas] = useState<PWA[]>([])
   const [status, setStatus] = useState<string | undefined>()
-  const [isTutorial, setIsTutorial] = useState<boolean>()
-  const [reason, setReason] = useState<string | undefined>()
   const [showPopover, setShowPopover] = useState(false)
   const history = useHistory()
 
@@ -134,9 +128,6 @@ const AdminPwas: React.FC = () => {
                 <div>
                   <IonSelect
                     onIonChange={(e) => {
-                      if (e.detail.value === "APPROVED") {
-                        setReason(undefined)
-                      }
                       setStatus(e.detail.value!)
                     }}
                     placeholder="Status"
@@ -144,35 +135,16 @@ const AdminPwas: React.FC = () => {
                     <IonSelectOption value="APPROVED">APPROVED</IonSelectOption>
                     <IonSelectOption value="DENIED">DENIED</IonSelectOption>
                   </IonSelect>
-                  {status && status === "DENIED" && (
-                    <IonTextarea
-                      value={reason}
-                      placeholder="Please give a reason"
-                      onIonChange={(e) => setReason(e.detail.value!)}
-                      rows={4}
-                    />
-                  )}
-                  <FormItem name="Is Tutorial?">
-                    <IonCheckbox
-                      checked={isTutorial}
-                      onIonChange={(e) => setIsTutorial(e.detail.checked)}
-                    ></IonCheckbox>
-                  </FormItem>
-
                   <IonButton
                     onClick={async () => {
                       const resp = await (await Axios()).put(
                         `admin/pwa/${pwa.appId}`,
                         {
                           code: status,
-                          isTutorial: isTutorial,
-                          reason: reason,
                         }
                       )
                       if (resp.status === 200) {
-                        setStatus(undefined)
-                        setReason(undefined)
-                        setIsTutorial(false)
+                        setStatus("")
                         setPwas(pwas.filter((app) => app.appId !== pwa.appId))
                       }
                     }}
@@ -192,7 +164,7 @@ const AdminPwas: React.FC = () => {
         )}
       </Fragment>
     ),
-    [pwas, status, reason, isTutorial]
+    [pwas, status]
   )
 
   return (
