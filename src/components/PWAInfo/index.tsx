@@ -156,7 +156,10 @@ const PWAInfo: React.FC<ContainerProps> = ({
         )
       )}
       <div className="PWAShareContainer">
-        <ShareUrl title={pwa.name} url={window.location.href} />
+        <ShareUrl
+          title={pwa.name}
+          url={window.location.href.replace("mypwa", "pwa")}
+        />
       </div>
       {isEdit ? (
         <FormItem

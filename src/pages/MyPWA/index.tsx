@@ -174,8 +174,6 @@ const MyPWA: React.FC = () => {
     )
   }, [pwa, screenshots, isEdit, removeImage])
 
-  console.log(pwa && pwa.appRatings)
-
   const renderEditButtons = useMemo(() => {
     return (
       isEdit && (
