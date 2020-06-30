@@ -1,8 +1,4 @@
-import React, {
-  useEffect,
-  useCallback,
-  useRef,
-} from "react"
+import React, { useEffect, useCallback, useRef } from "react"
 import { Redirect, Route } from "react-router-dom"
 import {
   IonApp,
@@ -359,7 +355,7 @@ const IonicApp: React.FC = () => {
           <IonToast
             isOpen={hasUpdate}
             position="top"
-            message={"There is a new version of DevStore available"}
+            message={"There is a new version of AppShare available"}
             buttons={[
               {
                 side: "end",

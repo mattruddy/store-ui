@@ -1,14 +1,9 @@
 import React, { memo, useState, FormEvent } from "react"
-import {
-  IonButton,
-  IonList,
-  IonSpinner,
-} from "@ionic/react"
+import { IonButton, IonList, IonSpinner } from "@ionic/react"
 import FormItem from "../FormItem"
 import ReactTagInput from "@pathofdev/react-tag-input"
 import ImageUploader from "react-images-upload"
 import CategoryOptions from "../CategoryOptions"
-import { useLighthouse } from "../../hooks/useLightHouse"
 import { noSpecialChars, validAppUpload, mdConverter } from "../../util"
 import "@pathofdev/react-tag-input/build/index.css"
 import ReactMde from "react-mde"
@@ -33,7 +28,6 @@ const SubmitAppForm: React.FC<ContainerProps> = ({ onSubmit }) => {
   const [icon, setIcon] = useState<File>()
   const [screenshots, setScreenshots] = useState<File[]>()
   const [tags, setTags] = useState<string[]>([])
-  const [testLoading, lightHouseTests, setTargetUrl] = useLighthouse()
   const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write")
 
   const addApp = (e: FormEvent) => {
@@ -153,16 +147,6 @@ const SubmitAppForm: React.FC<ContainerProps> = ({ onSubmit }) => {
             maxFileSize={5242880}
           />
         </FormItem>
-        {url !== "" && !lightHouseTests.some((x) => x.url === url && x.pass) && (
-          <IonButton
-            className="button-no-shadow"
-            expand="block"
-            onClick={() => url && setTargetUrl(url)}
-            disabled={testLoading}
-          >
-            {testLoading ? <IonSpinner /> : <p>Run Lighthouse PWA Check</p>}
-          </IonButton>
-        )}
         <IonButton
           className="button-no-shadow"
           expand="block"
