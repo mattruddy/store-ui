@@ -1,16 +1,15 @@
-import React, { useMemo, memo } from "react"
+import React, { memo } from "react"
 import {
   logoGithub,
-  logoLinkedin,
-  logoTwitter,
   mailOutline,
   locationOutline,
+  pinOutline,
+  businessOutline,
 } from "ionicons/icons"
 import LinkItem from "./LinkItem"
 import "./styles.css"
-import { IonRow, IonCol, IonButton, IonIcon, IonGrid } from "@ionic/react"
-import { PWA } from "../../util/types"
-import AppImgs from "./AppImgs"
+import { IonButton, IonIcon } from "@ionic/react"
+import { OccupationStatus, OccupationStatusEnumProps } from "../../util/types"
 import DataBox from "./DataBox"
 
 export interface TotalAppData {
@@ -22,14 +21,12 @@ interface ContainerProps {
   isMyProfile: boolean
   avatar?: string
   gitHub?: string
-  twitter?: string
-  linkedIn?: string
   location?: string
   fullName?: string
   header?: string
   data?: TotalAppData
-  pwas?: PWA[]
   email?: string | undefined
+  occupationStatus?: OccupationStatus
   username: string
   isLoading?: boolean
 }
@@ -37,109 +34,105 @@ interface ContainerProps {
 const ProfileCard: React.FC<ContainerProps> = ({
   isMyProfile,
   avatar,
-  twitter,
   gitHub,
   location,
   header,
   fullName,
-  linkedIn,
   email,
+  occupationStatus,
   username,
   isLoading,
   data,
-  pwas,
 }) => {
   return (
-    <IonGrid fixed>
-      <IonRow className="bottom-line-border">
-        <IonCol size="12">
-          <div className="ProfileCardLeft">
-            {!isLoading && (
-              <img
-                alt="avatar"
-                className="ProfileCardImg icon line-around"
-                src={avatar ? avatar : "assets/icon/apple-touch-icon.png"}
-              />
-            )}
-            <div className="ProfileCardLeftInfo">
-              {username && (
-                <>
-                  <div>
-                    <h1
-                      className={`${fullName ? "" : "text-color"}`}
-                      style={{ paddingLeft: "8px", margin: "0" }}
-                    >
-                      {fullName ? fullName : `@${username}`}
-                    </h1>
-                    {fullName && (
-                      <h4
-                        className="text-color"
-                        style={{
-                          margin: "0",
-                          paddingLeft: "8px",
-                        }}
-                      >{`@${username}`}</h4>
-                    )}
-                  </div>
-                  <div className="ProfileLinksCont">
-                    {email && (
-                      <LinkItem url={`mailto:${email}`} logo={mailOutline} />
-                    )}
-                    {gitHub && (
-                      <LinkItem
-                        url={gitHub}
-                        logo={logoGithub}
-                        className="ion-color-github"
-                      />
-                    )}
-                    {linkedIn && (
-                      <LinkItem
-                        url={linkedIn}
-                        logo={logoLinkedin}
-                        color="linkedin"
-                      />
-                    )}
-                    {twitter && (
-                      <LinkItem
-                        url={twitter}
-                        logo={logoTwitter}
-                        color="twitter"
-                      />
-                    )}
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
-          {location && (
-            <div className="text-color">
-              <IonIcon icon={locationOutline} />
-              {location}
-            </div>
-          )}
-          <div className="ProfileSubTitleBlock">
-            {header && (
-              <div
-                style={{
-                  padding: "8px",
-                }}
-              >
-                {header}
-              </div>
-            )}
-            {isMyProfile && (
+    <>
+      <div className="ProfileCardLeft">
+        {!isLoading && (
+          <img
+            alt="avatar"
+            className="ProfileCardImg icon line-around"
+            src={avatar ? avatar : "assets/icon/apple-touch-icon.png"}
+          />
+        )}
+        <div className="ProfileCardLeftInfo">
+          {username && (
+            <>
               <div>
-                <IonButton fill="outline" color="dark" routerLink="/settings">
-                  Edit
-                </IonButton>
+                <h1
+                  className="text-color"
+                  style={{ paddingLeft: "8px", margin: "0" }}
+                >
+                  {fullName ? fullName : `@${username}`}
+                </h1>
+                {fullName && (
+                  <h4
+                    className="sub-color"
+                    style={{
+                      margin: "0",
+                      paddingLeft: "8px",
+                    }}
+                  >{`@${username}`}</h4>
+                )}
               </div>
-            )}
+              <div className="ProfileLinksCont">
+                {email && (
+                  <LinkItem url={`mailto:${email}`} logo={mailOutline} />
+                )}
+                {gitHub && (
+                  <LinkItem
+                    url={gitHub}
+                    logo={logoGithub}
+                    className="ion-color-github"
+                  />
+                )}
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+      {occupationStatus && (
+        <div style={{ paddingBottom: "5px" }} className="sub-color">
+          <IonIcon
+            icon={
+              occupationStatus === OccupationStatus.COMPANY
+                ? businessOutline
+                : pinOutline
+            }
+          />{" "}
+          {OccupationStatusEnumProps[occupationStatus]}
+        </div>
+      )}
+      {location && (
+        <div className="sub-color">
+          <IonIcon style={{ paddingRight: "5px" }} icon={locationOutline} />
+          {location}
+        </div>
+      )}
+      <div className="ProfileSubTitleBlock">
+        {header && (
+          <p
+            style={{
+              padding: "8px",
+              paddingLeft: "24px",
+            }}
+          >
+            {header}
+          </p>
+        )}
+        {isMyProfile && (
+          <div>
+            <IonButton
+              fill="outline"
+              color="dark"
+              routerLink="/settings/profile"
+            >
+              Edit
+            </IonButton>
           </div>
-        </IonCol>
-        {data && <DataBox data={data} />}
-        {pwas && <AppImgs pwas={pwas} />}
-      </IonRow>
-    </IonGrid>
+        )}
+      </div>
+      {data && <DataBox data={data} />}
+    </>
   )
 }
 

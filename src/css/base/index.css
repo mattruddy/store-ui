@@ -21,6 +21,22 @@ ion-menu {
   --color: var(--text-color);
 }
 
+.hide {
+  display: none;
+}
+
+.no-margin {
+  margin: 0;
+}
+
+.no-padding {
+  padding: 0;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
 .h1-title {
   margin: 0;
   font-size: 22px;
@@ -28,6 +44,10 @@ ion-menu {
 
 .text-color {
   color: var(--text-color);
+}
+
+.sub-color {
+  color: var(--sub-color);
 }
 
 .react-tag-input {
@@ -60,6 +80,12 @@ ion-menu {
 
 .bottom-line-border {
   border-bottom: 1px solid var(--store-border-color);
+}
+
+.bottom-wrap-border {
+  border-bottom: 1px solid var(--store-border-color);
+  border-left: 1px solid var(--store-border-color);
+  border-right: 1px solid var(--store-border-color);
 }
 
 .right-line-border {

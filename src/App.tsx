@@ -2,7 +2,6 @@ import React, {
   useEffect,
   useCallback,
   useRef,
-  HtmlHTMLAttributes,
 } from "react"
 import { Redirect, Route } from "react-router-dom"
 import {
@@ -24,7 +23,6 @@ import {
   person,
   home,
   logIn,
-  informationCircle,
   search,
   notifications,
   alert,
@@ -62,6 +60,7 @@ import Settings from "./pages/Settings"
 import Developer from "./pages/Developer"
 import AddPWA from "./pages/AddPWA"
 import Notifications from "./pages/Notifications"
+import AdminFeature from "./pages/AdminFeature"
 
 const App: React.FC = () => {
   return <IonicApp />
@@ -229,6 +228,17 @@ const IonicApp: React.FC = () => {
                     exact
                   />
                   <Route
+                    path={RouteMap.ADMIN_FEATURE}
+                    render={() =>
+                      isLoggedIn ? (
+                        <AdminFeature />
+                      ) : (
+                        <Redirect to={RouteMap.LOGIN} />
+                      )
+                    }
+                    exact
+                  />
+                  <Route
                     path={RouteMap.ADMIN_NOTIFY}
                     render={() =>
                       isLoggedIn ? (
@@ -349,7 +359,7 @@ const IonicApp: React.FC = () => {
           <IonToast
             isOpen={hasUpdate}
             position="top"
-            message={"There is a new version of the PWA Store available"}
+            message={"There is a new version of DevStore available"}
             buttons={[
               {
                 side: "end",

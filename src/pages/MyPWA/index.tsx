@@ -31,6 +31,7 @@ import { useSelector, useDispatch, shallowEqual } from "react-redux"
 import { thunkDeletePWA, thunkUpdateApp } from "../../redux/User/actions"
 import Popover from "../../components/Popover"
 import "./styles.css"
+import StarsListModal from "../../components/StarsListModal"
 
 const MyPWA: React.FC = () => {
   const [showPopover, setShowPopover] = useState<boolean>(false)
@@ -44,13 +45,14 @@ const MyPWA: React.FC = () => {
   const [tags, setTags] = useState<string[]>([])
   const [showDeleteAlert, setShowDeleteAlter] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const { id } = useParams()
+  const [isOpen, setIsOpen] = useState<boolean>(false)
+  const { appName } = useParams()
   const history = useHistory()
 
   const { pwa, status } = useSelector(
     ({ user: { pwas }, alerts: { status } }: ReduxCombinedState) => ({
       pwa: (() => {
-        const removeDashName = id!.replace(/-/g, " ")
+        const removeDashName = appName?.replace(/-/g, " ")
         return pwas.find(
           (x) => x.name.toLowerCase() === removeDashName.toLowerCase()
         ) as PWA
@@ -172,6 +174,8 @@ const MyPWA: React.FC = () => {
     )
   }, [pwa, screenshots, isEdit, removeImage])
 
+  console.log(pwa && pwa.appRatings)
+
   const renderEditButtons = useMemo(() => {
     return (
       isEdit && (
@@ -227,6 +231,7 @@ const MyPWA: React.FC = () => {
             <PWAInfo
               pwa={pwa}
               isMyPwa={true}
+              openModal={() => setIsOpen(true)}
               isEdit={isEdit}
               name={name}
               cat={cat}
@@ -277,6 +282,13 @@ const MyPWA: React.FC = () => {
           },
         ]}
       />
+      {pwa && pwa.appRatings && (
+        <StarsListModal
+          isOpen={isOpen}
+          onDidDismiss={() => setIsOpen(false)}
+          ratings={pwa.appRatings.ratings}
+        />
+      )}
     </IonPage>
   )
 }

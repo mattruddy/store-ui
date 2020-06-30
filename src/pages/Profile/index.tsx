@@ -17,13 +17,14 @@ import {
   IonAlert,
   IonCol,
   IonProgressBar,
+  IonGrid,
 } from "@ionic/react"
 import { useHistory } from "react-router"
 import { PWACard } from "../../components"
 import { RouteMap } from "../../routes"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { useSelector, useDispatch, shallowEqual } from "react-redux"
-import { thunkLogout, thunkAddPWA } from "../../redux/User/actions"
+import { thunkLogout } from "../../redux/User/actions"
 import "./styles.css"
 import Popover from "../../components/Popover"
 import {
@@ -32,12 +33,18 @@ import {
   addCircleOutline,
   settingsOutline,
   ellipsisVertical,
+  personOutline,
+  starOutline,
 } from "ionicons/icons"
 import ProfileCard, { TotalAppData } from "../../components/ProfileCard"
 import { useInView } from "react-intersection-observer"
+import DevContentCard from "../../components/DevContentCard"
+import { PWA } from "../../util/types"
 const Profile: React.FC = () => {
   const [showAlert, setShowAlert] = useState<boolean>(false)
   const [showPopover, setShowPopover] = useState<boolean>(false)
+  const [hideApps, setHideApps] = useState<boolean>(false)
+  const [hideStar, setHideStar] = useState<boolean>(false)
   const [ref, inView] = useInView()
   const history = useHistory()
 
@@ -49,9 +56,18 @@ const Profile: React.FC = () => {
     profile,
     email,
     totalData,
+    starredApps,
   } = useSelector(
     ({
-      user: { pwas, username, loading, isLoggedIn, profile, email },
+      user: {
+        pwas,
+        username,
+        loading,
+        isLoggedIn,
+        profile,
+        email,
+        starredApps,
+      },
     }: ReduxCombinedState) => ({
       pwas: pwas,
       username: username,
@@ -59,6 +75,7 @@ const Profile: React.FC = () => {
       isLoggedIn: isLoggedIn,
       profile: profile,
       email: email,
+      starredApps: starredApps,
       totalData: pwas.reduce<TotalAppData>(
         (tot, currentPwa) => ({
           totalInstalls: tot.totalInstalls + currentPwa.installs,
@@ -79,25 +96,16 @@ const Profile: React.FC = () => {
     }
   }, [isLoggedIn])
 
-  const filterPwa = (filter: string) => {
-    const filteredPwas = pwas && pwas.filter((pwa) => pwa.status === filter)
-    return filteredPwas.length > 0 ? (
-      filteredPwas.map((pwa, idx) => (
+  const loadApps = (apps: PWA[], url: string) => {
+    return apps.length > 0 ? (
+      apps.map((app, idx) => (
         <IonCol key={idx} size="6" sizeLg="4">
-          <PWACard url="/mypwa" pwa={pwa} isMyPwa={true} />
-          {filter === "DENIED" && (
-            <Fragment>
-              <span>
-                <strong>Reason</strong>
-              </span>
-              <p>{pwa.reason}</p>
-            </Fragment>
-          )}
+          <PWACard url={url} pwa={app} isMyPwa={true} height={90} />
         </IonCol>
       ))
     ) : (
       <IonCol>
-        <small className="NoAppsNote">{`No ${filter.toLowerCase()} apps yet`}</small>
+        <small className="NoAppsNote">No apps yet</small>
       </IonCol>
     )
   }
@@ -106,16 +114,30 @@ const Profile: React.FC = () => {
     () =>
       pwas && (
         <Fragment>
-          <h2 style={{ marginLeft: "32px" }}>Approved</h2>
-          <IonRow>{filterPwa("APPROVED")}</IonRow>
-          <h2 style={{ marginLeft: "32px" }}>Pending</h2>
-          <IonRow>{filterPwa("PENDING")}</IonRow>
-          <h2 style={{ marginLeft: "32px" }}>Denied</h2>
-          <IonRow>{filterPwa("DENIED")}</IonRow>
+          <DevContentCard
+            title="My Apps"
+            isHidden={hideApps}
+            onClick={() => setHideApps(!hideApps)}
+          >
+            <IonRow>{loadApps(pwas, "/mypwa")}</IonRow>
+          </DevContentCard>
         </Fragment>
       ),
-    [pwas]
+    [pwas, hideApps]
   )
+
+  const renderStarredAppsSection = useMemo(() => {
+    return (
+      <DevContentCard
+        icon={starOutline}
+        count={starredApps.length}
+        isHidden={hideStar}
+        onClick={() => setHideStar(!hideStar)}
+      >
+        <IonRow>{loadApps(starredApps, "/pwa")}</IonRow>
+      </DevContentCard>
+    )
+  }, [starredApps, hideStar])
 
   return (
     <IonPage>
@@ -129,7 +151,7 @@ const Profile: React.FC = () => {
               icon={ellipsisVertical}
               items={[
                 {
-                  name: "Add PWA",
+                  name: "Add App",
                   action: () => history.push(RouteMap.ADD),
                   icon: addCircleOutline,
                 },
@@ -137,6 +159,14 @@ const Profile: React.FC = () => {
                   name: "Edit Profile",
                   action: () => history.push(RouteMap.SETTINGS),
                   icon: settingsOutline,
+                },
+                {
+                  name: "Public Profile",
+                  action: () =>
+                    history.push(
+                      `${RouteMap.DEVELOPER.replace(":username", username)}`
+                    ),
+                  icon: personOutline,
                 },
                 {
                   name: "Support",
@@ -155,25 +185,29 @@ const Profile: React.FC = () => {
         {isLoading && <IonProgressBar type="indeterminate" color="primary" />}
       </IonHeader>
       <IonContent class="content">
-        <IonRow>
-          <IonCol ref={ref} className="ProfileCardCol" size="12">
-            <ProfileCard
-              isMyProfile={true}
-              data={totalData}
-              avatar={profile?.avatar}
-              gitHub={profile?.gitHub}
-              twitter={profile?.twitter}
-              linkedIn={profile?.linkedIn}
-              header={profile?.header}
-              fullName={profile?.fullName}
-              location={profile?.location}
-              email={email}
-              username={username}
-              isLoading={isLoading}
-            />
-          </IonCol>
-          <IonCol size="12">{renderAppsSections}</IonCol>
-        </IonRow>
+        <IonGrid>
+          <IonRow>
+            <IonCol ref={ref} className="ProfileCardCol" size="12">
+              <ProfileCard
+                isMyProfile={true}
+                data={totalData}
+                avatar={profile?.avatar}
+                gitHub={profile?.gitHub}
+                header={profile?.header}
+                fullName={profile?.fullName}
+                location={profile?.location}
+                email={email}
+                occupationStatus={profile?.occupationStatus}
+                username={username}
+                isLoading={isLoading}
+              />
+            </IonCol>
+            <IonCol size="12">
+              {renderAppsSections}
+              {renderStarredAppsSection}
+            </IonCol>
+          </IonRow>
+        </IonGrid>
       </IonContent>
       <IonAlert
         isOpen={showAlert}

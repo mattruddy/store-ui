@@ -22,5 +22,6 @@
 }
 
 .HomeViewMoreLink {
-  padding-right: 24px;
+  --background: inherit;
+  --box-shadow: none;
 }

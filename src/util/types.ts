@@ -1,8 +1,62 @@
 import { AxiosRequestConfig } from "axios"
 
+export const monthNames = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+]
+
+export enum Degree {
+  ASSOCIATE = "ASSOCIATE",
+  BACHELOR = "BACHELOR",
+  MASTER = "MASTER",
+  DOCTORAL = "DOCTORAL",
+}
+
+export enum OccupationStatus {
+  HIRED = "HIRED",
+  LOOKING = "LOOKING",
+  OPEN = "OPEN",
+  COMPANY = "COMPANY",
+}
+
+export const OccupationStatusEnumProps: Record<string, string> = {
+  HIRED: "Hired, not looking",
+  LOOKING: "Looking for opportunities",
+  OPEN: "Open to opportunities",
+  COMPANY: "Company",
+}
+
 export interface DispatchObject {
   [key: string]: any
   type: string
+}
+
+export interface Education {
+  id: number
+  school: string
+  major: string
+  gradDate: Date
+  degree: Degree
+  minor?: string
+}
+
+export interface Job {
+  id: number
+  company: string
+  title: string
+  start: Date
+  description?: string
+  end?: Date
 }
 
 export interface Image {
@@ -11,6 +65,7 @@ export interface Image {
 }
 
 export interface NewRating {
+  liked: boolean
   averageStar: number
   ratingCount: number
   rating: Rating
@@ -23,10 +78,14 @@ export interface StoreNotification {
   id: number
 }
 
+export interface AppRatings {
+  ratings: Rating[]
+  hasRated: boolean
+}
+
 export interface Rating {
   from: string
   star: number
-  comment: string
   createdAt: Date
   linkable: boolean
 }
@@ -41,25 +100,30 @@ export interface PWA {
   status: string
   screenshots: Image[]
   reason: string
-  ratings: Rating[]
+  appRatings: AppRatings
   averageRating: number
   ratingsCount: number
   tags: string[]
   pageViews: number
   installs: number
   username: string
+  fullName: string
 }
 
 export interface UserProfile {
   username: string
   email: string
   pwas: PWA[]
+  starredApps: PWA[]
   profile: Profile
+  role: string
+  jobs: Job[]
+  educations: Education[]
 }
 
 export interface HomePWAs {
   topApps: PWA[]
-  newApps: PWA[]
+  featuredApps: PWA[]
   discoverApps: PWA[]
 }
 
@@ -76,14 +140,15 @@ export interface Push {
 
 export interface Profile {
   gitHub: string
-  linkedIn: string
-  twitter: string
   avatar: string
   about: string
   showEmail: boolean
   location: string
   fullName: string
   header: string
+  occupationStatus: OccupationStatus
+  techs: string[]
+  profileId: number
 }
 
 export interface PublicProfile {
@@ -92,13 +157,15 @@ export interface PublicProfile {
   avatar: string
   email: string
   gitHub: string
-  linkedIn: string
-  twitter: string
   username: string
   location: string
   fullName: string
   header: string
   profileId: number
+  educations: Education[]
+  jobs: Job[]
+  occupationStatus: OccupationStatus
+  techs: string[]
 }
 
 export interface AxiosCustomRequestConfig extends AxiosRequestConfig {

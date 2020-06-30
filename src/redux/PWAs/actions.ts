@@ -13,6 +13,7 @@ import {
   DEV_ADD,
   DEV_PENDING,
   DEV_COMPLETE,
+  RATING_REMOVE,
 } from "./types"
 import { Axios } from "../Actions"
 import { Action } from "redux"
@@ -20,13 +21,14 @@ import { ThunkAction } from "redux-thunk"
 import {
   PWA,
   HomePWAs,
-  Rating,
   NewRating,
   PublicProfile,
+  AppRatings,
 } from "../../util/types"
 import { ReduxCombinedState } from "../RootReducer"
 import ReactGA from "react-ga"
 import { setAlert } from "../Alerts/actions"
+import { thunkRemoveStarred, thunkAppStarred } from "../User/actions"
 
 const loadingPWAs = () => ({ type: PWAS_PENDING })
 
@@ -40,7 +42,7 @@ const loadingDev = () => ({ type: DEV_PENDING })
 
 const completeDev = () => ({ type: DEV_COMPLETE })
 
-const addRatings = (ratings: Rating[], appId: number) => ({
+const addRatings = (ratings: AppRatings, appId: number) => ({
   type: RATINGS_ADD,
   payload: { ratings, appId },
 })
@@ -48,6 +50,11 @@ const addRatings = (ratings: Rating[], appId: number) => ({
 const addRating = (newRating: NewRating, appId: number) => ({
   type: RATING_ADD,
   payload: { newRating, appId },
+})
+
+const removeRating = (appId: number, username: string) => ({
+  type: RATING_REMOVE,
+  payload: { appId, username },
 })
 
 const addPWASection = (data: PWASection) => ({
@@ -151,14 +158,18 @@ const thunkGetPWAFromName = (
 const thunkGetRatings = (
   appId: number
 ): ThunkAction<void, ReduxCombinedState, null, Action<string>> => async (
-  dispatch
+  dispatch,
+  getState
 ) => {
+  const {
+    user: { isLoggedIn, username },
+  } = getState()
   dispatch(loadingRatings())
   try {
-    const url = `/public/pwa/${appId}/ratings`
+    const url = `/${isLoggedIn ? "secure" : "public"}/pwa/${appId}/ratings`
     const axiosInstance = await Axios()
     const response = await axiosInstance.get(url)
-    const data: Rating[] = response.data
+    const data: AppRatings = response.data
     dispatch(addRatings(data, appId))
     return data
   } catch (e) {
@@ -178,34 +189,44 @@ const thunkAddRating = (
   getState
 ) => {
   const {
-    user: { isLoggedIn },
+    user: { isLoggedIn, username },
   } = getState()
   dispatch(loadingRatings())
   try {
-    const url = `/${isLoggedIn ? "secure" : "public"}/pwa/rating/${appId}`
+    if (!isLoggedIn) {
+      return
+    }
+    const url = `/secure/pwa/rating/${appId}`
     const axiosInstance = await Axios()
     const requestData = comment
       ? { star: starValue, comment: comment }
       : { star: starValue }
-    if (comment) {
-      ReactGA.event({
-        category: "comment",
-        action: `User added comment`,
-      })
-    } else {
-      ReactGA.event({
-        category: "rating",
-        action: `User added rating`,
-      })
-    }
+    ReactGA.event({
+      category: "rating",
+      action: `User starred`,
+    })
     const response = await axiosInstance.post(url, requestData)
     const { data } = response
-    dispatch(addRating(data as NewRating, appId))
+    const rating = data as NewRating
+    const pwa = getState().pwas.pwas.find((x) => x.appId === appId)
+    if (rating.liked) {
+      dispatch(addRating(rating, appId))
+      if (pwa && !getState().user.pwas.find((x) => x.appId === pwa.appId)) {
+        pwa.ratingsCount = pwa.ratingsCount + 1
+        dispatch(thunkAppStarred(pwa!))
+      }
+    } else {
+      dispatch(removeRating(appId, username))
+      if (pwa) {
+        pwa.ratingsCount = pwa.ratingsCount - 1
+        dispatch(thunkRemoveStarred(pwa.appId))
+      }
+    }
     dispatch(
       setAlert({
-        message: `Review Added`,
+        message: `${rating.liked ? "Starred" : "Unstarred"}`,
         apiResponseStatus: response.status,
-        timeout: 3000,
+        timeout: 1000,
         show: true,
         status: "success",
       })
@@ -249,7 +270,11 @@ const thunkGetHomeData = (
       const response = await axiosInstance.get(url)
       const data: HomePWAs = response.data
       dispatch(setHomeData(data))
-      const joint = [...data.discoverApps, ...data.newApps, ...data.topApps]
+      const joint = [
+        ...data.discoverApps,
+        ...data.featuredApps,
+        ...data.topApps,
+      ]
       dispatch(
         addPWAs(
           joint

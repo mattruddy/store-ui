@@ -1,7 +1,6 @@
 import React, { useMemo, memo } from "react"
 import { IonSelect, IonSelectOption } from "@ionic/react"
 import {
-  business,
   heartOutline,
   schoolOutline,
   starOutline,
@@ -16,12 +15,13 @@ import {
   constructOutline,
   airplaneOutline,
   cartOutline,
+  businessOutline,
 } from "ionicons/icons"
 import { capitalize } from "../../util"
 import "./styles.css"
 
 export const categories = [
-  { category: "BUSINESS", icon: business },
+  { category: "BUSINESS", icon: businessOutline },
   { category: "DATING", icon: heartOutline },
   { category: "EDUCATION", icon: schoolOutline },
   { category: "ENTERTAINMENT", icon: starOutline },

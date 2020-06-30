@@ -10,6 +10,9 @@ import {
   IonCol,
   IonBackButton,
   useIonViewDidEnter,
+  IonGrid,
+  IonChip,
+  IonLabel,
 } from "@ionic/react"
 import { useParams } from "react-router"
 import ProfileCard from "../../components/ProfileCard"
@@ -20,10 +23,18 @@ import { thunkGetDev } from "../../redux/PWAs/actions"
 import ReactGA from "react-ga"
 import { useInView } from "react-intersection-observer"
 import { Axios } from "../../redux/Actions"
+import EducationCard from "../../components/EducationCard"
+import JobCard from "../../components/JobCard"
+import { PWACard } from "../../components"
+import DevContentCard from "../../components/DevContentCard"
 
 const Developer: React.FC = () => {
   const { username } = useParams()
   const [notFound, setNotFound] = useState<boolean>(false)
+  const [hideAbout, setHideAbout] = useState<boolean>(false)
+  const [hideEmployment, setHideEmployment] = useState<boolean>(false)
+  const [hideEducation, setHideEducation] = useState<boolean>(false)
+  const [hideApp, setHideApp] = useState<boolean>(false)
   const [ref, inView] = useInView()
 
   const { profile, isLoading } = useSelector(
@@ -74,13 +85,11 @@ const Developer: React.FC = () => {
         <ProfileCard
           isMyProfile={false}
           gitHub={profile.gitHub}
-          linkedIn={profile.linkedIn}
-          twitter={profile.twitter}
           email={profile.email}
           avatar={profile.avatar}
           isLoading={isLoading}
-          pwas={profile.apps}
           username={profile.username}
+          occupationStatus={profile.occupationStatus}
           header={profile.header}
           fullName={profile.fullName}
           location={profile.location}
@@ -96,13 +105,21 @@ const Developer: React.FC = () => {
   const renderAboutSection = useMemo(() => {
     return (
       <div
-        style={{ margin: "0", paddingLeft: "16px" }}
+        style={{ paddingTop: "16px" }}
         dangerouslySetInnerHTML={{
           __html: mdConverter.makeHtml(profile?.about!),
         }}
       />
     )
-  }, [profile?.about])
+  }, [profile])
+
+  const renderTechsSection = useMemo(() => {
+    return profile?.techs.map((tech, idx) => (
+      <IonChip key={idx}>
+        <IonLabel>{tech}</IonLabel>
+      </IonChip>
+    ))
+  }, [profile])
 
   return (
     <IonPage>
@@ -115,12 +132,90 @@ const Developer: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent class="content">
-        <IonRow>
-          <IonCol size="12" ref={ref}>
-            {renderProfileSection}
-          </IonCol>
-          <IonCol size="12">{renderAboutSection}</IonCol>
-        </IonRow>
+        <IonGrid>
+          <IonRow className="bottom-line-border">
+            <IonCol
+              size="12"
+              sizeMd={profile && profile.techs.length > 0 ? "8" : "12"}
+              ref={ref}
+            >
+              {renderProfileSection}
+            </IonCol>
+            {profile && profile.techs.length > 0 && (
+              <IonCol size="12" sizeMd="4">
+                {renderTechsSection}
+              </IonCol>
+            )}
+          </IonRow>
+          <IonRow>
+            <IonCol
+              size="12"
+              sizeMd={
+                (profile?.jobs && profile?.jobs.length > 0) ||
+                (profile?.educations && profile?.educations.length > 0)
+                  ? "7"
+                  : "12"
+              }
+            >
+              {profile?.about && (
+                <DevContentCard
+                  title="Biography"
+                  onClick={() => setHideAbout(!hideAbout)}
+                  isHidden={hideAbout}
+                >
+                  {renderAboutSection}
+                </DevContentCard>
+              )}
+              {profile?.apps && profile.apps.length > 0 && (
+                <DevContentCard
+                  title="Apps"
+                  onClick={() => setHideApp(!hideApp)}
+                  isHidden={hideApp}
+                >
+                  <IonRow>
+                    {profile.apps.map((app, idx) => (
+                      <IonCol key={idx} size="6" sizeLg="4">
+                        <PWACard
+                          isMyPwa={false}
+                          url="/pwa"
+                          pwa={app}
+                          height={100}
+                        />
+                      </IonCol>
+                    ))}
+                  </IonRow>
+                </DevContentCard>
+              )}
+            </IonCol>
+            <IonCol
+              size="12"
+              sizeMd={(profile?.jobs || profile?.educations) && "5"}
+            >
+              {profile?.jobs && profile.jobs.length > 0 && (
+                <DevContentCard
+                  title="Employment"
+                  onClick={() => setHideEmployment(!hideEmployment)}
+                  isHidden={hideEmployment}
+                >
+                  {profile.jobs.map((job, idx) => (
+                    <JobCard key={idx} job={job} />
+                  ))}
+                </DevContentCard>
+              )}
+              {profile?.educations && profile.educations.length > 0 && (
+                <DevContentCard
+                  title="Education"
+                  onClick={() => setHideEducation(!hideEducation)}
+                  isHidden={hideEducation}
+                >
+                  {profile.educations.map((education, idx) => (
+                    <EducationCard key={idx} education={education} />
+                  ))}
+                </DevContentCard>
+              )}
+            </IonCol>
+          </IonRow>
+        </IonGrid>
       </IonContent>
     </IonPage>
   )

@@ -1,11 +1,4 @@
-import React, {
-  useState,
-  useMemo,
-  memo,
-  Fragment,
-  useEffect,
-  useCallback,
-} from "react"
+import React, { useState, memo, Fragment, useEffect, useCallback } from "react"
 import {
   IonContent,
   IonHeader,
@@ -14,7 +7,6 @@ import {
   useIonViewDidEnter,
   IonBackButton,
   IonButtons,
-  IonList,
   IonGrid,
   IonRow,
   IonCol,
@@ -27,39 +19,41 @@ import {
   thunkAddRating,
   thunkGetDev,
 } from "../../redux/PWAs/actions"
-import { RouteComponentProps, withRouter } from "react-router"
-import { ScreenshotSlider, Rating, PWAInfo, RatingItem } from "../../components"
+import { RouteComponentProps } from "react-router"
+import { ScreenshotSlider, PWAInfo } from "../../components"
 import ReactGA from "react-ga"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { useSelector, shallowEqual, useDispatch } from "react-redux"
 import { PWA as PWAType } from "../../util/types"
+import StarsListModal from "../../components/StarsListModal"
 
 const stars = ["ONE", "TWO", "THREE", "FOUR", "FIVE"]
 
 interface MatchParams {
-  pwaName: string
+  appName: string
 }
 
 interface OwnProps extends RouteComponentProps<MatchParams> {}
 
 const PWA: React.FC<OwnProps> = ({
   match: {
-    params: { pwaName },
+    params: { appName },
   },
-  history,
 }) => {
   const [notFound, setNotFound] = useState<boolean>(false)
   const [hasFetchedRatings, setHasFetchedRatings] = useState<boolean>(false)
+  const [isOpen, setIsOpen] = useState<boolean>(false)
 
   const findPWA = (pwas: PWAType[]) =>
     pwas.find((x) => {
-      return pwaName.replace(/-/g, " ").toLowerCase() === x.name.toLowerCase()
+      return appName.replace(/-/g, " ").toLowerCase() === x.name.toLowerCase()
     })
 
-  const { pwa, dev } = useSelector(
-    ({ pwas: { pwas, devs } }: ReduxCombinedState) => ({
+  const { pwa, dev, isLoggedIn } = useSelector(
+    ({ pwas: { pwas, devs }, user: { isLoggedIn } }: ReduxCombinedState) => ({
       pwa: findPWA(pwas),
       dev: devs.find((x) => x.username === findPWA(pwas)?.username),
+      isLoggedIn: isLoggedIn,
     }),
     shallowEqual
   )
@@ -87,7 +81,7 @@ const PWA: React.FC<OwnProps> = ({
     ;(async () => {
       if (!notFound) {
         if (!pwa) {
-          const fetchedPwa = await addPWA(pwaName)
+          const fetchedPwa = await addPWA(appName)
           if (!fetchedPwa) {
             setNotFound(true)
           }
@@ -108,7 +102,7 @@ const PWA: React.FC<OwnProps> = ({
   }, [pwa, dev])
 
   useIonViewDidEnter(() => {
-    ReactGA.pageview(pwaName)
+    ReactGA.pageview(appName)
   }, [])
 
   const onRatingSubmit = async (star: number, comment?: string) => {
@@ -118,26 +112,16 @@ const PWA: React.FC<OwnProps> = ({
     }
   }
 
-  const renderRatings = useMemo(() => {
+  useEffect(() => {
     if (!pwa) return
-    if (!hasFetchedRatings && pwa.ratings && pwa.ratings.length < 1) {
+    if (
+      !hasFetchedRatings &&
+      pwa.appRatings &&
+      pwa.appRatings.ratings.length < 1
+    ) {
       setHasFetchedRatings(true)
       getRatings(pwa.appId)
     }
-    return pwa.ratings.length > 0 ? (
-      pwa.ratings.map((rating, i) => <RatingItem key={i} rating={rating} />)
-    ) : (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <p>
-          <i>No Reviews Yet</i>
-        </p>
-      </div>
-    )
   }, [pwa, hasFetchedRatings])
 
   return (
@@ -160,22 +144,22 @@ const PWA: React.FC<OwnProps> = ({
             {pwa ? (
               <Fragment>
                 <IonCol size="12">
-                  <PWAInfo pwa={pwa} isMyPwa={false} />
+                  <PWAInfo
+                    pwa={pwa}
+                    isMyPwa={false}
+                    onStar={onRatingSubmit}
+                    isLoggedIn={isLoggedIn}
+                    openModal={() => setIsOpen(true)}
+                  />
                 </IonCol>
-                <IonCol size="12" sizeMd="6" pushMd="6">
+                <IonCol size="12">
                   <ScreenshotSlider images={pwa.screenshots} />
-                </IonCol>
-                <IonCol size="12" sizeMd="6" pullMd="6">
-                  <Rating onSubmit={onRatingSubmit} />
-                  <IonList style={{ background: "inherit" }}>
-                    {renderRatings}
-                  </IonList>
                 </IonCol>
               </Fragment>
             ) : (
               notFound && (
                 <IonCol>
-                  <h1 className="HomeCardsHeader">PWA Store</h1>
+                  <h1 className="HomeCardsHeader">AppShare</h1>
                   <IonNote color="danger">App not found</IonNote>
                 </IonCol>
               )
@@ -183,8 +167,15 @@ const PWA: React.FC<OwnProps> = ({
           </IonRow>
         </IonGrid>
       </IonContent>
+      {pwa && pwa.appRatings && (
+        <StarsListModal
+          isOpen={isOpen}
+          onDidDismiss={() => setIsOpen(false)}
+          ratings={pwa.appRatings.ratings}
+        />
+      )}
     </IonPage>
   )
 }
 
-export default withRouter(memo(PWA))
+export default memo(PWA)

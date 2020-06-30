@@ -7,44 +7,49 @@ import {
   IonButtons,
   IonBackButton,
   IonTitle,
-  IonButton,
-  IonCheckbox,
   IonProgressBar,
-  IonTextarea,
+  IonSegment,
+  IonSegmentButton,
 } from "@ionic/react"
-import { FormItem } from "../../components"
-import ImageUploader from "react-images-upload"
 import { useDispatch, shallowEqual, useSelector } from "react-redux"
 import { ReduxCombinedState } from "../../redux/RootReducer"
-import { thunkCreateProfile } from "../../redux/User/actions"
-import { mdConverter } from "../../util"
-import ReactMde from "react-mde"
+import {
+  thunkCreateProfile,
+  thunkAddJob,
+  thunkAddEducation,
+  thunkDeleteEducation,
+  thunkDeleteJob,
+  thunkUpdateProfile,
+} from "../../redux/User/actions"
 import "react-mde/lib/styles/css/react-mde-all.css"
 import "./styles.css"
 import ReactGA from "react-ga"
+import JobForm from "../../components/JobForm"
+import ProfileForm from "../../components/ProfileForm"
+import { Degree, OccupationStatus } from "../../util/types"
+import EducationForm from "../../components/EducationForm"
+import EducationCard from "../../components/EducationCard"
+import FormCollapse from "../../components/FormCollapse"
+import JobCard from "../../components/JobCard"
+
+type SettingSection = "profile" | "education" | "jobs"
 
 const Settings: React.FC = () => {
-  const [fullName, setFullName] = useState<string>("")
-  const [gitHub, setGitHub] = useState<string>("")
-  const [linkedIn, setLinkedIn] = useState<string>("")
-  const [twitter, setTwitter] = useState<string>("")
-  const [showEmail, setShowEmail] = useState<boolean>(false)
-  const [avatar, setAvatar] = useState<File | undefined>(undefined)
-  const [location, setLocation] = useState<string>("")
-  const [header, setHeader] = useState<string>("")
-  const [about, setAbout] = useState<string>("")
-  const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write")
-  const [updateEmail, setUpdateEmail] = useState<string>("")
+  const [selectedSection, setSelectedSection] = useState<SettingSection>(
+    "profile"
+  )
 
-  const { email, profile, isLoading, status } = useSelector(
+  const { email, profile, isLoading, status, educations, jobs } = useSelector(
     ({
-      user: { email, profile, loading },
+      user: { email, profile, loading, educations, jobs },
       alerts: { status },
     }: ReduxCombinedState) => ({
       email: email,
       profile: profile,
       status: status,
       isLoading: loading,
+      educations: educations,
+      jobs: jobs,
     }),
     shallowEqual
   )
@@ -53,30 +58,98 @@ const Settings: React.FC = () => {
   const createProfile = useCallback(
     async (
       updateGitHub: string,
-      updateLinkedIn: string,
-      updateTwitter: string,
       updateShowEmail: boolean,
       updateEmail: string,
       updateAbout: string,
       updateHeader: string | undefined,
       updateLocation: string | undefined,
       updateFullName: string | undefined,
-      updateAvatar: File | undefined
+      updateOccupationStatus: OccupationStatus | undefined,
+      updateAvatar: File | undefined,
+      updateTechs: string[]
     ) => {
       dispatch(
         thunkCreateProfile(
           updateGitHub,
-          updateLinkedIn,
-          updateTwitter,
           updateShowEmail,
           updateEmail,
           updateAbout,
           updateHeader,
           updateLocation,
           updateFullName,
+          updateOccupationStatus,
+          updateTechs,
           updateAvatar
         )
       )
+    },
+    [dispatch]
+  )
+  const updateProfile = useCallback(
+    async (
+      profileId: number,
+      updateGitHub: string,
+      updateShowEmail: boolean,
+      updateEmail: string,
+      updateAbout: string,
+      updateHeader: string | undefined,
+      updateLocation: string | undefined,
+      updateFullName: string | undefined,
+      updateOccupationStatus: OccupationStatus | undefined,
+      updateAvatar: File | undefined,
+      updateTechs: string[] | undefined
+    ) => {
+      dispatch(
+        thunkUpdateProfile(
+          profileId,
+          updateGitHub,
+          updateShowEmail,
+          updateEmail,
+          updateAbout,
+          updateHeader,
+          updateLocation,
+          updateFullName,
+          updateOccupationStatus,
+          updateTechs,
+          updateAvatar
+        )
+      )
+    },
+    [dispatch]
+  )
+  const createJob = useCallback(
+    async (
+      company: string,
+      title: string,
+      start: string,
+      desciption?: string,
+      end?: string
+    ) => {
+      dispatch(thunkAddJob(company, title, start, desciption, end))
+    },
+    [dispatch]
+  )
+  const deleteJob = useCallback(
+    async (id: number) => {
+      dispatch(thunkDeleteJob(id))
+    },
+    [dispatch]
+  )
+  const createEducation = useCallback(
+    async (
+      school: string,
+      major: string,
+      degree: Degree,
+      gradDate: string,
+      minor?: string
+    ) => {
+      dispatch(thunkAddEducation(school, major, gradDate, degree, minor))
+    },
+    [dispatch]
+  )
+  const deleteEducation = useCallback(
+    async (id: number) => {
+      dispatch(thunkDeleteEducation(id))
     },
     [dispatch]
   )
@@ -84,44 +157,6 @@ const Settings: React.FC = () => {
   useEffect(() => {
     ReactGA.pageview(`settings`)
   }, [])
-
-  useEffect(() => {
-    if (status === "success") {
-      setAvatar(undefined)
-    }
-  }, [status])
-
-  useEffect(() => {
-    if (email) {
-      setUpdateEmail(email.endsWith("@pwa.com") ? "" : email)
-    }
-    if (profile) {
-      setGitHub(profile.gitHub)
-      setLinkedIn(profile.linkedIn)
-      setTwitter(profile.twitter)
-      setShowEmail(profile.showEmail)
-      setAbout(profile.about)
-      setLocation(profile.location)
-      setFullName(profile.fullName)
-      setHeader(profile.header)
-    }
-  }, [email, profile])
-
-  const onSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    createProfile(
-      gitHub!,
-      linkedIn!,
-      twitter!,
-      showEmail!,
-      updateEmail!,
-      about!,
-      header,
-      location,
-      fullName,
-      avatar
-    )
-  }
 
   return (
     <IonPage>
@@ -135,6 +170,16 @@ const Settings: React.FC = () => {
         {isLoading && <IonProgressBar type="indeterminate" color="primary" />}
       </IonHeader>
       <IonContent className="content">
+        <IonSegment
+          value={selectedSection}
+          onIonChange={(e) =>
+            setSelectedSection(e.detail.value as SettingSection)
+          }
+        >
+          <IonSegmentButton value="profile">Profile</IonSegmentButton>
+          <IonSegmentButton value="education">Education</IonSegmentButton>
+          <IonSegmentButton value="jobs">Jobs</IonSegmentButton>
+        </IonSegment>
         <div className="SettingsAvatarContainer">
           <img
             className="SettingsAvatar icon line-around"
@@ -145,114 +190,39 @@ const Settings: React.FC = () => {
             }
           />
         </div>
-        <form onSubmit={onSubmit}>
-          <FormItem name="Avatar" showError={false} errorMessage="">
-            <ImageUploader
-              fileContainerStyle={{
-                boxShadow: "none",
-                background: "inherit",
-                padding: "0",
-              }}
-              withPreview={avatar !== undefined}
-              withLabel={false}
-              singleImage={true}
-              withIcon={false}
-              buttonText="Choose Avatar"
-              onChange={(files: File[]) => setAvatar(files[0])}
-              imgExtension={[".jpg", ".png", ".jpeg"]}
-              maxFileSize={5242880}
-            />
-          </FormItem>
-          <FormItem
-            name="Full Name (optional)"
-            value={fullName}
-            onChange={(e) => setFullName(e.detail!.value)}
-            showError={false}
-            maxLength={30}
-            errorMessage=""
+        {selectedSection === "profile" && (
+          <ProfileForm
+            profile={profile}
+            email={email}
+            status={status}
+            onCreate={createProfile}
+            onUpdate={updateProfile}
           />
-          <FormItem
-            name="GitHub"
-            value={gitHub}
-            onChange={(e) => setGitHub(e.detail.value)}
-            showError={false}
-            errorMessage="Invalid GitHub Link"
-            maxLength={100}
-          />
-          <FormItem
-            name="LinkedIn"
-            value={linkedIn}
-            onChange={(e) => setLinkedIn(e.detail.value)}
-            showError={false}
-            errorMessage="Invalid LinkedIn Link"
-            maxLength={100}
-          />
-          <FormItem
-            name="Twitter"
-            value={twitter}
-            onChange={(e) => setTwitter(e.detail.value)}
-            showError={false}
-            errorMessage="Invalid Twitter Link"
-            maxLength={100}
-          />
-          <FormItem
-            name="Email"
-            value={updateEmail}
-            onChange={(e) => setUpdateEmail(e.detail.value)}
-            showError={false}
-            errorMessage=""
-            maxLength={50}
-          />
-          <FormItem name="Display Email?" showError={false} errorMessage="">
-            <IonCheckbox
-              checked={showEmail}
-              onIonChange={(e) => setShowEmail(e.detail.checked)}
-            />
-          </FormItem>
-          <FormItem
-            name="Location (optional)"
-            value={location}
-            onChange={(e) => setLocation(e.detail.value)}
-            maxLength={50}
-            showError={false}
-            errorMessage=""
-          />
-          <FormItem name="Header (optional)" showError={false} errorMessage="">
-            <IonTextarea
-              value={header}
-              onIonChange={(e) => setHeader(e.detail.value!)}
-              maxlength={200}
-              spellCheck={true}
-            />
-          </FormItem>
-          <FormItem
-            name="This is your section to add what ever you want in markdown"
-            showError={about?.trim() === ""}
-            errorMessage="About section is required"
-          >
-            <div style={{ width: "100%", paddingTop: "16px" }}>
-              <ReactMde
-                value={about}
-                onChange={setAbout}
-                selectedTab={selectedTab}
-                onTabChange={setSelectedTab}
-                generateMarkdownPreview={(md) =>
-                  Promise.resolve(mdConverter.makeHtml(about!))
-                }
+        )}
+        {selectedSection === "education" && (
+          <>
+            <FormCollapse title="Education">
+              <EducationForm status={status} onSubmit={createEducation} />
+            </FormCollapse>
+            {educations.map((ed, idx) => (
+              <EducationCard
+                key={idx}
+                education={ed}
+                onDelete={deleteEducation}
               />
-            </div>
-          </FormItem>
-          <IonButton
-            style={{ margin: "16px" }}
-            disabled={!about || about?.trim() === ""}
-            expand="block"
-            fill="outline"
-            type="submit"
-            color="dark"
-          >
-            Update
-          </IonButton>
-        </form>
+            ))}
+          </>
+        )}
+        {selectedSection === "jobs" && (
+          <>
+            <FormCollapse title="Job">
+              <JobForm status={status} onSubmit={createJob} />
+            </FormCollapse>
+            {jobs.map((job, idx) => (
+              <JobCard key={idx} job={job} onDelete={deleteJob} />
+            ))}
+          </>
+        )}
       </IonContent>
     </IonPage>
   )

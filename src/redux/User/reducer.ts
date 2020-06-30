@@ -13,6 +13,12 @@ import {
   USER_SET_NOT_ID,
   USER_SET_NOT,
   USER_SET_NOT_LOADING,
+  USER_ADD_JOB,
+  USER_ADD_EDUCATION,
+  USER_REMOVE_JOB,
+  USER_REMOVE_EDUCATION,
+  USER_ADD_STARRED,
+  USER_REMOVE_STARRED,
 } from "./types"
 import { AppActionTypes, REDUX_RESET } from "../App/types"
 
@@ -31,6 +37,9 @@ const DEFAULT_STATE_USER: UserState = {
   lastNotId: -1,
   notifications: [],
   notLoading: false,
+  jobs: [],
+  educations: [],
+  starredApps: [],
 }
 
 const userReducer = (
@@ -68,6 +77,20 @@ const userReducer = (
         pwas: action.payload,
       }
 
+    case USER_ADD_STARRED:
+      return {
+        ...state,
+        starredApps: [action.payload, ...state.starredApps],
+      }
+
+    case USER_REMOVE_STARRED:
+      return {
+        ...state,
+        starredApps: state.starredApps.filter(
+          (x) => x.appId !== action.payload
+        ),
+      }
+
     case USER_REPLACE_APP:
       return {
         ...state,
@@ -87,6 +110,32 @@ const userReducer = (
       return {
         ...state,
         pwas: [...state.pwas.filter((x) => x.appId !== action.payload)],
+      }
+
+    case USER_ADD_JOB:
+      return {
+        ...state,
+        jobs: [action.payload, ...state.jobs],
+      }
+
+    case USER_REMOVE_JOB:
+      return {
+        ...state,
+        jobs: [...state.jobs.filter((x) => x.id !== action.payload)],
+      }
+
+    case USER_ADD_EDUCATION:
+      return {
+        ...state,
+        educations: [action.payload, ...state.educations],
+      }
+
+    case USER_REMOVE_EDUCATION:
+      return {
+        ...state,
+        educations: [
+          ...state.educations.filter((x) => x.id !== action.payload),
+        ],
       }
     case USER_CREATE_PROFILE:
       return {

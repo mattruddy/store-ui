@@ -61,10 +61,10 @@ const Home: React.FC = () => {
     return (
       <>
         <HomeRow
-          pwas={homeData.topApps}
-          title="Top"
-          subtitle="Most popular"
-          linkTo=""
+          pwas={homeData.featuredApps}
+          title="Featured"
+          subtitle="Editors Choice"
+          linkTo="featured"
           isLoading={isLoading}
         />
         <HomeRow
@@ -75,10 +75,10 @@ const Home: React.FC = () => {
           isLoading={isLoading}
         />
         <HomeRow
-          pwas={homeData.newApps}
-          title="New"
-          subtitle="Fresh new uploads"
-          linkTo="new"
+          pwas={homeData.topApps}
+          title="Top"
+          subtitle="Most popular"
+          linkTo=""
           isLoading={isLoading}
         />
       </>
@@ -90,8 +90,8 @@ const Home: React.FC = () => {
       <HidingHeader hideDecimal={hideDecimal}>
         <div className="HomeHeader">
           <div>
-            <h1>PWA Store</h1>
-            <IonNote>Progressive Web App Discovery</IonNote>
+            <h1>AppShare</h1>
+            <IonNote>Build, Discovery and Share Applications</IonNote>
           </div>
           <div>
             <IonButtons>

@@ -1,4 +1,11 @@
-import { PWA, Push, Profile, StoreNotification } from "../../util/types"
+import {
+  PWA,
+  Push,
+  Profile,
+  StoreNotification,
+  Job,
+  Education,
+} from "../../util/types"
 
 export interface UserState {
   token: string
@@ -15,6 +22,9 @@ export interface UserState {
   lastNotId: number
   notifications: StoreNotification[]
   notLoading: boolean
+  jobs: Job[]
+  educations: Education[]
+  starredApps: PWA[]
 }
 
 export enum UserRole {
@@ -37,6 +47,22 @@ export const USER_CREATE_PROFILE = "USER_CREATE_PROFILE"
 export const USER_SET_NOT_ID = "USER_SET_NOT_ID"
 export const USER_SET_NOT = "USER_SET_NOT"
 export const USER_SET_NOT_LOADING = "USER_SET_NOT_LOADING"
+export const USER_ADD_JOB = "USER_ADD_JOB"
+export const USER_ADD_EDUCATION = "USER_ADD_EDUCATION"
+export const USER_REMOVE_JOB = "USER_REMOVE_JOB"
+export const USER_REMOVE_EDUCATION = "USER_REMOVE_EDUCATION"
+export const USER_ADD_STARRED = "USER_ADD_STARRED"
+export const USER_REMOVE_STARRED = "USER_REMOVE_STARRED"
+
+export interface setUserAddStarred {
+  type: typeof USER_ADD_STARRED
+  payload: PWA
+}
+
+export interface setUserRemoveStarred {
+  type: typeof USER_REMOVE_STARRED
+  payload: number
+}
 
 export interface setDarkMode {
   type: typeof USER_SET_DARKMODE
@@ -87,6 +113,26 @@ export interface AddAppAction {
   payload: PWA
 }
 
+export interface AddJobAction {
+  type: typeof USER_ADD_JOB
+  payload: Job
+}
+
+export interface RemoveJobAction {
+  type: typeof USER_REMOVE_JOB
+  payload: number
+}
+
+export interface AddEducationAction {
+  type: typeof USER_ADD_EDUCATION
+  payload: Education
+}
+
+export interface RemoveEdicationAction {
+  type: typeof USER_REMOVE_EDUCATION
+  payload: number
+}
+
 export interface RemoveAppAction {
   type: typeof USER_REMOVE_APP
   payload: number
@@ -108,6 +154,10 @@ export type UserActionTypes =
   | SetPWAsAction
   | RemoveAppAction
   | AddAppAction
+  | AddJobAction
+  | RemoveJobAction
+  | AddEducationAction
+  | RemoveEdicationAction
   | ReplaceAppAction
   | SetLoadingAction
   | SetUserAction
@@ -116,3 +166,5 @@ export type UserActionTypes =
   | SetNotIdAction
   | SetNotAction
   | SetNotLoadingAction
+  | setUserAddStarred
+  | setUserRemoveStarred

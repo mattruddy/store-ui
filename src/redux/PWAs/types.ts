@@ -1,9 +1,9 @@
 import {
   PWA,
   HomePWAs,
-  Rating,
   NewRating,
   PublicProfile,
+  AppRatings,
 } from "../../util/types"
 
 export interface PWASection {
@@ -34,6 +34,7 @@ export const DEV_PENDING = "DEV_PENDING"
 export const DEV_COMPLETE = "DEV_COMPLETE"
 export const RATINGS_COMPLETE = "RATINGS_COMPLETE"
 export const RATINGS_ADD = "RATINGS_ADD"
+export const RATING_REMOVE = "RATING_REMOVE"
 export const PWAS_SECTION_ADD = "PWAS_SECTION_ADD"
 export const PWAS_SECTION_REPLACE = "PWAS_SECTION_REPLACE"
 export const HOME_SET = "HOME_SET"
@@ -75,12 +76,17 @@ export interface CompletePWAsAction {
 
 export interface AddRatingsAction {
   type: typeof RATINGS_ADD
-  payload: { ratings: Rating[]; appId: number }
+  payload: { ratings: AppRatings; appId: number }
 }
 
 export interface AddRatingAction {
   type: typeof RATING_ADD
   payload: { newRating: NewRating; appId: number }
+}
+
+export interface RemoveRatingAction {
+  type: typeof RATING_REMOVE
+  payload: { appId: number; username: string }
 }
 
 export interface LoadingPWAsAction {
@@ -118,6 +124,7 @@ export type PWAsActionTypes =
   | CompleteRatingsAction
   | LoadingRatingsAction
   | AddRatingsAction
+  | RemoveRatingAction
   | PWASDataAction
   | AddRatingAction
   | AddDevAction

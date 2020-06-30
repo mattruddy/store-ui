@@ -15,21 +15,31 @@ import {
   IonRow,
   IonCol,
   IonButtons,
-  IonRouterLink,
-  IonIcon,
+  IonCheckbox,
 } from "@ionic/react"
-import { withRouter } from "react-router"
+import { useHistory } from "react-router"
 import { PWA } from "../../util/types"
 import { useSelector, shallowEqual } from "react-redux"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { Axios } from "../../redux/Actions"
-import { pencil } from "ionicons/icons"
+import {
+  pencil,
+  ellipsisVertical,
+  notifications,
+  newspaper,
+  medal,
+} from "ionicons/icons"
 import { RouteMap } from "../../routes"
+import Popover from "../../components/Popover"
+import { FormItem } from "../../components"
 
 const AdminPwas: React.FC = () => {
   const [pwas, setPwas] = useState<PWA[]>([])
   const [status, setStatus] = useState<string | undefined>()
+  const [isTutorial, setIsTutorial] = useState<boolean>()
   const [reason, setReason] = useState<string | undefined>()
+  const [showPopover, setShowPopover] = useState(false)
+  const history = useHistory()
 
   const { isLoggedIn } = useSelector(
     ({ user: { isLoggedIn } }: ReduxCombinedState) => ({
@@ -48,6 +58,34 @@ const AdminPwas: React.FC = () => {
       })()
     }
   }, [isLoggedIn])
+
+  const renderPopover = useMemo(
+    () => (
+      <Popover
+        showPopover={showPopover}
+        setShowPopover={setShowPopover}
+        icon={ellipsisVertical}
+        items={[
+          {
+            name: "Notifications",
+            action: () => history.push(RouteMap.ADMIN_NOTIFY),
+            icon: notifications,
+          },
+          {
+            name: "App Approval",
+            action: () => history.push(RouteMap.ADMIN_PWAS),
+            icon: newspaper,
+          },
+          {
+            name: "App Feature",
+            action: () => history.push(RouteMap.ADMIN_FEATURE),
+            icon: medal,
+          },
+        ]}
+      />
+    ),
+    [showPopover]
+  )
 
   const renderAdmin = useMemo(
     () => (
@@ -114,18 +152,27 @@ const AdminPwas: React.FC = () => {
                       rows={4}
                     />
                   )}
+                  <FormItem name="Is Tutorial?">
+                    <IonCheckbox
+                      checked={isTutorial}
+                      onIonChange={(e) => setIsTutorial(e.detail.checked)}
+                    ></IonCheckbox>
+                  </FormItem>
+
                   <IonButton
                     onClick={async () => {
                       const resp = await (await Axios()).put(
                         `admin/pwa/${pwa.appId}`,
                         {
                           code: status,
+                          isTutorial: isTutorial,
                           reason: reason,
                         }
                       )
                       if (resp.status === 200) {
                         setStatus(undefined)
                         setReason(undefined)
+                        setIsTutorial(false)
                         setPwas(pwas.filter((app) => app.appId !== pwa.appId))
                       }
                     }}
@@ -145,7 +192,7 @@ const AdminPwas: React.FC = () => {
         )}
       </Fragment>
     ),
-    [pwas, status, reason]
+    [pwas, status, reason, isTutorial]
   )
 
   return (
@@ -153,11 +200,7 @@ const AdminPwas: React.FC = () => {
       <IonHeader className="ion-no-border bottom-line-border">
         <IonToolbar>
           <IonTitle>Approval Admin</IonTitle>
-          <IonButtons slot="end">
-            <IonButton routerLink={RouteMap.ADMIN_NOTIFY}>
-              <IonIcon icon={pencil} />
-            </IonButton>
-          </IonButtons>
+          <IonButtons slot="end">{renderPopover}</IonButtons>
         </IonToolbar>
       </IonHeader>
       <IonContent>{renderAdmin}</IonContent>

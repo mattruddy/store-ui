@@ -255,6 +255,10 @@ ion-toast {
   --box-shadow: none;
 }
 
+ion-card-subtitle {
+  --color: var(--sub-color);
+}
+
 ion-select {
   color: var(--text-color);
   --placeholder-opacity: 0.6;
@@ -272,6 +276,10 @@ input.react-tag-input__input {
 
 div.alert-radio-label.sc-ion-alert-md {
   color: var(--text-color);
+}
+
+ion-fab-button {
+  --background-activated: none;
 }
 
 ion-segment-button {
@@ -305,6 +313,10 @@ ion-toast {
   --border-color: var(--store-border-color);
 }
 
+.primary-color {
+  --color: var(--ion-color-primary) !important;
+}
+
 textarea {
   background-color: var(--background-color);
 }
@@ -328,13 +340,32 @@ ion-split-pane {
   --background: #121212;
 }
 
-p {
-  color: var(--sub-color);
+ion-card-title {
+  --color: var(--text-color);
+}
+
+.mde-toolbar {
+  background: var(--background-color) !important;
+}
+
+.mde-toolbar button {
+  color: var(--text-color) !important;
+}
+
+p,
+li,
+ul,
+ol {
+  color: var(--text-color);
+}
+
+ion-footer {
+  background: var(--background-color);
 }
 
 /* Fix color for p ios */
 .sc-ion-label-ios-s p {
-  color: var(--sub-color);
+  color: var(--text-color);
 }
 
 .ios .segment-button-checked {
@@ -347,18 +378,16 @@ p {
   --store-border-color: #737373 !important;
   --background-color: #161616 !important;
   --ion-background-color: var(--background-color) !important;
-
   --ion-text-color: #eeeeee;
   --title-color: #eeeeee;
   --ion-color-step-50: #121212;
   --ion-toolbar-background: #121212;
-  /* --color: #eeeeee !important; */
   --ion-tab-bar-background: #121212 !important;
   --cat-text-color: #eeeeee;
   --pwa-title-color: #eeeeee !important;
   --rating-sender-color: #eeeeee !important;
   --text-color: #eeeeee !important;
-  --sub-color: #999999;
+  --sub-color: #b8b8b8;
   --ion-searchbar-color: #eeeeee !important;
   --tab-button-color: var(--text-color) !important;
 }
@@ -373,7 +402,7 @@ p {
   --pwa-title-color: #303028;
   --rating-sender-color: blue;
   --tab-button-color: var(--text-color);
-  --sub-color: #737373;
+  --sub-color: #444444;
   --title-color: var(--text-color);
 }
 
@@ -381,27 +410,3 @@ p {
 .dark-theme strong {
   color: #eeeeee !important;
 }
-
-/* iOS dark-theme */
-
-/* .ios .dark-theme {
-  --ion-background-color: #121212;
-  --ion-text-color: #eeeeee;
-  --ion-title-color: #eeeeee;
-  --ion-color-step-50: #121212;
-  --ion-toolbar-background: #161616;
-  --color: #eeeeee !important;
-  --ion-tab-bar-background: #121212 !important;
-}
-
-material design dark-theme
-
-.md .dark-theme {
-  --ion-background-color: #121212;
-  --ion-text-color: #eeeeee;
-  --ion-title-color: #eeeeee;
-  --ion-color-step-50: #121212;
-  --ion-toolbar-background: #121212;
-  --color: #eeeeee !important;
-  --ion-tab-bar-background: #121212 !important;
-} */
