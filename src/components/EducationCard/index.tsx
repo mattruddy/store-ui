@@ -38,13 +38,12 @@ const EducationCard: React.FC<ContainerProps> = ({ education, onDelete }) => {
         <IonCardTitle>{education.school}</IonCardTitle>
         <IonCardSubtitle>
           <p>
-            {capitalize(education.degree.toString())}s in {education.major}
+            <strong>{capitalize(education.degree.toString())}</strong> in{" "}
+            {education.major}
           </p>
+          {education.minor && <p>Minor - {education.minor}</p>}
           <p>{dateFormatterMMMYYYY(education.gradDate)}</p>
         </IonCardSubtitle>
-        {education.minor && (
-          <IonCardSubtitle>Minor - {education.minor}</IonCardSubtitle>
-        )}
       </IonCardHeader>
     </IonCard>
   )

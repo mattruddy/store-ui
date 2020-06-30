@@ -219,7 +219,7 @@ const ProfileForm: React.FC<ContainerProps> = ({
               return tag.length <= 30
             }}
             removeOnBackspace={true}
-            maxTags={5}
+            maxTags={8}
             placeholder="Enter to add"
           />
         </div>
