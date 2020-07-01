@@ -1,0 +1,22 @@
+.LocationSelectCountry {
+  padding: 16px;
+  width: 100%;
+}
+
+.LocationSelectCountry select {
+  width: 100%;
+  border-color: var(--store-border-color);
+  border-radius: 3px;
+}
+
+.LocationSelectRegion {
+  padding: 16px;
+  padding-top: 0;
+  width: 100%;
+}
+
+.LocationSelectRegion select {
+  width: 100%;
+  border-color: var(--store-border-color);
+  border-radius: 3px;
+}

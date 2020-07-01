@@ -157,7 +157,8 @@ export interface Profile {
   avatar: string
   about: string
   showEmail: boolean
-  location: string
+  country: string
+  region: string
   fullName: string
   header: string
   occupationStatus: OccupationStatus
@@ -173,7 +174,8 @@ export interface PublicProfile {
   email: string
   gitHub: string
   username: string
-  location: string
+  country: string
+  region: string
   fullName: string
   header: string
   profileId: number

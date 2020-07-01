@@ -9,6 +9,7 @@ import {
 import { FormItem } from ".."
 import ImageUploader from "react-images-upload"
 import ReactMde from "react-mde"
+import { CountryDropdown, RegionDropdown } from "react-country-region-selector"
 import {
   Profile,
   OccupationStatus,
@@ -19,6 +20,7 @@ import {
 import { mdConverter } from "../../util"
 import ReactTagInput from "@pathofdev/react-tag-input"
 import Selectables from "../Selectables"
+import LocationSelect from "./LocationSelect"
 
 interface ContainerProps {
   status: "success" | "fail" | undefined
@@ -30,7 +32,8 @@ interface ContainerProps {
     email: string,
     about: string,
     header: string,
-    location: string,
+    country: string,
+    region: string,
     fullName: string,
     occupationStatus: OccupationStatus,
     experience: Experience,
@@ -44,7 +47,8 @@ interface ContainerProps {
     email: string,
     about: string,
     header: string,
-    location: string,
+    country: string,
+    region: string,
     fullName: string,
     occupationStatus: OccupationStatus,
     experience: Experience,
@@ -64,7 +68,8 @@ const ProfileForm: React.FC<ContainerProps> = ({
   const [gitHub, setGitHub] = useState<string>("")
   const [showEmail, setShowEmail] = useState<boolean>(false)
   const [avatar, setAvatar] = useState<File | undefined>(undefined)
-  const [location, setLocation] = useState<string>("")
+  const [country, setCountry] = useState<string>("")
+  const [region, setRegion] = useState<string>("")
   const [header, setHeader] = useState<string>("")
   const [about, setAbout] = useState<string>("")
   const [experience, setExperience] = useState<Experience>()
@@ -103,12 +108,13 @@ const ProfileForm: React.FC<ContainerProps> = ({
       setGitHub(profile.gitHub)
       setShowEmail(profile.showEmail)
       setAbout(profile.about)
-      setLocation(profile.location)
       setFullName(profile.fullName)
       setHeader(profile.header)
       setOccupationStatus(profile.occupationStatus)
       setExperience(profile.experience)
       setTechs(profile.techs)
+      setCountry(profile.country)
+      setRegion(profile.region)
     }
   }, [email, profile])
 
@@ -122,7 +128,8 @@ const ProfileForm: React.FC<ContainerProps> = ({
           email!,
           about,
           header,
-          location,
+          country,
+          region,
           fullName,
           occupationStatus!,
           experience!,
@@ -135,7 +142,8 @@ const ProfileForm: React.FC<ContainerProps> = ({
           email!,
           about,
           header,
-          location,
+          country,
+          region,
           fullName,
           occupationStatus!,
           experience!,
@@ -187,13 +195,11 @@ const ProfileForm: React.FC<ContainerProps> = ({
           onIonChange={(e) => setShowEmail(e.detail.checked)}
         />
       </FormItem>
-      <FormItem
-        name="Location"
-        value={location}
-        onChange={(e) => setLocation(e.detail.value)}
-        maxLength={50}
-        showError={false}
-        errorMessage=""
+      <LocationSelect
+        country={country}
+        region={region}
+        onCountryChange={(s) => setCountry(s)}
+        onRegionChange={(s) => setRegion(s)}
       />
       <FormItem name="Occupation Status">
         <IonSelect

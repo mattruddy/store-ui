@@ -19,6 +19,7 @@ import {
   IonProgressBar,
   IonGrid,
   IonButton,
+  IonCard,
 } from "@ionic/react"
 import { useHistory } from "react-router"
 import { PWACard } from "../../components"
@@ -143,8 +144,6 @@ const Profile: React.FC = () => {
     )
   }, [starredApps, hideStar])
 
-  console.log(role)
-
   return (
     <IonPage>
       <IonHeader className="ion-no-border bottom-line-border">
@@ -199,19 +198,22 @@ const Profile: React.FC = () => {
         <IonGrid>
           <IonRow>
             <IonCol ref={ref} className="ProfileCardCol" size="12">
-              <ProfileCard
-                isMyProfile={true}
-                data={totalData}
-                avatar={profile?.avatar}
-                gitHub={profile?.gitHub}
-                header={profile?.header}
-                fullName={profile?.fullName}
-                location={profile?.location}
-                email={email}
-                occupationStatus={profile?.occupationStatus}
-                username={username}
-                isLoading={isLoading}
-              />
+              <IonCard>
+                <ProfileCard
+                  isMyProfile={true}
+                  data={totalData}
+                  avatar={profile?.avatar}
+                  gitHub={profile?.gitHub}
+                  header={profile?.header}
+                  fullName={profile?.fullName}
+                  country={profile?.country}
+                  region={profile?.region}
+                  email={email}
+                  occupationStatus={profile?.occupationStatus}
+                  username={username}
+                  isLoading={isLoading}
+                />
+              </IonCard>
             </IonCol>
             <IonCol size="12">
               {renderAppsSections}

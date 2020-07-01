@@ -27,6 +27,7 @@ import DevCard from "../../components/DevCard"
 import { FormItem } from "../../components"
 import Selectables from "../../components/Selectables"
 import ReactTagInput from "@pathofdev/react-tag-input"
+import LocationSelect from "../../components/ProfileForm/LocationSelect"
 
 const Recruiter: React.FC = () => {
   const [fullName, setFullName] = useState<string | undefined>()
@@ -35,6 +36,9 @@ const Recruiter: React.FC = () => {
   const [techs, setTechs] = useState<string[]>([])
   const [experience, setExperience] = useState<Experience | undefined>()
   const [tech, setTech] = useState<string>("")
+  const [country, setCountry] = useState<string | undefined>()
+  const [region, setRegion] = useState<string | undefined>()
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const ref = useRef<any>(null)
   const [profileSearch, setProfileSearch] = useState<PublicProfile[]>([])
   const [didSearch, setDidSearch] = useState<boolean>(false)
@@ -55,17 +59,23 @@ const Recruiter: React.FC = () => {
 
   const handleOnSearch = async (e: FormEvent) => {
     e.preventDefault()
+    setIsLoading(true)
     setDidSearch(true)
-    const profileResp = await (await Axios()).post(`/recruiter/devs/search`, {
-      fullName: fullName,
-      school: school,
-      company: company,
-      techs: techs,
-      experience: experience,
-    })
-    const profileData: PublicProfile[] = profileResp.data
-
-    setProfileSearch(profileData)
+    try {
+      const profileResp = await (await Axios()).post(`/recruiter/devs/search`, {
+        fullName: fullName,
+        school: school,
+        company: company,
+        techs: techs,
+        experience: experience,
+        country: country,
+        region: region,
+      })
+      const profileData: PublicProfile[] = profileResp.data
+      setProfileSearch(profileData)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const renderProfileResults = useMemo(() => {
@@ -75,14 +85,14 @@ const Recruiter: React.FC = () => {
           <DevCard dev={profile} url=""></DevCard>
         </IonCol>
       ))
-    ) : didSearch ? (
+    ) : didSearch && !isLoading ? (
       <IonCol>
         <p>No Developers</p>
       </IonCol>
     ) : (
       <> </>
     )
-  }, [profileSearch, didSearch])
+  }, [profileSearch, didSearch, isLoading])
 
   return (
     <IonPage>
@@ -188,6 +198,15 @@ const Recruiter: React.FC = () => {
               </IonSelectOption>
             </IonSelect>
           </FormItem>
+          <LocationSelect
+            country={country!}
+            region={region!}
+            onCountryChange={(val) => {
+              setCountry(val)
+              setRegion("")
+            }}
+            onRegionChange={(val) => setRegion(val)}
+          />
           <IonButton fill="outline" expand="block" type="submit">
             Search
           </IonButton>

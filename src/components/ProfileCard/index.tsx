@@ -21,7 +21,8 @@ interface ContainerProps {
   isMyProfile: boolean
   avatar?: string
   gitHub?: string
-  location?: string
+  country?: string
+  region?: string
   fullName?: string
   header?: string
   data?: TotalAppData
@@ -35,7 +36,8 @@ const ProfileCard: React.FC<ContainerProps> = ({
   isMyProfile,
   avatar,
   gitHub,
-  location,
+  country,
+  region,
   header,
   fullName,
   email,
@@ -102,10 +104,10 @@ const ProfileCard: React.FC<ContainerProps> = ({
           {OccupationStatusEnumProps[occupationStatus]}
         </div>
       )}
-      {location && (
+      {country && region && (
         <div className="sub-color">
           <IonIcon style={{ paddingRight: "5px" }} icon={locationOutline} />
-          {location}
+          {region}, {country}
         </div>
       )}
       <div className="ProfileSubTitleBlock">

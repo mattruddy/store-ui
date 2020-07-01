@@ -92,7 +92,8 @@ const Developer: React.FC = () => {
           occupationStatus={profile.occupationStatus}
           header={profile.header}
           fullName={profile.fullName}
-          location={profile.location}
+          country={profile.country}
+          region={profile.region}
         />
       ),
     [profile, isLoading]
