@@ -29,6 +29,20 @@ export enum OccupationStatus {
   COMPANY = "COMPANY",
 }
 
+export enum Experience {
+  SCHOOL = "SCHOOL",
+  JR = "JR",
+  MID = "MID",
+  SENIOR = "SENIOR",
+}
+
+export const ExperienceProps: Record<string, string> = {
+  SCHOOL: "In school",
+  JR: "1 - 3 years",
+  MID: "3 - 5 years",
+  SENIOR: "6+",
+}
+
 export const OccupationStatusEnumProps: Record<string, string> = {
   HIRED: "Hired, not looking",
   LOOKING: "Looking for opportunities",
@@ -147,6 +161,7 @@ export interface Profile {
   fullName: string
   header: string
   occupationStatus: OccupationStatus
+  experience: Experience
   techs: string[]
   profileId: number
 }
@@ -165,6 +180,7 @@ export interface PublicProfile {
   educations: Education[]
   jobs: Job[]
   occupationStatus: OccupationStatus
+  experience: Experience
   techs: string[]
 }
 

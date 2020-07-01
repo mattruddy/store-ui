@@ -27,6 +27,7 @@ import {
   Education,
   Degree,
   OccupationStatus,
+  Experience,
 } from "../../util/types"
 import { ReduxCombinedState } from "../RootReducer"
 import { Action } from "redux"
@@ -162,6 +163,7 @@ export const thunkCreateProfile = (
   location: string | undefined,
   fullName: string | undefined,
   occupationStatus: OccupationStatus | undefined,
+  experience: Experience | undefined,
   techs: string[],
   avatar?: File
 ): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
@@ -177,6 +179,7 @@ export const thunkCreateProfile = (
       location,
       fullName,
       occupationStatus,
+      experience,
       techs,
     }
     const fd = new FormData()
@@ -218,6 +221,7 @@ export const thunkUpdateProfile = (
   location: string | undefined,
   fullName: string | undefined,
   occupationStatus: OccupationStatus | undefined,
+  experience: Experience | undefined,
   techs: string[] | undefined,
   avatar?: File
 ): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
@@ -233,6 +237,7 @@ export const thunkUpdateProfile = (
       location,
       fullName,
       occupationStatus,
+      experience,
       techs,
     }
     const fd = new FormData()

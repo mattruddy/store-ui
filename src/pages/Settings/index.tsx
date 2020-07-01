@@ -26,7 +26,7 @@ import "./styles.css"
 import ReactGA from "react-ga"
 import JobForm from "../../components/JobForm"
 import ProfileForm from "../../components/ProfileForm"
-import { Degree, OccupationStatus } from "../../util/types"
+import { Degree, OccupationStatus, Experience } from "../../util/types"
 import EducationForm from "../../components/EducationForm"
 import EducationCard from "../../components/EducationCard"
 import FormCollapse from "../../components/FormCollapse"
@@ -65,6 +65,7 @@ const Settings: React.FC = () => {
       updateLocation: string | undefined,
       updateFullName: string | undefined,
       updateOccupationStatus: OccupationStatus | undefined,
+      updateExperience: Experience | undefined,
       updateAvatar: File | undefined,
       updateTechs: string[]
     ) => {
@@ -78,6 +79,7 @@ const Settings: React.FC = () => {
           updateLocation,
           updateFullName,
           updateOccupationStatus,
+          updateExperience,
           updateTechs,
           updateAvatar
         )
@@ -96,6 +98,7 @@ const Settings: React.FC = () => {
       updateLocation: string | undefined,
       updateFullName: string | undefined,
       updateOccupationStatus: OccupationStatus | undefined,
+      updateExperience: Experience | undefined,
       updateAvatar: File | undefined,
       updateTechs: string[] | undefined
     ) => {
@@ -110,6 +113,7 @@ const Settings: React.FC = () => {
           updateLocation,
           updateFullName,
           updateOccupationStatus,
+          updateExperience,
           updateTechs,
           updateAvatar
         )

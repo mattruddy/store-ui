@@ -13,6 +13,8 @@ import {
   Profile,
   OccupationStatus,
   OccupationStatusEnumProps,
+  Experience,
+  ExperienceProps,
 } from "../../util/types"
 import { mdConverter } from "../../util"
 import ReactTagInput from "@pathofdev/react-tag-input"
@@ -31,6 +33,7 @@ interface ContainerProps {
     location: string,
     fullName: string,
     occupationStatus: OccupationStatus,
+    experience: Experience,
     avatar: File | undefined,
     techs: string[]
   ) => void
@@ -44,6 +47,7 @@ interface ContainerProps {
     location: string,
     fullName: string,
     occupationStatus: OccupationStatus,
+    experience: Experience,
     avatar: File | undefined,
     techs: string[]
   ) => void
@@ -63,6 +67,7 @@ const ProfileForm: React.FC<ContainerProps> = ({
   const [location, setLocation] = useState<string>("")
   const [header, setHeader] = useState<string>("")
   const [about, setAbout] = useState<string>("")
+  const [experience, setExperience] = useState<Experience>()
   const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write")
   const [updateEmail, setUpdateEmail] = useState<string>("")
   const [occupationStatus, setOccupationStatus] = useState<OccupationStatus>()
@@ -102,6 +107,7 @@ const ProfileForm: React.FC<ContainerProps> = ({
       setFullName(profile.fullName)
       setHeader(profile.header)
       setOccupationStatus(profile.occupationStatus)
+      setExperience(profile.experience)
       setTechs(profile.techs)
     }
   }, [email, profile])
@@ -119,6 +125,7 @@ const ProfileForm: React.FC<ContainerProps> = ({
           location,
           fullName,
           occupationStatus!,
+          experience!,
           avatar,
           techs
         )
@@ -131,6 +138,7 @@ const ProfileForm: React.FC<ContainerProps> = ({
           location,
           fullName,
           occupationStatus!,
+          experience!,
           avatar,
           techs
         )
@@ -203,6 +211,25 @@ const ProfileForm: React.FC<ContainerProps> = ({
           </IonSelectOption>
           <IonSelectOption value={OccupationStatus.COMPANY}>
             {OccupationStatusEnumProps[OccupationStatus.COMPANY]}
+          </IonSelectOption>
+        </IonSelect>
+      </FormItem>
+      <FormItem name="Experience">
+        <IonSelect
+          value={experience}
+          onIonChange={(e) => setExperience(e.detail.value)}
+        >
+          <IonSelectOption value={Experience.SCHOOL}>
+            {ExperienceProps[Experience.SCHOOL]}
+          </IonSelectOption>
+          <IonSelectOption value={Experience.JR}>
+            {ExperienceProps[Experience.JR]}
+          </IonSelectOption>
+          <IonSelectOption value={Experience.MID}>
+            {ExperienceProps[Experience.MID]}
+          </IonSelectOption>
+          <IonSelectOption value={Experience.SENIOR}>
+            {ExperienceProps[Experience.SENIOR]}
           </IonSelectOption>
         </IonSelect>
       </FormItem>
