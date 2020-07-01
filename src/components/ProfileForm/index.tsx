@@ -125,7 +125,7 @@ const ProfileForm: React.FC<ContainerProps> = ({
           profile.profileId,
           gitHub,
           showEmail,
-          email!,
+          updateEmail,
           about,
           header,
           country,
@@ -139,7 +139,7 @@ const ProfileForm: React.FC<ContainerProps> = ({
       : onCreate(
           gitHub,
           showEmail,
-          email!,
+          updateEmail,
           about,
           header,
           country,
