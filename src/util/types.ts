@@ -40,7 +40,7 @@ export const ExperienceProps: Record<string, string> = {
   SCHOOL: "In school",
   JR: "1 - 3 years",
   MID: "3 - 5 years",
-  SENIOR: "6+",
+  SENIOR: "6+ years",
 }
 
 export const OccupationStatusEnumProps: Record<string, string> = {

@@ -57,6 +57,7 @@ import Developer from "./pages/Developer"
 import AddPWA from "./pages/AddPWA"
 import Notifications from "./pages/Notifications"
 import AdminFeature from "./pages/AdminFeature"
+import Recruiter from "./pages/Recruiter"
 
 const App: React.FC = () => {
   return <IonicApp />
@@ -278,6 +279,11 @@ const IonicApp: React.FC = () => {
                   <Route
                     path={RouteMap.ADMIN_ROOT}
                     render={() => <Redirect to={RouteMap.ADMIN_PWAS} />}
+                    exact={true}
+                  />
+                  <Route
+                    path={RouteMap.RECRUITER}
+                    component={Recruiter}
                     exact={true}
                   />
                   <Route

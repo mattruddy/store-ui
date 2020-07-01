@@ -18,6 +18,7 @@ import {
   IonCol,
   IonProgressBar,
   IonGrid,
+  IonButton,
 } from "@ionic/react"
 import { useHistory } from "react-router"
 import { PWACard } from "../../components"
@@ -57,6 +58,7 @@ const Profile: React.FC = () => {
     email,
     totalData,
     starredApps,
+    role,
   } = useSelector(
     ({
       user: {
@@ -67,6 +69,7 @@ const Profile: React.FC = () => {
         profile,
         email,
         starredApps,
+        role,
       },
     }: ReduxCombinedState) => ({
       pwas: pwas,
@@ -76,6 +79,7 @@ const Profile: React.FC = () => {
       profile: profile,
       email: email,
       starredApps: starredApps,
+      role: role,
       totalData: pwas.reduce<TotalAppData>(
         (tot, currentPwa) => ({
           totalInstalls: tot.totalInstalls + currentPwa.installs,
@@ -139,12 +143,19 @@ const Profile: React.FC = () => {
     )
   }, [starredApps, hideStar])
 
+  console.log(role)
+
   return (
     <IonPage>
       <IonHeader className="ion-no-border bottom-line-border">
         <IonToolbar>
           <IonTitle>{inView ? "Profile" : username}</IonTitle>
           <IonButtons slot="end">
+            {role > 1 && (
+              <IonButton onClick={() => history.push(RouteMap.RECRUITER)}>
+                Recruiter
+              </IonButton>
+            )}
             <Popover
               showPopover={showPopover}
               setShowPopover={setShowPopover}
