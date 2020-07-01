@@ -150,7 +150,7 @@ const Profile: React.FC = () => {
         <IonToolbar>
           <IonTitle>{inView ? "Profile" : username}</IonTitle>
           <IonButtons slot="end">
-            {role > 1 && (
+            {(role === "RECRUITER" || role === "ADMIN") && (
               <IonButton onClick={() => history.push(RouteMap.RECRUITER)}>
                 Recruiter
               </IonButton>

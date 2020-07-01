@@ -11,7 +11,6 @@ const HAS_LOGGED_IN = "hasLoggedIn"
 const DARK_MODE = "darkMode"
 const USERNAME = "username"
 const EMAIL = "email"
-const ROLE = "role"
 const PUSH_KEY = "push_key"
 const PUSH_AUTH = "push_auth"
 const PUSH_ENDPOINT = "push_endpoint"
@@ -24,7 +23,6 @@ const getUserData = async () => {
     Storage.get({ key: DARK_MODE }),
     Storage.get({ key: USERNAME }),
     Storage.get({ key: EMAIL }),
-    Storage.get({ key: ROLE }),
     Storage.get({ key: PUSH_KEY }),
     Storage.get({ key: PUSH_AUTH }),
     Storage.get({ key: PUSH_ENDPOINT }),
@@ -35,18 +33,16 @@ const getUserData = async () => {
   const darkMode = response[2].value === "true"
   const username = response[3].value || undefined
   const email = response[4].value || undefined
-  const role = parseInt(response[5].value || "2")
-  const pushKey = response[6].value || undefined
-  const pushAuth = response[7].value || undefined
-  const pushEndpoint = response[8].value || undefined
-  const lastNotId = parseInt(response[9].value || "-1")
+  const pushKey = response[5].value || undefined
+  const pushAuth = response[6].value || undefined
+  const pushEndpoint = response[7].value || undefined
+  const lastNotId = parseInt(response[8].value || "-1")
   const data = {
     isLoggedIn,
     token,
     darkMode,
     username,
     email,
-    role,
     push: pushKey
       ? ({ key: pushKey, auth: pushAuth, endpoint: pushEndpoint } as Push)
       : undefined,
@@ -73,10 +69,6 @@ const setUsernameStorage = async (username: string) => {
 
 const setEmailStorage = async (email: string) => {
   await Storage.set({ key: USERNAME, value: email })
-}
-
-const setRoleStorage = async (role: string) => {
-  await Storage.set({ key: ROLE, value: role })
 }
 
 const setPushStorage = async (push: Push) => {
@@ -193,7 +185,6 @@ export {
   setTokenStorage,
   setEmailStorage,
   setUsernameStorage,
-  setRoleStorage,
   setPushStorage,
   setLastNotIdStorage,
 }

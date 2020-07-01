@@ -6,7 +6,6 @@ import {
   USER_REPLACE_APP,
   USER_ADD_APP,
   USER_REMOVE_APP,
-  UserRole,
   USER_CREATE_PROFILE,
   USER_SET_NOT_ID,
   USER_SET_NOT,
@@ -40,7 +39,6 @@ import {
   setIsLoggedInStorage,
   Axios,
   AxiosForm,
-  setRoleStorage,
   UploadScreenshots,
   DeleteScreenshot,
   setPushStorage,
@@ -85,11 +83,11 @@ export const thunkSignUp = (
       data: { token },
     } = response
 
-    dispatch(setData({ token, username, isLoggedIn: true }))
     await setTokenStorage(token)
     await setUsernameStorage(username)
     await setEmailStorage(email)
     await setIsLoggedInStorage("true")
+    dispatch(setData({ token, username, isLoggedIn: true }))
     dispatch(
       setAlert({
         message: "Signed Up!",
@@ -292,6 +290,7 @@ export const thunkLoadProfile = (): ThunkAction<
         educations,
         jobs,
         starredApps,
+        role,
       },
     } = resp
     dispatch(
@@ -303,6 +302,7 @@ export const thunkLoadProfile = (): ThunkAction<
         educations: educations as Education[],
         jobs: jobs as Job[],
         starredApps: starredApps as PWA[],
+        role,
       })
     )
     await setEmailStorage(email)
@@ -364,7 +364,6 @@ export const thunkLogout = (): ThunkAction<
   await setEmailStorage("")
   await setTokenStorage("")
   await setUsernameStorage("")
-  await setRoleStorage("")
   await setIsLoggedInStorage("false")
   dispatch(setLoading(false))
 }
@@ -494,7 +493,6 @@ export const thunkThirdPartyLogin = (
     dispatch(setLoading(true))
     await setTokenStorage(token)
     dispatch(setData({ token, isLoggedIn: true }))
-    await setRoleStorage(UserRole.Dev.toString())
     await setIsLoggedInStorage("true")
   } finally {
     dispatch(setLoading(false))

@@ -17,7 +17,7 @@ export interface UserState {
   email: string
   darkMode: boolean
   isLoggedIn: boolean | undefined
-  role: UserRole
+  role: string
   push: Push | undefined
   lastNotId: number
   notifications: StoreNotification[]
@@ -25,13 +25,6 @@ export interface UserState {
   jobs: Job[]
   educations: Education[]
   starredApps: PWA[]
-}
-
-export enum UserRole {
-  User = 0,
-  Dev = 1,
-  Mod = 2,
-  Admin = 3,
 }
 
 export const USER_SET_LOADING = "USER_SET_LOADING"
