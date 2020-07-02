@@ -361,7 +361,7 @@ const IonicApp: React.FC = () => {
           <IonToast
             isOpen={hasUpdate}
             position="top"
-            message={"There is a new version of AppShare available"}
+            message={"There is a new version of DevZone available"}
             buttons={[
               {
                 side: "end",
