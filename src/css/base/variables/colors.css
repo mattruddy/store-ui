@@ -359,6 +359,12 @@ ol {
   color: var(--text-color);
 }
 
+h2,
+h3,
+h4 {
+  color: var(--sub-color);
+}
+
 ion-footer {
   background: var(--background-color);
 }

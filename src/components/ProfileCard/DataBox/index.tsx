@@ -13,11 +13,15 @@ const DataBox: React.FC<ContainerProps> = ({ data }) => {
       <IonCardContent>
         <IonRow>
           <IonCol className="DataRowLeft" size="6">
-            <span>Installs</span>
+            <span>
+              <h3>Installs</h3>
+            </span>
             <span className="text-color">{data.totalInstalls}</span>
           </IonCol>
           <IonCol className="DataRowRight" size="6">
-            <span>Page Views</span>
+            <span>
+              <h3>Page Views</h3>
+            </span>
             <span className="text-color">{data.totalPageViews}</span>
           </IonCol>
         </IonRow>

@@ -7,6 +7,8 @@
   width: 100%;
   border-color: var(--store-border-color);
   border-radius: 3px;
+  color: var(--text-color);
+  background: var(--background-color);
 }
 
 .LocationSelectRegion {
@@ -19,4 +21,6 @@
   width: 100%;
   border-color: var(--store-border-color);
   border-radius: 3px;
+  color: var(--text-color);
+  background: var(--background-color);
 }
