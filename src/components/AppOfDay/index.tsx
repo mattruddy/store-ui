@@ -13,7 +13,7 @@ import ReactMde from "react-mde"
 import { mdConverter } from "../../util"
 
 interface AppOfDayProps {
-  url: string
+  url?: string
   icon: string
   info: string
   title: string

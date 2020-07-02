@@ -64,7 +64,7 @@ const Home: React.FC = () => {
           <AppOfDay
             title={homeData.featuredApps[0].name}
             info={homeData.featuredApps[0].description}
-            url={homeData.featuredApps[0].link}
+            url={`/pwa/${homeData.featuredApps[0].name.replace(/ /g, "-")}`}
             icon={homeData.featuredApps[0].icon}
           />
         )}

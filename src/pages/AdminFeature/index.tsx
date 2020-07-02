@@ -162,7 +162,6 @@ const AdminFeature: React.FC = () => {
                 title={appOfDay.name}
                 info={appOfDay.description}
                 icon={appOfDay.icon}
-                url={appOfDay.link}
                 edit={true}
                 onSubmit={undefined}
               />
