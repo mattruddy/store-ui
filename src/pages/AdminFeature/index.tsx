@@ -29,11 +29,13 @@ import AppList from "../../components/AppList"
 import Popover from "../../components/Popover"
 import { useHistory } from "react-router"
 import { DebouncedSearch } from "../../components"
+import AppOfDay from "../../components/AppOfDay"
 
 const AdminFeature: React.FC = () => {
   const [featured, setFeatured] = useState<PWA[]>([])
   const [pwaSearchResults, setPwaSearchResults] = useState<PWA[]>([])
   const [showPopover, setShowPopover] = useState(false)
+  const [appOfDay, setAppOfDay] = useState<PWA>()
   const history = useHistory()
 
   const { isLoggedIn } = useSelector(
@@ -98,6 +100,10 @@ const AdminFeature: React.FC = () => {
     setFeatured((curr) => [...curr, pwa])
   }
 
+  const onAppOfDay = async (pwa: PWA) => {
+    setAppOfDay(pwa)
+  }
+
   const renderPopover = useMemo(
     () => (
       <Popover
@@ -145,8 +151,22 @@ const AdminFeature: React.FC = () => {
           <>
             <IonCard className="line-around">
               <DebouncedSearch onChangeCallback={handleOnSearchChange} />
-              <AppList pwas={pwaSearchResults} addCallback={onAdd} />
+              <AppList
+                pwas={pwaSearchResults}
+                addCallback={onAdd}
+                starCallback={onAppOfDay}
+              />
             </IonCard>
+            {appOfDay && (
+              <AppOfDay
+                title={appOfDay.name}
+                info={appOfDay.description}
+                icon={appOfDay.icon}
+                url={appOfDay.link}
+                edit={true}
+                onSubmit={undefined}
+              />
+            )}
             <IonCard className="line-around">
               <IonCardHeader>
                 <IonCardTitle>Featured</IonCardTitle>

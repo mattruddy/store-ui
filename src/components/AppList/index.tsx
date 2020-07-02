@@ -12,12 +12,13 @@ import {
   IonReorderGroup,
   IonReorder,
 } from "@ionic/react"
-import { add, trash } from "ionicons/icons"
+import { add, trash, star } from "ionicons/icons"
 
 interface AppListProps {
   pwas: PWA[]
   deleteCallback?: (pwa: PWA) => void
   addCallback?: (pwa: PWA) => void
+  starCallback?: (pwa: PWA) => void
   doReorder?: (from: number, to: number) => void
 }
 
@@ -25,6 +26,7 @@ const AppList: React.FC<AppListProps> = ({
   pwas,
   deleteCallback,
   addCallback,
+  starCallback,
   doReorder,
 }) => {
   return (
@@ -54,6 +56,16 @@ const AppList: React.FC<AppListProps> = ({
                   {addCallback && (
                     <IonButton fill="clear" onClick={(e) => addCallback(n)}>
                       <IonIcon icon={add} />
+                    </IonButton>
+                  )}
+                  {starCallback && (
+                    <IonButton
+                      fill="clear"
+                      onClick={(e) => {
+                        starCallback(n)
+                      }}
+                    >
+                      <IonIcon icon={star} />
                     </IonButton>
                   )}
                   {deleteCallback && (
