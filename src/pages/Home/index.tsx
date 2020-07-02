@@ -3,7 +3,6 @@ import {
   IonNote,
   IonPage,
   useIonViewDidEnter,
-  IonToggle,
   IonButtons,
   IonButton,
   IonIcon,
@@ -22,6 +21,7 @@ import "./styles.css"
 import { useHidingHeader } from "../../hooks/useHidingHeader"
 import { thunkSetDarkMode } from "../../redux/User/actions"
 import { sunny, moon } from "ionicons/icons"
+import AppOfDay from "../../components/AppOfDay"
 
 const Home: React.FC = () => {
   const content = useRef<any>()
@@ -60,6 +60,14 @@ const Home: React.FC = () => {
   const renderHomeList = useMemo(() => {
     return (
       <>
+        {homeData && homeData.featuredApps && homeData.featuredApps[0] && (
+          <AppOfDay
+            title={homeData.featuredApps[0].name}
+            info={homeData.featuredApps[0].description}
+            url={homeData.featuredApps[0].link}
+            icon={homeData.featuredApps[0].icon}
+          />
+        )}
         <HomeRow
           pwas={homeData.featuredApps}
           title="Featured"
@@ -95,7 +103,7 @@ const Home: React.FC = () => {
           </div>
           <div>
             <IonButtons>
-              <IonButton onClick={(e) => setDarkMode(!darkMode)}>
+              <IonButton onClick={() => setDarkMode(!darkMode)}>
                 <IonIcon icon={darkMode ? moon : sunny} />
               </IonButton>
               <AddToHomeScreen
