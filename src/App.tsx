@@ -296,7 +296,7 @@ const IonicApp: React.FC = () => {
                 <IonTabBar slot="bottom">
                   <IonTabButton className="tab" tab="pwas" href={RouteMap.HOME}>
                     <IonIcon icon={home} />
-                    <IonLabel>Store</IonLabel>
+                    <IonLabel>Browse</IonLabel>
                   </IonTabButton>
                   <IonTabButton
                     className="CatTabButton"
@@ -361,7 +361,7 @@ const IonicApp: React.FC = () => {
           <IonToast
             isOpen={hasUpdate}
             position="top"
-            message={"There is a new version of DevZone available"}
+            message={"There is a new version of Progressive App Store available"}
             buttons={[
               {
                 side: "end",

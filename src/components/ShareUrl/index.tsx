@@ -14,7 +14,7 @@ interface ContainerProps {
 const ShareUrl: React.FC<ContainerProps> = ({ title, url }) => {
   const [copiedUrlToClipboard, setCopiedUrlToClipboard] = useState(false)
 
-  const text = `Check out ${title} on DevZone: `
+  const text = `Check out ${title} on Progressive App Store: `
 
   const twitterText = `${text}${url}`
 

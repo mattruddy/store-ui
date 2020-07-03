@@ -40,7 +40,7 @@ const Footer: React.FC = () => {
             Twitter
           </IonRouterLink>
         </p>
-        <p>&copy; 2020 DevZone</p>
+        <p>&copy; 2020 Progressive App Store</p>
       </div>
     </div>
   )
