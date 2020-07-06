@@ -97,11 +97,11 @@ const AdminFeature: React.FC = () => {
     info: string,
     date: string
   ) => {
-    const resp = await (await Axios()).put(`admin/appofday`, {
+    const resp = await (await Axios()).post(`admin/app-of-day`, {
       appId: appOfDay,
       title: title,
-      info: info,
-      date: date,
+      desc: info,
+      activeDate: date,
     })
     if (resp.status === 200) {
       setFeaturedAlert("Added App of day", "success")
