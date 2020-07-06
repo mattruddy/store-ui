@@ -6,6 +6,7 @@ import {
   IonCardSubtitle,
   IonButton,
   IonCardHeader,
+  IonDatetime,
 } from "@ionic/react"
 import React, { memo, useState, useEffect } from "react"
 import FormItem from "../FormItem"
@@ -18,7 +19,7 @@ interface AppOfDayProps {
   info: string
   title: string
   edit?: boolean
-  onSubmit?: (title: string, info: string) => void
+  onSubmit?: (title: string, info: string, date: string) => void
 }
 
 const AppOfDay: React.FC<AppOfDayProps> = ({
@@ -32,6 +33,7 @@ const AppOfDay: React.FC<AppOfDayProps> = ({
   const [localTitle, setLocalTitle] = useState<string>("")
   const [localInfo, setLocalInfo] = useState<string>("")
   const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write")
+  const [activeDate, setActiveDate] = useState<string>("")
 
   useEffect(() => {
     if (info) {
@@ -94,10 +96,23 @@ const AppOfDay: React.FC<AppOfDayProps> = ({
       </IonRow>
       {edit && (
         <IonRow>
+          <IonCol>
+            <FormItem name="Start Date">
+              <IonDatetime
+                value={activeDate}
+                displayFormat="MMM DD, YYYY"
+                onIonChange={(e) => setActiveDate(e.detail.value!)}
+              />
+            </FormItem>
+          </IonCol>
+        </IonRow>
+      )}
+      {edit && (
+        <IonRow>
           <IonButton
             fill="clear"
             onClick={() => {
-              if (onSubmit) onSubmit(localTitle, localInfo)
+              if (onSubmit) onSubmit(localTitle, localInfo, activeDate)
             }}
           >
             Submit

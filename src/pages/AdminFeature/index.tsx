@@ -92,6 +92,24 @@ const AdminFeature: React.FC = () => {
     }
   }
 
+  const onUpdateAppOfDay = async (
+    title: string,
+    info: string,
+    date: string
+  ) => {
+    const resp = await (await Axios()).put(`admin/appofday`, {
+      appId: appOfDay,
+      title: title,
+      info: info,
+      date: date,
+    })
+    if (resp.status === 200) {
+      setFeaturedAlert("Added App of day", "success")
+    } else {
+      setFeaturedAlert(`Adding app of day failed: Error ${resp.status}`, "fail")
+    }
+  }
+
   const onDelete = async (pwa: PWA) => {
     setFeatured((curr) => [...curr.filter((x) => pwa.name !== x.name)])
   }
@@ -163,7 +181,7 @@ const AdminFeature: React.FC = () => {
                 info={appOfDay.description}
                 icon={appOfDay.icon}
                 edit={true}
-                onSubmit={undefined}
+                onSubmit={onUpdateAppOfDay}
               />
             )}
             <IonCard className="line-around">
