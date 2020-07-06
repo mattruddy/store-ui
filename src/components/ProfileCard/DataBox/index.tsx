@@ -1,7 +1,7 @@
 import React, { memo } from "react"
 import "./styles.css"
 import { IonCol, IonRow, IonCard, IonCardContent } from "@ionic/react"
-import { TotalAppData } from ".."
+import { TotalAppData } from "../../../util/types"
 
 interface ContainerProps {
   data: TotalAppData

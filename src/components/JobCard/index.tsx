@@ -11,7 +11,6 @@ import {
 import { Job } from "../../util/types"
 import { trash } from "ionicons/icons"
 import { dateFormatterMMMYYYY, mdConverter } from "../../util"
-import "./styles.css"
 
 interface ContainerProps {
   job: Job
@@ -25,8 +24,8 @@ const JobCard: React.FC<ContainerProps> = ({ job, onDelete }) => {
   }
 
   return (
-    <IonCard className="JobCard bottom-line-border">
-      <IonCardHeader>
+    <IonCard className="bottom-line-border">
+      <IonCardHeader className="no-padding">
         {onDelete && (
           <IonFabButton
             className="CardFabButton"
@@ -37,22 +36,23 @@ const JobCard: React.FC<ContainerProps> = ({ job, onDelete }) => {
           </IonFabButton>
         )}
         <IonCardTitle>{job.company}</IonCardTitle>
-        <IonCardSubtitle>
+        <IonCardSubtitle className="card-sub">
           <p>{`${job.title}`}</p>
           <p>{`${dateFormatterMMMYYYY(job.start)} - ${
             job.end ? dateFormatterMMMYYYY(job.end) : "present"
           }`}</p>
         </IonCardSubtitle>
       </IonCardHeader>
-      <IonCardContent>
-        {job.description && (
+      {job.description && (
+        <IonCardContent>
           <div
+            style={{ color: "black" }}
             dangerouslySetInnerHTML={{
               __html: mdConverter.makeHtml(job.description),
             }}
           ></div>
-        )}
-      </IonCardContent>
+        </IonCardContent>
+      )}
     </IonCard>
   )
 }

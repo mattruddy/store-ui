@@ -50,6 +50,11 @@ export const OccupationStatusEnumProps: Record<string, string> = {
   COMPANY: "Company",
 }
 
+export interface TotalAppData {
+  totalInstalls: number
+  totalPageViews: number
+}
+
 export interface DispatchObject {
   [key: string]: any
   type: string

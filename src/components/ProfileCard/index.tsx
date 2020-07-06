@@ -10,12 +10,6 @@ import LinkItem from "./LinkItem"
 import "./styles.css"
 import { IonButton, IonIcon } from "@ionic/react"
 import { OccupationStatus, OccupationStatusEnumProps } from "../../util/types"
-import DataBox from "./DataBox"
-
-export interface TotalAppData {
-  totalInstalls: number
-  totalPageViews: number
-}
 
 interface ContainerProps {
   isMyProfile: boolean
@@ -25,7 +19,6 @@ interface ContainerProps {
   region?: string
   fullName?: string
   header?: string
-  data?: TotalAppData
   email?: string | undefined
   occupationStatus?: OccupationStatus
   username: string
@@ -44,7 +37,6 @@ const ProfileCard: React.FC<ContainerProps> = ({
   occupationStatus,
   username,
   isLoading,
-  data,
 }) => {
   return (
     <>
@@ -133,7 +125,6 @@ const ProfileCard: React.FC<ContainerProps> = ({
           </div>
         )}
       </div>
-      {data && <DataBox data={data} />}
     </>
   )
 }

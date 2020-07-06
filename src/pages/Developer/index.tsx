@@ -13,6 +13,7 @@ import {
   IonGrid,
   IonChip,
   IonLabel,
+  IonCard,
 } from "@ionic/react"
 import { useParams } from "react-router"
 import ProfileCard from "../../components/ProfileCard"
@@ -106,7 +107,7 @@ const Developer: React.FC = () => {
   const renderAboutSection = useMemo(() => {
     return (
       <div
-        style={{ paddingTop: "16px" }}
+        style={{ padding: "8px" }}
         dangerouslySetInnerHTML={{
           __html: mdConverter.makeHtml(profile?.about!),
         }}
@@ -134,20 +135,23 @@ const Developer: React.FC = () => {
       </IonHeader>
       <IonContent class="content">
         <IonGrid>
-          <IonRow className="bottom-line-border">
-            <IonCol
-              size="12"
-              sizeMd={profile && profile.techs.length > 0 ? "8" : "12"}
-              ref={ref}
-            >
-              {renderProfileSection}
-            </IonCol>
-            {profile && profile.techs.length > 0 && (
-              <IonCol size="12" sizeMd="4">
-                {renderTechsSection}
+          <IonCard className="line-around">
+            <IonRow>
+              <IonCol
+                size="12"
+                sizeMd={profile && profile.techs.length > 0 ? "8" : "12"}
+                ref={ref}
+              >
+                {renderProfileSection}
               </IonCol>
-            )}
-          </IonRow>
+              {profile && profile.techs.length > 0 && (
+                <IonCol size="12" sizeMd="4">
+                  {renderTechsSection}
+                </IonCol>
+              )}
+            </IonRow>
+          </IonCard>
+
           <IonRow>
             <IonCol
               size="12"
