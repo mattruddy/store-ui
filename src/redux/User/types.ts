@@ -5,6 +5,7 @@ import {
   StoreNotification,
   Job,
   Education,
+  DevLog,
 } from "../../util/types"
 
 export interface UserState {
@@ -25,6 +26,7 @@ export interface UserState {
   jobs: Job[]
   educations: Education[]
   starredApps: PWA[]
+  devLogs: DevLog[]
 }
 
 export const USER_SET_LOADING = "USER_SET_LOADING"

@@ -39,6 +39,7 @@ const DEFAULT_STATE_USER: UserState = {
   jobs: [],
   educations: [],
   starredApps: [],
+  devLogs: [],
 }
 
 const userReducer = (

@@ -7,6 +7,10 @@ import {
   IonButtons,
   IonButton,
   IonIcon,
+  IonList,
+  IonItem,
+  IonRow,
+  IonCol,
 } from "@ionic/react"
 import React, { useCallback, useEffect, useMemo, useRef, memo } from "react"
 import ReactGA from "react-ga"
@@ -20,22 +24,28 @@ import { thunkGetHomeData } from "../../redux/PWAs/actions"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import "./styles.css"
 import { useHidingHeader } from "../../hooks/useHidingHeader"
-import { thunkSetDarkMode } from "../../redux/User/actions"
+import {
+  thunkSetDarkMode,
+  thunkLoadFollowedDevLogs,
+} from "../../redux/User/actions"
 import { sunny, moon } from "ionicons/icons"
+import DevLogCard from "../../components/DevLogCard"
 
 const Home: React.FC = () => {
   const content = useRef<any>()
   const [prompt, promptToInstall] = useAddToHomescreenPrompt()
   const [hideDecimal, setScrollYCurrent] = useHidingHeader(50)
 
-  const { homeData, isLoading, darkMode } = useSelector(
+  const { homeData, isLoading, darkMode, isLoggedIn, devLogs } = useSelector(
     ({
       pwas: { home, isPending },
-      user: { darkMode },
+      user: { darkMode, isLoggedIn, devLogs },
     }: ReduxCombinedState) => ({
       homeData: home,
       isLoading: isPending,
       darkMode,
+      isLoggedIn,
+      devLogs,
     }),
     shallowEqual
   )
@@ -43,6 +53,10 @@ const Home: React.FC = () => {
   const getHomeData = useCallback(() => dispatch(thunkGetHomeData()), [
     dispatch,
   ])
+  const getFollowedDevLogs = useCallback(
+    () => dispatch(thunkLoadFollowedDevLogs()),
+    [dispatch]
+  )
 
   const setDarkMode = useCallback(
     (active: boolean) => dispatch(thunkSetDarkMode(active)),
@@ -51,6 +65,9 @@ const Home: React.FC = () => {
 
   useIonViewDidEnter(() => {
     getHomeData()
+    if (isLoggedIn) {
+      getFollowedDevLogs()
+    }
   })
 
   useEffect(() => {
@@ -109,6 +126,10 @@ const Home: React.FC = () => {
     )
   }, [hideDecimal, promptToInstall, prompt, darkMode])
 
+  const renderDevLogs = useMemo(() => {
+    return devLogs.map((log, idx) => <DevLogCard key={idx} devLog={log} />)
+  }, [devLogs])
+
   return (
     <IonPage>
       {renderHeader}
@@ -120,7 +141,10 @@ const Home: React.FC = () => {
         className="content"
         ref={content}
       >
-        {renderHomeList}
+        <IonRow>
+          <IonCol size="12" sizeMd="6">{renderDevLogs}</IonCol>
+          <IonCol size="12" sizeMd="6">{renderHomeList}</IonCol>
+        </IonRow>
         <Footer />
       </IonContent>
     </IonPage>

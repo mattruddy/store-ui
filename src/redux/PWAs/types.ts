@@ -44,6 +44,7 @@ export const PWAS_DATA = "PWAS_DATA"
 export const RATING_ADD = "RATING_ADD"
 export const DEV_ADD = "DEV_ADD"
 export const DEV_REPLACE = "DEV_REPLACE"
+export const ADD_DEV_LOG = "ADD_DEV_LOG"
 
 export interface AddPWAsSectionAction {
   type: typeof PWAS_SECTION_ADD

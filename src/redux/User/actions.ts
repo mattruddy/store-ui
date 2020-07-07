@@ -27,6 +27,7 @@ import {
   Degree,
   OccupationStatus,
   Experience,
+  DevLog,
 } from "../../util/types"
 import { ReduxCombinedState } from "../RootReducer"
 import { Action } from "redux"
@@ -46,6 +47,7 @@ import {
   setLastNotIdStorage,
 } from "../Actions"
 import { setAlert } from "../Alerts/actions"
+import { resolve } from "dns"
 
 export const thunkAddPush = (
   push: Push
@@ -307,6 +309,35 @@ export const thunkLoadProfile = (): ThunkAction<
     )
     await setEmailStorage(email)
     await setUsernameStorage(username)
+  } catch (e) {
+    dispatch(
+      setAlert({
+        message: e.response.data.message,
+        apiResponseStatus: e.response.status,
+        timeout: 3000,
+        show: true,
+      })
+    )
+    return console.error(e)
+  } finally {
+    dispatch(setLoading(false))
+  }
+}
+
+export const thunkLoadFollowedDevLogs = (): ThunkAction<
+  void,
+  ReduxCombinedState,
+  null,
+  Action
+> => async (dispatch) => {
+  try {
+    const url = `secure/dev-logs/follow`
+    const resp = await (await Axios()).get(url)
+    dispatch(
+      setData({
+        devLogs: resp.data as DevLog[],
+      })
+    )
   } catch (e) {
     dispatch(
       setAlert({

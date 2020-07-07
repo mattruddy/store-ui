@@ -35,6 +35,14 @@ export const OccupationStatusEnumProps: Record<string, string> = {
   COMPANY: "Company",
 }
 
+export interface DevLog {
+  log: string
+  loggedAt: Date
+  appName: string
+  appId: number
+  icon: string
+}
+
 export interface TotalAppData {
   totalInstalls: number
   totalPageViews: number
