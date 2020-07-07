@@ -4,7 +4,6 @@ import {
   IonCol,
   IonIcon,
   IonNote,
-  IonRouterLink,
   IonFabButton,
   IonCard,
   IonCardContent,
@@ -32,7 +31,7 @@ const HomeRow: React.FC<ContainerProps> = ({
 }) => {
   return (
     <IonCard className="line-around">
-      <IonCardHeader>
+      <IonCardHeader style={{ paddingTop: "0", paddingBottom: "0" }}>
         <div className="HomeRowHeader">
           <h1 className="HomeRowHeaderTitle text-color">{title}</h1>
           <IonFabButton
@@ -44,10 +43,10 @@ const HomeRow: React.FC<ContainerProps> = ({
         </div>
         <IonNote className="HomeRowHeaderSubTitle">{subtitle}</IonNote>
       </IonCardHeader>
-      <IonCardContent>
+      <IonCardContent style={{ height: "180px" }}>
         <IonRow className="HomeRow">
           {pwas.map((topApp, i) => (
-            <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
+            <IonCol key={i} size="6">
               <PWACard url="/pwa" pwa={topApp} isMyPwa={false} />
             </IonCol>
           ))}

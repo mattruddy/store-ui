@@ -22,7 +22,7 @@ const DevLogForm: React.FC<ContainerProps> = ({ apps, onSubmit }) => {
   }
 
   return (
-    <FormCollapse title="Add DevLog">
+    <FormCollapse title="DevLog">
       <form onSubmit={handleSubmit}>
         <FormItem name="Choose App">
           <IonSelect onIonChange={(e) => setAppId(e.detail.value!)}>

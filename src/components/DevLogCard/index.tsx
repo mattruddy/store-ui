@@ -10,7 +10,7 @@ import {
 } from "@ionic/react"
 import React from "react"
 import { DevLog } from "../../util/types"
-import { dateFormatter } from "../../util"
+import { dateFormatter, mdConverter } from "../../util"
 import { GetPWADetailUrl } from "../../routes"
 import { trash } from "ionicons/icons"
 
@@ -40,14 +40,21 @@ const DevLogCard: React.FC<ContainerProps> = ({ devLog, onDelete }) => {
         )}
         <IonCardTitle>
           <img src={devLog.icon} height="30px" width="30px" />
-          <IonRouterLink routerLink={GetPWADetailUrl(devLog.appName)}>
+          <IonRouterLink
+            style={{ paddingLeft: "8px" }}
+            routerLink={GetPWADetailUrl(devLog.appName)}
+          >
             {devLog.appName}
           </IonRouterLink>
         </IonCardTitle>
       </IonCardHeader>
       <IonCardContent>
-        <div>{devLog.log}</div>
-        <div>{dateFormatter(devLog.loggedAt)}</div>
+        <div
+          dangerouslySetInnerHTML={{ __html: mdConverter.makeHtml(devLog.log) }}
+        />
+        <div style={{ display: "flex", justifyContent: "flex-end" }}>
+          {dateFormatter(devLog.loggedAt)}
+        </div>
       </IonCardContent>
     </IonCard>
   )

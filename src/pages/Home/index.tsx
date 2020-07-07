@@ -3,27 +3,16 @@ import {
   IonNote,
   IonPage,
   useIonViewDidEnter,
-  IonToggle,
   IonButtons,
   IonButton,
   IonIcon,
-  IonList,
-  IonItem,
   IonRow,
   IonCol,
 } from "@ionic/react"
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  memo,
-  Fragment,
-} from "react"
+import React, { useCallback, useEffect, useMemo, useRef, memo } from "react"
 import ReactGA from "react-ga"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
 import { AddToHomeScreen } from "../../components"
-import Footer from "../../components/Footer"
 import HidingHeader from "../../components/HidingHeader"
 import HomeRow from "../../components/HomeRow"
 import { useAddToHomescreenPrompt } from "../../hooks/useAddToHomescreenPrompt"
@@ -93,7 +82,7 @@ const Home: React.FC = () => {
     if (isLoggedIn) {
       getFollowedDevLogs()
     }
-  })
+  }, [isLoggedIn])
 
   useEffect(() => {
     ReactGA.pageview(`Home`)
@@ -152,13 +141,12 @@ const Home: React.FC = () => {
   }, [hideDecimal, promptToInstall, prompt, darkMode])
 
   const renderDevLogs = useMemo(() => {
-    return (
-      <Fragment>
-        <DevLogForm apps={pwas} onSubmit={createDevLog} />
-        {devLogs.map((log, idx) => (
-          <DevLogCard key={idx} devLog={log} onDelete={deleteDevLog} />
-        ))}
-      </Fragment>
+    return devLogs.length > 0 ? (
+      devLogs.map((log, idx) => (
+        <DevLogCard key={idx} devLog={log} onDelete={deleteDevLog} />
+      ))
+    ) : (
+      <IonNote style={{ padding: "16px" }}>No DevLogs</IonNote>
     )
   }, [devLogs, pwas])
 
@@ -174,14 +162,18 @@ const Home: React.FC = () => {
         ref={content}
       >
         <IonRow>
-          <IonCol size="12" sizeMd="6">
-            {renderDevLogs}
+          {isLoggedIn && (
+            <IonCol size="12">
+              <DevLogForm onSubmit={createDevLog} apps={pwas} />
+            </IonCol>
+          )}
+          <IonCol size="12" sizeMd={isLoggedIn ? "6" : "12"}>
+            {isLoggedIn && renderDevLogs}
           </IonCol>
-          <IonCol size="12" sizeMd="6">
+          <IonCol size="12" sizeMd={isLoggedIn ? "6" : "12"}>
             {renderHomeList}
           </IonCol>
         </IonRow>
-        <Footer />
       </IonContent>
     </IonPage>
   )
