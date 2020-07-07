@@ -18,6 +18,7 @@ import {
   USER_REMOVE_EDUCATION,
   USER_ADD_STARRED,
   USER_REMOVE_STARRED,
+  USER_ADD_LOG,
 } from "./types"
 import { AppActionTypes, REDUX_RESET } from "../App/types"
 
@@ -141,6 +142,12 @@ const userReducer = (
       return {
         ...state,
         profile: action.payload,
+      }
+
+    case USER_ADD_LOG:
+      return {
+        ...state,
+        devLogs: [action.payload, ...state.devLogs],
       }
 
     case REDUX_RESET:

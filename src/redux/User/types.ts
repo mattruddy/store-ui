@@ -48,6 +48,7 @@ export const USER_REMOVE_JOB = "USER_REMOVE_JOB"
 export const USER_REMOVE_EDUCATION = "USER_REMOVE_EDUCATION"
 export const USER_ADD_STARRED = "USER_ADD_STARRED"
 export const USER_REMOVE_STARRED = "USER_REMOVE_STARRED"
+export const USER_ADD_LOG = "USER_ADD_LOG"
 
 export interface setUserAddStarred {
   type: typeof USER_ADD_STARRED
@@ -103,6 +104,11 @@ export interface CreateProfileAction {
   payload: Profile
 }
 
+export interface AddLogAction {
+  type: typeof USER_ADD_LOG
+  payload: DevLog
+}
+
 export interface AddAppAction {
   type: typeof USER_ADD_APP
   payload: PWA
@@ -149,6 +155,7 @@ export type UserActionTypes =
   | SetPWAsAction
   | RemoveAppAction
   | AddAppAction
+  | AddLogAction
   | AddJobAction
   | RemoveJobAction
   | AddEducationAction

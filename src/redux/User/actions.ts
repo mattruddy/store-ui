@@ -16,6 +16,7 @@ import {
   USER_REMOVE_EDUCATION,
   USER_ADD_STARRED,
   USER_REMOVE_STARRED,
+  USER_ADD_LOG,
 } from "./types"
 import {
   PWA,
@@ -353,6 +354,31 @@ export const thunkLoadFollowedDevLogs = (): ThunkAction<
   }
 }
 
+export const thunkAddDevLog = (
+  log: string,
+  appId: number
+): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
+  try {
+    const url = `secure/dev-logs/${appId}`
+    const resp = await (await Axios()).post(url, {
+      log: log,
+    })
+    dispatch(addLog(resp.data as DevLog))
+  } catch (e) {
+    dispatch(
+      setAlert({
+        message: e.response.data.message,
+        apiResponseStatus: e.response.status,
+        timeout: 3000,
+        show: true,
+      })
+    )
+    return console.error(e)
+  } finally {
+    dispatch(setLoading(false))
+  }
+}
+
 export const thunkSetUser = (
   username: string,
   email: string = "",
@@ -498,6 +524,11 @@ export const addEducation = (education: Education) =>
 export const removeEducation = (educationId: number) => ({
   type: USER_REMOVE_EDUCATION,
   payload: educationId,
+})
+
+export const addLog = (log: DevLog) => ({
+  type: USER_ADD_LOG,
+  payload: log,
 })
 
 export const removeApp = (appId: number) =>

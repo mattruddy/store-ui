@@ -8,6 +8,7 @@ import {
 import React from "react"
 import { DevLog } from "../../util/types"
 import { dateFormatter } from "../../util"
+import { RouteMap, GetPWADetailUrl } from "../../routes"
 
 interface ContainerProps {
   devLog: DevLog
@@ -15,7 +16,10 @@ interface ContainerProps {
 
 const DevLogCard: React.FC<ContainerProps> = ({ devLog }) => {
   return (
-    <IonCard className="line-around">
+    <IonCard
+      routerLink={GetPWADetailUrl(devLog.appName)}
+      className="line-around"
+    >
       <IonCardHeader>
         <IonCardTitle>
           <img src={devLog.icon} height="30px" width="30px" />

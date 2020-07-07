@@ -12,7 +12,14 @@ import {
   IonRow,
   IonCol,
 } from "@ionic/react"
-import React, { useCallback, useEffect, useMemo, useRef, memo } from "react"
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  memo,
+  Fragment,
+} from "react"
 import ReactGA from "react-ga"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
 import { AddToHomeScreen } from "../../components"
@@ -27,25 +34,35 @@ import { useHidingHeader } from "../../hooks/useHidingHeader"
 import {
   thunkSetDarkMode,
   thunkLoadFollowedDevLogs,
+  thunkAddDevLog,
 } from "../../redux/User/actions"
 import { sunny, moon } from "ionicons/icons"
 import DevLogCard from "../../components/DevLogCard"
+import DevLogForm from "../../components/DevLogForm"
 
 const Home: React.FC = () => {
   const content = useRef<any>()
   const [prompt, promptToInstall] = useAddToHomescreenPrompt()
   const [hideDecimal, setScrollYCurrent] = useHidingHeader(50)
 
-  const { homeData, isLoading, darkMode, isLoggedIn, devLogs } = useSelector(
+  const {
+    homeData,
+    isLoading,
+    darkMode,
+    isLoggedIn,
+    devLogs,
+    pwas,
+  } = useSelector(
     ({
       pwas: { home, isPending },
-      user: { darkMode, isLoggedIn, devLogs },
+      user: { darkMode, isLoggedIn, devLogs, pwas },
     }: ReduxCombinedState) => ({
       homeData: home,
       isLoading: isPending,
       darkMode,
       isLoggedIn,
       devLogs,
+      pwas,
     }),
     shallowEqual
   )
@@ -57,9 +74,12 @@ const Home: React.FC = () => {
     () => dispatch(thunkLoadFollowedDevLogs()),
     [dispatch]
   )
-
   const setDarkMode = useCallback(
     (active: boolean) => dispatch(thunkSetDarkMode(active)),
+    [dispatch]
+  )
+  const createDevLog = useCallback(
+    (log: string, appId: number) => dispatch(thunkAddDevLog(log, appId)),
     [dispatch]
   )
 
@@ -127,8 +147,15 @@ const Home: React.FC = () => {
   }, [hideDecimal, promptToInstall, prompt, darkMode])
 
   const renderDevLogs = useMemo(() => {
-    return devLogs.map((log, idx) => <DevLogCard key={idx} devLog={log} />)
-  }, [devLogs])
+    return (
+      <Fragment>
+        <DevLogForm apps={pwas} onSubmit={createDevLog} />
+        {devLogs.map((log, idx) => (
+          <DevLogCard key={idx} devLog={log} />
+        ))}
+      </Fragment>
+    )
+  }, [devLogs, pwas])
 
   return (
     <IonPage>
@@ -142,8 +169,12 @@ const Home: React.FC = () => {
         ref={content}
       >
         <IonRow>
-          <IonCol size="12" sizeMd="6">{renderDevLogs}</IonCol>
-          <IonCol size="12" sizeMd="6">{renderHomeList}</IonCol>
+          <IonCol size="12" sizeMd="6">
+            {renderDevLogs}
+          </IonCol>
+          <IonCol size="12" sizeMd="6">
+            {renderHomeList}
+          </IonCol>
         </IonRow>
         <Footer />
       </IonContent>
