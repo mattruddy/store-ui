@@ -35,6 +35,7 @@ import {
   thunkSetDarkMode,
   thunkLoadFollowedDevLogs,
   thunkAddDevLog,
+  thunkRemoveDevLog,
 } from "../../redux/User/actions"
 import { sunny, moon } from "ionicons/icons"
 import DevLogCard from "../../components/DevLogCard"
@@ -80,6 +81,10 @@ const Home: React.FC = () => {
   )
   const createDevLog = useCallback(
     (log: string, appId: number) => dispatch(thunkAddDevLog(log, appId)),
+    [dispatch]
+  )
+  const deleteDevLog = useCallback(
+    (logId: number) => dispatch(thunkRemoveDevLog(logId)),
     [dispatch]
   )
 
@@ -151,7 +156,7 @@ const Home: React.FC = () => {
       <Fragment>
         <DevLogForm apps={pwas} onSubmit={createDevLog} />
         {devLogs.map((log, idx) => (
-          <DevLogCard key={idx} devLog={log} />
+          <DevLogCard key={idx} devLog={log} onDelete={deleteDevLog} />
         ))}
       </Fragment>
     )

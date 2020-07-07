@@ -36,11 +36,13 @@ export const OccupationStatusEnumProps: Record<string, string> = {
 }
 
 export interface DevLog {
+  logId: number
   log: string
   loggedAt: Date
   appName: string
   appId: number
   icon: string
+  canDelete: boolean
 }
 
 export interface TotalAppData {

@@ -17,6 +17,7 @@ import {
   USER_ADD_STARRED,
   USER_REMOVE_STARRED,
   USER_ADD_LOG,
+  USER_REMOVE_LOG,
 } from "./types"
 import {
   PWA,
@@ -379,6 +380,28 @@ export const thunkAddDevLog = (
   }
 }
 
+export const thunkRemoveDevLog = (
+  logId: number
+): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
+  try {
+    const url = `secure/dev-logs/${logId}`
+    const resp = await (await Axios()).delete(url)
+    dispatch(removeLog(logId))
+  } catch (e) {
+    dispatch(
+      setAlert({
+        message: e.response.data.message,
+        apiResponseStatus: e.response.status,
+        timeout: 3000,
+        show: true,
+      })
+    )
+    return console.error(e)
+  } finally {
+    dispatch(setLoading(false))
+  }
+}
+
 export const thunkSetUser = (
   username: string,
   email: string = "",
@@ -521,15 +544,23 @@ export const addEducation = (education: Education) =>
     payload: education,
   } as const)
 
-export const removeEducation = (educationId: number) => ({
-  type: USER_REMOVE_EDUCATION,
-  payload: educationId,
-})
+export const removeEducation = (educationId: number) =>
+  ({
+    type: USER_REMOVE_EDUCATION,
+    payload: educationId,
+  } as const)
 
-export const addLog = (log: DevLog) => ({
-  type: USER_ADD_LOG,
-  payload: log,
-})
+export const addLog = (log: DevLog) =>
+  ({
+    type: USER_ADD_LOG,
+    payload: log,
+  } as const)
+
+export const removeLog = (logId: number) =>
+  ({
+    type: USER_REMOVE_LOG,
+    payload: logId,
+  } as const)
 
 export const removeApp = (appId: number) =>
   ({

@@ -4,26 +4,45 @@ import {
   IonCardHeader,
   IonCardContent,
   IonCardTitle,
+  IonFabButton,
+  IonIcon,
+  IonRouterLink,
 } from "@ionic/react"
 import React from "react"
 import { DevLog } from "../../util/types"
 import { dateFormatter } from "../../util"
-import { RouteMap, GetPWADetailUrl } from "../../routes"
+import { GetPWADetailUrl } from "../../routes"
+import { trash } from "ionicons/icons"
 
 interface ContainerProps {
   devLog: DevLog
+  onDelete: (logId: number) => void
 }
 
-const DevLogCard: React.FC<ContainerProps> = ({ devLog }) => {
+const DevLogCard: React.FC<ContainerProps> = ({ devLog, onDelete }) => {
+  const handleDelete = (e: any) => {
+    e.preventDefault()
+    onDelete(devLog.logId)
+  }
+
   return (
-    <IonCard
-      routerLink={GetPWADetailUrl(devLog.appName)}
-      className="line-around"
-    >
+    <IonCard className="line-around">
       <IonCardHeader>
+        {devLog.canDelete && (
+          <IonFabButton
+            className="CardFabButton"
+            style={{ zIndex: "100000" }}
+            size="small"
+            onClick={handleDelete}
+          >
+            <IonIcon color="danger" icon={trash} />
+          </IonFabButton>
+        )}
         <IonCardTitle>
           <img src={devLog.icon} height="30px" width="30px" />
-          {devLog.appName}
+          <IonRouterLink routerLink={GetPWADetailUrl(devLog.appName)}>
+            {devLog.appName}
+          </IonRouterLink>
         </IonCardTitle>
       </IonCardHeader>
       <IonCardContent>
