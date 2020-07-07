@@ -42,10 +42,12 @@ const Home: React.FC = () => {
     isLoggedIn,
     devLogs,
     pwas,
+    status,
   } = useSelector(
     ({
       pwas: { home, isPending },
       user: { darkMode, isLoggedIn, devLogs, pwas },
+      alerts: { status },
     }: ReduxCombinedState) => ({
       homeData: home,
       isLoading: isPending,
@@ -53,6 +55,7 @@ const Home: React.FC = () => {
       isLoggedIn,
       devLogs,
       pwas,
+      status,
     }),
     shallowEqual
   )
@@ -143,7 +146,12 @@ const Home: React.FC = () => {
   const renderDevLogs = useMemo(() => {
     return devLogs.length > 0 ? (
       devLogs.map((log, idx) => (
-        <DevLogCard key={idx} devLog={log} onDelete={deleteDevLog} />
+        <DevLogCard
+          key={idx}
+          devLog={log}
+          isLinkable={true}
+          onDelete={deleteDevLog}
+        />
       ))
     ) : (
       <IonNote style={{ padding: "16px" }}>No DevLogs</IonNote>
@@ -164,7 +172,7 @@ const Home: React.FC = () => {
         <IonRow>
           {isLoggedIn && (
             <IonCol size="12">
-              <DevLogForm onSubmit={createDevLog} apps={pwas} />
+              <DevLogForm onSubmit={createDevLog} apps={pwas} status={status} />
             </IonCol>
           )}
           <IonCol size="12" sizeMd={isLoggedIn ? "6" : "12"}>

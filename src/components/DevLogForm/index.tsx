@@ -1,4 +1,4 @@
-import { memo, useState, FormEvent } from "react"
+import { memo, useState, FormEvent, useEffect } from "react"
 import { IonSelect, IonSelectOption, IonButton } from "@ionic/react"
 import React from "react"
 import FormCollapse from "../FormCollapse"
@@ -9,11 +9,20 @@ import { PWA } from "../../util/types"
 interface ContainerProps {
   apps: PWA[]
   onSubmit: (log: string, appId: number) => void
+  status: "success" | "fail" | undefined
 }
 
-const DevLogForm: React.FC<ContainerProps> = ({ apps, onSubmit }) => {
+const DevLogForm: React.FC<ContainerProps> = ({ apps, onSubmit, status }) => {
   const [log, setLog] = useState<string>()
   const [appId, setAppId] = useState<number>()
+
+  useEffect(() => {
+    if (status === "success") {
+      setLog(undefined)
+      setAppId(undefined)
+    }
+  }, [status])
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     if (log && appId) {
@@ -25,7 +34,10 @@ const DevLogForm: React.FC<ContainerProps> = ({ apps, onSubmit }) => {
     <FormCollapse title="DevLog">
       <form onSubmit={handleSubmit}>
         <FormItem name="Choose App">
-          <IonSelect onIonChange={(e) => setAppId(e.detail.value!)}>
+          <IonSelect
+            value={appId}
+            onIonChange={(e) => setAppId(e.detail.value!)}
+          >
             {apps.map((app, idx) => (
               <IonSelectOption key={idx} value={app.appId}>
                 {app.name}
@@ -38,7 +50,13 @@ const DevLogForm: React.FC<ContainerProps> = ({ apps, onSubmit }) => {
             <ReactMde value={log} onChange={(s: string) => setLog(s)} />
           </div>
         </FormItem>
-        <IonButton fill="outline" color="dark" expand="block" type="submit">
+        <IonButton
+          disabled={!log || !appId}
+          fill="outline"
+          color="dark"
+          expand="block"
+          type="submit"
+        >
           Add DevLog
         </IonButton>
       </form>

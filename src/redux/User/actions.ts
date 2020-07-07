@@ -365,6 +365,14 @@ export const thunkAddDevLog = (
       log: log,
     })
     dispatch(addLog(resp.data as DevLog))
+    dispatch(
+      setAlert({
+        message: "DevLog Created",
+        timeout: 3000,
+        show: true,
+        status: "success",
+      })
+    )
   } catch (e) {
     dispatch(
       setAlert({
@@ -387,6 +395,14 @@ export const thunkRemoveDevLog = (
     const url = `secure/dev-logs/${logId}`
     const resp = await (await Axios()).delete(url)
     dispatch(removeLog(logId))
+    dispatch(
+      setAlert({
+        message: "DevLog Removed",
+        timeout: 3000,
+        show: true,
+        status: "success",
+      })
+    )
   } catch (e) {
     dispatch(
       setAlert({
