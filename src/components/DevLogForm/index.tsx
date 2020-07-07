@@ -5,6 +5,7 @@ import FormCollapse from "../FormCollapse"
 import { FormItem } from ".."
 import ReactMde from "react-mde"
 import { PWA } from "../../util/types"
+import { mdConverter } from "../../util"
 
 interface ContainerProps {
   apps: PWA[]
@@ -14,6 +15,8 @@ interface ContainerProps {
 const DevLogForm: React.FC<ContainerProps> = ({ apps, onSubmit }) => {
   const [log, setLog] = useState<string>()
   const [appId, setAppId] = useState<number>()
+  const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write")
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
     if (log && appId) {
@@ -35,7 +38,16 @@ const DevLogForm: React.FC<ContainerProps> = ({ apps, onSubmit }) => {
         </FormItem>
         <FormItem name="Dev Log">
           <div style={{ width: "100%", padding: "16px" }}>
-            <ReactMde value={log} onChange={(s: string) => setLog(s)} />
+            <ReactMde
+              classes={{ grip: "hide", toolbar: "mde-toolbar" }}
+              value={log}
+              onChange={(s: string) => setLog(s)}
+              selectedTab={selectedTab}
+              onTabChange={setSelectedTab}
+              generateMarkdownPreview={(md) =>
+                Promise.resolve(mdConverter.makeHtml(log!))
+              }
+            />
           </div>
         </FormItem>
         <IonButton fill="outline" color="dark" expand="block" type="submit">
