@@ -23,7 +23,7 @@ const PWACard: React.FC<ContainerProps> = ({
   pwa,
   url,
   isMyPwa,
-  height = 120,
+  height = 90,
 }) => {
   const href = `${url}/${pwa.name.replace(/ /g, "-")}`
 

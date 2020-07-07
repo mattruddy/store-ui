@@ -6,6 +6,9 @@ import {
   IonNote,
   IonRouterLink,
   IonFabButton,
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
 } from "@ionic/react"
 import { PWA } from "../../util/types"
 import { PWACard } from ".."
@@ -28,25 +31,29 @@ const HomeRow: React.FC<ContainerProps> = ({
   subtitle,
 }) => {
   return (
-    <Fragment>
-      <div className="HomeRowHeader">
-        <h1 className="HomeRowHeaderTitle">{title}</h1>
-        <IonFabButton
-          className="HomeViewMoreLink"
-          routerLink={GetPwaCategoryUrl(linkTo)}
-        >
-          <IonIcon color="dark" icon={arrowForward} />
-        </IonFabButton>
-      </div>
-      <IonNote className="HomeRowHeaderSubTitle">{subtitle}</IonNote>
-      <IonRow className="HomeRow bottom-line-border">
-        {pwas.map((topApp, i) => (
-          <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
-            <PWACard url="/pwa" pwa={topApp} isMyPwa={false} />
-          </IonCol>
-        ))}
-      </IonRow>
-    </Fragment>
+    <IonCard className="line-around">
+      <IonCardHeader>
+        <div className="HomeRowHeader">
+          <h1 className="HomeRowHeaderTitle">{title}</h1>
+          <IonFabButton
+            className="HomeViewMoreLink"
+            routerLink={GetPwaCategoryUrl(linkTo)}
+          >
+            <IonIcon color="dark" icon={arrowForward} />
+          </IonFabButton>
+        </div>
+        <IonNote className="HomeRowHeaderSubTitle">{subtitle}</IonNote>
+      </IonCardHeader>
+      <IonCardContent>
+        <IonRow className="HomeRow">
+          {pwas.map((topApp, i) => (
+            <IonCol key={i} size="6" sizeMd="4" sizeLg="3">
+              <PWACard url="/pwa" pwa={topApp} isMyPwa={false} />
+            </IonCol>
+          ))}
+        </IonRow>
+      </IonCardContent>
+    </IonCard>
   )
 }
 

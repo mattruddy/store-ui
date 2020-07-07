@@ -12,6 +12,8 @@ import {
   IonCol,
   IonNote,
   IonTitle,
+  IonCard,
+  IonCardContent,
 } from "@ionic/react"
 import {
   thunkGetPWAFromName,
@@ -151,9 +153,11 @@ const PWA: React.FC<OwnProps> = ({
                     isLoggedIn={isLoggedIn}
                     openModal={() => setIsOpen(true)}
                   />
-                </IonCol>
-                <IonCol size="12">
-                  <ScreenshotSlider images={pwa.screenshots} />
+                  <IonCard className="line-around">
+                    <IonCardContent>
+                      <ScreenshotSlider images={pwa.screenshots} />
+                    </IonCardContent>
+                  </IonCard>
                 </IonCol>
               </Fragment>
             ) : (

@@ -17,6 +17,8 @@ import {
   IonBackButton,
   IonNote,
   IonTitle,
+  IonCard,
+  IonCardContent,
 } from "@ionic/react"
 import { useSelector, shallowEqual, useDispatch } from "react-redux"
 import { PWACard } from "../../components"
@@ -127,7 +129,11 @@ const PWAs: React.FC<RouteComponentProps> = () => {
       >
         <IonRow>
           <IonCol>
-            <IonRow>{renderPwaList}</IonRow>
+            <IonCard className="line-around">
+              <IonCardContent>
+                <IonRow>{renderPwaList}</IonRow>
+              </IonCardContent>
+            </IonCard>
           </IonCol>
         </IonRow>
         {category?.toLowerCase() !== "trending" &&

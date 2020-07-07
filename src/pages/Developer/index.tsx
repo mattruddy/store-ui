@@ -154,6 +154,7 @@ const Developer: React.FC = () => {
 
           <IonRow>
             <IonCol
+              className="no-padding"
               size="12"
               sizeMd={
                 (profile?.jobs && profile?.jobs.length > 0) ||
@@ -193,6 +194,7 @@ const Developer: React.FC = () => {
               )}
             </IonCol>
             <IonCol
+              className="no-padding"
               size="12"
               sizeMd={(profile?.jobs || profile?.educations) && "5"}
             >

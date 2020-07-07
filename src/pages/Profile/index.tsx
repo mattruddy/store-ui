@@ -202,7 +202,7 @@ const Profile: React.FC = () => {
       <IonContent class="content">
         <IonGrid>
           <IonRow>
-            <IonCol ref={ref} className="ProfileCardCol" size="12">
+            <IonCol ref={ref} size="12">
               <IonCard className="line-around">
                 <IonCardContent>
                   <ProfileCard
@@ -220,8 +220,6 @@ const Profile: React.FC = () => {
                   />
                 </IonCardContent>
               </IonCard>
-            </IonCol>
-            <IonCol size="12">
               {renderDataSection}
               {renderAppsSection}
               {renderStarredAppsSection}
