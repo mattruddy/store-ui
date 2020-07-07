@@ -3,7 +3,7 @@ import { IonSelect, IonSelectOption, IonButton } from "@ionic/react"
 import React from "react"
 import FormCollapse from "../FormCollapse"
 import { FormItem } from ".."
-import ReactMde from "react-mde"
+import ReactMde, { TextAreaProps } from "react-mde"
 import { PWA } from "../../util/types"
 import { mdConverter } from "../../util"
 
@@ -14,13 +14,13 @@ interface ContainerProps {
 }
 
 const DevLogForm: React.FC<ContainerProps> = ({ apps, onSubmit, status }) => {
-  const [log, setLog] = useState<string>()
+  const [log, setLog] = useState<string>("")
   const [appId, setAppId] = useState<number>()
   const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write")
 
   useEffect(() => {
     if (status === "success") {
-      setLog(undefined)
+      setLog("")
       setAppId(undefined)
     }
   }, [status])
@@ -48,7 +48,9 @@ const DevLogForm: React.FC<ContainerProps> = ({ apps, onSubmit, status }) => {
           </IonSelect>
         </FormItem>
         <FormItem name="Dev Log">
-          <div style={{ width: "100%", padding: "16px" }}>
+          <div
+            style={{ width: "100%", paddingTop: "16px", paddingBottom: "16px" }}
+          >
             <ReactMde
               classes={{ grip: "hide", toolbar: "mde-toolbar" }}
               value={log}
@@ -58,6 +60,11 @@ const DevLogForm: React.FC<ContainerProps> = ({ apps, onSubmit, status }) => {
               generateMarkdownPreview={(md) =>
                 Promise.resolve(mdConverter.makeHtml(log!))
               }
+              childProps={{
+                textArea: {
+                  maxLength: 400,
+                },
+              }}
             />
           </div>
         </FormItem>

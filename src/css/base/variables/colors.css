@@ -348,6 +348,16 @@ ion-card-title {
   background: var(--background-color) !important;
 }
 
+code {
+  color: var(--background-color);
+}
+
+pre {
+  background: var(--sub-color);
+  border-radius: 3px;
+  padding: 8px;
+}
+
 .mde-toolbar button {
   color: var(--text-color) !important;
 }
