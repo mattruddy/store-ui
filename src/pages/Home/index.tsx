@@ -175,10 +175,10 @@ const Home: React.FC = () => {
               <DevLogForm onSubmit={createDevLog} apps={pwas} status={status} />
             </IonCol>
           )}
-          <IonCol size="12" sizeMd={isLoggedIn ? "6" : "12"}>
+          <IonCol size="12" sizeMd={isLoggedIn ? "7" : "12"}>
             {isLoggedIn && renderDevLogs}
           </IonCol>
-          <IonCol size="12" sizeMd={isLoggedIn ? "6" : "12"}>
+          <IonCol size="12" sizeMd={isLoggedIn ? "5" : "12"}>
             {renderHomeList}
           </IonCol>
         </IonRow>
