@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react"
+import React, { memo, useState, Fragment } from "react"
 import {
   IonButton,
   IonIcon,
@@ -99,7 +99,7 @@ const PWAInfo: React.FC<ContainerProps> = ({
                         errorMessage="No special chars allowed"
                       />
                     ) : (
-                      <span style={{ padding: "8px", fontSize: "20px" }}>
+                      <span className="text-color" style={{ padding: "8px", fontSize: "20px" }}>
                         {pwa.name}
                       </span>
                     )}
@@ -118,11 +118,9 @@ const PWAInfo: React.FC<ContainerProps> = ({
                 </div>
               </div>
               {pwa.username && (
-                <div style={{ marginLeft: "8px" }}>
-                  <IonRouterLink routerLink={`/dev/${pwa.username}`}>
+                  <IonRouterLink style={{ marginLeft: "8px" }} routerLink={`/dev/${pwa.username}`}>
                     {`${pwa.fullName ? pwa.fullName : pwa.username}`}
                   </IonRouterLink>
-                </div>
               )}
               <div className="InfoStarBlock">
                 <IonFabButton className="InfoStarIcon" onClick={onClickStar}>
@@ -158,13 +156,13 @@ const PWAInfo: React.FC<ContainerProps> = ({
                 </FormItem>
               ) : (
                 pwa.tags.length > 0 && (
-                  <div>
+                  <Fragment>
                     {pwa.tags.map((x, i) => (
                       <IonChip key={i}>
                         <IonLabel>{x}</IonLabel>
                       </IonChip>
                     ))}
-                  </div>
+                  </Fragment>
                 )
               )}
               <div className="PWAShareContainer">

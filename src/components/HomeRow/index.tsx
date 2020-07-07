@@ -34,7 +34,7 @@ const HomeRow: React.FC<ContainerProps> = ({
     <IonCard className="line-around">
       <IonCardHeader>
         <div className="HomeRowHeader">
-          <h1 className="HomeRowHeaderTitle">{title}</h1>
+          <h1 className="HomeRowHeaderTitle text-color">{title}</h1>
           <IonFabButton
             className="HomeViewMoreLink"
             routerLink={GetPwaCategoryUrl(linkTo)}
