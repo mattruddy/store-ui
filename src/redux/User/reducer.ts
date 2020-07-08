@@ -94,9 +94,11 @@ const userReducer = (
       const nStarApps = action.payload.isMyApp
         ? [...state.starredApps]
         : [nPwa, ...state.starredApps]
-
       const nPwas = action.payload.isMyApp
-        ? [nPwa, ...state.pwas]
+        ? [
+            nPwa,
+            ...state.pwas.filter((x) => x.appId !== action.payload.app.appId),
+          ]
         : [...state.pwas]
       return {
         ...state,
