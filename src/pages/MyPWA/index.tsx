@@ -186,6 +186,11 @@ const MyPWA: React.FC = () => {
     setIsEdit(false)
   }
 
+  const handleRemoveDevLog = (logId: number) => {
+    deleteDevLog(logId)
+    setDevLogs((prev) => prev.filter((x) => x.logId !== logId))
+  }
+
   const removeImage = useCallback(
     (imageId: number) => {
       setScreenshots(
@@ -316,7 +321,7 @@ const MyPWA: React.FC = () => {
                   <DevLogCard
                     key={idx}
                     devLog={log}
-                    onDelete={deleteDevLog}
+                    onDelete={handleRemoveDevLog}
                     isLinkable={false}
                   />
                 ))}
