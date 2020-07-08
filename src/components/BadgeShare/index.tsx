@@ -19,7 +19,10 @@ const BadgeShare: React.FC<ContainerProps> = ({ url, name }) => {
     <>
       <h3 className="PWACardContent">Add our Badge to Your Readme!</h3>
       <div className="PWACardContent" style={{ padding: "8px" }}>
-        <span className="line-around copy-box" style={{ width: "90%" }}>
+        <span
+          className="line-left-round-full copy-box"
+          style={{ width: "90%" }}
+        >
           <input
             className="copy-box"
             style={{
@@ -32,7 +35,7 @@ const BadgeShare: React.FC<ContainerProps> = ({ url, name }) => {
             value={badgeUrl}
           />
         </span>
-        <span className="line-c-right copy-box" style={{ width: "32px" }}>
+        <span className="line-c-right-round copy-box" style={{ width: "32px" }}>
           <button
             style={{ background: "transparent", padding: "4px" }}
             className="sub-color copy-box"

@@ -117,10 +117,24 @@ ion-menu {
   border-bottom: 1px solid var(--store-border-color);
 }
 
+.line-left-round-full {
+  border: 1px solid var(--store-border-color);
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
 .line-c-right {
   border-right: 1px solid var(--store-border-color);
   border-top: 1px solid var(--store-border-color);
   border-bottom: 1px solid var(--store-border-color);
+}
+
+.line-c-right-round {
+  border-right: 1px solid var(--store-border-color);
+  border-top: 1px solid var(--store-border-color);
+  border-bottom: 1px solid var(--store-border-color);
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
 .fab {
