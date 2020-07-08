@@ -31,6 +31,7 @@ import { PWA as PWAType, DevLog } from "../../util/types"
 import StarsListModal from "../../components/StarsListModal"
 import { Axios } from "../../redux/Actions"
 import DevLogCard from "../../components/DevLogCard"
+import { thunkRemoveDevLog } from "../../redux/User/actions"
 
 const stars = ["ONE", "TWO", "THREE", "FOUR", "FIVE"]
 
@@ -73,13 +74,15 @@ const PWA: React.FC<OwnProps> = ({
     [dispatch]
   )
   const addRating = useCallback(
-    async (appId: number, starValue: string, comment?: string) =>
-      dispatch(thunkAddRating(appId, starValue, comment)),
+    async (appId: number) => dispatch(thunkAddRating(appId)),
     [dispatch]
   )
-
   const addDev = useCallback(
     async (username: string) => dispatch(thunkGetDev(username)),
+    [dispatch]
+  )
+  const deleteDevLog = useCallback(
+    (logId: number) => dispatch(thunkRemoveDevLog(logId)),
     [dispatch]
   )
 
@@ -113,25 +116,18 @@ const PWA: React.FC<OwnProps> = ({
 
   useIonViewDidLeave(() => {
     setDevLogs([])
-  })
+  }, [])
 
   useEffect(() => {
     if (pwa) {
       ;(async () => {
         const resp = await (await Axios()).get(
-          `public/dev-logs/app/${pwa.appId}`
+          `${isLoggedIn ? "secure" : "public"}/dev-logs/app/${pwa.appId}`
         )
         setDevLogs(resp.data as DevLog[])
       })()
     }
-  }, [pwa])
-
-  const onRatingSubmit = async (star: number, comment?: string) => {
-    if (pwa) {
-      const starVal = stars[star - 1]
-      addRating(pwa.appId, starVal, comment)
-    }
-  }
+  }, [pwa, isLoggedIn])
 
   useEffect(() => {
     if (!pwa) return
@@ -144,6 +140,11 @@ const PWA: React.FC<OwnProps> = ({
       getRatings(pwa.appId)
     }
   }, [pwa, hasFetchedRatings])
+
+  const handleRemoveDevLog = (logId: number) => {
+    deleteDevLog(logId)
+    setDevLogs((prev) => prev.filter((x) => x.logId !== logId))
+  }
 
   return (
     <IonPage>
@@ -160,7 +161,7 @@ const PWA: React.FC<OwnProps> = ({
         </IonToolbar>
       </IonHeader>
       <IonContent class="content">
-        <IonGrid fixed>
+        <IonGrid>
           <IonRow>
             {pwa ? (
               <Fragment>
@@ -168,23 +169,34 @@ const PWA: React.FC<OwnProps> = ({
                   <PWAInfo
                     pwa={pwa}
                     isMyPwa={false}
-                    onStar={onRatingSubmit}
+                    onStar={addRating}
                     isLoggedIn={isLoggedIn}
                     openModal={() => setIsOpen(true)}
                   />
                 </IonCol>
-                <IonCol size="12" sizeMd="6" pushMd="6">
+                <IonCol
+                  size="12"
+                  sizeMd={devLogs.length > 0 ? "6" : "12"}
+                  pushMd={devLogs.length > 0 ? "6" : "0"}
+                >
                   <IonCard className="line-around">
                     <IonCardContent>
                       <ScreenshotSlider images={pwa.screenshots} />
                     </IonCardContent>
                   </IonCard>
                 </IonCol>
-                <IonCol size="12" sizeMd="6" pullMd="6">
-                  {devLogs.map((log, idx) => (
-                    <DevLogCard key={idx} devLog={log} isLinkable={false} />
-                  ))}
-                </IonCol>
+                {devLogs.length > 0 && (
+                  <IonCol size="12" sizeMd="6" pullMd="6">
+                    {devLogs.map((log, idx) => (
+                      <DevLogCard
+                        key={idx}
+                        devLog={log}
+                        isLinkable={false}
+                        onDelete={handleRemoveDevLog}
+                      />
+                    ))}
+                  </IonCol>
+                )}
               </Fragment>
             ) : (
               notFound && (

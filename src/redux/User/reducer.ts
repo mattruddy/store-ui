@@ -83,6 +83,7 @@ const userReducer = (
       return {
         ...state,
         starredApps: [action.payload, ...state.starredApps],
+        
       }
 
     case USER_REMOVE_STARRED:

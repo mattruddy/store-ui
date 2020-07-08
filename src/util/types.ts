@@ -80,8 +80,6 @@ export interface Image {
 
 export interface NewRating {
   liked: boolean
-  averageStar: number
-  ratingCount: number
   rating: Rating
 }
 
@@ -99,7 +97,6 @@ export interface AppRatings {
 
 export interface Rating {
   from: string
-  star: number
   createdAt: Date
   linkable: boolean
 }
@@ -115,7 +112,6 @@ export interface PWA {
   screenshots: Image[]
   reason: string
   appRatings: AppRatings
-  averageRating: number
   ratingsCount: number
   tags: string[]
   pageViews: number

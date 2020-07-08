@@ -21,19 +21,29 @@ import {
   IonFabButton,
   IonCard,
   IonCardContent,
+  useIonViewDidLeave,
+  IonCol,
+  IonRow,
 } from "@ionic/react"
 import ImageUploader from "react-images-upload"
 import { useParams, useHistory } from "react-router"
-import { Image, PWA } from "../../util/types"
+import { Image, PWA, DevLog } from "../../util/types"
 import { pencil, options, trash, close, checkmark } from "ionicons/icons"
 import { ScreenshotSlider, PWAInfo } from "../../components"
 import { RouteMap, GetMyPWADetailUrl } from "../../routes"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { useSelector, useDispatch, shallowEqual } from "react-redux"
-import { thunkDeletePWA, thunkUpdateApp } from "../../redux/User/actions"
+import {
+  thunkDeletePWA,
+  thunkUpdateApp,
+  thunkRemoveDevLog,
+} from "../../redux/User/actions"
 import Popover from "../../components/Popover"
 import "./styles.css"
 import StarsListModal from "../../components/StarsListModal"
+import { thunkAddRating } from "../../redux/PWAs/actions"
+import { Axios } from "../../redux/Actions"
+import DevLogCard from "../../components/DevLogCard"
 
 const MyPWA: React.FC = () => {
   const [showPopover, setShowPopover] = useState<boolean>(false)
@@ -48,6 +58,7 @@ const MyPWA: React.FC = () => {
   const [showDeleteAlert, setShowDeleteAlter] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isOpen, setIsOpen] = useState<boolean>(false)
+  const [devLogs, setDevLogs] = useState<DevLog[]>([])
   const { appName } = useParams()
   const history = useHistory()
 
@@ -92,6 +103,14 @@ const MyPWA: React.FC = () => {
       ),
     [dispatch]
   )
+  const addRating = useCallback(
+    async (appId: number) => dispatch(thunkAddRating(appId)),
+    [dispatch]
+  )
+  const deleteDevLog = useCallback(
+    (logId: number) => dispatch(thunkRemoveDevLog(logId)),
+    [dispatch]
+  )
 
   useEffect(() => {
     pwa && updateStateProperties()
@@ -100,6 +119,21 @@ const MyPWA: React.FC = () => {
   useEffect(() => {
     setIsLoading(false)
   }, [status])
+
+  useIonViewDidLeave(() => {
+    setDevLogs([])
+  })
+
+  useEffect(() => {
+    if (pwa) {
+      ;(async () => {
+        const resp = await (await Axios()).get(
+          `secure/dev-logs/app/${pwa.appId}`
+        )
+        setDevLogs(resp.data as DevLog[])
+      })()
+    }
+  }, [pwa])
 
   const onFileChange = (files: File[]) => {
     setAddedImages(files)
@@ -230,41 +264,65 @@ const MyPWA: React.FC = () => {
         {isLoading && <IonProgressBar type="indeterminate" color="primary" />}
       </IonHeader>
       <IonContent className="content">
-        <IonGrid fixed>
-          {pwa && (
-            <PWAInfo
-              pwa={pwa}
-              isMyPwa={true}
-              openModal={() => setIsOpen(true)}
-              isEdit={isEdit}
-              name={name}
-              cat={cat}
-              desc={desc}
-              tags={tags}
-              setName={setName}
-              setCat={setCat}
-              setDesc={setDesc}
-              setTags={setTags}
-            />
-          )}
-          {renderScreenshots}
-          {isEdit && (
-            <ImageUploader
-              fileContainerStyle={{
-                boxShadow: "none",
-                background: "inherit",
-                padding: "0",
-              }}
-              withPreview={true}
-              withLabel={false}
-              singleImage={false}
-              withIcon={false}
-              onChange={onFileChange}
-              buttonText="Add screenshots"
-              imgExtension={[".jpg", ".png", ".jpeg"]}
-              maxFileSize={5242880}
-            />
-          )}
+        <IonGrid>
+          <IonRow>
+            {pwa && (
+              <IonCol size="12">
+                <PWAInfo
+                  pwa={pwa}
+                  isMyPwa={true}
+                  isLoggedIn={true}
+                  onStar={addRating}
+                  openModal={() => setIsOpen(true)}
+                  isEdit={isEdit}
+                  name={name}
+                  cat={cat}
+                  desc={desc}
+                  tags={tags}
+                  setName={setName}
+                  setCat={setCat}
+                  setDesc={setDesc}
+                  setTags={setTags}
+                />
+              </IonCol>
+            )}
+            <IonCol
+              size="12"
+              sizeMd={devLogs.length > 0 ? "6" : "12"}
+              pushMd={devLogs.length > 0 ? "6" : "0"}
+            >
+              {renderScreenshots}
+              {isEdit && (
+                <ImageUploader
+                  fileContainerStyle={{
+                    boxShadow: "none",
+                    background: "inherit",
+                    padding: "0",
+                  }}
+                  withPreview={true}
+                  withLabel={false}
+                  singleImage={false}
+                  withIcon={false}
+                  onChange={onFileChange}
+                  buttonText="Add screenshots"
+                  imgExtension={[".jpg", ".png", ".jpeg"]}
+                  maxFileSize={5242880}
+                />
+              )}
+            </IonCol>
+            {devLogs.length > 0 && (
+              <IonCol size="12" sizeMd="6" pullMd="6">
+                {devLogs.map((log, idx) => (
+                  <DevLogCard
+                    key={idx}
+                    devLog={log}
+                    onDelete={deleteDevLog}
+                    isLinkable={false}
+                  />
+                ))}
+              </IonCol>
+            )}
+          </IonRow>
         </IonGrid>
       </IonContent>
       <IonAlert

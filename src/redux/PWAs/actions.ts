@@ -181,9 +181,7 @@ const thunkGetRatings = (
 }
 
 const thunkAddRating = (
-  appId: number,
-  starValue: string,
-  comment?: string
+  appId: number
 ): ThunkAction<void, ReduxCombinedState, null, Action<string>> => async (
   dispatch,
   getState
@@ -198,14 +196,11 @@ const thunkAddRating = (
     }
     const url = `/secure/pwa/rating/${appId}`
     const axiosInstance = await Axios()
-    const requestData = comment
-      ? { star: starValue, comment: comment }
-      : { star: starValue }
     ReactGA.event({
       category: "rating",
       action: `User starred`,
     })
-    const response = await axiosInstance.post(url, requestData)
+    const response = await axiosInstance.post(url, {})
     const { data } = response
     const rating = data as NewRating
     const pwa = getState().pwas.pwas.find((x) => x.appId === appId)

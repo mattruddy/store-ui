@@ -43,7 +43,7 @@ const HomeRow: React.FC<ContainerProps> = ({
         </div>
         <IonNote className="HomeRowHeaderSubTitle">{subtitle}</IonNote>
       </IonCardHeader>
-      <IonCardContent style={{ height: "180px" }}>
+      <IonCardContent style={{ height: "180px", marginBottom: "16px" }}>
         <IonRow className="HomeRow">
           {pwas.map((topApp, i) => (
             <IonCol key={i} size="6">

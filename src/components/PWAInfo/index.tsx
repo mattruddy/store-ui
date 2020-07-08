@@ -30,7 +30,7 @@ interface ContainerProps {
   isMyPwa: boolean
   openModal?: () => void
   isLoggedIn?: boolean | undefined
-  onStar?: (star: number, comment?: string | undefined) => void
+  onStar?: (appId: number) => void
   isEdit?: boolean
   name?: string
   cat?: string
@@ -73,7 +73,7 @@ const PWAInfo: React.FC<ContainerProps> = ({
 
   const onClickStar = () => {
     if (isLoggedIn) {
-      onStar && onStar(1)
+      onStar && onStar(pwa.appId)
     } else {
       history.push(RouteMap.LOGIN)
     }
@@ -99,7 +99,10 @@ const PWAInfo: React.FC<ContainerProps> = ({
                         errorMessage="No special chars allowed"
                       />
                     ) : (
-                      <span className="text-color" style={{ padding: "8px", fontSize: "20px" }}>
+                      <span
+                        className="text-color"
+                        style={{ padding: "8px", fontSize: "20px" }}
+                      >
                         {pwa.name}
                       </span>
                     )}
@@ -118,9 +121,12 @@ const PWAInfo: React.FC<ContainerProps> = ({
                 </div>
               </div>
               {pwa.username && (
-                  <IonRouterLink style={{ marginLeft: "8px" }} routerLink={`/dev/${pwa.username}`}>
-                    {`${pwa.fullName ? pwa.fullName : pwa.username}`}
-                  </IonRouterLink>
+                <IonRouterLink
+                  style={{ marginLeft: "8px" }}
+                  routerLink={`/dev/${pwa.username}`}
+                >
+                  {`${pwa.fullName ? pwa.fullName : pwa.username}`}
+                </IonRouterLink>
               )}
               <div className="InfoStarBlock">
                 <IonFabButton className="InfoStarIcon" onClick={onClickStar}>
