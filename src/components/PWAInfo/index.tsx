@@ -24,6 +24,7 @@ import { noSpecialChars, mdConverter } from "../../util"
 import ReactMde from "react-mde"
 import { useHistory } from "react-router"
 import { RouteMap } from "../../routes"
+import BadgeShare from "../BadgeShare"
 
 interface ContainerProps {
   pwa: PWA
@@ -99,7 +100,10 @@ const PWAInfo: React.FC<ContainerProps> = ({
                         errorMessage="No special chars allowed"
                       />
                     ) : (
-                      <span className="text-color" style={{ padding: "8px", fontSize: "20px" }}>
+                      <span
+                        className="text-color"
+                        style={{ padding: "8px", fontSize: "20px" }}
+                      >
                         {pwa.name}
                       </span>
                     )}
@@ -118,9 +122,12 @@ const PWAInfo: React.FC<ContainerProps> = ({
                 </div>
               </div>
               {pwa.username && (
-                  <IonRouterLink style={{ marginLeft: "8px" }} routerLink={`/dev/${pwa.username}`}>
-                    {`${pwa.fullName ? pwa.fullName : pwa.username}`}
-                  </IonRouterLink>
+                <IonRouterLink
+                  style={{ marginLeft: "8px" }}
+                  routerLink={`/dev/${pwa.username}`}
+                >
+                  {`${pwa.fullName ? pwa.fullName : pwa.username}`}
+                </IonRouterLink>
               )}
               <div className="InfoStarBlock">
                 <IonFabButton className="InfoStarIcon" onClick={onClickStar}>
@@ -187,6 +194,13 @@ const PWAInfo: React.FC<ContainerProps> = ({
           </IonRow>
         </IonCardContent>
       </IonCard>
+      {isMyPwa && (
+        <IonCard className="line-around">
+          <IonCardContent>
+            <BadgeShare name={pwa.name} />
+          </IonCardContent>
+        </IonCard>
+      )}
       <IonCard className="line-around">
         <IonCardContent>
           {isEdit ? (

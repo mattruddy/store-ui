@@ -3,17 +3,17 @@ import { IonIcon } from "@ionic/react"
 import { copy } from "ionicons/icons"
 import "./styles.css"
 import { copyStringToClipboard } from "../../util"
+import { GetPWADetailUrl } from "../../routes"
 
 interface ContainerProps {
-  url: string
   name: string
 }
 
-const BadgeShare: React.FC<ContainerProps> = ({ url, name }) => {
-  const badgeUrl = `<img src="https://img.shields.io/static/v1?&message=ProgressiveApp.Store&color=74b9ff&style=flat&label=Discover%20${name.replace(
+const BadgeShare: React.FC<ContainerProps> = ({ name }) => {
+  const badgeUrl = `[![pas](https://img.shields.io/static/v1?&message=ProgressiveApp.Store&color=74b9ff&style=flat&label=Discover%20${name.replace(
     / /g,
     "%20"
-  )}%20at" href="${url}/${name.replace(/ /g, "-")}" />`
+  )}%20at)](https://progressiveapp.store${GetPWADetailUrl(name)})`
 
   return (
     <>

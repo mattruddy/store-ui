@@ -109,7 +109,6 @@ const Profile: React.FC = () => {
       apps.map((app, idx) => (
         <IonCol key={idx} size="6" sizeLg="4">
           <PWACard url={url} pwa={app} isMyPwa={true} height={90} />
-          <BadgeShare url={url} name={app.name} />
         </IonCol>
       ))
     ) : (
