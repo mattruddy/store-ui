@@ -1,6 +1,8 @@
-import React from "react"
-import { IonCard, IonInput, IonIcon } from "@ionic/react"
+import React, { memo } from "react"
+import { IonIcon } from "@ionic/react"
 import { copy } from "ionicons/icons"
+import "./styles.css"
+import { copyStringToClipboard } from "../../util"
 
 interface ContainerProps {
   url: string
@@ -8,31 +10,48 @@ interface ContainerProps {
 }
 
 const BadgeShare: React.FC<ContainerProps> = ({ url, name }) => {
+  const badgeUrl = `<img src="https://img.shields.io/static/v1?&message=ProgressiveApp.Store&color=74b9ff&style=flat&label=Discover%20${name.replace(
+    / /g,
+    "%20"
+  )}%20at" href="${url}/${name.replace(/ /g, "-")}" />`
+
   return (
-    <IonCard className="line-around">
-      <h3>Add your Progressive App Store Badge to your Readme!</h3>
-      <span>
-        <IonInput
-          style={{ padding: "0px" }}
-          className="line-around"
-          value={`
-          <img
-        src="https://img.shields.io/static/v1?&message=ProgressiveApp.Store&color=74b9ff&style=flat&label=Discover%20at"
-        href="${url}/${name.replace(/ /g, "-")}"
-      />`}
+    <>
+      <h3 className="PWACardContent">Add our Badge to Your Readme!</h3>
+      <div className="PWACardContent" style={{ padding: "8px" }}>
+        <span className="line-around copy-box" style={{ width: "90%" }}>
+          <input
+            className="copy-box"
+            style={{
+              padding: "4px",
+              background: "transparent",
+              border: "none",
+              color: "var(--text-color)",
+              width: "100%",
+            }}
+            value={badgeUrl}
+          />
+        </span>
+        <span className="line-c-right copy-box" style={{ width: "32px" }}>
+          <button
+            style={{ background: "transparent", padding: "4px" }}
+            className="sub-color copy-box"
+            onClick={() => copyStringToClipboard(badgeUrl)}
+          >
+            <IonIcon icon={copy} size="small" />
+          </button>
+        </span>
+      </div>
+      <div className="PWACardContent">
+        <img
+          src={`https://img.shields.io/static/v1?&message=ProgressiveApp.Store&color=74b9ff&style=flat&label=Discover%20${name.replace(
+            / /g,
+            "%20"
+          )}%20at`}
         />
-      </span>
-      <span>
-        <button
-          style={{ background: "transparent", padding: "0px" }}
-          className="sub-color"
-        >
-          <IonIcon icon={copy} size="small" />
-        </button>
-      </span>
-      <img
-        src={`https://img.shields.io/static/v1?&message=ProgressiveApp.Store&color=74b9ff&style=flat&label=Discover%20at`}
-      />
-    </IonCard>
+      </div>
+    </>
   )
 }
+
+export default memo(BadgeShare)

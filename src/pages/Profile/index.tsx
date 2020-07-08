@@ -44,6 +44,7 @@ import { useInView } from "react-intersection-observer"
 import DevContentCard from "../../components/DevContentCard"
 import { PWA, TotalAppData } from "../../util/types"
 import DataBox from "../../components/ProfileCard/DataBox"
+import BadgeShare from "../../components/BadgeShare"
 const Profile: React.FC = () => {
   const [showAlert, setShowAlert] = useState<boolean>(false)
   const [showPopover, setShowPopover] = useState<boolean>(false)
@@ -108,6 +109,7 @@ const Profile: React.FC = () => {
       apps.map((app, idx) => (
         <IonCol key={idx} size="6" sizeLg="4">
           <PWACard url={url} pwa={app} isMyPwa={true} height={90} />
+          <BadgeShare url={url} name={app.name} />
         </IonCol>
       ))
     ) : (
