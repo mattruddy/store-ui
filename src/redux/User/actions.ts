@@ -30,6 +30,7 @@ import {
   OccupationStatus,
   Experience,
   DevLog,
+  NewRating,
 } from "../../util/types"
 import { ReduxCombinedState } from "../RootReducer"
 import { Action } from "redux"
@@ -479,14 +480,17 @@ export const thunkSetDarkMode = (
 }
 
 export const thunkAppStarred = (
-  pwa: PWA
+  pwa: PWA,
+  rating: NewRating,
+  isMyApp: boolean
 ): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
-  dispatch(setUserAddStarred(pwa))
+  dispatch(setUserAddStarred({ app: pwa, rating, isMyApp }))
 }
 export const thunkRemoveStarred = (
-  appId: number
+  appId: number,
+  isMyApp: boolean
 ): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
-  dispatch(setUserRemoveStarred(appId))
+  dispatch(setUserRemoveStarred(appId, isMyApp))
 }
 
 export const setLoading = (isLoading: boolean) =>
@@ -513,15 +517,19 @@ export const setPWAS = (pwas: PWA[] | undefined) =>
     payload: pwas,
   } as const)
 
-export const setUserAddStarred = (pwa: PWA) =>
+export const setUserAddStarred = (payload: {
+  app: PWA
+  rating: NewRating
+  isMyApp: boolean
+}) =>
   ({
     type: USER_ADD_STARRED,
-    payload: pwa,
+    payload: payload,
   } as const)
 
-export const setUserRemoveStarred = (appId: number) => ({
+export const setUserRemoveStarred = (appId: number, isMyApp: boolean) => ({
   type: USER_REMOVE_STARRED,
-  payload: appId,
+  payload: { appId, isMyApp },
 })
 
 export const setProfile = (profile: Profile | undefined) =>

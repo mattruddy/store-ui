@@ -6,6 +6,7 @@ import {
   Job,
   Education,
   DevLog,
+  NewRating,
 } from "../../util/types"
 
 export interface UserState {
@@ -53,12 +54,12 @@ export const USER_REMOVE_LOG = "USER_REMOVE_LOG"
 
 export interface setUserAddStarred {
   type: typeof USER_ADD_STARRED
-  payload: PWA
+  payload: { app: PWA; rating: NewRating; isMyApp: boolean }
 }
 
 export interface setUserRemoveStarred {
   type: typeof USER_REMOVE_STARRED
-  payload: number
+  payload: { appId: number; isMyApp: boolean }
 }
 
 export interface setDarkMode {

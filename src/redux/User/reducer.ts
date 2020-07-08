@@ -22,6 +22,7 @@ import {
   USER_REMOVE_LOG,
 } from "./types"
 import { AppActionTypes, REDUX_RESET } from "../App/types"
+import { AppRatings, PWA } from "../../util/types"
 
 const DEFAULT_STATE_USER: UserState = {
   token: "",
@@ -80,17 +81,32 @@ const userReducer = (
       }
 
     case USER_ADD_STARRED:
+      const oPwa = state.pwas.find((x) => x.appId === action.payload.app.appId)
+      if (!oPwa) return state
+      const nPwa = {
+        ...oPwa,
+        appRatings: {
+          hasRated: true,
+          ratings: [action.payload.rating.rating, ...oPwa.appRatings.ratings],
+        } as AppRatings,
+      } as PWA
+      const nStarApps = action.payload.isMyApp
+        ? [...state.starredApps]
+        : [action.payload.app, ...state.starredApps]
       return {
         ...state,
-        starredApps: [action.payload, ...state.starredApps],
-        
+        starredApps: nStarApps,
+        pwas: [
+          nPwa,
+          ...state.pwas.filter((x) => x.appId !== action.payload.app.appId),
+        ],
       }
 
     case USER_REMOVE_STARRED:
       return {
         ...state,
         starredApps: state.starredApps.filter(
-          (x) => x.appId !== action.payload
+          (x) => x.appId !== action.payload.appId
         ),
       }
 

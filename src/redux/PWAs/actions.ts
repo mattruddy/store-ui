@@ -203,18 +203,27 @@ const thunkAddRating = (
     const response = await axiosInstance.post(url, {})
     const { data } = response
     const rating = data as NewRating
-    const pwa = getState().pwas.pwas.find((x) => x.appId === appId)
+    let pwa = getState().pwas.pwas.find((x) => x.appId === appId)
+    let isMyApp = false
+    if (!pwa) {
+      pwa = getState().user.pwas.find((x) => x.appId === appId)
+      isMyApp = true
+    }
     if (rating.liked) {
       dispatch(addRating(rating, appId))
-      if (pwa && !getState().user.pwas.find((x) => x.appId === pwa.appId)) {
-        pwa.ratingsCount = pwa.ratingsCount + 1
-        dispatch(thunkAppStarred(pwa!))
+      if (pwa) {
+        pwa.ratingsCount = pwa!.ratingsCount + 1
+        dispatch(thunkAppStarred(pwa, rating, isMyApp))
       }
     } else {
       dispatch(removeRating(appId, username))
       if (pwa) {
         pwa.ratingsCount = pwa.ratingsCount - 1
-        dispatch(thunkRemoveStarred(pwa.appId))
+        pwa.appRatings.hasRated = false
+        pwa.appRatings.ratings = pwa.appRatings.ratings.filter(
+          (x) => x.from.toLowerCase() !== username.toLowerCase()
+        )
+        dispatch(thunkRemoveStarred(pwa.appId, isMyApp))
       }
     }
     dispatch(
