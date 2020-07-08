@@ -34,7 +34,12 @@ const DevLogCard: React.FC<ContainerProps> = ({
     <IonCard className="line-around">
       <IonCardHeader className="bottom-line-border" style={{ padding: "8px" }}>
         <IonCardTitle className="DevLogCardTitle">
-          <img src={devLog.icon} height="30px" width="30px" />
+          <img
+            style={{ borderRadius: "6px" }}
+            src={devLog.icon}
+            height="30px"
+            width="30px"
+          />
           {isLinkable ? (
             <IonRouterLink
               style={{ paddingLeft: "8px" }}
@@ -58,7 +63,7 @@ const DevLogCard: React.FC<ContainerProps> = ({
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          padding: "8px"
+          padding: "8px",
         }}
       >
         <div>
