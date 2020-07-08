@@ -81,25 +81,27 @@ const userReducer = (
       }
 
     case USER_ADD_STARRED:
-      const oPwa = state.pwas.find((x) => x.appId === action.payload.app.appId)
-      if (!oPwa) return state
       const nPwa = {
-        ...oPwa,
+        ...action.payload.app,
         appRatings: {
           hasRated: true,
-          ratings: [action.payload.rating.rating, ...oPwa.appRatings.ratings],
+          ratings: [
+            action.payload.rating.rating,
+            ...action.payload.app.appRatings.ratings,
+          ],
         } as AppRatings,
       } as PWA
       const nStarApps = action.payload.isMyApp
         ? [...state.starredApps]
-        : [action.payload.app, ...state.starredApps]
+        : [nPwa, ...state.starredApps]
+
+      const nPwas = action.payload.isMyApp
+        ? [nPwa, ...state.pwas]
+        : [...state.pwas]
       return {
         ...state,
         starredApps: nStarApps,
-        pwas: [
-          nPwa,
-          ...state.pwas.filter((x) => x.appId !== action.payload.app.appId),
-        ],
+        pwas: nPwas,
       }
 
     case USER_REMOVE_STARRED:
