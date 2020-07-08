@@ -16,6 +16,8 @@ import {
   USER_REMOVE_EDUCATION,
   USER_ADD_STARRED,
   USER_REMOVE_STARRED,
+  USER_ADD_LOG,
+  USER_REMOVE_LOG,
 } from "./types"
 import {
   PWA,
@@ -27,6 +29,7 @@ import {
   Degree,
   OccupationStatus,
   Experience,
+  DevLog,
 } from "../../util/types"
 import { ReduxCombinedState } from "../RootReducer"
 import { Action } from "redux"
@@ -46,6 +49,7 @@ import {
   setLastNotIdStorage,
 } from "../Actions"
 import { setAlert } from "../Alerts/actions"
+import { resolve } from "dns"
 
 export const thunkAddPush = (
   push: Push
@@ -322,6 +326,98 @@ export const thunkLoadProfile = (): ThunkAction<
   }
 }
 
+export const thunkLoadFollowedDevLogs = (): ThunkAction<
+  void,
+  ReduxCombinedState,
+  null,
+  Action
+> => async (dispatch) => {
+  try {
+    const url = `secure/dev-logs/follow`
+    const resp = await (await Axios()).get(url)
+    dispatch(
+      setData({
+        devLogs: resp.data as DevLog[],
+      })
+    )
+  } catch (e) {
+    dispatch(
+      setAlert({
+        message: e.response.data.message,
+        apiResponseStatus: e.response.status,
+        timeout: 3000,
+        show: true,
+      })
+    )
+    return console.error(e)
+  } finally {
+    dispatch(setLoading(false))
+  }
+}
+
+export const thunkAddDevLog = (
+  log: string,
+  appId: number
+): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
+  try {
+    const url = `secure/dev-logs/${appId}`
+    const resp = await (await Axios()).post(url, {
+      log: log,
+    })
+    dispatch(addLog(resp.data as DevLog))
+    dispatch(
+      setAlert({
+        message: "DevLog Created",
+        timeout: 3000,
+        show: true,
+        status: "success",
+      })
+    )
+  } catch (e) {
+    dispatch(
+      setAlert({
+        message: e.response.data.message,
+        apiResponseStatus: e.response.status,
+        timeout: 3000,
+        show: true,
+      })
+    )
+    return console.error(e)
+  } finally {
+    dispatch(setLoading(false))
+  }
+}
+
+export const thunkRemoveDevLog = (
+  logId: number
+): ThunkAction<void, ReduxCombinedState, null, Action> => async (dispatch) => {
+  try {
+    const url = `secure/dev-logs/${logId}`
+    const resp = await (await Axios()).delete(url)
+    dispatch(removeLog(logId))
+    dispatch(
+      setAlert({
+        message: "DevLog Removed",
+        timeout: 3000,
+        show: true,
+        status: "success",
+      })
+    )
+  } catch (e) {
+    dispatch(
+      setAlert({
+        message: e.response.data.message,
+        apiResponseStatus: e.response.status,
+        timeout: 3000,
+        show: true,
+      })
+    )
+    return console.error(e)
+  } finally {
+    dispatch(setLoading(false))
+  }
+}
+
 export const thunkSetUser = (
   username: string,
   email: string = "",
@@ -464,10 +560,23 @@ export const addEducation = (education: Education) =>
     payload: education,
   } as const)
 
-export const removeEducation = (educationId: number) => ({
-  type: USER_REMOVE_EDUCATION,
-  payload: educationId,
-})
+export const removeEducation = (educationId: number) =>
+  ({
+    type: USER_REMOVE_EDUCATION,
+    payload: educationId,
+  } as const)
+
+export const addLog = (log: DevLog) =>
+  ({
+    type: USER_ADD_LOG,
+    payload: log,
+  } as const)
+
+export const removeLog = (logId: number) =>
+  ({
+    type: USER_REMOVE_LOG,
+    payload: logId,
+  } as const)
 
 export const removeApp = (appId: number) =>
   ({

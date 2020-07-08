@@ -33,6 +33,11 @@ ion-menu {
   padding: 0;
 }
 
+.card-sub {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
 .clickable {
   cursor: pointer;
 }

@@ -51,7 +51,7 @@ const DevContentCard: React.FC<ContainerProps> = ({
           </div>
         </IonCardTitle>
       </IonCardHeader>
-      <IonCardContent className={isHidden ? "hide" : ""}>
+      <IonCardContent className={`${isHidden ? "hide" : ""} no-padding`}>
         {children}
       </IonCardContent>
     </IonCard>

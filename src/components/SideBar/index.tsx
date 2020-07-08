@@ -21,6 +21,7 @@ import {
 import { useLocation } from "react-router"
 import { GetPwaCategoryUrl, RouteMap } from "../../routes"
 import "./styles.css"
+import { Footer } from ".."
 
 export const standardCategories = [
   { category: "SEARCH", value: "search", icon: searchOutline },
@@ -104,6 +105,7 @@ const SideBar: React.FC = () => {
         </IonListHeader>
         <IonItemGroup>{renderCategories}</IonItemGroup>
       </IonList>
+      <Footer />
     </IonContent>
   )
 }

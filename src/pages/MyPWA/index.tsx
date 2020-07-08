@@ -19,6 +19,8 @@ import {
   IonGrid,
   IonIcon,
   IonFabButton,
+  IonCard,
+  IonCardContent,
 } from "@ionic/react"
 import ImageUploader from "react-images-upload"
 import { useParams, useHistory } from "react-router"
@@ -165,11 +167,15 @@ const MyPWA: React.FC = () => {
     const shownScreenshots = isEdit ? screenshots : pwa && pwa.screenshots
     return (
       shownScreenshots && (
-        <ScreenshotSlider
-          images={shownScreenshots}
-          isEdit={isEdit}
-          onDelete={removeImage}
-        />
+        <IonCard className="line-around">
+          <IonCardContent>
+            <ScreenshotSlider
+              images={shownScreenshots}
+              isEdit={isEdit}
+              onDelete={removeImage}
+            />
+          </IonCardContent>
+        </IonCard>
       )
     )
   }, [pwa, screenshots, isEdit, removeImage])

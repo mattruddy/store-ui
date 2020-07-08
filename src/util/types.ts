@@ -1,20 +1,5 @@
 import { AxiosRequestConfig } from "axios"
 
-export const monthNames = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-]
-
 export enum Degree {
   ASSOCIATE = "ASSOCIATE",
   BACHELOR = "BACHELOR",
@@ -48,6 +33,21 @@ export const OccupationStatusEnumProps: Record<string, string> = {
   LOOKING: "Looking for opportunities",
   OPEN: "Open to opportunities",
   COMPANY: "Company",
+}
+
+export interface DevLog {
+  logId: number
+  log: string
+  loggedAt: Date
+  appName: string
+  appId: number
+  icon: string
+  canDelete: boolean
+}
+
+export interface TotalAppData {
+  totalInstalls: number
+  totalPageViews: number
 }
 
 export interface DispatchObject {

@@ -1,7 +1,6 @@
 import moment from "moment"
 import ReactGA from "react-ga"
 import Showdown from "showdown"
-import { monthNames } from "./types"
 
 const blobToFile = (blob: Blob, fileName: string): File => {
   const b: any = blob

@@ -12,6 +12,9 @@ import {
   IonCol,
   IonNote,
   IonTitle,
+  IonCard,
+  IonCardContent,
+  useIonViewDidLeave,
 } from "@ionic/react"
 import {
   thunkGetPWAFromName,
@@ -24,8 +27,10 @@ import { ScreenshotSlider, PWAInfo } from "../../components"
 import ReactGA from "react-ga"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { useSelector, shallowEqual, useDispatch } from "react-redux"
-import { PWA as PWAType } from "../../util/types"
+import { PWA as PWAType, DevLog } from "../../util/types"
 import StarsListModal from "../../components/StarsListModal"
+import { Axios } from "../../redux/Actions"
+import DevLogCard from "../../components/DevLogCard"
 
 const stars = ["ONE", "TWO", "THREE", "FOUR", "FIVE"]
 
@@ -43,6 +48,7 @@ const PWA: React.FC<OwnProps> = ({
   const [notFound, setNotFound] = useState<boolean>(false)
   const [hasFetchedRatings, setHasFetchedRatings] = useState<boolean>(false)
   const [isOpen, setIsOpen] = useState<boolean>(false)
+  const [devLogs, setDevLogs] = useState<DevLog[]>([])
 
   const findPWA = (pwas: PWAType[]) =>
     pwas.find((x) => {
@@ -105,6 +111,21 @@ const PWA: React.FC<OwnProps> = ({
     ReactGA.pageview(appName)
   }, [])
 
+  useIonViewDidLeave(() => {
+    setDevLogs([])
+  })
+
+  useEffect(() => {
+    if (pwa) {
+      ;(async () => {
+        const resp = await (await Axios()).get(
+          `public/dev-logs/app/${pwa.appId}`
+        )
+        setDevLogs(resp.data as DevLog[])
+      })()
+    }
+  }, [pwa])
+
   const onRatingSubmit = async (star: number, comment?: string) => {
     if (pwa) {
       const starVal = stars[star - 1]
@@ -152,14 +173,23 @@ const PWA: React.FC<OwnProps> = ({
                     openModal={() => setIsOpen(true)}
                   />
                 </IonCol>
-                <IonCol size="12">
-                  <ScreenshotSlider images={pwa.screenshots} />
+                <IonCol size="12" sizeMd="6" pushMd="6">
+                  <IonCard className="line-around">
+                    <IonCardContent>
+                      <ScreenshotSlider images={pwa.screenshots} />
+                    </IonCardContent>
+                  </IonCard>
+                </IonCol>
+                <IonCol size="12" sizeMd="6" pullMd="6">
+                  {devLogs.map((log, idx) => (
+                    <DevLogCard key={idx} devLog={log} isLinkable={false} />
+                  ))}
                 </IonCol>
               </Fragment>
             ) : (
               notFound && (
                 <IonCol>
-                  <h1 className="HomeCardsHeader">AppShare</h1>
+                  <h1 className="HomeCardsHeader">Progressive App Store</h1>
                   <IonNote color="danger">App not found</IonNote>
                 </IonCol>
               )

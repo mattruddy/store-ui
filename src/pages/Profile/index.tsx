@@ -20,6 +20,7 @@ import {
   IonGrid,
   IonButton,
   IonCard,
+  IonCardContent,
 } from "@ionic/react"
 import { useHistory } from "react-router"
 import { PWACard } from "../../components"
@@ -38,10 +39,11 @@ import {
   personOutline,
   starOutline,
 } from "ionicons/icons"
-import ProfileCard, { TotalAppData } from "../../components/ProfileCard"
+import ProfileCard from "../../components/ProfileCard"
 import { useInView } from "react-intersection-observer"
 import DevContentCard from "../../components/DevContentCard"
-import { PWA } from "../../util/types"
+import { PWA, TotalAppData } from "../../util/types"
+import DataBox from "../../components/ProfileCard/DataBox"
 const Profile: React.FC = () => {
   const [showAlert, setShowAlert] = useState<boolean>(false)
   const [showPopover, setShowPopover] = useState<boolean>(false)
@@ -115,20 +117,23 @@ const Profile: React.FC = () => {
     )
   }
 
-  const renderAppsSections: JSX.Element = useMemo(
+  const renderAppsSection: JSX.Element = useMemo(
     () =>
       pwas && (
-        <Fragment>
-          <DevContentCard
-            title="My Apps"
-            isHidden={hideApps}
-            onClick={() => setHideApps(!hideApps)}
-          >
-            <IonRow>{loadApps(pwas, "/mypwa")}</IonRow>
-          </DevContentCard>
-        </Fragment>
+        <DevContentCard
+          title="My Apps"
+          isHidden={hideApps}
+          onClick={() => setHideApps(!hideApps)}
+        >
+          <IonRow>{loadApps(pwas, "/mypwa")}</IonRow>
+        </DevContentCard>
       ),
     [pwas, hideApps]
+  )
+
+  const renderDataSection: JSX.Element = useMemo(
+    () => totalData && <DataBox data={totalData} />,
+    [totalData]
   )
 
   const renderStarredAppsSection = useMemo(() => {
@@ -197,26 +202,26 @@ const Profile: React.FC = () => {
       <IonContent class="content">
         <IonGrid>
           <IonRow>
-            <IonCol ref={ref} className="ProfileCardCol" size="12">
-              <IonCard>
-                <ProfileCard
-                  isMyProfile={true}
-                  data={totalData}
-                  avatar={profile?.avatar}
-                  gitHub={profile?.gitHub}
-                  header={profile?.header}
-                  fullName={profile?.fullName}
-                  country={profile?.country}
-                  region={profile?.region}
-                  email={email}
-                  occupationStatus={profile?.occupationStatus}
-                  username={username}
-                  isLoading={isLoading}
-                />
+            <IonCol ref={ref} size="12">
+              <IonCard className="line-around">
+                <IonCardContent>
+                  <ProfileCard
+                    isMyProfile={true}
+                    avatar={profile?.avatar}
+                    gitHub={profile?.gitHub}
+                    header={profile?.header}
+                    fullName={profile?.fullName}
+                    country={profile?.country}
+                    region={profile?.region}
+                    email={email}
+                    occupationStatus={profile?.occupationStatus}
+                    username={username}
+                    isLoading={isLoading}
+                  />
+                </IonCardContent>
               </IonCard>
-            </IonCol>
-            <IonCol size="12">
-              {renderAppsSections}
+              {renderDataSection}
+              {renderAppsSection}
               {renderStarredAppsSection}
             </IonCol>
           </IonRow>

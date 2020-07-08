@@ -15,17 +15,6 @@ const Footer: React.FC = () => {
           </IonRouterLink>
         </p>
         <p>
-          <IonRouterLink href="https://discord.gg/eexEFrK" target="_blank">
-            <img
-              style={{ marginRight: "5px" }}
-              height="14px"
-              width="14px"
-              src="/assets/icon/discord.png"
-            />
-            Discord
-          </IonRouterLink>
-        </p>
-        <p>
           <IonRouterLink
             className="FooterRightIcon"
             href="https://twitter.com/PWAStore1"
@@ -40,7 +29,7 @@ const Footer: React.FC = () => {
             Twitter
           </IonRouterLink>
         </p>
-        <p>&copy; 2020 AppShare</p>
+        <p>&copy; 2020 Progressive App Store</p>
       </div>
     </div>
   )

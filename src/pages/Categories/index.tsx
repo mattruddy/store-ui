@@ -17,6 +17,7 @@ import { capitalize } from "../../util"
 import { GetPwaCategoryUrl, RouteMap } from "../../routes"
 import "./styles.css"
 import { standardCategories } from "../../components/SideBar"
+import { Footer } from "../../components"
 
 const Categories: React.FC = () => {
   const href = (category: string): string => {
@@ -69,6 +70,7 @@ const Categories: React.FC = () => {
             ))}
           </IonItemGroup>
         </IonList>
+        <Footer />
       </IonContent>
     </IonPage>
   )
