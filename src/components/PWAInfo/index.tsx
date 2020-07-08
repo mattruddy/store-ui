@@ -24,6 +24,7 @@ import { noSpecialChars, mdConverter } from "../../util"
 import ReactMde from "react-mde"
 import { useHistory } from "react-router"
 import { RouteMap } from "../../routes"
+import BadgeShare from "../BadgeShare"
 
 interface ContainerProps {
   pwa: PWA
@@ -193,6 +194,13 @@ const PWAInfo: React.FC<ContainerProps> = ({
           </IonRow>
         </IonCardContent>
       </IonCard>
+      {isMyPwa && (
+        <IonCard className="line-around">
+          <IonCardContent>
+            <BadgeShare name={pwa.name} />
+          </IonCardContent>
+        </IonCard>
+      )}
       <IonCard className="line-around">
         <IonCardContent>
           {isEdit ? (
