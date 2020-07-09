@@ -23,7 +23,7 @@ import "./styles.css"
 import { noSpecialChars, mdConverter } from "../../util"
 import ReactMde from "react-mde"
 import { useHistory } from "react-router"
-import { RouteMap } from "../../routes"
+import { RouteMap, GetPWADetailUrl } from "../../routes"
 import BadgeShare from "../BadgeShare"
 
 interface ContainerProps {
@@ -175,7 +175,9 @@ const PWAInfo: React.FC<ContainerProps> = ({
               <div className="PWAShareContainer">
                 <ShareUrl
                   title={pwa.name}
-                  url={window.location.href.replace("mypwa", "pwa")}
+                  url={`https://info.progessiveapp.store${GetPWADetailUrl(
+                    pwa.name
+                  )}`}
                 />
               </div>
             </IonCol>
