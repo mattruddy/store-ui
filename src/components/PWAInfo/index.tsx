@@ -175,7 +175,7 @@ const PWAInfo: React.FC<ContainerProps> = ({
               <div className="PWAShareContainer">
                 <ShareUrl
                   title={pwa.name}
-                  url={`https://info.progessiveapp.store${GetPWADetailUrl(
+                  url={`https://info.progressiveapp.store${GetPWADetailUrl(
                     pwa.name
                   )}`}
                 />
