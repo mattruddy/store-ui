@@ -302,6 +302,10 @@ ion-back-button {
   color: var(--title-color);
 }
 
+ion-button {
+  color: var(--text-color);
+}
+
 ion-checkbox {
   --checkmark-color: var(--title-color);
   --border-color: var(--text-color);
@@ -372,7 +376,7 @@ ol {
 h2,
 h3,
 h4 {
-  color: var(--sub-color);
+  color: var(--title-color);
 }
 
 ion-footer {
