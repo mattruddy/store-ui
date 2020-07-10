@@ -104,14 +104,6 @@ const DevLogCard: React.FC<ContainerProps> = ({
           }}
         >
           <div style={{ display: "flex", alignItems: "center" }}>
-            {devLog.canDelete && (
-              <button
-                style={{ background: "transparent" }}
-                onClick={handleDelete}
-              >
-                <IonIcon size="small" className="sub-color" icon={trash} />
-              </button>
-            )}
             <button
               style={{ background: "transparent" }}
               onClick={handleLike}
@@ -123,9 +115,17 @@ const DevLogCard: React.FC<ContainerProps> = ({
                 icon={devLog.appLikes.hasRated ? starSharp : starOutline}
               />
             </button>
-            <span style={{paddingLeft: "8px"}}>
+            <span style={{ paddingLeft: "8px", paddingRight: "8px" }}>
               {devLog.appLikes.ratings && devLog.appLikes.ratings.length}
             </span>
+            {devLog.canDelete && (
+              <button
+                style={{ background: "transparent" }}
+                onClick={handleDelete}
+              >
+                <IonIcon size="small" className="sub-color" icon={trash} />
+              </button>
+            )}
           </div>
           <div>{dateFormatter(devLog.loggedAt)}</div>
         </div>

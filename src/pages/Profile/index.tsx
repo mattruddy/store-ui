@@ -140,8 +140,8 @@ const Profile: React.FC = () => {
   const renderStarredAppsSection = useMemo(() => {
     return (
       <DevContentCard
-        icon={starOutline}
         count={starredApps.length}
+        title="Following"
         isHidden={hideStar}
         onClick={() => setHideStar(!hideStar)}
       >
