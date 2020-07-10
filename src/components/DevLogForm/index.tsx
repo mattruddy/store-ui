@@ -33,7 +33,7 @@ const DevLogForm: React.FC<ContainerProps> = ({ apps, onSubmit, status }) => {
   }
 
   return (
-    <FormCollapse title="DevLog">
+    <FormCollapse title="DevLog" subtitle="Log app progress followers to track">
       <form onSubmit={handleSubmit}>
         <FormItem name="Choose App">
           <IonSelect
@@ -62,7 +62,8 @@ const DevLogForm: React.FC<ContainerProps> = ({ apps, onSubmit, status }) => {
               }
               childProps={{
                 textArea: {
-                  maxLength: 400,
+                  maxLength: 500,
+                  placeholder: "Whats new with your app and its development?",
                 },
               }}
             />

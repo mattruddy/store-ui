@@ -376,7 +376,7 @@ ol {
 h2,
 h3,
 h4 {
-  color: var(--sub-color);
+  color: var(--title-color);
 }
 
 ion-footer {
