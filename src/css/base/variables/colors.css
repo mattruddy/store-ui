@@ -302,6 +302,10 @@ ion-back-button {
   color: var(--title-color);
 }
 
+ion-button {
+  color: var(--text-color);
+}
+
 ion-checkbox {
   --checkmark-color: var(--title-color);
   --border-color: var(--text-color);

@@ -130,7 +130,7 @@ const PWAInfo: React.FC<ContainerProps> = ({
                 </IonRouterLink>
               )}
               <div className="InfoStarBlock">
-                <IonButton fill="clear" onClick={onClickStar}>
+                <IonButton fill="outline" onClick={onClickStar} color="dark">
                   {pwa.appRatings.hasRated ? "Unfollow" : "Follow"}
                 </IonButton>
                 <IonFabButton
