@@ -20,9 +20,11 @@ import {
   USER_REMOVE_STARRED,
   USER_ADD_LOG,
   USER_REMOVE_LOG,
+  USER_ADD_LIKE_LOG,
+  USER_REMOVE_LIKE_LOG,
 } from "./types"
 import { AppActionTypes, REDUX_RESET } from "../App/types"
-import { AppRatings, PWA } from "../../util/types"
+import { AppRatings, PWA, DevLog } from "../../util/types"
 
 const DEFAULT_STATE_USER: UserState = {
   token: "",
@@ -112,6 +114,61 @@ const userReducer = (
         starredApps: state.starredApps.filter(
           (x) => x.appId !== action.payload.appId
         ),
+      }
+
+    case USER_ADD_LIKE_LOG:
+      const devLogLike = state.devLogs.find(
+        (x) => x.logId === action.payload.logId
+      )
+      if (!devLogLike) {
+        return state
+      }
+      const nDevLogLike = {
+        ...devLogLike,
+        appLikes: {
+          hasRated: true,
+          ratings: [
+            action.payload.like.rating,
+            ...devLogLike!.appLikes.ratings,
+          ],
+        },
+      } as DevLog
+      return {
+        ...state,
+        devLogs: state.devLogs
+          .filter((x) => x.logId !== action.payload.logId)
+          .concat(nDevLogLike)
+          .sort(
+            (a, b) =>
+              b.loggedAt.getMilliseconds() - a.loggedAt.getMilliseconds()
+          ),
+      }
+
+    case USER_REMOVE_LIKE_LOG:
+      const devLogNotLike = state.devLogs.find(
+        (x) => x.logId === action.payload.logId
+      )
+      if (!devLogNotLike) {
+        return state
+      }
+      const nDevLogNotLike = {
+        ...devLogNotLike,
+        appLikes: {
+          hasRated: false,
+          ratings: devLogNotLike!.appLikes.ratings.filter(
+            (x) => x.from.toLowerCase() !== action.payload.username.toLowerCase()
+          ),
+        },
+      } as DevLog
+      return {
+        ...state,
+        devLogs: state.devLogs
+          .filter((x) => x.logId !== action.payload.logId)
+          .concat(nDevLogNotLike)
+          .sort(
+            (a, b) =>
+              b.loggedAt.getMilliseconds() - a.loggedAt.getMilliseconds()
+          ),
       }
 
     case USER_REPLACE_APP:

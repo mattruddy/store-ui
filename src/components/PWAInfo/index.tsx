@@ -130,13 +130,9 @@ const PWAInfo: React.FC<ContainerProps> = ({
                 </IonRouterLink>
               )}
               <div className="InfoStarBlock">
-                <IonFabButton className="InfoStarIcon" onClick={onClickStar}>
-                  <IonIcon
-                    icon={`${
-                      pwa.appRatings.hasRated ? starSharp : starOutline
-                    }`}
-                  />
-                </IonFabButton>
+                <IonButton fill="clear" onClick={onClickStar}>
+                  {pwa.appRatings.hasRated ? "Unfollow" : "Follow"}
+                </IonButton>
                 <IonFabButton
                   className="InfoStarIcon primary-color"
                   onClick={openModal}

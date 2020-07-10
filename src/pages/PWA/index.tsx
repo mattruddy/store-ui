@@ -27,7 +27,7 @@ import { ScreenshotSlider, PWAInfo } from "../../components"
 import ReactGA from "react-ga"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 import { useSelector, shallowEqual, useDispatch } from "react-redux"
-import { PWA as PWAType, DevLog } from "../../util/types"
+import { PWA as PWAType, DevLog, NewRating } from "../../util/types"
 import StarsListModal from "../../components/StarsListModal"
 import { Axios } from "../../redux/Actions"
 import DevLogCard from "../../components/DevLogCard"
@@ -56,11 +56,15 @@ const PWA: React.FC<OwnProps> = ({
       return appName.replace(/-/g, " ").toLowerCase() === x.name.toLowerCase()
     })
 
-  const { pwa, dev, isLoggedIn } = useSelector(
-    ({ pwas: { pwas, devs }, user: { isLoggedIn } }: ReduxCombinedState) => ({
+  const { pwa, dev, isLoggedIn, username } = useSelector(
+    ({
+      pwas: { pwas, devs },
+      user: { isLoggedIn, username },
+    }: ReduxCombinedState) => ({
       pwa: findPWA(pwas),
       dev: devs.find((x) => x.username === findPWA(pwas)?.username),
       isLoggedIn: isLoggedIn,
+      username,
     }),
     shallowEqual
   )
@@ -146,6 +150,43 @@ const PWA: React.FC<OwnProps> = ({
     setDevLogs((prev) => prev.filter((x) => x.logId !== logId))
   }
 
+  const handleLike = async (logId: number) => {
+    const resp = await (await Axios()).post(`secure/log/${logId}`)
+    const like = resp.data as NewRating
+    const devLog = devLogs.find((x) => x.logId === logId)
+    let nDevLog: DevLog
+    if (devLog) {
+      if (like.liked) {
+        nDevLog = {
+          ...devLog,
+          appLikes: {
+            hasRated: like.liked,
+            ratings: [like.rating, ...devLog.appLikes.ratings],
+          },
+        } as DevLog
+      } else {
+        nDevLog = {
+          ...devLog,
+          appLikes: {
+            hasRated: like.liked,
+            ratings: devLog.appLikes.ratings.filter(
+              (x) => x.from.toLowerCase() !== username.toLowerCase()
+            ),
+          },
+        } as DevLog
+      }
+      setDevLogs((prev) =>
+        prev
+          .filter((x) => x.logId !== logId)
+          .concat(nDevLog)
+          .sort(
+            (a, b) =>
+              b.loggedAt.getMilliseconds() - a.loggedAt.getMilliseconds()
+          )
+      )
+    }
+  }
+
   return (
     <IonPage>
       <IonHeader className="ion-no-border bottom-line-border">
@@ -193,6 +234,7 @@ const PWA: React.FC<OwnProps> = ({
                         devLog={log}
                         isLinkable={false}
                         onDelete={handleRemoveDevLog}
+                        onLike={handleLike}
                       />
                     ))}
                   </IonCol>

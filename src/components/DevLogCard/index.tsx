@@ -11,16 +11,17 @@ import React from "react"
 import { DevLog } from "../../util/types"
 import { dateFormatter, mdConverter } from "../../util"
 import { GetPWADetailUrl } from "../../routes"
-import { trash, star, starOutline } from "ionicons/icons"
+import { trash, starOutline, starSharp } from "ionicons/icons"
 import "./styles.css"
 import StarsListModal from "../StarsListModal"
-import { useStore, useSelector } from "react-redux"
+import { useSelector, shallowEqual } from "react-redux"
 import { ReduxCombinedState } from "../../redux/RootReducer"
 
 interface ContainerProps {
   devLog: DevLog
   isLinkable: boolean
   isRouted?: boolean
+  onLike?: (logId: number) => void
   onDelete?: (logId: number) => void
 }
 
@@ -28,6 +29,7 @@ const DevLogCard: React.FC<ContainerProps> = ({
   devLog,
   isLinkable,
   onDelete,
+  onLike,
   isRouted = true,
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
@@ -37,11 +39,18 @@ const DevLogCard: React.FC<ContainerProps> = ({
     onDelete && onDelete(devLog.logId)
   }
 
-  const { isLoggedIn, username } = useSelector(
-    ({ user: { isLoggedIn, username } }: ReduxCombinedState) => ({
+  const handleLike = (e: any) => {
+    e.preventDefault()
+    if (isLoggedIn && onLike) {
+      onLike(devLog.logId)
+    }
+  }
+
+  const { isLoggedIn } = useSelector(
+    ({ user: { isLoggedIn } }: ReduxCombinedState) => ({
       isLoggedIn,
-      username,
-    })
+    }),
+    shallowEqual
   )
 
   return (
@@ -94,36 +103,38 @@ const DevLogCard: React.FC<ContainerProps> = ({
             padding: "8px",
           }}
         >
-          <div>
+          <div style={{ display: "flex", alignItems: "center" }}>
             {devLog.canDelete && (
-              <div>
-                <button
-                  style={{ background: "transparent" }}
-                  onClick={handleDelete}
-                >
-                  <IonIcon size="small" className="sub-color" icon={trash} />
-                </button>
-                <button
-                  style={{ background: "transparent" }}
-                  onClick={handleDelete}
-                >
-                  <IonIcon
-                    size="small"
-                    className="sub-color"
-                    icon={starOutline}
-                  />
-                </button>
-              </div>
+              <button
+                style={{ background: "transparent" }}
+                onClick={handleDelete}
+              >
+                <IonIcon size="small" className="sub-color" icon={trash} />
+              </button>
             )}
+            <button
+              style={{ background: "transparent" }}
+              onClick={handleLike}
+              disabled={!isLoggedIn}
+            >
+              <IonIcon
+                size="small"
+                className="sub-color"
+                icon={devLog.appLikes.hasRated ? starSharp : starOutline}
+              />
+            </button>
+            <span style={{paddingLeft: "8px"}}>
+              {devLog.appLikes.ratings && devLog.appLikes.ratings.length}
+            </span>
           </div>
           <div>{dateFormatter(devLog.loggedAt)}</div>
         </div>
       </IonCard>
-      {devLog && devLog.likes && (
+      {devLog && devLog.appLikes && devLog.appLikes.ratings && (
         <StarsListModal
           isOpen={isOpen}
           onDidDismiss={() => setIsOpen(false)}
-          ratings={devLog.likes}
+          ratings={devLog.appLikes.ratings}
         />
       )}
     </>

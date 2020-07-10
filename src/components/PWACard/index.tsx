@@ -10,7 +10,7 @@ import {
 import { PWA } from "../../util/types"
 import "./styles.css"
 import { Axios } from "../../redux/Actions"
-import { starOutline } from "ionicons/icons"
+import { peopleOutline } from "ionicons/icons"
 
 interface ContainerProps {
   pwa: PWA
@@ -58,7 +58,7 @@ const PWACard: React.FC<ContainerProps> = ({
 
         <div className="PWACardContent">
           <>
-            <IonIcon className="PWACardStar" icon={starOutline} />
+            <IonIcon className="PWACardStar" icon={peopleOutline} />
             <span>{pwa.ratingsCount}</span>
           </>
         </div>

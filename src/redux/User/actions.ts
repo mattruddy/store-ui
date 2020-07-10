@@ -18,6 +18,8 @@ import {
   USER_REMOVE_STARRED,
   USER_ADD_LOG,
   USER_REMOVE_LOG,
+  USER_ADD_LIKE_LOG,
+  USER_REMOVE_LIKE_LOG,
 } from "./types"
 import {
   PWA,
@@ -574,6 +576,18 @@ export const removeEducation = (educationId: number) =>
     payload: educationId,
   } as const)
 
+const addLogLike = (like: NewRating, logId: number) =>
+  ({
+    type: USER_ADD_LIKE_LOG,
+    payload: { like, logId },
+  } as const)
+
+const removeLogLike = (logId: number, username: string) =>
+  ({
+    type: USER_REMOVE_LIKE_LOG,
+    payload: { logId, username },
+  } as const)
+
 export const addLog = (log: DevLog) =>
   ({
     type: USER_ADD_LOG,
@@ -690,6 +704,28 @@ export const thunkDeleteEducation = (
     return console.error(e)
   } finally {
     dispatch(setLoading(false))
+  }
+}
+
+export const thunkAddLogLike = (
+  logId: number
+): ThunkAction<void, ReduxCombinedState, null, Action<string>> => async (
+  dispatch,
+  getState
+) => {
+  try {
+    const {
+      user: { username },
+    } = getState()
+    const resp = await (await Axios()).post(`secure/log/${logId}`)
+    const likeResp = resp.data as NewRating
+    if (likeResp.liked) {
+      dispatch(addLogLike(likeResp, logId))
+    } else {
+      dispatch(removeLogLike(logId, username))
+    }
+  } catch (e) {
+    return console.error(e)
   }
 }
 

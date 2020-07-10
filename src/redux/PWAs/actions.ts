@@ -29,6 +29,7 @@ import { ReduxCombinedState } from "../RootReducer"
 import ReactGA from "react-ga"
 import { setAlert } from "../Alerts/actions"
 import { thunkRemoveStarred, thunkAppStarred } from "../User/actions"
+import { USER_ADD_LIKE_LOG, USER_REMOVE_LIKE_LOG } from "../User/types"
 
 const loadingPWAs = () => ({ type: PWAS_PENDING })
 
@@ -162,7 +163,7 @@ const thunkGetRatings = (
   getState
 ) => {
   const {
-    user: { isLoggedIn, username },
+    user: { isLoggedIn },
   } = getState()
   dispatch(loadingRatings())
   try {
@@ -226,15 +227,6 @@ const thunkAddRating = (
         dispatch(thunkRemoveStarred(pwa.appId, isMyApp))
       }
     }
-    dispatch(
-      setAlert({
-        message: `${rating.liked ? "Starred" : "Unstarred"}`,
-        apiResponseStatus: response.status,
-        timeout: 1000,
-        show: true,
-        status: "success",
-      })
-    )
     return data
   } catch (e) {
     dispatch(

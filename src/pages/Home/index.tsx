@@ -25,6 +25,7 @@ import {
   thunkLoadFollowedDevLogs,
   thunkAddDevLog,
   thunkRemoveDevLog,
+  thunkAddLogLike,
 } from "../../redux/User/actions"
 import { sunny, moon } from "ionicons/icons"
 import DevLogCard from "../../components/DevLogCard"
@@ -77,6 +78,10 @@ const Home: React.FC = () => {
   )
   const deleteDevLog = useCallback(
     (logId: number) => dispatch(thunkRemoveDevLog(logId)),
+    [dispatch]
+  )
+  const likeLog = useCallback(
+    (logId: number) => dispatch(thunkAddLogLike(logId)),
     [dispatch]
   )
 
@@ -151,6 +156,7 @@ const Home: React.FC = () => {
           devLog={log}
           isLinkable={true}
           onDelete={deleteDevLog}
+          onLike={likeLog}
         />
       ))
     ) : (
