@@ -9,7 +9,14 @@ import {
   IonRow,
   IonCol,
 } from "@ionic/react"
-import React, { useCallback, useEffect, useMemo, useRef, memo } from "react"
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  memo,
+  useState,
+} from "react"
 import ReactGA from "react-ga"
 import { shallowEqual, useDispatch, useSelector } from "react-redux"
 import { AddToHomeScreen } from "../../components"
@@ -30,11 +37,14 @@ import {
 import { sunny, moon } from "ionicons/icons"
 import DevLogCard from "../../components/DevLogCard"
 import DevLogForm from "../../components/DevLogForm"
+import { DevLog } from "../../util/types"
+import { Axios } from "../../redux/Actions"
 
 const Home: React.FC = () => {
   const content = useRef<any>()
   const [prompt, promptToInstall] = useAddToHomescreenPrompt()
   const [hideDecimal, setScrollYCurrent] = useHidingHeader(50)
+  const [logs, setLogs] = useState<DevLog[]>([])
 
   const {
     homeData,
@@ -89,6 +99,11 @@ const Home: React.FC = () => {
     getHomeData()
     if (isLoggedIn) {
       getFollowedDevLogs()
+    } else {
+      ;(async () => {
+        const resp = await (await Axios()).get("public/log")
+        setLogs(resp.data as DevLog[])
+      })()
     }
   }, [isLoggedIn])
 
@@ -149,7 +164,7 @@ const Home: React.FC = () => {
   }, [hideDecimal, promptToInstall, prompt, darkMode])
 
   const renderDevLogs = useMemo(() => {
-    return devLogs.length > 0 ? (
+    return isLoggedIn && devLogs.length > 0 ? (
       devLogs.map((log, idx) => (
         <DevLogCard
           key={idx}
@@ -159,10 +174,14 @@ const Home: React.FC = () => {
           onLike={likeLog}
         />
       ))
+    ) : logs.length > 0 ? (
+      logs.map((log, idx) => (
+        <DevLogCard key={idx} devLog={log} isLinkable={true} />
+      ))
     ) : (
       <IonNote style={{ padding: "16px" }}>No DevLogs</IonNote>
     )
-  }, [devLogs, pwas])
+  }, [devLogs, pwas, logs, isLoggedIn])
 
   return (
     <IonPage>
@@ -181,10 +200,10 @@ const Home: React.FC = () => {
               <DevLogForm onSubmit={createDevLog} apps={pwas} status={status} />
             </IonCol>
           )}
-          <IonCol size="12" sizeMd={isLoggedIn ? "7" : "12"}>
-            {isLoggedIn && renderDevLogs}
+          <IonCol size="12" sizeMd="7">
+            {renderDevLogs}
           </IonCol>
-          <IonCol size="12" sizeMd={isLoggedIn ? "5" : "12"}>
+          <IonCol className="AppsCol" size="12" sizeMd="5">
             {renderHomeList}
           </IonCol>
         </IonRow>

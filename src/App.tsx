@@ -298,7 +298,7 @@ const IonicApp: React.FC = () => {
                 <IonTabBar slot="bottom">
                   <IonTabButton className="tab" tab="pwas" href={RouteMap.HOME}>
                     <IonIcon icon={home} />
-                    <IonLabel>Browse</IonLabel>
+                    <IonLabel>Home</IonLabel>
                   </IonTabButton>
                   <IonTabButton
                     className="CatTabButton"

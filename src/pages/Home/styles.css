@@ -15,5 +15,8 @@
   display: none;
 }
 
-.HeaderLogo {
+@media screen and (max-width: 768px) {
+  .AppsCol {
+    display: none;
+  }
 }
