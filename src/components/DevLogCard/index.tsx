@@ -17,6 +17,7 @@ import "./styles.css"
 interface ContainerProps {
   devLog: DevLog
   isLinkable: boolean
+  isRouted?: boolean
   onDelete?: (logId: number) => void
 }
 
@@ -24,6 +25,7 @@ const DevLogCard: React.FC<ContainerProps> = ({
   devLog,
   isLinkable,
   onDelete,
+  isRouted = true,
 }) => {
   const handleDelete = (e: any) => {
     e.preventDefault()
@@ -52,12 +54,22 @@ const DevLogCard: React.FC<ContainerProps> = ({
           )}
         </IonCardTitle>
       </IonCardHeader>
-      <IonCardContent>
-        <div
-          style={{ padding: "16px" }}
-          dangerouslySetInnerHTML={{ __html: mdConverter.makeHtml(devLog.log) }}
-        />
-      </IonCardContent>
+      <IonRouterLink
+        routerLink={
+          isRouted
+            ? `/log/${devLog.appName.replace(/ /g, "-")}/${devLog.logId}`
+            : undefined
+        }
+      >
+        <IonCardContent>
+          <div
+            style={{ padding: "16px" }}
+            dangerouslySetInnerHTML={{
+              __html: mdConverter.makeHtml(devLog.log),
+            }}
+          />
+        </IonCardContent>
+      </IonRouterLink>
       <div
         style={{
           display: "flex",

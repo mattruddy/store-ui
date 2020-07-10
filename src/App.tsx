@@ -58,6 +58,7 @@ import AddPWA from "./pages/AddPWA"
 import Notifications from "./pages/Notifications"
 import AdminFeature from "./pages/AdminFeature"
 import Recruiter from "./pages/Recruiter"
+import DevLogDetail from "./pages/DevLogDetail"
 
 const App: React.FC = () => {
   return <IonicApp />
@@ -265,6 +266,7 @@ const IonicApp: React.FC = () => {
                     }
                   />
                   <Route path={RouteMap.DEVELOPER} component={Developer} />
+                  <Route path={RouteMap.DEVLOG} component={DevLogDetail} />
                   <Route
                     path={RouteMap.ADD}
                     render={() =>
@@ -361,7 +363,9 @@ const IonicApp: React.FC = () => {
           <IonToast
             isOpen={hasUpdate}
             position="top"
-            message={"There is a new version of Progressive App Store available"}
+            message={
+              "There is a new version of Progressive App Store available"
+            }
             buttons={[
               {
                 side: "end",
