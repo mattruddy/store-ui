@@ -43,6 +43,7 @@ export interface DevLog {
   appId: number
   icon: string
   canDelete: boolean
+  likes: Rating[]
 }
 
 export interface TotalAppData {
