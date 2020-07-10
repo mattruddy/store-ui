@@ -118,10 +118,6 @@ const PWA: React.FC<OwnProps> = ({
     ReactGA.pageview(appName)
   }, [])
 
-  useIonViewDidLeave(() => {
-    setDevLogs([])
-  }, [])
-
   useEffect(() => {
     if (pwa) {
       ;(async () => {
@@ -130,6 +126,9 @@ const PWA: React.FC<OwnProps> = ({
         )
         setDevLogs(resp.data as DevLog[])
       })()
+    }
+    return () => {
+      setDevLogs([])
     }
   }, [pwa, isLoggedIn])
 
@@ -181,7 +180,7 @@ const PWA: React.FC<OwnProps> = ({
           .concat(nDevLog)
           .sort(
             (a, b) =>
-              b.loggedAt.getMilliseconds() - a.loggedAt.getMilliseconds()
+              new Date(b.loggedAt).getTime() - new Date(a.loggedAt).getTime()
           )
       )
     }

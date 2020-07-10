@@ -140,7 +140,7 @@ const userReducer = (
           .concat(nDevLogLike)
           .sort(
             (a, b) =>
-              b.loggedAt.getMilliseconds() - a.loggedAt.getMilliseconds()
+              new Date(b.loggedAt).getTime() - new Date(a.loggedAt).getTime()
           ),
       }
 
@@ -156,7 +156,8 @@ const userReducer = (
         appLikes: {
           hasRated: false,
           ratings: devLogNotLike!.appLikes.ratings.filter(
-            (x) => x.from.toLowerCase() !== action.payload.username.toLowerCase()
+            (x) =>
+              x.from.toLowerCase() !== action.payload.username.toLowerCase()
           ),
         },
       } as DevLog
@@ -167,7 +168,7 @@ const userReducer = (
           .concat(nDevLogNotLike)
           .sort(
             (a, b) =>
-              b.loggedAt.getMilliseconds() - a.loggedAt.getMilliseconds()
+              new Date(b.loggedAt).getTime() - new Date(a.loggedAt).getTime()
           ),
       }
 
