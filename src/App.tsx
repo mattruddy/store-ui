@@ -114,13 +114,6 @@ const IonicApp: React.FC = () => {
     shallowEqual
   )
 
-  const handleTheme = (): void => {
-    const prefersDarkMode: MediaQueryList = window.matchMedia(
-      "(prefers-color-scheme: dark)"
-    )
-    setDarkMode(prefersDarkMode.matches)
-  }
-
   useEffect(() => {
     window.addEventListener("resize", handleResize)
     handleResize()

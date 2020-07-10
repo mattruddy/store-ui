@@ -8,6 +8,7 @@ import {
   IonIcon,
   IonRow,
   IonCol,
+  useIonViewDidLeave,
 } from "@ionic/react"
 import React, {
   useCallback,
@@ -106,6 +107,10 @@ const Home: React.FC = () => {
       })()
     }
   }, [isLoggedIn])
+
+  useIonViewDidLeave(() => {
+    setLogs([])
+  })
 
   useEffect(() => {
     ReactGA.pageview(`Home`)
