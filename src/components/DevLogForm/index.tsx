@@ -62,7 +62,7 @@ const DevLogForm: React.FC<ContainerProps> = ({ apps, onSubmit, status }) => {
               }
               childProps={{
                 textArea: {
-                  maxLength: 500,
+                  maxLength: 1500,
                   placeholder: "Whats new with your app and its development?",
                 },
               }}
