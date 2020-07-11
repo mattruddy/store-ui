@@ -1,4 +1,4 @@
-import { memo, useState } from "react"
+import { memo, useState, useCallback } from "react"
 import {
   IonCard,
   IonCardHeader,
@@ -9,13 +9,19 @@ import {
 } from "@ionic/react"
 import React from "react"
 import { DevLog } from "../../util/types"
-import { dateFormatter, mdConverter } from "../../util"
-import { GetPWADetailUrl } from "../../routes"
-import { trash, starOutline, starSharp } from "ionicons/icons"
+import {
+  dateFormatter,
+  mdConverter,
+  shareUrl,
+  copyStringToClipboard,
+} from "../../util"
+import { GetPWADetailUrl, getBaseShareUri, getPwaName } from "../../routes"
+import { trash, starOutline, starSharp, share, flame } from "ionicons/icons"
 import "./styles.css"
 import StarsListModal from "../StarsListModal"
-import { useSelector, shallowEqual } from "react-redux"
+import { useSelector, shallowEqual, useDispatch } from "react-redux"
 import { ReduxCombinedState } from "../../redux/RootReducer"
+import { setAlert } from "../../redux/Alerts/actions"
 
 interface ContainerProps {
   devLog: DevLog
@@ -34,6 +40,26 @@ const DevLogCard: React.FC<ContainerProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
 
+  const shareText = `Check out ${devLog.appName} on Progressive App Store:`
+
+  const dispatch = useDispatch()
+  const setCopiedAlert = useCallback(
+    (message: string, status: "success" | "fail") =>
+      dispatch(
+        setAlert({
+          message: message,
+          timeout: 3000,
+          show: true,
+          status: status,
+        })
+      ),
+    [dispatch]
+  )
+
+  const shareUrlString = `${getBaseShareUri()}/log/${getPwaName(
+    devLog.appName
+  )}/${devLog.logId}`
+
   const handleDelete = (e: any) => {
     e.preventDefault()
     onDelete && onDelete(devLog.logId)
@@ -43,6 +69,18 @@ const DevLogCard: React.FC<ContainerProps> = ({
     e.preventDefault()
     if (isLoggedIn && onLike) {
       onLike(devLog.logId)
+    }
+  }
+
+  // @ts-ignore
+  const canShareOnMobileDevice = navigator.share ? true : false
+
+  const handleShare = (e: any) => {
+    if (canShareOnMobileDevice) {
+      shareUrl(shareUrlString, devLog.appName, shareText)
+    } else {
+      copyStringToClipboard(shareUrlString)
+      setCopiedAlert("Copied to Clipboard", "success")
     }
   }
 
@@ -118,15 +156,18 @@ const DevLogCard: React.FC<ContainerProps> = ({
             <span style={{ paddingLeft: "8px", paddingRight: "8px" }}>
               {devLog.appLikes.ratings && devLog.appLikes.ratings.length}
             </span>
-            {devLog.canDelete && (
-              <button
-                style={{ background: "transparent" }}
-                onClick={handleDelete}
-              >
-                <IonIcon size="small" className="sub-color" icon={trash} />
-              </button>
-            )}
           </div>
+          {devLog.canDelete && (
+            <button
+              style={{ background: "transparent" }}
+              onClick={handleDelete}
+            >
+              <IonIcon size="small" className="sub-color" icon={trash} />
+            </button>
+          )}
+          <button style={{ background: "transparent" }} onClick={handleShare}>
+            <IonIcon size="small" className="sub-color" icon={share} />
+          </button>
           <div>{dateFormatter(devLog.loggedAt)}</div>
         </div>
       </IonCard>
