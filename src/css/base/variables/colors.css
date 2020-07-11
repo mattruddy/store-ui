@@ -383,6 +383,14 @@ ion-footer {
   background: var(--background-color);
 }
 
+blockquote {
+  background: var(--ion-color-step-50);
+}
+
+blockquote p {
+  color: var(--sub-color);
+}
+
 /* Fix color for p ios */
 .sc-ion-label-ios-s p {
   color: var(--text-color);
