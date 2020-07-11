@@ -19,6 +19,16 @@ const dateFormatter = (date: Date) => {
   return momentDate.format("MM/DD/YY h:mm a")
 }
 
+const sortDate = (a: Date, b: Date): number => {
+  const formA = moment(a.toString())
+  formA.format("MM/DD/YY h:mm a")
+
+  const formB = moment(b.toString())
+  formB.format("MM/DD/YY h:mm a")
+
+  return formB.diff(formA)
+}
+
 const dateFormatterMMMYYYY = (date: Date) => {
   const momentDate = moment(date.toString())
   return momentDate.format("MMM YYYY")
@@ -160,4 +170,5 @@ export {
   dateNoTimeFormatter,
   getDateAfterYears,
   dateFormatterMMMYYYY,
+  sortDate,
 }

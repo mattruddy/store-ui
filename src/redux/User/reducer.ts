@@ -26,6 +26,7 @@ import {
 import { AppActionTypes, REDUX_RESET } from "../App/types"
 import { AppRatings, PWA, DevLog } from "../../util/types"
 import moment from "moment"
+import { sortDate } from "../../util"
 
 const DEFAULT_STATE_USER: UserState = {
   token: "",
@@ -139,11 +140,7 @@ const userReducer = (
         devLogs: state.devLogs
           .filter((x) => x.logId !== action.payload.logId)
           .concat(nDevLogLike)
-          .sort((a, b) =>
-            moment(new Date(b.loggedAt).toString()).diff(
-              moment(new Date(a.loggedAt.toString()))
-            )
-          ),
+          .sort((a, b) => sortDate(a.loggedAt, b.loggedAt)),
       }
 
     case USER_REMOVE_LIKE_LOG:
@@ -168,11 +165,7 @@ const userReducer = (
         devLogs: state.devLogs
           .filter((x) => x.logId !== action.payload.logId)
           .concat(nDevLogNotLike)
-          .sort((a, b) =>
-            moment(new Date(b.loggedAt).toString()).diff(
-              moment(new Date(a.loggedAt.toString()))
-            )
-          ),
+          .sort((a, b) => sortDate(a.loggedAt, b.loggedAt)),
       }
 
     case USER_REPLACE_APP:
