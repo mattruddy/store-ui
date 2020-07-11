@@ -52,7 +52,6 @@ import {
   setLastNotIdStorage,
 } from "../Actions"
 import { setAlert } from "../Alerts/actions"
-import { resolve } from "dns"
 
 export const thunkAddPush = (
   push: Push
@@ -329,18 +328,19 @@ export const thunkLoadProfile = (): ThunkAction<
   }
 }
 
-export const thunkLoadFollowedDevLogs = (): ThunkAction<
-  void,
-  ReduxCombinedState,
-  null,
-  Action
-> => async (dispatch) => {
+export const thunkLoadFollowedDevLogs = (
+  page: number
+): ThunkAction<void, ReduxCombinedState, null, Action> => async (
+  dispatch,
+  getState
+) => {
   try {
-    const url = `secure/dev-logs/follow`
+    const url = `secure/dev-logs/follow/${page}`
     const resp = await (await Axios()).get(url)
+    const logs = resp.data as DevLog[]
     dispatch(
       setData({
-        devLogs: resp.data as DevLog[],
+        devLogs: page === 0 ? logs : getState().user.devLogs.concat(logs),
       })
     )
   } catch (e) {

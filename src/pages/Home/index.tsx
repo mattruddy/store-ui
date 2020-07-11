@@ -9,6 +9,8 @@ import {
   IonRow,
   IonCol,
   useIonViewDidLeave,
+  IonInfiniteScroll,
+  IonInfiniteScrollContent,
 } from "@ionic/react"
 import React, {
   useCallback,
@@ -46,6 +48,8 @@ const Home: React.FC = () => {
   const [prompt, promptToInstall] = useAddToHomescreenPrompt()
   const [hideDecimal, setScrollYCurrent] = useHidingHeader(50)
   const [logs, setLogs] = useState<DevLog[]>([])
+  const [page, setPage] = useState<number>(0)
+  const scrollEl = useRef<HTMLIonInfiniteScrollElement>(null)
 
   const {
     homeData,
@@ -76,7 +80,7 @@ const Home: React.FC = () => {
     dispatch,
   ])
   const getFollowedDevLogs = useCallback(
-    () => dispatch(thunkLoadFollowedDevLogs()),
+    (page: number) => dispatch(thunkLoadFollowedDevLogs(page)),
     [dispatch]
   )
   const setDarkMode = useCallback(
@@ -99,10 +103,10 @@ const Home: React.FC = () => {
   useIonViewDidEnter(() => {
     getHomeData()
     if (isLoggedIn) {
-      getFollowedDevLogs()
+      getFollowedDevLogs(page)
     } else {
       ;(async () => {
-        const resp = await (await Axios()).get("public/log")
+        const resp = await (await Axios()).get(`public/log/feed/${page}`)
         setLogs(resp.data as DevLog[])
       })()
     }
@@ -110,6 +114,7 @@ const Home: React.FC = () => {
 
   useIonViewDidLeave(() => {
     setLogs([])
+    setPage(0)
   })
 
   useEffect(() => {
@@ -188,6 +193,22 @@ const Home: React.FC = () => {
     )
   }, [devLogs, pwas, logs, isLoggedIn])
 
+  const loadMoreLogs = async () => {
+    try {
+      const nextPage = page + 1
+      if (isLoggedIn) {
+        getFollowedDevLogs(nextPage)
+      } else {
+        const resp = await (await Axios()).get(`public/log/feed/${nextPage}`)
+        const newLogs = resp.data as DevLog[]
+        setLogs((prev) => prev.concat(newLogs))
+      }
+      setPage(nextPage)
+    } finally {
+      scrollEl.current && scrollEl.current.complete()
+    }
+  }
+
   return (
     <IonPage>
       {renderHeader}
@@ -212,6 +233,13 @@ const Home: React.FC = () => {
             {renderHomeList}
           </IonCol>
         </IonRow>
+        <IonInfiniteScroll
+          ref={scrollEl}
+          threshold="100px"
+          onIonInfinite={loadMoreLogs}
+        >
+          <IonInfiniteScrollContent />
+        </IonInfiniteScroll>
       </IonContent>
     </IonPage>
   )
