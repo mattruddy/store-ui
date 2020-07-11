@@ -25,6 +25,7 @@ import {
 } from "./types"
 import { AppActionTypes, REDUX_RESET } from "../App/types"
 import { AppRatings, PWA, DevLog } from "../../util/types"
+import moment from "moment"
 
 const DEFAULT_STATE_USER: UserState = {
   token: "",
@@ -138,9 +139,10 @@ const userReducer = (
         devLogs: state.devLogs
           .filter((x) => x.logId !== action.payload.logId)
           .concat(nDevLogLike)
-          .sort(
-            (a, b) =>
-              new Date(b.loggedAt).getTime() - new Date(a.loggedAt).getTime()
+          .sort((a, b) =>
+            moment(new Date(b.loggedAt).toString()).diff(
+              moment(new Date(a.loggedAt.toString()))
+            )
           ),
       }
 
@@ -166,9 +168,10 @@ const userReducer = (
         devLogs: state.devLogs
           .filter((x) => x.logId !== action.payload.logId)
           .concat(nDevLogNotLike)
-          .sort(
-            (a, b) =>
-              new Date(b.loggedAt).getTime() - new Date(a.loggedAt).getTime()
+          .sort((a, b) =>
+            moment(new Date(b.loggedAt).toString()).diff(
+              moment(new Date(a.loggedAt.toString()))
+            )
           ),
       }
 

@@ -32,6 +32,7 @@ import StarsListModal from "../../components/StarsListModal"
 import { Axios } from "../../redux/Actions"
 import DevLogCard from "../../components/DevLogCard"
 import { thunkRemoveDevLog } from "../../redux/User/actions"
+import moment from "moment"
 
 const stars = ["ONE", "TWO", "THREE", "FOUR", "FIVE"]
 
@@ -178,9 +179,10 @@ const PWA: React.FC<OwnProps> = ({
         prev
           .filter((x) => x.logId !== logId)
           .concat(nDevLog)
-          .sort(
-            (a, b) =>
-              new Date(b.loggedAt).getTime() - new Date(a.loggedAt).getTime()
+          .sort((a, b) =>
+            moment(new Date(b.loggedAt).toString()).diff(
+              moment(new Date(a.loggedAt.toString()))
+            )
           )
       )
     }
