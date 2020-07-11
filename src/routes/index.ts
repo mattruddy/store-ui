@@ -23,6 +23,14 @@ const RouteMap = {
   DEVLOG: "/log/:appName/:id",
 }
 
+const getBaseShareUri = () => {
+  return `https://info.progressiveapp.store`
+}
+
+const getBaseUri = () => {
+  return `https://progressiveapp.store`
+}
+
 const getPwaName = (name: string) => name.replace(/ /g, "-")
 
 const GetPWADetailUrl = (name: string) => {
@@ -37,4 +45,12 @@ const GetMyPWADetailUrl = (name?: string) => {
 const GetPwaCategoryUrl = (category: string) =>
   RouteMap.PWAS.replace(":category?", category)
 
-export { RouteMap, GetPWADetailUrl, GetMyPWADetailUrl, GetPwaCategoryUrl }
+export {
+  RouteMap,
+  GetPWADetailUrl,
+  GetMyPWADetailUrl,
+  GetPwaCategoryUrl,
+  getBaseShareUri,
+  getBaseUri,
+  getPwaName,
+}
