@@ -16,6 +16,10 @@ ion-menu {
   max-width: 220px !important;
 }
 
+ion-card-content {
+  color: var(--text-color);
+}
+
 ion-card-content p {
   padding: 8px;
 }
