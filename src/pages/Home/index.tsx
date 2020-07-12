@@ -226,9 +226,17 @@ const Home: React.FC = () => {
             {isLoggedIn ? (
               <DevLogForm onSubmit={createDevLog} apps={pwas} status={status} />
             ) : (
-              <div>
-                <IonTitle>DevLog Feed</IonTitle>
-                <IonNote style={{ paddingLeft: "20px" }}>
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                <span
+                  style={{
+                    fontSize: "20px",
+                    paddingLeft: "24px",
+                    paddingBottom: "8px",
+                  }}
+                >
+                  DevLog Feed
+                </span>
+                <IonNote style={{ paddingLeft: "24px" }}>
                   Upload your app to start logging
                 </IonNote>
               </div>
