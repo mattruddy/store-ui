@@ -11,6 +11,7 @@ import {
   useIonViewDidLeave,
   IonInfiniteScroll,
   IonInfiniteScrollContent,
+  IonTitle,
 } from "@ionic/react"
 import React, {
   useCallback,
@@ -221,11 +222,18 @@ const Home: React.FC = () => {
         ref={content}
       >
         <IonRow>
-          {isLoggedIn && (
-            <IonCol size="12">
+          <IonCol size="12">
+            {isLoggedIn ? (
               <DevLogForm onSubmit={createDevLog} apps={pwas} status={status} />
-            </IonCol>
-          )}
+            ) : (
+              <div>
+                <IonTitle>DevLog Feed</IonTitle>
+                <IonNote style={{ paddingLeft: "20px" }}>
+                  Upload your app to start logging
+                </IonNote>
+              </div>
+            )}
+          </IonCol>
           <IonCol size="12" sizeMd="7">
             {renderDevLogs}
           </IonCol>

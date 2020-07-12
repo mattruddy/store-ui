@@ -33,7 +33,7 @@ const DevLogForm: React.FC<ContainerProps> = ({ apps, onSubmit, status }) => {
   }
 
   return (
-    <FormCollapse title="DevLog" subtitle="Log app progress followers to track">
+    <FormCollapse title="Create DevLog" subtitle="Log app progress for followers to track">
       <form onSubmit={handleSubmit}>
         <FormItem name="Choose App">
           <IonSelect
@@ -47,7 +47,7 @@ const DevLogForm: React.FC<ContainerProps> = ({ apps, onSubmit, status }) => {
             ))}
           </IonSelect>
         </FormItem>
-        <FormItem name="Dev Log">
+        <FormItem name="Log">
           <div
             style={{ width: "100%", paddingTop: "16px", paddingBottom: "16px" }}
           >
