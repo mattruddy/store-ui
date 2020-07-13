@@ -124,7 +124,7 @@ const Home: React.FC = () => {
 
   const renderHomeList = useMemo(() => {
     return (
-      <>
+      <div className="AppsColContainer">
         <HomeRow
           pwas={homeData.featuredApps}
           title="Featured"
@@ -146,7 +146,7 @@ const Home: React.FC = () => {
           linkTo=""
           isLoading={isLoading}
         />
-      </>
+      </div>
     )
   }, [homeData, isLoading])
 
@@ -155,7 +155,7 @@ const Home: React.FC = () => {
       <HidingHeader hideDecimal={hideDecimal}>
         <div className="HomeHeader">
           <div>
-            <h1>Progressive App Store</h1>
+            <h1>ProgressiveApp.Store</h1>
             <IonNote>Build, Discover and Share Applications</IonNote>
           </div>
           <div>
@@ -222,7 +222,7 @@ const Home: React.FC = () => {
         ref={content}
       >
         <IonRow>
-          <IonCol size="12">
+          <IonCol size="12" sizeMd="7">
             {isLoggedIn ? (
               <DevLogForm onSubmit={createDevLog} apps={pwas} status={status} />
             ) : (
@@ -241,8 +241,6 @@ const Home: React.FC = () => {
                 </IonNote>
               </div>
             )}
-          </IonCol>
-          <IonCol size="12" sizeMd="7">
             {renderDevLogs}
           </IonCol>
           <IonCol className="AppsCol" size="12" sizeMd="5">
