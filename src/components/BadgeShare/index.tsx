@@ -10,7 +10,7 @@ interface ContainerProps {
 }
 
 const BadgeShare: React.FC<ContainerProps> = ({ name }) => {
-  const badgeUrl = `[![pas](https://img.shields.io/static/v1?&message=ProgressiveApp.Store&color=74b9ff&style=flat&label=Discover%20${name.replace(
+  const badgeUrl = `[![pas](https://img.shields.io/static/v1?&message=ProgressiveApp.Store&color=74b9ff&style=flat&label=Follow%20${name.replace(
     / /g,
     "%20"
   )}%20at)](https://progressiveapp.store${GetPWADetailUrl(name)})`
@@ -47,7 +47,7 @@ const BadgeShare: React.FC<ContainerProps> = ({ name }) => {
       </div>
       <div className="PWACardContent">
         <img
-          src={`https://img.shields.io/static/v1?&message=ProgressiveApp.Store&color=74b9ff&style=flat&label=Discover%20${name.replace(
+          src={`https://img.shields.io/static/v1?&message=ProgressiveApp.Store&color=74b9ff&style=flat&label=Follow%20${name.replace(
             / /g,
             "%20"
           )}%20at`}
