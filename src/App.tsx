@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useRef } from "react"
+import React, { useEffect, useCallback, useRef, useState } from "react"
 import { Redirect, Route } from "react-router-dom"
 import {
   IonApp,
@@ -48,7 +48,7 @@ import {
 } from "./redux/User/actions"
 import { SetWindow } from "./redux/Window/actions"
 import { ReduxCombinedState } from "./redux/RootReducer"
-import { clearAlerts } from "./redux/Alerts/actions"
+import { clearAlerts, setAlert } from "./redux/Alerts/actions"
 import { Axios } from "./redux/Actions"
 import { SideBar } from "./components"
 import Search from "./pages/Search"
@@ -59,6 +59,7 @@ import Notifications from "./pages/Notifications"
 import AdminFeature from "./pages/AdminFeature"
 import Recruiter from "./pages/Recruiter"
 import DevLogDetail from "./pages/DevLogDetail"
+import { usePosition } from "use-position"
 
 const App: React.FC = () => {
   return <IonicApp />
@@ -66,6 +67,18 @@ const App: React.FC = () => {
 
 const IonicApp: React.FC = () => {
   const idk = useRef<any>()
+  const [watchId, setWatchId] = useState<number>()
+  const {
+    latitude,
+    longitude,
+    timestamp,
+    accuracy,
+    errorMessage,
+  } = usePosition(true, {
+    enableHighAccuracy: true,
+    maximumAge: 0,
+    timeout: Infinity,
+  })
 
   const dispatch = useDispatch()
   const loadUserData = useCallback(() => dispatch(thunkLoadUserData()), [
@@ -75,9 +88,8 @@ const IonicApp: React.FC = () => {
     dispatch,
   ])
   const clearAlert = useCallback(() => dispatch(clearAlerts()), [dispatch])
-
-  const setDarkMode = useCallback(
-    (prefersDarkMode: boolean) => dispatch(thunkSetDarkMode(prefersDarkMode)),
+  const showAlert = useCallback(
+    (message: string) => dispatch(setAlert({ show: true, message: message })),
     [dispatch]
   )
   const loadNotifications = useCallback(
@@ -122,6 +134,12 @@ const IonicApp: React.FC = () => {
       window.removeEventListener("resize", handleResize)
     }
   }, [])
+
+  useEffect(() => {
+    if (longitude || latitude) {
+      showAlert(`lat: ${latitude}, lon: ${longitude}`)
+    }
+  }, [latitude, longitude])
 
   useEffect(() => {
     loadUserData()
