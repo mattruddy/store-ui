@@ -24,7 +24,7 @@
     "@types/redux": "^3.6.0",
     "@types/redux-thunk": "^2.1.0",
     "@types/showdown": "^1.9.3",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "ionicons": "^5.0.0",
     "moment": "^2.24.0",
     "query-string": "^6.12.1",
